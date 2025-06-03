@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Accommodations from "./pages/Accommodations";
 import ApartmentDetail from "./pages/ApartmentDetail";
 import Reservations from "./pages/Reservations";
+import ReservationConfirmation from "./pages/ReservationConfirmation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,11 @@ const App = () => (
           <Route path="/alojamientos" element={<Accommodations />} />
           <Route path="/apartamento/:id" element={<ApartmentDetail />} />
           <Route path="/reservas" element={<Reservations />} />
+          <Route
+            path="/confirmacion/:reservationCode"
+            element={<ReservationConfirmation />}
+          />
+          <Route path="/confirmacion" element={<ReservationConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

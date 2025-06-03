@@ -266,7 +266,7 @@ const Reservations = () => {
                         <div
                           key={index}
                           className={`
-                            p-3 text-center text-sm font-medium border border-slate-200 
+                            p-3 text-center text-sm font-medium border border-slate-200
                             ${getDayClass(status)}
                             ${status === "available" ? "hover:bg-blue-50" : ""}
                           `}
@@ -393,7 +393,10 @@ const Reservations = () => {
                       <span className="text-2xl font-bold text-slate-900">
                         $230
                       </span>
-                      <Button className="bg-blue-900 hover:bg-blue-800">
+                      <Button
+                        className="bg-blue-900 hover:bg-blue-800"
+                        onClick={() => navigate("/confirmacion/8STM347L8")}
+                      >
                         PAGAR RESERVA
                       </Button>
                     </div>
