@@ -7,337 +7,334 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import {
+  Menu,
+  Globe,
   User,
-  Settings,
-  Activity,
-  ArrowRight,
-  Star,
-  Target,
-  Award,
+  ChevronDown,
+  MapPin,
   Calendar,
-  TrendingUp,
+  Users,
+  Waves,
+  Mountain,
+  Palmtree,
+  Car,
 } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
 
-  const stats = [
+  const activities = [
     {
-      label: "Proyectos Activos",
-      value: "8",
-      icon: Target,
-      color: "text-blue-600",
-    },
-    { label: "Completados", value: "24", icon: Award, color: "text-green-600" },
-    {
-      label: "En Progreso",
-      value: "3",
-      icon: Activity,
-      color: "text-orange-600",
+      title: "Surf",
+      image: "/placeholder.svg", // Placeholder for surf image
+      description: "Disfruta de las mejores olas en las playas de El Salvador",
     },
     {
-      label: "Calificación",
-      value: "4.9",
-      icon: Star,
-      color: "text-yellow-600",
+      title: "Golf",
+      image: "/placeholder.svg", // Placeholder for golf image
+      description: "Campo de golf profesional con vistas espectaculares",
+    },
+    {
+      title: "Tenis",
+      image: "/placeholder.svg", // Placeholder for tennis image
+      description: "Canchas de tenis de clase mundial para tu entretenimiento",
+    },
+    {
+      title: "Vela",
+      image: "/placeholder.svg", // Placeholder for sailing image
+      description: "Navega por las cristalinas aguas del Pacífico",
     },
   ];
 
-  const recentActivity = [
+  const accommodations = [
     {
-      title: "E-commerce Dashboard",
-      status: "Completado",
-      date: "Hace 2 días",
-      progress: 100,
+      title: "CORINTO",
+      subtitle:
+        "Relájate de la velocidad del lago al tiempo de recreo, donde el",
+      description:
+        "mundo más tranquilo es disponible para descanso entre los habitantes acuáticos y disfruta tu",
+      buttonText: "Ver Detalles",
+      image: "/placeholder.svg",
     },
     {
-      title: "Mobile App UI",
-      status: "En progreso",
-      date: "Actualizado hoy",
-      progress: 75,
+      title: "EL SUNZAL",
+      subtitle: "Escápate del surf oceanográfico. El Sunzal te espera con sus",
+      description:
+        "perfectos rompientes, ambiente y la experiencia perfecta para familia amantes.",
+      buttonText: "Ver Detalles",
+      image: "/placeholder.svg",
     },
     {
-      title: "Landing Page",
-      status: "En progreso",
-      date: "Hace 1 día",
-      progress: 45,
+      title: "COUNTRY CLUB",
+      subtitle: "Un espacio exclusivo en la ciudad para disfrutar deportes y",
+      description:
+        "entretenimiento. Donde las familias se reúnen para disfrutar de excelencia y entretenimiento.",
+      buttonText: "Ver Detalles",
+      image: "/placeholder.svg",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
+      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">P</span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">CS</span>
+                </div>
+                <span className="text-xl font-semibold text-slate-900">
+                  Club Salvadoreño
+                </span>
               </div>
-              <span className="text-xl font-semibold text-slate-900">
-                ProfileApp
-              </span>
             </div>
 
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                onClick={() => navigate("/profile")}
-                className="gap-2"
-              >
-                <User className="h-4 w-4" />
-                Mi Perfil
+            <div className="flex items-center gap-6">
+              <Button variant="ghost" className="gap-2">
+                <Globe className="h-4 w-4" />
+                ES
+                <ChevronDown className="h-4 w-4" />
               </Button>
-              <Avatar
-                className="h-8 w-8 cursor-pointer"
-                onClick={() => navigate("/profile")}
-              >
-                <AvatarImage src="/placeholder.svg" alt="Usuario" />
-                <AvatarFallback className="bg-slate-200 text-slate-700">
-                  MG
-                </AvatarFallback>
-              </Avatar>
+              <Button variant="ghost" className="gap-2">
+                <User className="h-4 w-4" />
+                EN
+              </Button>
+              <Button variant="ghost">
+                <Menu className="h-5 w-5" />
+              </Button>
             </div>
           </div>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Hero Section */}
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">
-            ¡Bienvenida de vuelta, <span className="text-blue-600">María</span>!
-          </h1>
-          <p className="text-lg text-slate-600 mb-8">
-            Gestiona tu perfil, revisa tu progreso y mantente al día con tus
-            proyectos
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      {/* Hero Section */}
+      <section className="relative h-screen bg-gradient-to-b from-blue-900 to-blue-800">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.7), rgba(30, 58, 138, 0.7)), url('/placeholder.svg')`,
+          }}
+        />
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
+          <div className="max-w-2xl text-white">
+            <h1 className="text-6xl font-bold mb-6">El Sunzal</h1>
+            <p className="text-xl mb-8 leading-relaxed">
+              El conjunto ideal del alojamiento, Sol, mar y vida nocturna en un
+              ambiente. Disfruta sus mejores playas, preciosas paisajes de vaste
+              y la diversión de El Salvador.
+            </p>
             <Button
-              onClick={() => navigate("/profile")}
               size="lg"
-              className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 text-lg"
+              onClick={() => navigate("/alojamientos")}
             >
-              <User className="h-5 w-5" />
-              Ver Mi Perfil
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="lg" className="gap-2">
-              <Settings className="h-5 w-5" />
-              Configuración
+              Conoce más
             </Button>
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-full bg-slate-100`}>
-                    <stat.icon className={`h-6 w-6 ${stat.color}`} />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-slate-900">
-                      {stat.value}
-                    </p>
-                    <p className="text-sm text-slate-600">{stat.label}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <ChevronDown className="h-8 w-8 text-white animate-bounce" />
         </div>
+      </section>
 
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Recent Activity */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  Actividad Reciente
-                </CardTitle>
-                <CardDescription>
-                  Tus proyectos más recientes y su estado actual
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {recentActivity.map((item, index) => (
-                  <div
-                    key={index}
-                    className="p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-medium text-slate-900">
-                        {item.title}
-                      </h3>
-                      <div className="flex items-center gap-2">
-                        <Badge
-                          variant={
-                            item.status === "Completado"
-                              ? "default"
-                              : "secondary"
-                          }
-                          className={
-                            item.status === "Completado"
-                              ? "bg-green-100 text-green-800"
-                              : ""
-                          }
-                        >
-                          {item.status}
-                        </Badge>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm text-slate-600">
-                        <span>{item.date}</span>
-                        <span>{item.progress}%</span>
-                      </div>
-                      <div className="w-full bg-slate-200 rounded-full h-2">
-                        <div
-                          className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${item.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                <div className="pt-4 border-t border-slate-200">
-                  <Button variant="ghost" className="w-full gap-2">
-                    Ver Todos los Proyectos
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Quick Actions & Profile Summary */}
-          <div className="space-y-6">
-            {/* Profile Summary */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" />
-                  Tu Perfil
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src="/placeholder.svg" alt="María González" />
-                    <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
-                      MG
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="font-medium text-slate-900">
-                      María González
-                    </h3>
-                    <p className="text-sm text-slate-600">Frontend Developer</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-600">Perfil completado</span>
-                    <span className="font-medium">85%</span>
-                  </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full w-[85%]" />
-                  </div>
-                </div>
-
-                <Button
-                  onClick={() => navigate("/profile")}
-                  className="w-full gap-2"
-                  variant="outline"
-                >
-                  Completar Perfil
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Quick Stats */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Estadísticas
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-slate-600">Este mes</span>
-                  <Badge
-                    variant="secondary"
-                    className="bg-green-100 text-green-800"
-                  >
-                    +12%
-                  </Badge>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-slate-600">
-                      Proyectos completados
-                    </span>
-                    <span className="font-medium">6</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-slate-600">
-                      Horas trabajadas
-                    </span>
-                    <span className="font-medium">142h</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-slate-600">
-                      Calificación promedio
-                    </span>
-                    <span className="font-medium flex items-center gap-1">
-                      4.9{" "}
-                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Acciones Rápidas</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start gap-2"
-                  onClick={() => navigate("/profile")}
-                >
-                  <User className="h-4 w-4" />
-                  Editar Perfil
-                </Button>
-                <Button variant="ghost" className="w-full justify-start gap-2">
-                  <Settings className="h-4 w-4" />
-                  Configuración
-                </Button>
-                <Button variant="ghost" className="w-full justify-start gap-2">
-                  <Calendar className="h-4 w-4" />
-                  Calendario
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+      {/* Desktop indicator */}
+      <div className="bg-slate-100 py-2 px-4">
+        <span className="text-sm text-slate-600">Desktop - 2</span>
       </div>
+
+      {/* Welcome Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-slate-900 mb-6">
+                BIENVENIDO
+              </h2>
+              <p className="text-lg text-slate-700 leading-relaxed mb-8">
+                En el Club Salvadoreño celebramos nuestro hogar, nuestra
+                tradición para la artesanía tradicional, eventos sociales,
+                deportes y actividades. Ubicado en zonas para disfrute de los
+                miembros salvadoreños desde donde se puede disfrutar de la
+                riqueza cultural que nos caracteriza en forma de ubicación.
+              </p>
+              <p className="text-slate-600 italic">
+                Te damos la bienvenida a tu Club, tu hogar de descanso.
+              </p>
+            </div>
+            <div className="relative">
+              <img
+                src="/placeholder.svg"
+                alt="Surf en El Salvador"
+                className="w-full h-96 object-cover rounded-lg shadow-lg"
+              />
+              <div className="absolute bottom-4 left-4 bg-blue-900 text-white px-4 py-2 rounded">
+                <span className="font-semibold">Surf</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Activities Section */}
+      <section className="py-16 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {activities.map((activity, index) => (
+              <Card
+                key={index}
+                className="group hover:shadow-lg transition-shadow cursor-pointer"
+              >
+                <div className="relative h-48 overflow-hidden rounded-t-lg">
+                  <img
+                    src={activity.image}
+                    alt={activity.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute bottom-4 left-4 bg-blue-900 text-white px-3 py-1 rounded">
+                    <span className="font-semibold">{activity.title}</span>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <p className="text-sm text-slate-600">
+                    {activity.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dependencies Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-slate-900 mb-12">
+            DEPENDENCIAS
+          </h2>
+
+          <div className="grid gap-8 lg:grid-cols-3">
+            {accommodations.map((item, index) => (
+              <Card
+                key={index}
+                className="group hover:shadow-xl transition-all duration-300"
+              >
+                <div className="relative h-64 overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute bottom-4 left-4 bg-green-600 text-white px-4 py-2 rounded">
+                    <span className="font-bold">{item.title}</span>
+                  </div>
+                </div>
+                <CardContent className="p-6">
+                  <p className="text-slate-700 mb-4 leading-relaxed">
+                    {item.subtitle} {item.description}
+                  </p>
+                  <Button
+                    className="w-full bg-blue-900 hover:bg-blue-800"
+                    onClick={() => navigate("/alojamientos")}
+                  >
+                    {item.buttonText}
+                    <ChevronDown className="ml-2 h-4 w-4 rotate-270" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-16 bg-slate-100">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12">
+            <div>
+              <h2 className="text-3xl font-bold text-slate-900 mb-8">
+                Contactenos
+              </h2>
+              <form className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Nombre"
+                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Apellido"
+                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Celular"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Correo electrónico"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <textarea
+                    placeholder="Escribe tu mensaje aquí"
+                    rows={4}
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <Button className="w-full bg-blue-900 hover:bg-blue-800 py-3">
+                  ENVIAR
+                </Button>
+              </form>
+            </div>
+
+            <div className="relative h-96 lg:h-full">
+              <div className="w-full h-full bg-slate-300 rounded-lg">
+                {/* Map placeholder */}
+                <div className="flex items-center justify-center h-full text-slate-500">
+                  <div className="text-center">
+                    <MapPin className="h-12 w-12 mx-auto mb-4" />
+                    <p>Mapa de ubicación</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-blue-900 text-white py-8">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <span className="text-blue-900 font-bold text-sm">CS</span>
+              </div>
+              <span className="text-xl font-semibold">Club Salvadoreño</span>
+            </div>
+            <p className="text-blue-100">
+              © 2025 Club Salvadoreño. Todos los derechos reservados.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
