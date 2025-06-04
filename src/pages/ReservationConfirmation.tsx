@@ -485,7 +485,7 @@ const ReservationConfirmation = () => {
             <div className="space-y-3">
               <Button
                 className="w-full bg-blue-900 hover:bg-blue-800"
-                onClick={() => navigate("/reservas")}
+                onClick={() => navigate("/mis-reservas")}
               >
                 Ver Mis Reservas
               </Button>
