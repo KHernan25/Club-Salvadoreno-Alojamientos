@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -59,7 +59,10 @@ const Register = () => {
         <div className="w-full max-w-4xl">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
+            <div
+              className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors"
+              onClick={() => navigate("/")}
+            >
               <div className="text-white text-2xl font-bold">CS</div>
             </div>
             <h1 className="text-white text-3xl font-bold tracking-wider">
@@ -67,6 +70,15 @@ const Register = () => {
               <br />
               SALVADOREÑO
             </h1>
+            <p className="text-blue-100 text-sm mt-2">
+              ¿Ya tienes cuenta?
+              <button
+                onClick={() => navigate("/")}
+                className="text-white font-medium hover:underline ml-1"
+              >
+                Inicia sesión aquí
+              </button>
+            </p>
           </div>
 
           {/* Registration Form */}
