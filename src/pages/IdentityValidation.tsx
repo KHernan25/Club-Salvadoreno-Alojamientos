@@ -12,7 +12,7 @@ const IdentityValidation = () => {
   const handleGetCode = () => {
     if (selectedMethod) {
       // Here would be OTP generation logic
-      navigate("/login");
+      navigate("/");
     }
   };
 
