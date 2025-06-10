@@ -344,10 +344,11 @@ const ApartmentDetail = () => {
                       />
                     </div>
                   </div>
+                </div>
 
                 <Button
                   className="w-full bg-blue-900 hover:bg-blue-800 py-3"
-                  onClick={() => navigate('/reservas')}
+                  onClick={() => navigate("/reservas")}
                 >
                   Ver disponibilidad
                 </Button>
