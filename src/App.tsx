@@ -10,6 +10,10 @@ import Reservations from "./pages/Reservations";
 import ReservationConfirmation from "./pages/ReservationConfirmation";
 import MyReservations from "./pages/MyReservations";
 import UserProfile from "./pages/UserProfile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import IdentityValidation from "./pages/IdentityValidation";
+import ForgotPassword from "./pages/ForgotPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +36,10 @@ const App = () => (
           <Route path="/confirmacion" element={<ReservationConfirmation />} />
           <Route path="/mis-reservas" element={<MyReservations />} />
           <Route path="/perfil" element={<UserProfile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/validar-identidad" element={<IdentityValidation />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
