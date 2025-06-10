@@ -486,7 +486,7 @@ const ReservationConfirmation = () => {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate("/dashboard")}
               >
                 Volver al Inicio
               </Button>
@@ -496,9 +496,11 @@ const ReservationConfirmation = () => {
                 onClick={() => navigate("/alojamientos")}
               >
                 Nueva Reserva
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate('/dashboard')}
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => navigate("/dashboard")}
               >
                 Volver al Inicio
               </Button>

@@ -190,9 +190,11 @@ const UserProfile = () => {
               <Button variant="ghost" className="gap-2">
                 <User className="h-4 w-4" />
                 EN
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate('/dashboard')}
+              </Button>
+              <Button
+                variant="ghost"
+                className="gap-2"
+                onClick={() => navigate("/mis-reservas")}
               >
                 <Calendar className="h-4 w-4" />
                 Mis Reservas
