@@ -66,7 +66,7 @@ const ForgotPassword = () => {
 
               <div className="space-y-3">
                 <Button
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/")}
                   className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3"
                 >
                   Volver al Inicio de Sesión
@@ -159,7 +159,7 @@ const ForgotPassword = () => {
             {/* Back to Login */}
             <div className="text-center mt-6">
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/")}
                 className="flex items-center gap-2 text-blue-200 hover:text-white mx-auto group"
               >
                 <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
