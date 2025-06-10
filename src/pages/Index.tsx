@@ -90,13 +90,10 @@ const Index = () => {
                 <span className="text-xl font-semibold text-slate-900">
                   Club Salvadoreño
                 </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                onClick={() => navigate("/login")}
+              <div
+                className="flex items-center gap-3 cursor-pointer"
+                onClick={() => navigate('/dashboard')}
+              >
                 className="gap-2"
               >
                 <User className="h-4 w-4" />

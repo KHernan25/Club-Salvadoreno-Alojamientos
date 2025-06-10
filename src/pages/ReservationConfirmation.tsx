@@ -484,10 +484,11 @@ const ReservationConfirmation = () => {
             {/* Actions */}
             <div className="space-y-3">
               <Button
-                className="w-full bg-blue-900 hover:bg-blue-800"
-                onClick={() => navigate("/mis-reservas")}
+                variant="outline"
+                className="w-full"
+                onClick={() => navigate('/dashboard')}
               >
-                Ver Mis Reservas
+                Volver al Inicio
               </Button>
               <Button
                 variant="outline"
@@ -495,11 +496,10 @@ const ReservationConfirmation = () => {
                 onClick={() => navigate("/alojamientos")}
               >
                 Nueva Reserva
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => navigate("/")}
+              <div
+                className="flex items-center gap-3 cursor-pointer"
+                onClick={() => navigate('/dashboard')}
+              >
               >
                 Volver al Inicio
               </Button>

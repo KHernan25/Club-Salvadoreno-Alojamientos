@@ -26,7 +26,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Index />} />
           <Route path="/alojamientos" element={<Accommodations />} />
           <Route path="/apartamento/:id" element={<ApartmentDetail />} />
           <Route path="/reservas" element={<Reservations />} />
@@ -37,7 +38,6 @@ const App = () => (
           <Route path="/confirmacion" element={<ReservationConfirmation />} />
           <Route path="/mis-reservas" element={<MyReservations />} />
           <Route path="/perfil" element={<UserProfile />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/validar-identidad" element={<IdentityValidation />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

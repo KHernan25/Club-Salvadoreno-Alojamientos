@@ -45,9 +45,9 @@ const AuthDemo = () => {
 
   const mainPages = [
     {
-      title: "Inicio",
+      title: "Dashboard",
       description: "Página principal del Club Salvadoreño",
-      path: "/",
+      path: "/dashboard",
       icon: Home,
       color: "bg-slate-600",
     },
@@ -190,7 +190,10 @@ const AuthDemo = () => {
                   <h4 className="font-medium mb-2">Aplicación:</h4>
                   <ul className="space-y-1 text-slate-600">
                     <li>
-                      • <code>/</code> - Inicio
+                      • <code>/</code> - Login (Página de Inicio)
+                    </li>
+                    <li>
+                      • <code>/dashboard</code> - Dashboard Principal
                     </li>
                     <li>
                       • <code>/alojamientos</code> - Alojamientos

@@ -325,11 +325,10 @@ const MyReservations = () => {
               <Button variant="ghost" className="gap-2">
                 <User className="h-4 w-4" />
                 EN
-              </Button>
-              <Button
-                variant="ghost"
-                className="gap-2"
-                onClick={() => navigate("/perfil")}
+              <div
+                className="flex items-center gap-3 cursor-pointer"
+                onClick={() => navigate('/dashboard')}
+              >
               >
                 <User className="h-4 w-4" />
                 Mi Perfil

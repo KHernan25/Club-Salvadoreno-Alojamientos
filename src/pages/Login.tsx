@@ -18,7 +18,7 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Here would be login logic
-    navigate("/");
+    navigate("/dashboard");
   };
 
   const handleInputChange = (field: string, value: string) => {
