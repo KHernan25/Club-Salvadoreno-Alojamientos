@@ -500,7 +500,6 @@ const ReservationConfirmation = () => {
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={() => navigate('/dashboard')}
               >
-              >
                 Volver al Inicio
               </Button>
             </div>

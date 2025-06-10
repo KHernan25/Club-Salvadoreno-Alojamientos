@@ -348,9 +348,8 @@ const ApartmentDetail = () => {
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={() => navigate('/dashboard')}
               >
-                >
-                  Ver disponibilidad
-                </Button>
+                Ver disponibilidad
+              </Button>
               </CardContent>
             </Card>
 

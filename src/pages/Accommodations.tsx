@@ -203,8 +203,7 @@ const Accommodations = () => {
             <div className="flex items-center gap-4">
               <div
                 className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate('/dashboard')}
-              >
+                onClick={() => navigate("/dashboard")}
               >
                 <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-sm">CS</span>

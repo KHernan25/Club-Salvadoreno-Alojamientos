@@ -194,7 +194,6 @@ const UserProfile = () => {
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={() => navigate('/dashboard')}
               >
-              >
                 <Calendar className="h-4 w-4" />
                 Mis Reservas
               </Button>

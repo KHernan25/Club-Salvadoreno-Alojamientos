@@ -329,7 +329,6 @@ const MyReservations = () => {
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={() => navigate('/dashboard')}
               >
-              >
                 <User className="h-4 w-4" />
                 Mi Perfil
               </Button>

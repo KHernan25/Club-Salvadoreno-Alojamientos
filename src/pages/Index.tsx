@@ -91,9 +91,10 @@ const Index = () => {
                   Club Salvadoreño
                 </span>
               <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate('/dashboard')}
-              >
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                onClick={() => navigate('/')}
                 className="gap-2"
               >
                 <User className="h-4 w-4" />
