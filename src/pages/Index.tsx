@@ -106,21 +106,7 @@ const Index = () => {
                 <User className="h-4 w-4" />
                 EN
               </Button>
-              <Button
-                variant="ghost"
-                onClick={() => navigate("/")}
-                className="gap-2"
-              >
-                <User className="h-4 w-4" />
-                Iniciar Sesión
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => navigate("/register")}
-                className="gap-2"
-              >
-                Registrarse
-              </Button>
+
               <Button
                 variant="ghost"
                 onClick={() => navigate("/perfil")}
