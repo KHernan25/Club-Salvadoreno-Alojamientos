@@ -344,12 +344,13 @@ const ApartmentDetail = () => {
                       />
                     </div>
                   </div>
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate('/dashboard')}
-              >
-                Ver disponibilidad
-              </Button>
+
+                <Button
+                  className="w-full bg-blue-900 hover:bg-blue-800 py-3"
+                  onClick={() => navigate('/reservas')}
+                >
+                  Ver disponibilidad
+                </Button>
               </CardContent>
             </Card>
 
