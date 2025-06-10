@@ -33,7 +33,8 @@ const Register = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Here would be registration logic
-    navigate("/validar-identidad");
+    // After successful registration, automatically log in the user
+    navigate("/dashboard");
   };
 
   const handleInputChange = (field: string, value: string) => {
