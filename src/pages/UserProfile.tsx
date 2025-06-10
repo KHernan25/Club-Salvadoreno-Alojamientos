@@ -199,6 +199,13 @@ const UserProfile = () => {
                 <Calendar className="h-4 w-4" />
                 Mis Reservas
               </Button>
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/")}
+                className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                Cerrar Sesión
+              </Button>
               <Button variant="ghost">
                 <Menu className="h-5 w-5" />
               </Button>
