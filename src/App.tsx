@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import IdentityValidation from "./pages/IdentityValidation";
 import ForgotPassword from "./pages/ForgotPassword";
+import AuthDemo from "./pages/AuthDemo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/validar-identidad" element={<IdentityValidation />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/demo" element={<AuthDemo />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

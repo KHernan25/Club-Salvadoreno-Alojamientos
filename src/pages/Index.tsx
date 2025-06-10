@@ -93,18 +93,29 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-6">
-              <Button variant="ghost" className="gap-2">
-                <Globe className="h-4 w-4" />
-                ES
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" className="gap-2">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/login")}
+                className="gap-2"
+              >
                 <User className="h-4 w-4" />
-                EN
+                Iniciar Sesión
               </Button>
-              <Button variant="ghost">
-                <Menu className="h-5 w-5" />
+              <Button
+                variant="outline"
+                onClick={() => navigate("/register")}
+                className="gap-2"
+              >
+                Registrarse
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/perfil")}
+                className="gap-2"
+              >
+                <User className="h-4 w-4" />
+                Mi Perfil
               </Button>
             </div>
           </div>
