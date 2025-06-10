@@ -385,26 +385,25 @@ const Accommodations = () => {
                     <Button
                       className="flex-1 bg-blue-900 hover:bg-blue-800"
                       size="sm"
-                      onClick={() =>
-                    onClick={() => {
-                      if (accommodation.category === 'casas') {
-                        navigate(`/casa/${accommodation.id}`);
-                      } else if (accommodation.category === 'suites') {
-                        navigate(`/suite/${accommodation.id}`);
-                      } else {
-                        navigate(`/apartamento/${accommodation.id}`);
-                      }
-                    }}
-                  >
-                    Ver Detalles
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => navigate('/reservas')}
-                  >
-                    Reservar
-                  </Button>
+                      onClick={() => {
+                        if (accommodation.category === "casas") {
+                          navigate(`/casa/${accommodation.id}`);
+                        } else if (accommodation.category === "suites") {
+                          navigate(`/suite/${accommodation.id}`);
+                        } else {
+                          navigate(`/apartamento/${accommodation.id}`);
+                        }
+                      }}
+                    >
+                      Ver Detalles
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate("/reservas")}
+                    >
+                      Reservar
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
