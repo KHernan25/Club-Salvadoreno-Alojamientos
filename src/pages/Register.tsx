@@ -331,7 +331,7 @@ const Register = () => {
             <p className="text-white">
               ¿Ya tienes una cuenta?{" "}
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/")}
                 className="text-blue-200 hover:text-white underline font-medium"
               >
                 Inicia Sesión
