@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +14,45 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Carousel images for authentication pages
+  const carouselImages = [
+    {
+      url: "/placeholder.svg",
+      title: "El Sunzal",
+      description: "Disfruta de las mejores olas y playas de El Salvador",
+    },
+    {
+      url: "/placeholder.svg",
+      title: "Corinto",
+      description: "Tranquilidad y serenidad junto al lago",
+    },
+    {
+      url: "/placeholder.svg",
+      title: "Country Club",
+      description: "Deportes y entretenimiento en la ciudad",
+    },
+    {
+      url: "/placeholder.svg",
+      title: "Golf",
+      description: "Campo de golf profesional con vistas espectaculares",
+    },
+    {
+      url: "/placeholder.svg",
+      title: "Surf",
+      description: "Las mejores olas del Pacífico salvadoreño",
+    },
+  ];
+
+  // Auto-advance carousel every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,15 +67,39 @@ const Login = () => {
     }));
   };
 
+  const currentImage = carouselImages[currentImageIndex];
+
   return (
-    <div className="min-h-screen relative">
-      {/* Background Image with Overlay */}
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Carousel with Overlay */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
         style={{
-          backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.85), rgba(30, 58, 138, 0.85)), url('/placeholder.svg')`,
+          backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.85), rgba(30, 58, 138, 0.85)), url('${currentImage.url}')`,
         }}
       />
+
+      {/* Carousel Indicators */}
+      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
+        {carouselImages.map((_, index) => (
+          <div
+            key={index}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === currentImageIndex ? "bg-white" : "bg-white/40"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Image Title Overlay */}
+      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-20 text-center">
+        <h3 className="text-white text-lg font-semibold opacity-90 transition-all duration-500">
+          {currentImage.title}
+        </h3>
+        <p className="text-blue-100 text-sm opacity-75 transition-all duration-500 max-w-xs">
+          {currentImage.description}
+        </p>
+      </div>
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
