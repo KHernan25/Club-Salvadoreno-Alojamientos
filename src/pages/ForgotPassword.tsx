@@ -2,12 +2,20 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
-import { Mail, ArrowLeft } from "lucide-react";
+import { Mail, ArrowLeft, Smartphone } from "lucide-react";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [contactMethod, setContactMethod] = useState("email");
+  const [contactValue, setContactValue] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -93,23 +101,30 @@ const ForgotPassword = () => {
             {/* Success Message */}
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 border border-white/20 text-center">
               <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Mail className="h-8 w-8 text-white" />
+                {contactMethod === "email" ? (
+                  <Mail className="h-8 w-8 text-white" />
+                ) : (
+                  <Smartphone className="h-8 w-8 text-white" />
+                )}
               </div>
 
               <h2 className="text-white text-xl font-bold mb-4">
-                Correo Enviado
+                {contactMethod === "email" ? "Correo Enviado" : "SMS Enviado"}
               </h2>
 
               <p className="text-blue-100 mb-6 leading-relaxed">
                 Hemos enviado las instrucciones para restablecer tu contraseña
-                a:
+                {contactMethod === "email"
+                  ? " a tu correo:"
+                  : " a tu teléfono:"}
                 <br />
-                <span className="font-medium text-white">{email}</span>
+                <span className="font-medium text-white">{contactValue}</span>
               </p>
 
               <p className="text-blue-100 text-sm mb-8">
-                Revisa tu bandeja de entrada y sigue las instrucciones. Si no
-                recibes el correo en unos minutos, revisa tu carpeta de spam.
+                {contactMethod === "email"
+                  ? "Revisa tu bandeja de entrada y sigue las instrucciones. Si no recibes el correo en unos minutos, revisa tu carpeta de spam."
+                  : "Recibirás un mensaje de texto con el código de verificación en unos momentos. Asegúrate de que tu teléfono esté disponible."}
               </p>
 
               <div className="space-y-3">
@@ -125,7 +140,9 @@ const ForgotPassword = () => {
                   variant="ghost"
                   className="w-full text-white hover:bg-white/10 py-3"
                 >
-                  Intentar con otro correo
+                  {contactMethod === "email"
+                    ? "Intentar con otro correo"
+                    : "Intentar con otro número"}
                 </Button>
               </div>
             </div>
@@ -179,32 +196,82 @@ const ForgotPassword = () => {
                 Recuperar Contraseña
               </h2>
               <p className="text-blue-100 text-sm leading-relaxed">
-                Ingresa tu correo electrónico y te enviaremos las instrucciones
-                para restablecer tu contraseña.
+                Elige cómo quieres recibir las instrucciones para restablecer tu
+                contraseña.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email */}
+              {/* Contact Method Selection */}
               <div>
                 <Label
-                  htmlFor="email"
+                  htmlFor="contactMethod"
                   className="text-white font-medium mb-2 block"
                 >
-                  Correo Electrónico
+                  Método de Contacto
+                </Label>
+                <Select
+                  value={contactMethod}
+                  onValueChange={(value) => {
+                    setContactMethod(value);
+                    setContactValue(""); // Clear input when method changes
+                  }}
+                >
+                  <SelectTrigger className="bg-white/90 border-white/30 text-slate-900">
+                    <SelectValue placeholder="Selecciona cómo recibir el código" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="email">
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-4 w-4" />
+                        Correo Electrónico
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="sms">
+                      <div className="flex items-center gap-2">
+                        <Smartphone className="h-4 w-4" />
+                        Mensaje de Texto (SMS)
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Dynamic Input Field */}
+              <div>
+                <Label
+                  htmlFor="contactValue"
+                  className="text-white font-medium mb-2 block"
+                >
+                  {contactMethod === "email"
+                    ? "Correo Electrónico"
+                    : "Número de Teléfono"}
                 </Label>
                 <div className="relative">
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="Ingrese su correo electrónico"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="contactValue"
+                    type={contactMethod === "email" ? "email" : "tel"}
+                    placeholder={
+                      contactMethod === "email"
+                        ? "Ingrese su correo electrónico"
+                        : "Ingrese su número de teléfono"
+                    }
+                    value={contactValue}
+                    onChange={(e) => setContactValue(e.target.value)}
                     className="bg-white/90 border-white/30 text-slate-900 placeholder:text-slate-500 pr-10"
                     required
                   />
-                  <Mail className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                  {contactMethod === "email" ? (
+                    <Mail className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                  ) : (
+                    <Smartphone className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                  )}
                 </div>
+                {contactMethod === "sms" && (
+                  <p className="text-blue-200 text-xs mt-2">
+                    Formato: +503 1234-5678 o 1234-5678
+                  </p>
+                )}
               </div>
 
               {/* Submit Button */}
@@ -212,7 +279,7 @@ const ForgotPassword = () => {
                 type="submit"
                 className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 text-lg font-medium"
               >
-                Enviar Instrucciones
+                {contactMethod === "email" ? "Enviar al Correo" : "Enviar SMS"}
               </Button>
             </form>
 
