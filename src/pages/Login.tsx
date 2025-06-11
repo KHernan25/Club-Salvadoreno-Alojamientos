@@ -91,16 +91,6 @@ const Login = () => {
         ))}
       </div>
 
-      {/* Image Title Overlay */}
-      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-20 text-center">
-        <h3 className="text-white text-lg font-semibold opacity-90 transition-all duration-500">
-          {currentImage.title}
-        </h3>
-        <p className="text-blue-100 text-sm opacity-75 transition-all duration-500 max-w-xs">
-          {currentImage.description}
-        </p>
-      </div>
-
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
         <div className="w-full max-w-md">
