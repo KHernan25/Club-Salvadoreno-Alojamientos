@@ -50,7 +50,7 @@ const Index = () => {
       description:
         "El conjunto ideal del alojamiento, Sol, mar y vida nocturna en un ambiente. Disfruta sus mejores playas, preciosas paisajes de vaste y la diversión de El Salvador.",
       buttonText: "Conoce más",
-      buttonColor: "bg-blue-700 hover:bg-blue-800",
+      buttonColor: "bg-blue-600 hover:bg-blue-700",
       backgroundImage: "/placeholder.svg",
       route: "/el-sunzal",
     },
@@ -59,7 +59,7 @@ const Index = () => {
       description:
         "Un espacio exclusivo en la ciudad para disfrutar deportes y entretenimiento. Donde las familias se reúnen para disfrutar de excelencia.",
       buttonText: "Conoce más",
-      buttonColor: "bg-blue-700 hover:bg-blue-800",
+      buttonColor: "bg-teal-500 hover:bg-teal-600",
       backgroundImage: "/placeholder.svg",
       route: "/alojamientos",
     },
@@ -379,7 +379,7 @@ const Index = () => {
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>
             <p className="text-blue-100">
-              © 2025 Club Salvadoreño. Todos los derechos reservados.
+              �� 2025 Club Salvadoreño. Todos los derechos reservados.
             </p>
           </div>
         </div>
