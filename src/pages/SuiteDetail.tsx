@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -40,6 +40,20 @@ const SuiteDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [checkInDate, setCheckInDate] = useState("2025-06-07");
+  const [checkOutDate, setCheckOutDate] = useState("2025-06-08");
+
+  // Set minimum date to today
+  const today = new Date().toISOString().split("T")[0];
+
+  useEffect(() => {
+    // Ensure check-out is always after check-in
+    if (checkInDate >= checkOutDate) {
+      const nextDay = new Date(checkInDate);
+      nextDay.setDate(nextDay.getDate() + 1);
+      setCheckOutDate(nextDay.toISOString().split("T")[0]);
+    }
+  }, [checkInDate, checkOutDate]);
 
   // Simulated suite data
   const suiteData = {
@@ -379,8 +393,10 @@ const SuiteDetail = () => {
                     <div className="relative">
                       <input
                         type="date"
+                        min={today}
+                        value={checkInDate}
+                        onChange={(e) => setCheckInDate(e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        defaultValue="2025-06-07"
                       />
                     </div>
                   </div>
@@ -391,8 +407,10 @@ const SuiteDetail = () => {
                     <div className="relative">
                       <input
                         type="date"
+                        min={checkInDate}
+                        value={checkOutDate}
+                        onChange={(e) => setCheckOutDate(e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        defaultValue="2025-06-08"
                       />
                     </div>
                   </div>
@@ -400,7 +418,11 @@ const SuiteDetail = () => {
 
                 <Button
                   className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 py-3 text-white"
-                  onClick={() => navigate("/reservas")}
+                  onClick={() =>
+                    navigate(
+                      `/reservas?checkIn=${checkInDate}&checkOut=${checkOutDate}&accommodation=suite&id=${id}&name=${encodeURIComponent(suite.name)}`,
+                    )
+                  }
                 >
                   <Crown className="h-4 w-4 mr-2" />
                   Reservar Experiencia VIP

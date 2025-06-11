@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Menu,
   Globe,
@@ -30,13 +30,55 @@ import {
 
 const Reservations = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [selectedMonth, setSelectedMonth] = useState(5); // June (0-based)
   const [selectedYear, setSelectedYear] = useState(2025);
-  const [selectedDates, setSelectedDates] = useState({
-    checkIn: "2025-06-07",
-    checkOut: "2025-06-08",
-  });
   const [guests, setGuests] = useState(2);
+
+  // Get dates from URL parameters or use defaults
+  const [selectedDates, setSelectedDates] = useState({
+    checkIn: searchParams.get("checkIn") || "2025-06-07",
+    checkOut: searchParams.get("checkOut") || "2025-06-08",
+  });
+
+  // Get accommodation info from URL parameters
+  const accommodationType = searchParams.get("accommodation") || "apartamento";
+  const accommodationId = searchParams.get("id") || "1A";
+  const accommodationName = searchParams.get("name") || "Apartamento 1A";
+
+  // Generate unique reservation code
+  const generateReservationCode = () => {
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const letters = Math.random().toString(36).substring(2, 4).toUpperCase();
+    return `${letters}${timestamp.toString().slice(-4)}${random.slice(0, 4)}`;
+  };
+
+  const [reservationCode, setReservationCode] = useState(() =>
+    generateReservationCode(),
+  );
+
+  // Set minimum date to today
+  const today = new Date().toISOString().split("T")[0];
+
+  useEffect(() => {
+    // Ensure check-out is always after check-in
+    if (selectedDates.checkIn >= selectedDates.checkOut) {
+      const nextDay = new Date(selectedDates.checkIn);
+      nextDay.setDate(nextDay.getDate() + 1);
+      setSelectedDates((prev) => ({
+        ...prev,
+        checkOut: nextDay.toISOString().split("T")[0],
+      }));
+    }
+  }, [selectedDates.checkIn]);
+
+  // Update calendar when dates change
+  useEffect(() => {
+    const checkInDate = new Date(selectedDates.checkIn);
+    setSelectedMonth(checkInDate.getMonth());
+    setSelectedYear(checkInDate.getFullYear());
+  }, [selectedDates.checkIn]);
 
   const months = [
     "Enero",
@@ -86,25 +128,37 @@ const Reservations = () => {
     const dateStr = date.toISOString().split("T")[0];
     const day = date.getDate();
 
+    // Check if it's the selected check-in or check-out date
+    if (dateStr === selectedDates.checkIn) return "check-in";
+    if (dateStr === selectedDates.checkOut) return "check-out";
+
+    // Check if it's between check-in and check-out
+    if (dateStr > selectedDates.checkIn && dateStr < selectedDates.checkOut) {
+      return "selected-range";
+    }
+
     // Simulate availability - some days are available, some reserved, some blocked
-    if (day === 7) return "selected"; // Selected check-in
-    if (day === 8) return "blocked"; // Blocked for reservation
     if ([15, 16, 23, 24].includes(day)) return "reserved"; // Reserved
     if (date.getMonth() !== selectedMonth) return "other-month";
+    if (dateStr < today) return "past"; // Past dates
 
     return "available";
   };
 
   const getDayClass = (status: string) => {
     switch (status) {
-      case "selected":
-        return "bg-green-400 text-white";
-      case "blocked":
-        return "bg-red-500 text-white";
+      case "check-in":
+        return "bg-green-500 text-white font-bold";
+      case "check-out":
+        return "bg-red-500 text-white font-bold";
+      case "selected-range":
+        return "bg-blue-200 text-blue-800";
       case "reserved":
         return "bg-gray-400 text-white";
       case "other-month":
         return "text-gray-300";
+      case "past":
+        return "text-gray-400 cursor-not-allowed";
       default:
         return "hover:bg-blue-100 cursor-pointer";
     }
@@ -128,6 +182,33 @@ const Reservations = () => {
     }
   };
 
+  const handleViewAvailability = () => {
+    // Generate new reservation code on each availability check
+    setReservationCode(generateReservationCode());
+    // Update the calendar display
+    const checkInDate = new Date(selectedDates.checkIn);
+    setSelectedMonth(checkInDate.getMonth());
+    setSelectedYear(checkInDate.getFullYear());
+  };
+
+  // Calculate pricing based on accommodation type
+  const getPricing = () => {
+    switch (accommodationType) {
+      case "casa":
+        return { weekday: 350, weekend: 450, daily: 400 };
+      case "suite":
+        return { weekday: 650, weekend: 850, daily: 750 };
+      default: // apartamento
+        return { weekday: 110, weekend: 230, daily: 140 };
+    }
+  };
+
+  const pricing = getPricing();
+  const isWeekend =
+    new Date(selectedDates.checkIn).getDay() === 6 ||
+    new Date(selectedDates.checkIn).getDay() === 0;
+  const currentPrice = isWeekend ? pricing.weekend : pricing.weekday;
+
   const calendarDays = generateCalendarDays();
 
   return (
@@ -139,7 +220,7 @@ const Reservations = () => {
             <div className="flex items-center gap-4">
               <div
                 className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/dashboard")}
               >
                 <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                   <span className="text-blue-900 font-bold text-sm">CS</span>
@@ -185,7 +266,7 @@ const Reservations = () => {
           <p className="text-lg text-blue-200">Tu descanso comienza aquí.</p>
           <Button
             className="mt-8 bg-blue-700 hover:bg-blue-600 text-white px-8 py-3"
-            onClick={() => navigate("/alojamientos")}
+            onClick={() => navigate("/mis-reservas")}
           >
             Ver tus reservas
           </Button>
@@ -213,21 +294,21 @@ const Reservations = () => {
                     </CardTitle>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-green-400 rounded"></div>
-                        <span className="text-sm text-slate-600">
-                          Disponible
-                        </span>
+                        <div className="w-4 h-4 bg-green-500 rounded"></div>
+                        <span className="text-sm text-slate-600">Entrada</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-red-500 rounded"></div>
-                        <span className="text-sm text-slate-600">
-                          Reservado
-                        </span>
+                        <span className="text-sm text-slate-600">Salida</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-blue-200 rounded"></div>
+                        <span className="text-sm text-slate-600">Estadía</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-gray-400 rounded"></div>
                         <span className="text-sm text-slate-600">
-                          Bloqueo de Reserva
+                          Reservado
                         </span>
                       </div>
                     </div>
@@ -292,6 +373,7 @@ const Reservations = () => {
                       </label>
                       <input
                         type="date"
+                        min={today}
                         value={selectedDates.checkIn}
                         onChange={(e) =>
                           setSelectedDates({
@@ -308,6 +390,7 @@ const Reservations = () => {
                       </label>
                       <input
                         type="date"
+                        min={selectedDates.checkIn}
                         value={selectedDates.checkOut}
                         onChange={(e) =>
                           setSelectedDates({
@@ -320,7 +403,10 @@ const Reservations = () => {
                     </div>
                   </div>
 
-                  <Button className="w-full mt-6 bg-blue-900 hover:bg-blue-800 py-3">
+                  <Button
+                    className="w-full mt-6 bg-blue-900 hover:bg-blue-800 py-3"
+                    onClick={handleViewAvailability}
+                  >
                     Ver disponibilidad
                   </Button>
                 </CardContent>
@@ -336,24 +422,31 @@ const Reservations = () => {
                     Código de la Reserva:
                   </CardTitle>
                   <Badge className="bg-blue-100 text-blue-800 text-lg font-mono w-fit">
-                    8STM347L8
+                    {reservationCode}
                   </Badge>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <div className="flex items-center gap-2 text-slate-600 mb-1">
                       <Calendar className="h-4 w-4" />
-                      <span className="text-sm">Ingreso 3 pm:</span>
+                      <span className="text-sm">
+                        Ingreso{" "}
+                        {accommodationType === "suite" ? "2:00 pm" : "3:00 pm"}:
+                      </span>
                     </div>
-                    <div className="font-medium">2025-06-07</div>
+                    <div className="font-medium">{selectedDates.checkIn}</div>
                   </div>
 
                   <div>
                     <div className="flex items-center gap-2 text-slate-600 mb-1">
                       <Clock className="h-4 w-4" />
-                      <span className="text-sm">Salida 12 md:</span>
+                      <span className="text-sm">
+                        Salida{" "}
+                        {accommodationType === "suite" ? "1:00 pm" : "12:00 md"}
+                        :
+                      </span>
                     </div>
-                    <div className="font-medium">2025-06-08</div>
+                    <div className="font-medium">{selectedDates.checkOut}</div>
                   </div>
 
                   <div>
@@ -363,10 +456,12 @@ const Reservations = () => {
                     <div className="bg-slate-100 rounded-lg p-3">
                       <img
                         src="/placeholder.svg"
-                        alt="Apartamento 1A"
+                        alt={accommodationName}
                         className="w-full h-24 object-cover rounded mb-2"
                       />
-                      <div className="font-medium">Apartamento 1A</div>
+                      <div className="font-medium">
+                        {decodeURIComponent(accommodationName)}
+                      </div>
                     </div>
                   </div>
 
@@ -384,18 +479,36 @@ const Reservations = () => {
                         <SelectItem value="2">2 personas</SelectItem>
                         <SelectItem value="3">3 personas</SelectItem>
                         <SelectItem value="4">4 personas</SelectItem>
+                        {accommodationType === "casa" && (
+                          <>
+                            <SelectItem value="5">5 personas</SelectItem>
+                            <SelectItem value="6">6 personas</SelectItem>
+                            <SelectItem value="7">7 personas</SelectItem>
+                            <SelectItem value="8">8 personas</SelectItem>
+                          </>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="border-t border-slate-200 pt-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-slate-600">
+                        {isWeekend ? "Fin de semana" : "Día de semana"}
+                      </span>
+                      <span className="font-medium">${currentPrice}.00</span>
+                    </div>
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-2xl font-bold text-slate-900">
-                        $230
+                        Total: ${currentPrice}
                       </span>
                       <Button
                         className="bg-blue-900 hover:bg-blue-800"
-                        onClick={() => navigate("/confirmacion/8STM347L8")}
+                        onClick={() =>
+                          navigate(
+                            `/confirmacion/${reservationCode}?checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${currentPrice}`,
+                          )
+                        }
                       >
                         PAGAR RESERVA
                       </Button>
@@ -426,7 +539,7 @@ const Reservations = () => {
                       size="sm"
                       variant="outline"
                       className="w-full text-xs"
-                      onClick={() => navigate("/alojamientos")}
+                      onClick={() => navigate("/casa/casa1")}
                     >
                       Ver Detalles
                     </Button>
@@ -453,7 +566,7 @@ const Reservations = () => {
                       size="sm"
                       variant="outline"
                       className="w-full text-xs"
-                      onClick={() => navigate("/alojamientos")}
+                      onClick={() => navigate("/suite/suite1")}
                     >
                       Ver Detalles
                     </Button>
