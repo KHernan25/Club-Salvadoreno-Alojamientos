@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,10 +26,65 @@ import {
   Mountain,
   Palmtree,
   Car,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+
+  // Hero carousel data
+  const heroSlides = [
+    {
+      title: "Corinto",
+      description:
+        "Descubre la tranquilidad del lago en nuestro refugio natural, donde la serenidad se encuentra con la aventura.",
+      buttonText: "Conoce más",
+      buttonColor: "bg-green-600 hover:bg-green-700",
+      backgroundImage: "/placeholder.svg",
+      route: "/corinto",
+    },
+    {
+      title: "El Sunzal",
+      description:
+        "El conjunto ideal del alojamiento, Sol, mar y vida nocturna en un ambiente. Disfruta sus mejores playas, preciosas paisajes de vaste y la diversión de El Salvador.",
+      buttonText: "Conoce más",
+      buttonColor: "bg-blue-700 hover:bg-blue-800",
+      backgroundImage: "/placeholder.svg",
+      route: "/el-sunzal",
+    },
+    {
+      title: "Country Club",
+      description:
+        "Un espacio exclusivo en la ciudad para disfrutar deportes y entretenimiento. Donde las familias se reúnen para disfrutar de excelencia.",
+      buttonText: "Conoce más",
+      buttonColor: "bg-blue-700 hover:bg-blue-800",
+      backgroundImage: "/placeholder.svg",
+      route: "/alojamientos",
+    },
+  ];
+
+  // Auto-advance carousel every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [heroSlides.length]);
+
+  const nextSlide = () => {
+    setCurrentHeroIndex((prev) => (prev + 1) % heroSlides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentHeroIndex(
+      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length,
+    );
+  };
+
+  const currentSlide = heroSlides[currentHeroIndex];
 
   const activities = [
     {
@@ -132,30 +188,61 @@ const Index = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative h-screen bg-gradient-to-b from-blue-900 to-blue-800">
+      {/* Hero Carousel Section */}
+      <section className="relative h-screen bg-gradient-to-b from-blue-900 to-blue-800 overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
           style={{
-            backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.7), rgba(30, 58, 138, 0.7)), url('/placeholder.svg')`,
+            backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.7), rgba(30, 58, 138, 0.7)), url('${currentSlide.backgroundImage}')`,
           }}
         />
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-8 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full transition-all duration-300"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-8 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full transition-all duration-300"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </button>
+
+        {/* Content */}
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
           <div className="max-w-2xl text-white">
-            <h1 className="text-6xl font-bold mb-6">El Sunzal</h1>
-            <p className="text-xl mb-8 leading-relaxed">
-              El conjunto ideal del alojamiento, Sol, mar y vida nocturna en un
-              ambiente. Disfruta sus mejores playas, preciosas paisajes de vaste
-              y la diversión de El Salvador.
+            <h1 className="text-6xl font-bold mb-6 transition-all duration-500">
+              {currentSlide.title}
+            </h1>
+            <p className="text-xl mb-8 leading-relaxed transition-all duration-500">
+              {currentSlide.description}
             </p>
             <Button
               size="lg"
-              className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 text-lg"
-              onClick={() => navigate("/alojamientos")}
+              className={`${currentSlide.buttonColor} text-white px-8 py-3 text-lg transition-all duration-300`}
+              onClick={() => navigate(currentSlide.route)}
             >
-              Conoce más
+              {currentSlide.buttonText}
             </Button>
           </div>
+        </div>
+
+        {/* Carousel Indicators */}
+        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentHeroIndex(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentHeroIndex
+                  ? "bg-white"
+                  : "bg-white/50 hover:bg-white/75"
+              }`}
+            />
+          ))}
         </div>
 
         {/* Scroll indicator */}
