@@ -9,6 +9,9 @@ import Accommodations from "./pages/Accommodations";
 import ApartmentDetail from "./pages/ApartmentDetail";
 import CasaDetail from "./pages/CasaDetail";
 import SuiteDetail from "./pages/SuiteDetail";
+import Corinto from "./pages/Corinto";
+import ElSunzal from "./pages/ElSunzal";
+import CorintoCasas from "./pages/CorintoCasas";
 import Reservations from "./pages/Reservations";
 import ReservationConfirmation from "./pages/ReservationConfirmation";
 import MyReservations from "./pages/MyReservations";
@@ -37,6 +40,9 @@ const App = () => (
             <Route path="/apartamento/:id" element={<ApartmentDetail />} />
             <Route path="/casa/:id" element={<CasaDetail />} />
             <Route path="/suite/:id" element={<SuiteDetail />} />
+            <Route path="/corinto" element={<Corinto />} />
+            <Route path="/el-sunzal" element={<ElSunzal />} />
+            <Route path="/corinto/casas" element={<CorintoCasas />} />
             <Route path="/reservas" element={<Reservations />} />
             <Route
               path="/confirmacion/:reservationCode"

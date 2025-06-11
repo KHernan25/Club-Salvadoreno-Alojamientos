@@ -261,7 +261,15 @@ const Index = () => {
                   </p>
                   <Button
                     className="w-full bg-blue-900 hover:bg-blue-800"
-                    onClick={() => navigate("/alojamientos")}
+                    onClick={() => {
+                      if (item.title === "CORINTO") {
+                        navigate("/corinto");
+                      } else if (item.title === "EL SUNZAL") {
+                        navigate("/el-sunzal");
+                      } else {
+                        navigate("/alojamientos");
+                      }
+                    }}
                   >
                     {item.buttonText}
                     <ChevronDown className="ml-2 h-4 w-4 rotate-270" />
