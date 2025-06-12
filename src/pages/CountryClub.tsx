@@ -230,7 +230,7 @@ const CountryClub = () => {
                 Volver
               </Button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-sm">CC</span>
                 </div>
                 <span className="text-xl font-semibold text-slate-900">
@@ -259,11 +259,11 @@ const CountryClub = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-96 bg-gradient-to-b from-teal-600 to-teal-700 overflow-hidden">
+      <section className="relative h-96 bg-gradient-to-b from-blue-900 to-blue-800 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `linear-gradient(rgba(13, 148, 136, 0.8), rgba(13, 148, 136, 0.8)), url('/placeholder.svg')`,
+            backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.8)), url('/placeholder.svg')`,
           }}
         />
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
@@ -274,7 +274,7 @@ const CountryClub = () => {
               gastronomía y entretenimiento. Donde las familias se reúnen para
               disfrutar de excelencia.
             </p>
-            <div className="flex items-center gap-6 text-teal-100">
+            <div className="flex items-center gap-6 text-blue-100">
               <div className="flex items-center gap-2">
                 <MapPin className="h-5 w-5" />
                 <span>San Salvador, El Salvador</span>
@@ -332,7 +332,7 @@ const CountryClub = () => {
                         alt={restaurant.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <Badge className="absolute top-4 left-4 bg-teal-600">
+                      <Badge className="absolute top-4 left-4 bg-blue-900">
                         {restaurant.type}
                       </Badge>
                     </div>
@@ -397,7 +397,7 @@ const CountryClub = () => {
                   <Card key={categoryIndex}>
                     <CardHeader>
                       <CardTitle className="text-2xl flex items-center gap-2">
-                        <ChefHat className="h-6 w-6 text-teal-600" />
+                        <ChefHat className="h-6 w-6 text-blue-600" />
                         {category.name}
                       </CardTitle>
                     </CardHeader>
@@ -416,7 +416,7 @@ const CountryClub = () => {
                                 {item.description}
                               </p>
                             </div>
-                            <span className="font-bold text-teal-600 text-lg ml-4">
+                            <span className="font-bold text-blue-600 text-lg ml-4">
                               {item.price}
                             </span>
                           </div>
@@ -428,7 +428,7 @@ const CountryClub = () => {
               </div>
 
               <div className="text-center">
-                <Button className="bg-teal-600 hover:bg-teal-700" size="lg">
+                <Button className="bg-blue-900 hover:bg-blue-800" size="lg">
                   <Phone className="h-4 w-4 mr-2" />
                   Hacer Reservación
                 </Button>
@@ -466,7 +466,7 @@ const CountryClub = () => {
                           <PlayCircle className="h-12 w-12 text-white" />
                         )}
                       </div>
-                      <Badge className="absolute top-4 right-4 bg-teal-600">
+                      <Badge className="absolute top-4 right-4 bg-blue-600">
                         {spot.type}
                       </Badge>
                     </div>
@@ -479,7 +479,7 @@ const CountryClub = () => {
               </div>
 
               <div className="text-center">
-                <Button className="bg-teal-600 hover:bg-teal-700" size="lg">
+                <Button className="bg-blue-900 hover:bg-blue-800" size="lg">
                   <Camera className="h-4 w-4 mr-2" />
                   Comenzar Recorrido Completo
                 </Button>
@@ -504,21 +504,21 @@ const CountryClub = () => {
               </p>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5 text-teal-600" />
+                  <MapPin className="h-5 w-5 text-blue-600" />
                   <span>Avenida Principal, San Salvador, El Salvador</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-teal-600" />
+                  <Phone className="h-5 w-5 text-blue-600" />
                   <span>+503 2345-6789</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Clock className="h-5 w-5 text-teal-600" />
+                  <Clock className="h-5 w-5 text-blue-600" />
                   <span>Lunes a Domingo: 7:00 AM - 12:00 AM</span>
                 </div>
               </div>
             </div>
             <div className="text-center">
-              <Button className="bg-teal-600 hover:bg-teal-700" size="lg">
+              <Button className="bg-blue-900 hover:bg-blue-800" size="lg">
                 <Phone className="h-4 w-4 mr-2" />
                 Contactar Ahora
               </Button>
@@ -528,16 +528,16 @@ const CountryClub = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-teal-900 text-white py-8">
+      <footer className="bg-blue-900 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-teal-900 font-bold text-sm">CC</span>
+                <span className="text-blue-900 font-bold text-sm">CC</span>
               </div>
               <span className="text-xl font-semibold">Country Club</span>
             </div>
-            <p className="text-teal-100">
+            <p className="text-blue-100">
               © 2025 Country Club - Club Salvadoreño. Todos los derechos
               reservados.
             </p>
