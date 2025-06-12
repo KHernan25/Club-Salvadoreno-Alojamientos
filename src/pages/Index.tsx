@@ -61,7 +61,7 @@ const Index = () => {
       buttonText: "Conoce más",
       buttonColor: "bg-teal-500 hover:bg-teal-600",
       backgroundImage: "/placeholder.svg",
-      route: "/alojamientos",
+      route: "/country-club",
     },
   ];
 
@@ -353,6 +353,8 @@ const Index = () => {
                         navigate("/corinto");
                       } else if (item.title === "EL SUNZAL") {
                         navigate("/el-sunzal");
+                      } else if (item.title === "COUNTRY CLUB") {
+                        navigate("/country-club");
                       } else {
                         navigate("/alojamientos");
                       }
