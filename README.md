@@ -23,7 +23,7 @@ Este proyecto es una plataforma moderna para gestionar reservas de alojamientos 
 
   npm run dev
    
-4. ¡Listo! Abre tu navegador en http://localhost:5173 para disfrutar la app.
+4. ¡Listo! Abre tu navegador en http://localhost:8080 para disfrutar la app.
 
 ✨ Funcionalidades destacadas
 
