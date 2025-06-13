@@ -29,6 +29,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useRef } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const Index = () => {
         "Descubre la tranquilidad del lago en nuestro refugio natural, donde la serenidad se encuentra con la aventura.",
       buttonText: "Conoce más",
       buttonColor: "bg-green-600 hover:bg-green-700",
-      backgroundImage: "/placeholder.svg",
+      backgroundImage: "/DSC_5547.jpg",
       route: "/corinto",
     },
     {
@@ -51,7 +52,7 @@ const Index = () => {
         "El conjunto ideal del alojamiento, Sol, mar y vida nocturna en un ambiente. Disfruta sus mejores playas, preciosas paisajes de vaste y la diversión de El Salvador.",
       buttonText: "Conoce más",
       buttonColor: "bg-blue-600 hover:bg-blue-700",
-      backgroundImage: "/placeholder.svg",
+      backgroundImage: "/DSC_5259.jpg",
       route: "/el-sunzal",
     },
     {
@@ -60,7 +61,7 @@ const Index = () => {
         "Un espacio exclusivo en la ciudad para disfrutar deportes y entretenimiento. Donde las familias se reúnen para disfrutar de excelencia.",
       buttonText: "Conoce más",
       buttonColor: "bg-teal-500 hover:bg-teal-600",
-      backgroundImage: "/placeholder.svg",
+      backgroundImage: "/DSC_5078.jpg",
       route: "/country-club",
     },
   ];
@@ -89,23 +90,23 @@ const Index = () => {
   const activities = [
     {
       title: "Surf",
-      image: "/placeholder.svg", // Placeholder for surf image
+      image: "/_DSC4735-2.jpg", 
       description: "Disfruta de las mejores olas en las playas de El Salvador",
     },
     {
       title: "Golf",
-      image: "/placeholder.svg", // Placeholder for golf image
+      image: "/DSC_3895.jpg", 
       description: "Campo de golf profesional con vistas espectaculares",
     },
     {
       title: "Tenis",
-      image: "/placeholder.svg", // Placeholder for tennis image
+      image: "/DSC_5168.jpg", 
       description: "Canchas de tenis de clase mundial para tu entretenimiento",
     },
     {
       title: "Vela",
-      image: "/placeholder.svg", // Placeholder for sailing image
-      description: "Navega por las cristalinas aguas del Pacífico",
+      image: "/Vela.jpeg", 
+      description: "Navega por las cristalinas aguas del Lago de Ilopango",
     },
   ];
 
@@ -117,7 +118,7 @@ const Index = () => {
       description:
         "mundo más tranquilo es disponible para descanso entre los habitantes acuáticos y disfruta tu",
       buttonText: "Ver Detalles",
-      image: "/placeholder.svg",
+      image: "/DSC_5451.jpg",
     },
     {
       title: "EL SUNZAL",
@@ -125,7 +126,7 @@ const Index = () => {
       description:
         "perfectos rompientes, ambiente y la experiencia perfecta para familia amantes.",
       buttonText: "Ver Detalles",
-      image: "/placeholder.svg",
+      image: "/DSC_5408.jpg",
     },
     {
       title: "COUNTRY CLUB",
@@ -133,9 +134,19 @@ const Index = () => {
       description:
         "entretenimiento. Donde las familias se reúnen para disfrutar de excelencia y entretenimiento.",
       buttonText: "Ver Detalles",
-      image: "/placeholder.svg",
+      image: "/DSC_5096.jpg",
     },
   ];
+
+  const bienvenidoRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBienvenido = () => {
+    if (bienvenidoRef.current) {
+      bienvenidoRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -149,7 +160,11 @@ const Index = () => {
                 onClick={() => navigate("/dashboard")}
               >
                 <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CS</span>
+                  <img
+                    src="/logo_menu.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[35px] mx-auto object-contain"
+                  />
                 </div>
                 <span className="text-xl font-semibold text-slate-900">
                   Club Salvadoreño
@@ -246,18 +261,16 @@ const Index = () => {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <ChevronDown className="h-8 w-8 text-white animate-bounce" />
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+          <button onClick={scrollToBienvenido}>
+            <ChevronDown className="h-8 w-8 text-white animate-bounce" />
+          </button>
         </div>
+
       </section>
 
-      {/* Desktop indicator */}
-      <div className="bg-slate-100 py-2 px-4">
-        <span className="text-sm text-slate-600">Desktop - 2</span>
-      </div>
-
       {/* Welcome Section */}
-      <section className="py-16 bg-white">
+      <section ref={bienvenidoRef} className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -277,13 +290,10 @@ const Index = () => {
             </div>
             <div className="relative">
               <img
-                src="/placeholder.svg"
-                alt="Surf en El Salvador"
+                src="/DSC_5551.jpg"
+                alt="Club Salvadoreño"
                 className="w-full h-96 object-cover rounded-lg shadow-lg"
               />
-              <div className="absolute bottom-4 left-4 bg-blue-900 text-white px-4 py-2 rounded">
-                <span className="font-semibold">Surf</span>
-              </div>
             </div>
           </div>
         </div>
@@ -376,12 +386,16 @@ const Index = () => {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-blue-900 font-bold text-sm">CS</span>
+                <img
+                    src="/logo_azul.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[30px] mx-auto object-contain"
+                  />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>
             <p className="text-blue-100">
-              �� 2025 Club Salvadoreño. Todos los derechos reservados.
+              © 2025 Club Salvadoreño. Todos los derechos reservados.
             </p>
           </div>
         </div>

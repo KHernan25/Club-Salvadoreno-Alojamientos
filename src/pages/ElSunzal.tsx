@@ -34,11 +34,11 @@ const ElSunzal = () => {
       count: 6,
       description:
         "Perfectas para grupos y familias que buscan privacidad, amplitud y comodidad. Disfruta de espacios equipados, rodeados de naturaleza y con acceso directo a la playa.",
-      image: "/placeholder.svg",
+      image: "/DSC_5201.jpg",
       features: [
-        "2-4 habitaciones",
+        "3 habitaciones",
         "Jardín privado",
-        "Estacionamiento",
+        "Sala privada",
         "Vista al mar",
       ],
       icon: Home,
@@ -51,7 +51,7 @@ const ElSunzal = () => {
       count: 6,
       description:
         "Ideales para estancias cómodas con todas las comodidades. Modernos, funcionales y con vistas espectaculares al océano y la naturaleza tropical.",
-      image: "/placeholder.svg",
+      image: "/apartamentos.gif",
       features: [
         "1-2 habitaciones",
         "Balcón privado",
@@ -68,10 +68,10 @@ const ElSunzal = () => {
       count: 16,
       description:
         "Pensadas para una estadía íntima, elegante y llena de confort. Cada suite ofrece un refugio exclusivo donde relajarse frente al majestuoso Pacífico salvadoreño.",
-      image: "/placeholder.svg",
+      image: "/DSC_5319.jpg",
       features: [
-        "Suite ejecutiva",
-        "Jacuzzi privado",
+        "1-3 camas",
+        "Terraza privada",
         "Servicio premium",
         "Vista océano",
       ],
@@ -93,7 +93,11 @@ const ElSunzal = () => {
                 onClick={() => navigate("/dashboard")}
               >
                 <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CS</span>
+                  <img
+                    src="/logo_menu.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[35px] mx-auto object-contain"
+                  />
                 </div>
                 <span className="text-xl font-semibold text-slate-900">
                   Club Salvadoreño
@@ -131,16 +135,17 @@ const ElSunzal = () => {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.8)), url('/placeholder.svg')`,
+            backgroundImage: `linear-gradient(rgba(2, 22, 71, 0.69), rgba(2, 21, 71, 0.85)), url('/DSC_5266.jpg')`,
           }}
         />
-        <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
           <div className="text-white">
-            <h1 className="text-5xl font-bold mb-4">El Sunzal</h1>
+            <h1 className="text-7xl font-bold mb-4">El Sunzal</h1>
             <p className="text-xl">
-              Escápate del surf oceanográfico. El Sunzal te espera con sus
-              perfectos rompientes, ambiente tropical y la experiencia perfecta
-              para familias amantes del mar.
+              Ubicada frente a una de las playas más icónicas del país, 
+              El Sunzal ofrece un entorno tropical perfecto para relajarse o practicar surf. 
+              Sus instalaciones están pensadas para disfrutar del sol, 
+              el mar y una experiencia costera exclusiva con todas las comodidades.
             </p>
           </div>
         </div>
@@ -283,7 +288,11 @@ const ElSunzal = () => {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-blue-900 font-bold text-sm">CS</span>
+                <img
+                    src="/logo_azul.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>

@@ -35,7 +35,11 @@ const Corinto = () => {
                 onClick={() => navigate("/dashboard")}
               >
                 <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CS</span>
+                  <img
+                    src="/logo_menu.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[35px] mx-auto object-contain"
+                  />
                 </div>
                 <span className="text-xl font-semibold text-slate-900">
                   Club Salvadoreño
@@ -73,20 +77,22 @@ const Corinto = () => {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.8)), url('/placeholder.svg')`,
+            backgroundImage: `linear-gradient(rgba(2, 22, 71, 0.69), rgba(2, 21, 71, 0.85)), url('/DSC_3912.jpg')`,
           }}
         />
-        <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-          <div className="text-white">
-            <h1 className="text-5xl font-bold mb-4">Corinto</h1>
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
+          <div className="text-white max-w-2xl">
+            <h1 className="text-7xl font-bold mb-4">Corinto</h1>
             <p className="text-xl">
-              Relájate de la velocidad del lago al tiempo de recreo, donde el
-              mundo más tranquilo es disponible para descanso entre los
-              habitantes acuáticos y disfruta tu estadía.
+              A orillas del majestuoso Lago de Ilopango, 
+              la sede Corinto es ideal para quienes buscan tranquilidad con una vista espectacular. 
+              Perfecta para escapadas en pareja o en familia, combina naturaleza, 
+              brisa fresca y la belleza de un entorno lacustre.
             </p>
           </div>
         </div>
       </section>
+
 
       {/* Accommodation Type - Houses Only */}
       <section className="py-16 bg-slate-50">
@@ -104,7 +110,7 @@ const Corinto = () => {
             <Card className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105">
               <div className="relative h-64 overflow-hidden rounded-t-lg">
                 <img
-                  src="/placeholder.svg"
+                  src="/DSC_5545.jpg"
                   alt="Casas en Corinto"
                   className="w-full h-full object-cover"
                 />
@@ -129,7 +135,7 @@ const Corinto = () => {
                   <div className="flex flex-col items-center">
                     <Bed className="h-8 w-8 text-blue-600 mb-2" />
                     <span className="text-sm text-slate-600">
-                      2-4 habitaciones
+                      3-4 habitaciones
                     </span>
                   </div>
                   <div className="flex flex-col items-center">
@@ -138,12 +144,12 @@ const Corinto = () => {
                   </div>
                   <div className="flex flex-col items-center">
                     <Users className="h-8 w-8 text-blue-600 mb-2" />
-                    <span className="text-sm text-slate-600">6-8 personas</span>
+                    <span className="text-sm text-slate-600">7-9 personas</span>
                   </div>
                   <div className="flex flex-col items-center">
                     <Trees className="h-8 w-8 text-blue-600 mb-2" />
                     <span className="text-sm text-slate-600">
-                      Jardín privado
+                      Jardín
                     </span>
                   </div>
                 </div>
@@ -199,7 +205,7 @@ const Corinto = () => {
             </div>
             <div className="relative">
               <img
-                src="/placeholder.svg"
+                src="/DSC_5485.jpg"
                 alt="Lago en Corinto"
                 className="w-full h-80 object-cover rounded-lg shadow-lg"
               />
@@ -214,7 +220,11 @@ const Corinto = () => {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-blue-900 font-bold text-sm">CS</span>
+                <img
+                    src="/logo_azul.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>
