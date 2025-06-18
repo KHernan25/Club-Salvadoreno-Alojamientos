@@ -17,6 +17,7 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
       "/register",
       "/validar-identidad",
       "/forgot-password",
+      "/reset-password",
       "/demo",
     ];
 
