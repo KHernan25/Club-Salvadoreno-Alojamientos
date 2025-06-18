@@ -183,3 +183,156 @@ export const updateLastLogin = (userId: string): void => {
     user.lastLogin = new Date();
   }
 };
+
+// Clave para localStorage donde se guardan usuarios registrados
+const REGISTERED_USERS_KEY = "club_salvadoreno_registered_users";
+
+// Obtener usuarios registrados desde localStorage
+export const getRegisteredUsers = (): User[] => {
+  try {
+    const stored = localStorage.getItem(REGISTERED_USERS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error("Error reading registered users:", error);
+    return [];
+  }
+};
+
+// Guardar usuarios registrados en localStorage
+const saveRegisteredUsers = (users: User[]): void => {
+  try {
+    localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
+  } catch (error) {
+    console.error("Error saving registered users:", error);
+  }
+};
+
+// Obtener todos los usuarios (predefinidos + registrados)
+export const getAllUsers = (): User[] => {
+  const registeredUsers = getRegisteredUsers();
+  return [...registeredUsers, ...registeredUsers];
+};
+
+// Verificar si username ya existe
+export const isUsernameAvailable = (username: string): boolean => {
+  const allUsers = [...registeredUsers, ...getRegisteredUsers()];
+  return !allUsers.some(
+    (user) => user.username.toLowerCase() === username.toLowerCase(),
+  );
+};
+
+// Verificar si email ya existe
+export const isEmailAvailable = (email: string): boolean => {
+  const allUsers = [...registeredUsers, ...getRegisteredUsers()];
+  return !allUsers.some(
+    (user) => user.email.toLowerCase() === email.toLowerCase(),
+  );
+};
+
+// Generar ID único para nuevo usuario
+const generateUserId = (): string => {
+  const allUsers = [...registeredUsers, ...getRegisteredUsers()];
+  const maxId = Math.max(...allUsers.map((user) => parseInt(user.id, 10)), 0);
+  return (maxId + 1).toString();
+};
+
+// Registrar nuevo usuario
+export interface NewUserData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  documentType: string;
+  documentNumber: string;
+  memberCode: string;
+  phone: string;
+  password: string;
+}
+
+export const registerNewUser = (
+  userData: NewUserData,
+): { success: boolean; user?: User; error?: string } => {
+  // Validar que username sea único (usar email como username)
+  const username = userData.email.split("@")[0]; // Usar parte del email como username
+
+  if (!isUsernameAvailable(username)) {
+    return { success: false, error: "El nombre de usuario ya está en uso" };
+  }
+
+  if (!isEmailAvailable(userData.email)) {
+    return {
+      success: false,
+      error: "El correo electrónico ya está registrado",
+    };
+  }
+
+  // Crear nuevo usuario
+  const newUser: User = {
+    id: generateUserId(),
+    username,
+    password: userData.password,
+    email: userData.email,
+    phone: userData.phone,
+    fullName: `${userData.firstName} ${userData.lastName}`,
+    role: "user", // Usuarios registrados son "user" por defecto
+    isActive: true,
+    createdAt: new Date(),
+  };
+
+  // Agregar a la lista de usuarios registrados
+  const currentRegistered = getRegisteredUsers();
+  const updatedUsers = [...currentRegistered, newUser];
+  saveRegisteredUsers(updatedUsers);
+
+  return { success: true, user: newUser };
+};
+
+// Actualizar funciones existentes para incluir usuarios registrados
+export const findUserByUsernameWithRegistered = (
+  username: string,
+): User | undefined => {
+  // Buscar primero en usuarios predefinidos
+  let user = findUserByUsername(username);
+  if (user) return user;
+
+  // Buscar en usuarios registrados
+  const registeredUsers = getRegisteredUsers();
+  return registeredUsers.find(
+    (user) => user.username.toLowerCase() === username.toLowerCase(),
+  );
+};
+
+export const findUserByEmailWithRegistered = (
+  email: string,
+): User | undefined => {
+  // Buscar primero en usuarios predefinidos
+  let user = findUserByEmail(email);
+  if (user) return user;
+
+  // Buscar en usuarios registrados
+  const registeredUsers = getRegisteredUsers();
+  return registeredUsers.find(
+    (user) => user.email.toLowerCase() === email.toLowerCase(),
+  );
+};
+
+export const isValidUserWithRegistered = (
+  username: string,
+  password: string,
+): User | null => {
+  // Buscar en todos los usuarios (predefinidos + registrados)
+  const user = findUserByUsernameWithRegistered(username);
+
+  if (!user) {
+    return null;
+  }
+
+  if (!user.isActive) {
+    return null;
+  }
+
+  if (user.password !== password) {
+    return null;
+  }
+
+  return user;
+};
