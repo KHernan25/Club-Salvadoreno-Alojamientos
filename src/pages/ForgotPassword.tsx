@@ -10,7 +10,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
-import { Mail, ArrowLeft, Smartphone } from "lucide-react";
+import { Mail, ArrowLeft, Smartphone, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import {
+  sendPasswordResetEmail,
+  sendPasswordResetSMS,
+  generateResetToken,
+  generateSMSCode,
+  generateResetUrl,
+  validateEmail,
+  validatePhone,
+  formatPhoneNumber,
+} from "@/lib/contact-services";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -82,13 +93,13 @@ const ForgotPassword = () => {
         <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
           <div className="w-full max-w-md">
             {/* Logo */}
-          <div className="text-center mb-8">
+            <div className="text-center mb-8">
               <img
                 src="/logo.png"
                 alt="Logo Club Salvadoreño"
                 className="max-w-[300px] mx-auto object-contain mb-6"
               />
-          </div>
+            </div>
 
             {/* Success Message */}
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 border border-white/20 text-center">
@@ -171,11 +182,11 @@ const ForgotPassword = () => {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-              <img
-                src="/logo.png"
-                alt="Logo Club Salvadoreño"
-                className="max-w-[300px] mx-auto object-contain mb-6"
-              />
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-6"
+            />
           </div>
 
           {/* Forgot Password Form */}
