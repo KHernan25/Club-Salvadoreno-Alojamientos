@@ -65,6 +65,7 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/validar-identidad" element={<IdentityValidation />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/demo" element={<AuthDemo />} />
             <Route path="/country-club" element={<CountryClub />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
