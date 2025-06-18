@@ -274,6 +274,72 @@ const Login = () => {
               </button>
             </p>
           </div>
+
+          {/* Development Credentials Helper */}
+          {process.env.NODE_ENV === "development" && (
+            <div className="mt-8 bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+              <details className="text-white">
+                <summary className="cursor-pointer text-yellow-200 font-medium mb-2">
+                  🔧 Credenciales de Desarrollo
+                </summary>
+                <div className="space-y-2 text-xs">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="font-medium text-yellow-200">
+                        Administrador:
+                      </p>
+                      <p>
+                        Usuario:{" "}
+                        <code className="bg-black/20 px-1 rounded">admin</code>
+                      </p>
+                      <p>
+                        Contraseña:{" "}
+                        <code className="bg-black/20 px-1 rounded">
+                          Admin123
+                        </code>
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-yellow-200">
+                        Usuario Demo:
+                      </p>
+                      <p>
+                        Usuario:{" "}
+                        <code className="bg-black/20 px-1 rounded">demo</code>
+                      </p>
+                      <p>
+                        Contraseña:{" "}
+                        <code className="bg-black/20 px-1 rounded">
+                          demo123
+                        </code>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="border-t border-yellow-500/30 pt-2">
+                    <p className="font-medium text-yellow-200">
+                      Otros usuarios disponibles:
+                    </p>
+                    <p>
+                      <code className="bg-black/20 px-1 rounded">usuario1</code>{" "}
+                      /{" "}
+                      <code className="bg-black/20 px-1 rounded">
+                        Usuario123
+                      </code>
+                    </p>
+                    <p>
+                      <code className="bg-black/20 px-1 rounded">
+                        carlos.rivera
+                      </code>{" "}
+                      /{" "}
+                      <code className="bg-black/20 px-1 rounded">
+                        Carlos2024
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </details>
+            </div>
+          )}
         </div>
       </div>
     </div>
