@@ -441,10 +441,17 @@ const Register = () => {
               <div className="pt-4">
                 <Button
                   type="submit"
-                  disabled={!acceptTerms}
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 text-lg font-medium"
+                  disabled={!acceptTerms || isLoading}
+                  className="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white py-3 text-lg font-medium"
                 >
-                  Registrarse
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creando cuenta...
+                    </>
+                  ) : (
+                    "Registrarse"
+                  )}
                 </Button>
               </div>
             </div>
