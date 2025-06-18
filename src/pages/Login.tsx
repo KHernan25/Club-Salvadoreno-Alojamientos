@@ -155,6 +155,13 @@ const Login = () => {
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
+                <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
+                <p className="text-red-100 text-sm">{error}</p>
+              </div>
+            )}
             {/* Usuario */}
             <div>
               <Label
