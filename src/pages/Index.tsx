@@ -175,29 +175,39 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-6">
-              <Button variant="ghost" className="gap-2">
-                <Globe className="h-4 w-4" />
-                ES
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" className="gap-2">
-                <User className="h-4 w-4" />
-                EN
-              </Button>
+              {currentUser && (
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <User className="h-4 w-4" />
+                  <span>{currentUser.fullName}</span>
+                  {currentUser.role === "admin" && (
+                    <Badge variant="secondary" className="text-xs">
+                      Admin
+                    </Badge>
+                  )}
+                </div>
+              )}
 
               <Button
                 variant="ghost"
                 onClick={() => navigate("/perfil")}
                 className="gap-2"
               >
-                <User className="h-4 w-4" />
+                <Settings className="h-4 w-4" />
                 Mi Perfil
               </Button>
               <Button
                 variant="ghost"
-                onClick={() => navigate("/")}
+                onClick={() => {
+                  logout();
+                  toast({
+                    title: "Sesión cerrada",
+                    description: "Has cerrado sesión exitosamente",
+                  });
+                  navigate("/", { replace: true });
+                }}
                 className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
               >
+                <Activity className="h-4 w-4" />
                 Cerrar Sesión
               </Button>
             </div>
