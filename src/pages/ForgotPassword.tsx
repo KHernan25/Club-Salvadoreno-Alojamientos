@@ -221,6 +221,16 @@ const ForgotPassword = () => {
                   : " a tu teléfono:"}
                 <br />
                 <span className="font-medium text-white">{contactValue}</span>
+                {contactMethod === "sms" &&
+                  resetCode &&
+                  process.env.NODE_ENV === "development" && (
+                    <>
+                      <br />
+                      <span className="text-yellow-200 text-sm">
+                        Código de desarrollo: {resetCode}
+                      </span>
+                    </>
+                  )}
               </p>
 
               <p className="text-blue-100 text-sm mb-8">
