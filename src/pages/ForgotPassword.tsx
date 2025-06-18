@@ -61,10 +61,106 @@ const ForgotPassword = () => {
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here would be password reset logic
-    setIsSubmitted(true);
+
+    if (!contactValue.trim()) {
+      toast({
+        title: "Error",
+        description:
+          "Por favor ingresa tu " +
+          (contactMethod === "email"
+            ? "correo electrónico"
+            : "número de teléfono"),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate input based on contact method
+    if (contactMethod === "email" && !validateEmail(contactValue)) {
+      toast({
+        title: "Error",
+        description: "Por favor ingresa un correo electrónico válido",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (contactMethod === "sms" && !validatePhone(contactValue)) {
+      toast({
+        title: "Error",
+        description:
+          "Por favor ingresa un número de teléfono válido (formato: +503 1234-5678 o 1234-5678)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      let success = false;
+
+      if (contactMethod === "email") {
+        const resetToken = generateResetToken();
+        const resetUrl = generateResetUrl(resetToken);
+
+        success = await sendPasswordResetEmail({
+          to: contactValue,
+          resetToken,
+          resetUrl,
+        });
+
+        if (success) {
+          toast({
+            title: "Correo Enviado",
+            description:
+              "Se han enviado las instrucciones de recuperación a tu correo electrónico",
+          });
+        }
+      } else {
+        const code = generateSMSCode();
+        const formattedPhone = formatPhoneNumber(contactValue);
+
+        success = await sendPasswordResetSMS({
+          phone: formattedPhone,
+          code,
+        });
+
+        if (success) {
+          setResetCode(code); // Store for development reference
+          toast({
+            title: "SMS Enviado",
+            description:
+              "Se ha enviado un código de verificación a tu teléfono",
+          });
+        }
+      }
+
+      if (success) {
+        setIsSubmitted(true);
+      } else {
+        toast({
+          title: "Error",
+          description:
+            "No se pudo enviar el " +
+            (contactMethod === "email" ? "correo" : "SMS") +
+            ". Por favor intenta nuevamente.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error in password reset:", error);
+      toast({
+        title: "Error",
+        description:
+          "Ocurrió un error inesperado. Por favor intenta nuevamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const currentImage = carouselImages[currentImageIndex];
