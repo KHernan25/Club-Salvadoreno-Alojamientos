@@ -74,11 +74,57 @@ const Register = () => {
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here would be registration logic
-    // After successful registration, automatically log in the user
-    navigate("/dashboard");
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const registrationData: RegistrationData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        documentType: formData.documentType,
+        documentNumber: formData.documentNumber,
+        memberCode: formData.memberCode,
+        phone: formData.phone,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        acceptTerms,
+      };
+
+      const result = await registerUser(registrationData);
+
+      if (result.success && result.user) {
+        setIsSuccess(true);
+        toast({
+          title: "¡Registro Exitoso!",
+          description: `Bienvenido ${result.user.fullName}, tu cuenta ha sido creada exitosamente`,
+        });
+
+        // Pequeño delay para mostrar el mensaje de éxito antes de redirigir
+        setTimeout(() => {
+          navigate("/dashboard", { replace: true });
+        }, 2000);
+      } else {
+        setError(result.error || "Error desconocido al registrar usuario");
+        toast({
+          title: "Error de registro",
+          description: result.error || "No se pudo crear la cuenta",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError("Error de conexión. Por favor intenta nuevamente.");
+      toast({
+        title: "Error de conexión",
+        description: "No se pudo procesar tu solicitud. Intenta nuevamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
