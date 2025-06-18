@@ -215,7 +215,7 @@ export const getAllUsers = (): User[] => {
 
 // Verificar si username ya existe
 export const isUsernameAvailable = (username: string): boolean => {
-  const allUsers = [...registeredUsers, ...getRegisteredUsers()];
+  const allUsers = getAllUsers();
   return !allUsers.some(
     (user) => user.username.toLowerCase() === username.toLowerCase(),
   );
@@ -223,7 +223,7 @@ export const isUsernameAvailable = (username: string): boolean => {
 
 // Verificar si email ya existe
 export const isEmailAvailable = (email: string): boolean => {
-  const allUsers = [...registeredUsers, ...getRegisteredUsers()];
+  const allUsers = getAllUsers();
   return !allUsers.some(
     (user) => user.email.toLowerCase() === email.toLowerCase(),
   );
