@@ -35,7 +35,9 @@ import { useRef } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+  const [currentUser, setCurrentUser] = useState(getCurrentUser());
 
   // Hero carousel data
   const heroSlides = [
