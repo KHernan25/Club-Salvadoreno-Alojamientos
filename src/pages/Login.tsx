@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, User, Loader2, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { authenticateUser, getCurrentSession } from "@/lib/auth-service";
+import DevRegisteredUsers from "@/components/DevRegisteredUsers";
 
 const Login = () => {
   const navigate = useNavigate();
