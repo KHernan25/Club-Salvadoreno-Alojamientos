@@ -231,7 +231,7 @@ export const isEmailAvailable = (email: string): boolean => {
 
 // Generar ID único para nuevo usuario
 const generateUserId = (): string => {
-  const allUsers = [...registeredUsers, ...getRegisteredUsers()];
+  const allUsers = getAllUsers();
   const maxId = Math.max(...allUsers.map((user) => parseInt(user.id, 10)), 0);
   return (maxId + 1).toString();
 };
