@@ -47,12 +47,11 @@ export const authenticateUser = async (
   }
 
   // Verificar credenciales
-  const user = isValidUser(username.trim(), password);
+  const user = isValidUserWithRegistered(username.trim(), password);
 
   if (!user) {
     // Verificar si el usuario existe pero la contraseña es incorrecta
-    const { findUserByUsername } = await import("./user-database");
-    const existingUser = findUserByUsername(username.trim());
+    const existingUser = findUserByUsernameWithRegistered(username.trim());
 
     if (existingUser && !existingUser.isActive) {
       return {
