@@ -23,6 +23,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import IdentityValidation from "./pages/IdentityValidation";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import AuthDemo from "./pages/AuthDemo";
 import CountryClub from "./pages/CountryClub";
 import NotFound from "./pages/NotFound";
