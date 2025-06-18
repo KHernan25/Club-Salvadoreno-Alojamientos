@@ -248,7 +248,11 @@ const ForgotPassword = () => {
                 </Button>
 
                 <Button
-                  onClick={() => setIsSubmitted(false)}
+                  onClick={() => {
+                    setIsSubmitted(false);
+                    setContactValue("");
+                    setResetCode("");
+                  }}
                   variant="ghost"
                   className="w-full text-white hover:bg-white/10 py-3"
                 >
