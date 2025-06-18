@@ -10,6 +10,7 @@ import { authenticateUser, getCurrentSession } from "@/lib/auth-service";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -17,6 +18,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // Carousel images for authentication pages
   const carouselImages = [
