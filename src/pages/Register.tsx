@@ -11,7 +11,10 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { registerUser, RegistrationData } from "@/lib/registration-service";
+import { getCurrentSession } from "@/lib/auth-service";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -102,11 +105,11 @@ const Register = () => {
         <div className="w-full max-w-4xl">
           {/* Logo */}
           <div className="text-center mb-16">
-              <img
-                src="/logo.png"
-                alt="Logo Club Salvadoreño"
-                className="max-w-[300px] mx-auto object-contain mb-6"
-              />
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-6"
+            />
           </div>
 
           {/* Registration Form */}
