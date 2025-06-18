@@ -40,6 +40,14 @@ const Login = () => {
     },
   ];
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const session = getCurrentSession();
+    if (session) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [navigate]);
+
   // Auto-advance carousel every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
