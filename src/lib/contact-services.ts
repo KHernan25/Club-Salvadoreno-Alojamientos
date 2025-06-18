@@ -1,4 +1,9 @@
 // Email and SMS service utilities for password recovery
+import {
+  mockSendResetEmail,
+  mockSendResetSMS,
+  shouldUseMockAPI,
+} from "./mock-api";
 
 interface EmailParams {
   to: string;
