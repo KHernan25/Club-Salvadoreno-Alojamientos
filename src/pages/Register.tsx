@@ -174,6 +174,24 @@ const Register = () => {
             />
           </div>
 
+          {/* Success Message */}
+          {isSuccess && (
+            <div className="mb-8 bg-green-500/20 border border-green-500/30 rounded-lg p-4 flex items-center gap-3">
+              <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
+              <p className="text-green-100 text-sm">
+                ¡Cuenta creada exitosamente! Redirigiendo al dashboard...
+              </p>
+            </div>
+          )}
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-8 bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
+              <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
+              <p className="text-red-100 text-sm">{error}</p>
+            </div>
+          )}
+
           {/* Registration Form */}
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
             {/* Left Column */}
