@@ -21,9 +21,18 @@ export const sendPasswordResetEmail = async (
   params: EmailParams,
 ): Promise<boolean> => {
   try {
+    // Use mock API in development or when real API is not configured
+    if (shouldUseMockAPI()) {
+      const result = await mockSendResetEmail({
+        email: params.to,
+        resetToken: params.resetToken,
+        resetUrl: params.resetUrl,
+      });
+      return result.success;
+    }
+
     // In a real implementation, you would call your email service here
     // For example: SendGrid, AWS SES, Mailgun, or your backend API
-
     const response = await fetch("/api/send-reset-email", {
       method: "POST",
       headers: {
@@ -44,17 +53,6 @@ export const sendPasswordResetEmail = async (
     return result.success;
   } catch (error) {
     console.error("Error sending password reset email:", error);
-
-    // Fallback: Log the email details for development/testing
-    console.log("Email would be sent to:", params.to);
-    console.log("Reset URL:", params.resetUrl);
-    console.log("Reset Token:", params.resetToken);
-
-    // For development, always return true to test the flow
-    if (process.env.NODE_ENV === "development") {
-      return true;
-    }
-
     return false;
   }
 };
