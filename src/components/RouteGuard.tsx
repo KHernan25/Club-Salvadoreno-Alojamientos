@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { isAuthenticated, requireAuth } from "@/lib/auth-service";
 
 interface RouteGuardProps {
   children: React.ReactNode;
