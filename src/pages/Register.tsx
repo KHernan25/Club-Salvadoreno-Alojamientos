@@ -132,6 +132,10 @@ const Register = () => {
       ...prev,
       [field]: value,
     }));
+    // Clear error when user starts typing
+    if (error) {
+      setError("");
+    }
   };
 
   const currentImage = carouselImages[currentImageIndex];
