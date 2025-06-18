@@ -57,10 +57,49 @@ const Login = () => {
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here would be login logic
-    navigate("/dashboard");
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const result = await authenticateUser({
+        username: formData.username,
+        password: formData.password,
+        rememberMe,
+      });
+
+      if (result.success && result.user) {
+        toast({
+          title: "Bienvenido",
+          description: `Hola ${result.user.fullName}, has iniciado sesión exitosamente`,
+        });
+
+        // Redirect based on user role
+        if (result.user.role === "admin") {
+          navigate("/dashboard", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      } else {
+        setError(result.error || "Error desconocido al iniciar sesión");
+        toast({
+          title: "Error de autenticación",
+          description: result.error || "Credenciales inválidas",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Error de conexión. Por favor intenta nuevamente.");
+      toast({
+        title: "Error de conexión",
+        description: "No se pudo procesar tu solicitud. Intenta nuevamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
