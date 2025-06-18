@@ -4,7 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, User } from "lucide-react";
+import { Eye, EyeOff, User, Loader2, AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { authenticateUser, getCurrentSession } from "@/lib/auth-service";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -34,7 +36,6 @@ const Login = () => {
       description: "Deportes y entretenimiento en la ciudad",
     },
   ];
-
 
   // Auto-advance carousel every 4 seconds
   useEffect(() => {
@@ -87,15 +88,15 @@ const Login = () => {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-              <img
-                src="/logo.png"
-                alt="Logo Club Salvadoreño"
-                className="max-w-[300px] mx-auto object-contain mb-6"
-              />
-              <h1 className="text-white text-3xl tracking-wider ">
-                Reservas de Alojamientos
-                <br />
-              </h1>
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-6"
+            />
+            <h1 className="text-white text-3xl tracking-wider ">
+              Reservas de Alojamientos
+              <br />
+            </h1>
           </div>
 
           {/* Login Form */}
