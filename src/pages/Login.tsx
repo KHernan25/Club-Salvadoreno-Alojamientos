@@ -41,7 +41,6 @@ const Login = () => {
     },
   ];
 
-
   // Check for existing session on mount
   useEffect(() => {
     const session = getCurrentSession();
@@ -144,15 +143,15 @@ const Login = () => {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-              <img
-                src="/logo.png"
-                alt="Logo Club Salvadoreño"
-                className="max-w-[300px] mx-auto object-contain mb-6"
-              />
-              <h1 className="text-white text-3xl tracking-wider ">
-                Reservas de Alojamientos
-                <br />
-              </h1>
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-6"
+            />
+            <h1 className="text-white text-3xl tracking-wider ">
+              Reservas de Alojamientos
+              <br />
+            </h1>
           </div>
 
           {/* Login Form */}
@@ -287,15 +286,60 @@ const Login = () => {
                 <div className="space-y-2 text-xs">
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <p className="font-medium text-yellow-200">Administrador:</p>
-                      <p>Usuario: <code className="bg-black/20 px-1 rounded">admin</code></p>
-                      <p>Contraseña: <code className="bg-black/20 px-1 rounded">Admin123</code></p>
+                      <p className="font-medium text-yellow-200">
+                        Administrador:
+                      </p>
+                      <p>
+                        Usuario:{" "}
+                        <code className="bg-black/20 px-1 rounded">admin</code>
+                      </p>
+                      <p>
+                        Contraseña:{" "}
+                        <code className="bg-black/20 px-1 rounded">
+                          Admin123
+                        </code>
+                      </p>
                     </div>
                     <div>
-                      <p className="font-medium text-yellow-200">Usuario Demo:</p>
-                      <p>Usuario: <code className="bg-black/20 px-1 rounded">demo</code></p>
-                      <p>Contraseña: <code className="bg-black/20 px-1 rounded">demo123</code></p>
-            )}
+                      <p className="font-medium text-yellow-200">
+                        Usuario Demo:
+                      </p>
+                      <p>
+                        Usuario:{" "}
+                        <code className="bg-black/20 px-1 rounded">demo</code>
+                      </p>
+                      <p>
+                        Contraseña:{" "}
+                        <code className="bg-black/20 px-1 rounded">
+                          demo123
+                        </code>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="border-t border-yellow-500/30 pt-2">
+                    <p className="font-medium text-yellow-200">
+                      Otros usuarios disponibles:
+                    </p>
+                    <p>
+                      <code className="bg-black/20 px-1 rounded">usuario1</code>{" "}
+                      /{" "}
+                      <code className="bg-black/20 px-1 rounded">
+                        Usuario123
+                      </code>
+                    </p>
+                    <p>
+                      <code className="bg-black/20 px-1 rounded">
+                        carlos.rivera
+                      </code>{" "}
+                      /{" "}
+                      <code className="bg-black/20 px-1 rounded">
+                        Carlos2024
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </details>
+            </div>
           )}
         </div>
       </div>
