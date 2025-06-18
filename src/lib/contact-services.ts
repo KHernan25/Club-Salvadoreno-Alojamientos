@@ -62,9 +62,17 @@ export const sendPasswordResetSMS = async (
   params: SMSParams,
 ): Promise<boolean> => {
   try {
+    // Use mock API in development or when real API is not configured
+    if (shouldUseMockAPI()) {
+      const result = await mockSendResetSMS({
+        phone: params.phone,
+        code: params.code,
+      });
+      return result.success;
+    }
+
     // In a real implementation, you would call your SMS service here
     // For example: Twilio, AWS SNS, or your backend API
-
     const response = await fetch("/api/send-reset-sms", {
       method: "POST",
       headers: {
@@ -84,16 +92,6 @@ export const sendPasswordResetSMS = async (
     return result.success;
   } catch (error) {
     console.error("Error sending password reset SMS:", error);
-
-    // Fallback: Log the SMS details for development/testing
-    console.log("SMS would be sent to:", params.phone);
-    console.log("Reset Code:", params.code);
-
-    // For development, always return true to test the flow
-    if (process.env.NODE_ENV === "development") {
-      return true;
-    }
-
     return false;
   }
 };
