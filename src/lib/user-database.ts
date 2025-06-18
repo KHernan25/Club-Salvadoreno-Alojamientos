@@ -209,8 +209,8 @@ const saveRegisteredUsers = (users: User[]): void => {
 
 // Obtener todos los usuarios (predefinidos + registrados)
 export const getAllUsers = (): User[] => {
-  const registeredUsers = getRegisteredUsers();
-  return [...registeredUsers, ...registeredUsers];
+  const registeredUsersFromStorage = getRegisteredUsers();
+  return [...registeredUsers, ...registeredUsersFromStorage];
 };
 
 // Verificar si username ya existe
