@@ -23,6 +23,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import IdentityValidation from "./pages/IdentityValidation";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import AuthDemo from "./pages/AuthDemo";
 import CountryClub from "./pages/CountryClub";
 import NotFound from "./pages/NotFound";
@@ -64,6 +65,7 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/validar-identidad" element={<IdentityValidation />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/demo" element={<AuthDemo />} />
             <Route path="/country-club" element={<CountryClub />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
