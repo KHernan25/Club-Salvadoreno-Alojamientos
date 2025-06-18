@@ -1,6 +1,11 @@
 // Servicio de autenticación para manejo de login y sesiones
 
-import { User, isValidUser, updateLastLogin } from "./user-database";
+import {
+  User,
+  isValidUserWithRegistered,
+  updateLastLogin,
+  findUserByUsernameWithRegistered,
+} from "./user-database";
 
 export interface LoginCredentials {
   username: string;
