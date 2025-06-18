@@ -25,10 +25,13 @@ import {
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [contactMethod, setContactMethod] = useState("email");
   const [contactValue, setContactValue] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [resetCode, setResetCode] = useState("");
 
   // Carousel images for authentication pages
   const carouselImages = [
