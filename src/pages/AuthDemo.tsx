@@ -231,6 +231,108 @@ const AuthDemo = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Recently Registered Users */}
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Clock className="h-5 w-5 text-blue-600" />
+                Usuarios Recién Registrados
+              </CardTitle>
+              <CardDescription>
+                Usuarios registrados en la última hora
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RecentUsersDisplay />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Componente para mostrar usuarios recientes
+const RecentUsersDisplay = () => {
+  const recentUsers = getRecentlyRegisteredUsers();
+  const allCredentials = getAvailableCredentials();
+
+  if (recentUsers.length === 0) {
+    return (
+      <div className="text-center py-4">
+        <p className="text-slate-500">
+          No hay usuarios registrados recientemente
+        </p>
+        <p className="text-sm text-slate-400 mt-2">
+          Registra un nuevo usuario para verlo aparecer aquí
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-3">
+        {recentUsers.map((user) => (
+          <div
+            key={user.id}
+            className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg"
+          >
+            <div>
+              <p className="font-medium text-green-800">{user.fullName}</p>
+              <p className="text-sm text-green-600">
+                Usuario:{" "}
+                <code className="bg-green-100 px-1 rounded">
+                  {user.username}
+                </code>
+              </p>
+              <p className="text-sm text-green-600">Email: {user.email}</p>
+            </div>
+            <div className="text-right">
+              <Badge variant="secondary" className="mb-1">
+                {user.role}
+              </Badge>
+              <p className="text-xs text-green-600">
+                {user.createdAt?.toLocaleTimeString()}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 p-4 bg-slate-50 rounded-lg">
+        <h4 className="font-medium text-slate-700 mb-3">
+          Todos los usuarios disponibles:
+        </h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+          {allCredentials.map((cred, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between p-2 bg-white rounded border"
+            >
+              <div>
+                <span className="font-medium">{cred.fullName}</span>
+                <div className="text-slate-600">
+                  <code className="bg-slate-100 px-1 rounded text-xs">
+                    {cred.username}
+                  </code>
+                </div>
+              </div>
+              <Badge
+                variant={
+                  cred.role === "admin"
+                    ? "default"
+                    : cred.role === "staff"
+                      ? "secondary"
+                      : "outline"
+                }
+                className="text-xs"
+              >
+                {cred.role}
+              </Badge>
+            </div>
+          ))}
         </div>
       </div>
     </div>
