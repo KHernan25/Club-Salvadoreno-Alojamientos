@@ -26,6 +26,7 @@ import IdentityValidation from "./pages/IdentityValidation";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AuthDemo from "./pages/AuthDemo";
+import NavigationDemo from "./pages/NavigationDemo";
 import CountryClub from "./pages/CountryClub";
 import NotFound from "./pages/NotFound";
 
