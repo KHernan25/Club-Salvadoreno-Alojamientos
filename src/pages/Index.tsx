@@ -91,24 +91,24 @@ const Index = () => {
 
   const activities = [
     {
-      title: "Surf",
+      title: t.dashboard.surf,
       image: "/_DSC4735-2.jpg",
-      description: "Disfruta de las mejores olas en las playas de El Salvador",
+      description: t.dashboard.surfDescription,
     },
     {
-      title: "Golf",
+      title: t.dashboard.golf,
       image: "/DSC_3895.jpg",
-      description: "Campo de golf profesional con vistas espectaculares",
+      description: t.dashboard.golfDescription,
     },
     {
-      title: "Tenis",
+      title: t.dashboard.tennis,
       image: "/DSC_5168.jpg",
-      description: "Canchas de tenis de clase mundial para tu entretenimiento",
+      description: t.dashboard.tennisDescription,
     },
     {
-      title: "Vela",
+      title: t.dashboard.sailing,
       image: "/Vela.jpeg",
-      description: "Navega por las cristalinas aguas del Lago de Ilopango",
+      description: t.dashboard.sailingDescription,
     },
   ];
 
