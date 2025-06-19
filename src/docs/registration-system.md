@@ -319,8 +319,8 @@ console.log(
 console.log("Registration result:", registrationResult);
 
 // Verificar función de búsqueda
-import { findUserByUsernameWithRegistered } from "./lib/user-database";
-console.log("Find user:", findUserByUsernameWithRegistered("juan.perez"));
+import { findUserByUsername } from "./lib/user-database";
+console.log("Find user:", findUserByUsername("juan.perez"));
 ```
 
 ## Mejoras Futuras
