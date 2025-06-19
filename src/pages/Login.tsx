@@ -135,9 +135,12 @@ const Login = () => {
       ...prev,
       [field]: value,
     }));
-    // Clear error when user starts typing
+    // Clear messages when user starts typing
     if (error) {
       setError("");
+    }
+    if (successMessage) {
+      setSuccessMessage("");
     }
   };
 
