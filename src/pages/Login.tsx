@@ -57,6 +57,25 @@ const Login = () => {
     }
   }, [navigate]);
 
+  // Handle registration success message and prefill username
+  useEffect(() => {
+    if (location.state?.message && location.state?.newUser) {
+      setSuccessMessage(location.state.message);
+      setFormData((prev) => ({
+        ...prev,
+        username: location.state.newUser.username,
+      }));
+
+      toast({
+        title: "¡Bienvenido!",
+        description: `${location.state.newUser.fullName}, tu cuenta fue creada exitosamente. Inicia sesión con tu nuevo usuario: ${location.state.newUser.username}`,
+      });
+
+      // Clear the state to prevent showing the message again
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state, toast]);
+
   // Auto-advance carousel every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
