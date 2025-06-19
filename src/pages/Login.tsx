@@ -3,11 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, User, Loader2, AlertCircle } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Loader2,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { authenticateUser, getCurrentSession } from "@/lib/auth-service";
-import DevRegisteredUsers from "@/components/DevRegisteredUsers";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -343,9 +349,6 @@ const Login = () => {
           )}
         </div>
       </div>
-
-      {/* Development Helper */}
-      <DevRegisteredUsers />
     </div>
   );
 };
