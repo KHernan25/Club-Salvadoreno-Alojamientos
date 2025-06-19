@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { getCurrentUser, logout } from "@/lib/auth-service";
+import { useToast } from "@/hooks/use-toast";
 import {
   User,
   Settings,
@@ -33,7 +35,9 @@ import { useRef } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+  const [currentUser, setCurrentUser] = useState(getCurrentUser());
 
   // Hero carousel data
   const heroSlides = [
@@ -90,22 +94,22 @@ const Index = () => {
   const activities = [
     {
       title: "Surf",
-      image: "/_DSC4735-2.jpg", 
+      image: "/_DSC4735-2.jpg",
       description: "Disfruta de las mejores olas en las playas de El Salvador",
     },
     {
       title: "Golf",
-      image: "/DSC_3895.jpg", 
+      image: "/DSC_3895.jpg",
       description: "Campo de golf profesional con vistas espectaculares",
     },
     {
       title: "Tenis",
-      image: "/DSC_5168.jpg", 
+      image: "/DSC_5168.jpg",
       description: "Canchas de tenis de clase mundial para tu entretenimiento",
     },
     {
       title: "Vela",
-      image: "/Vela.jpeg", 
+      image: "/Vela.jpeg",
       description: "Navega por las cristalinas aguas del Lago de Ilopango",
     },
   ];
@@ -146,8 +150,6 @@ const Index = () => {
     }
   };
 
-
-
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -173,29 +175,39 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-6">
-              <Button variant="ghost" className="gap-2">
-                <Globe className="h-4 w-4" />
-                ES
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" className="gap-2">
-                <User className="h-4 w-4" />
-                EN
-              </Button>
+              {currentUser && (
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <User className="h-4 w-4" />
+                  <span>{currentUser.fullName}</span>
+                  {currentUser.role === "admin" && (
+                    <Badge variant="secondary" className="text-xs">
+                      Admin
+                    </Badge>
+                  )}
+                </div>
+              )}
 
               <Button
                 variant="ghost"
                 onClick={() => navigate("/perfil")}
                 className="gap-2"
               >
-                <User className="h-4 w-4" />
+                <Settings className="h-4 w-4" />
                 Mi Perfil
               </Button>
               <Button
                 variant="ghost"
-                onClick={() => navigate("/")}
+                onClick={() => {
+                  logout();
+                  toast({
+                    title: "Sesión cerrada",
+                    description: "Has cerrado sesión exitosamente",
+                  });
+                  navigate("/", { replace: true });
+                }}
                 className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
               >
+                <Activity className="h-4 w-4" />
                 Cerrar Sesión
               </Button>
             </div>
@@ -266,7 +278,6 @@ const Index = () => {
             <ChevronDown className="h-8 w-8 text-white animate-bounce" />
           </button>
         </div>
-
       </section>
 
       {/* Welcome Section */}
@@ -387,10 +398,10 @@ const Index = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                 <img
-                    src="/logo_azul.png"
-                    alt="Logo Club Salvadoreño"
-                    className="max-w-[30px] mx-auto object-contain"
-                  />
+                  src="/logo_azul.png"
+                  alt="Logo Club Salvadoreño"
+                  className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>

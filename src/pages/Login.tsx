@@ -4,10 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, User } from "lucide-react";
+import { Eye, EyeOff, User, Loader2, AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { authenticateUser, getCurrentSession } from "@/lib/auth-service";
+import DevRegisteredUsers from "@/components/DevRegisteredUsers";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -15,6 +19,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // Carousel images for authentication pages
   const carouselImages = [
@@ -35,6 +41,13 @@ const Login = () => {
     },
   ];
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const session = getCurrentSession();
+    if (session) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [navigate]);
 
   // Auto-advance carousel every 4 seconds
   useEffect(() => {
@@ -45,10 +58,49 @@ const Login = () => {
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here would be login logic
-    navigate("/dashboard");
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const result = await authenticateUser({
+        username: formData.username,
+        password: formData.password,
+        rememberMe,
+      });
+
+      if (result.success && result.user) {
+        toast({
+          title: "Bienvenido",
+          description: `Hola ${result.user.fullName}, has iniciado sesión exitosamente`,
+        });
+
+        // Redirect based on user role
+        if (result.user.role === "admin") {
+          navigate("/dashboard", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
+      } else {
+        setError(result.error || "Error desconocido al iniciar sesión");
+        toast({
+          title: "Error de autenticación",
+          description: result.error || "Credenciales inválidas",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Error de conexión. Por favor intenta nuevamente.");
+      toast({
+        title: "Error de conexión",
+        description: "No se pudo procesar tu solicitud. Intenta nuevamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -56,6 +108,10 @@ const Login = () => {
       ...prev,
       [field]: value,
     }));
+    // Clear error when user starts typing
+    if (error) {
+      setError("");
+    }
   };
 
   const currentImage = carouselImages[currentImageIndex];
@@ -87,19 +143,26 @@ const Login = () => {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-              <img
-                src="/logo.png"
-                alt="Logo Club Salvadoreño"
-                className="max-w-[300px] mx-auto object-contain mb-6"
-              />
-              <h1 className="text-white text-3xl tracking-wider ">
-                Reservas de Alojamientos
-                <br />
-              </h1>
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-6"
+            />
+            <h1 className="text-white text-3xl tracking-wider ">
+              Reservas de Alojamientos
+              <br />
+            </h1>
           </div>
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
+                <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
+                <p className="text-red-100 text-sm">{error}</p>
+              </div>
+            )}
             {/* Usuario */}
             <div>
               <Label
@@ -186,9 +249,17 @@ const Login = () => {
             {/* Login Button */}
             <Button
               type="submit"
-              className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 text-lg font-medium"
+              disabled={isLoading}
+              className="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white py-3 text-lg font-medium"
             >
-              Iniciar Sesión
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Iniciando sesión...
+                </>
+              ) : (
+                "Iniciar Sesión"
+              )}
             </Button>
           </form>
 
@@ -204,8 +275,77 @@ const Login = () => {
               </button>
             </p>
           </div>
+
+          {/* Development Credentials Helper */}
+          {process.env.NODE_ENV === "development" && (
+            <div className="mt-8 bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+              <details className="text-white">
+                <summary className="cursor-pointer text-yellow-200 font-medium mb-2">
+                  🔧 Credenciales de Desarrollo
+                </summary>
+                <div className="space-y-2 text-xs">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="font-medium text-yellow-200">
+                        Administrador:
+                      </p>
+                      <p>
+                        Usuario:{" "}
+                        <code className="bg-black/20 px-1 rounded">admin</code>
+                      </p>
+                      <p>
+                        Contraseña:{" "}
+                        <code className="bg-black/20 px-1 rounded">
+                          Admin123
+                        </code>
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-medium text-yellow-200">
+                        Usuario Demo:
+                      </p>
+                      <p>
+                        Usuario:{" "}
+                        <code className="bg-black/20 px-1 rounded">demo</code>
+                      </p>
+                      <p>
+                        Contraseña:{" "}
+                        <code className="bg-black/20 px-1 rounded">
+                          demo123
+                        </code>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="border-t border-yellow-500/30 pt-2">
+                    <p className="font-medium text-yellow-200">
+                      Otros usuarios disponibles:
+                    </p>
+                    <p>
+                      <code className="bg-black/20 px-1 rounded">usuario1</code>{" "}
+                      /{" "}
+                      <code className="bg-black/20 px-1 rounded">
+                        Usuario123
+                      </code>
+                    </p>
+                    <p>
+                      <code className="bg-black/20 px-1 rounded">
+                        carlos.rivera
+                      </code>{" "}
+                      /{" "}
+                      <code className="bg-black/20 px-1 rounded">
+                        Carlos2024
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </details>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Development Helper */}
+      <DevRegisteredUsers />
     </div>
   );
 };

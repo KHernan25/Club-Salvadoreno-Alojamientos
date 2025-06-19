@@ -11,10 +11,14 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { registerUser, RegistrationData } from "@/lib/registration-service";
+import { getCurrentSession } from "@/lib/auth-service";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -30,6 +34,9 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   // Carousel images for authentication pages
   const carouselImages = [
@@ -50,6 +57,14 @@ const Register = () => {
     },
   ];
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const session = getCurrentSession();
+    if (session) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [navigate]);
+
   // Auto-advance carousel every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,11 +74,57 @@ const Register = () => {
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here would be registration logic
-    // After successful registration, automatically log in the user
-    navigate("/dashboard");
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const registrationData: RegistrationData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        documentType: formData.documentType,
+        documentNumber: formData.documentNumber,
+        memberCode: formData.memberCode,
+        phone: formData.phone,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        acceptTerms,
+      };
+
+      const result = await registerUser(registrationData);
+
+      if (result.success && result.user) {
+        setIsSuccess(true);
+        toast({
+          title: "¡Registro Exitoso!",
+          description: `Bienvenido ${result.user.fullName}, tu cuenta ha sido creada exitosamente`,
+        });
+
+        // Pequeño delay para mostrar el mensaje de éxito antes de redirigir
+        setTimeout(() => {
+          navigate("/dashboard", { replace: true });
+        }, 2000);
+      } else {
+        setError(result.error || "Error desconocido al registrar usuario");
+        toast({
+          title: "Error de registro",
+          description: result.error || "No se pudo crear la cuenta",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError("Error de conexión. Por favor intenta nuevamente.");
+      toast({
+        title: "Error de conexión",
+        description: "No se pudo procesar tu solicitud. Intenta nuevamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -71,6 +132,10 @@ const Register = () => {
       ...prev,
       [field]: value,
     }));
+    // Clear error when user starts typing
+    if (error) {
+      setError("");
+    }
   };
 
   const currentImage = carouselImages[currentImageIndex];
@@ -102,12 +167,30 @@ const Register = () => {
         <div className="w-full max-w-4xl">
           {/* Logo */}
           <div className="text-center mb-16">
-              <img
-                src="/logo.png"
-                alt="Logo Club Salvadoreño"
-                className="max-w-[300px] mx-auto object-contain mb-6"
-              />
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-6"
+            />
           </div>
+
+          {/* Success Message */}
+          {isSuccess && (
+            <div className="mb-8 bg-green-500/20 border border-green-500/30 rounded-lg p-4 flex items-center gap-3">
+              <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
+              <p className="text-green-100 text-sm">
+                ¡Cuenta creada exitosamente! Redirigiendo al dashboard...
+              </p>
+            </div>
+          )}
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-8 bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
+              <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
+              <p className="text-red-100 text-sm">{error}</p>
+            </div>
+          )}
 
           {/* Registration Form */}
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
@@ -358,10 +441,17 @@ const Register = () => {
               <div className="pt-4">
                 <Button
                   type="submit"
-                  disabled={!acceptTerms}
-                  className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 text-lg font-medium"
+                  disabled={!acceptTerms || isLoading}
+                  className="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white py-3 text-lg font-medium"
                 >
-                  Registrarse
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creando cuenta...
+                    </>
+                  ) : (
+                    "Registrarse"
+                  )}
                 </Button>
               </div>
             </div>
