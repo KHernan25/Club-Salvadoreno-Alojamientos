@@ -38,44 +38,51 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-        <RouteGuard>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Index />} />
-            <Route path="/alojamientos" element={<Accommodations />} />
-            <Route path="/apartamento/:id" element={<ApartmentDetail />} />
-            <Route path="/casa/:id" element={<CasaDetail />} />
-            <Route path="/suite/:id" element={<SuiteDetail />} />
-            <Route path="/corinto" element={<Corinto />} />
-            <Route path="/el-sunzal" element={<ElSunzal />} />
-            <Route path="/corinto/casas" element={<CorintoCasas />} />
-            <Route path="/el-sunzal/casas" element={<ElSunzalCasas />} />
-            <Route
-              path="/el-sunzal/apartamentos"
-              element={<ElSunzalApartamentos />}
-            />
-            <Route path="/el-sunzal/suites" element={<ElSunzalSuites />} />
-            <Route path="/reservas" element={<Reservations />} />
-            <Route
-              path="/confirmacion/:reservationCode"
-              element={<ReservationConfirmation />}
-            />
-            <Route path="/confirmacion" element={<ReservationConfirmation />} />
-            <Route path="/mis-reservas" element={<MyReservations />} />
-            <Route path="/perfil" element={<UserProfile />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/validar-identidad" element={<IdentityValidation />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/demo" element={<AuthDemo />} />
-            <Route path="/country-club" element={<CountryClub />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </RouteGuard>
-      </BrowserRouter>
-    </TooltipProvider>
+          <RouteGuard>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Index />} />
+              <Route path="/alojamientos" element={<Accommodations />} />
+              <Route path="/apartamento/:id" element={<ApartmentDetail />} />
+              <Route path="/casa/:id" element={<CasaDetail />} />
+              <Route path="/suite/:id" element={<SuiteDetail />} />
+              <Route path="/corinto" element={<Corinto />} />
+              <Route path="/el-sunzal" element={<ElSunzal />} />
+              <Route path="/corinto/casas" element={<CorintoCasas />} />
+              <Route path="/el-sunzal/casas" element={<ElSunzalCasas />} />
+              <Route
+                path="/el-sunzal/apartamentos"
+                element={<ElSunzalApartamentos />}
+              />
+              <Route path="/el-sunzal/suites" element={<ElSunzalSuites />} />
+              <Route path="/reservas" element={<Reservations />} />
+              <Route
+                path="/confirmacion/:reservationCode"
+                element={<ReservationConfirmation />}
+              />
+              <Route
+                path="/confirmacion"
+                element={<ReservationConfirmation />}
+              />
+              <Route path="/mis-reservas" element={<MyReservations />} />
+              <Route path="/perfil" element={<UserProfile />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/validar-identidad"
+                element={<IdentityValidation />}
+              />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/demo" element={<AuthDemo />} />
+              <Route path="/country-club" element={<CountryClub />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </RouteGuard>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 
