@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, logout } from "@/lib/auth-service";
-import { useToast } from "@/hooks/use-toast";
+import { getCurrentUser } from "@/lib/auth-service";
+import { useTranslations } from "@/contexts/LanguageContext";
+import Navbar from "@/components/Navbar";
 import {
   User,
   Settings,
