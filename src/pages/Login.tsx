@@ -3,14 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, User, Loader2, AlertCircle } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Loader2,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { authenticateUser, getCurrentSession } from "@/lib/auth-service";
-import DevRegisteredUsers from "@/components/DevRegisteredUsers";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     username: "",
@@ -21,6 +28,7 @@ const Login = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Carousel images for authentication pages
   const carouselImages = [
@@ -48,6 +56,25 @@ const Login = () => {
       navigate("/dashboard", { replace: true });
     }
   }, [navigate]);
+
+  // Handle registration success message and prefill username
+  useEffect(() => {
+    if (location.state?.message && location.state?.newUser) {
+      setSuccessMessage(location.state.message);
+      setFormData((prev) => ({
+        ...prev,
+        username: location.state.newUser.username,
+      }));
+
+      toast({
+        title: "¡Bienvenido!",
+        description: `${location.state.newUser.fullName}, tu cuenta fue creada exitosamente. Inicia sesión con tu nuevo usuario: ${location.state.newUser.username}`,
+      });
+
+      // Clear the state to prevent showing the message again
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state, toast]);
 
   // Auto-advance carousel every 4 seconds
   useEffect(() => {
@@ -108,9 +135,12 @@ const Login = () => {
       ...prev,
       [field]: value,
     }));
-    // Clear error when user starts typing
+    // Clear messages when user starts typing
     if (error) {
       setError("");
+    }
+    if (successMessage) {
+      setSuccessMessage("");
     }
   };
 
@@ -156,6 +186,14 @@ const Login = () => {
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Success Message */}
+            {successMessage && (
+              <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 flex items-center gap-3">
+                <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
+                <p className="text-green-100 text-sm">{successMessage}</p>
+              </div>
+            )}
+
             {/* Error Message */}
             {error && (
               <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
@@ -343,9 +381,6 @@ const Login = () => {
           )}
         </div>
       </div>
-
-      {/* Development Helper */}
-      <DevRegisteredUsers />
     </div>
   );
 };

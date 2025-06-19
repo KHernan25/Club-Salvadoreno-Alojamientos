@@ -196,38 +196,11 @@ export const registerUser = async (
     };
   }
 
-  // Automáticamente iniciar sesión después del registro
-  try {
-    const username = email.split("@")[0]; // Usar parte del email como username
-    const loginResult = await authenticateUser({
-      username,
-      password,
-      rememberMe: false,
-    });
-
-    if (loginResult.success) {
-      return {
-        success: true,
-        user: loginResult.user,
-      };
-    } else {
-      // Registro exitoso pero login falló (raro, pero manejable)
-      return {
-        success: true,
-        user: registrationResult.user,
-        error:
-          "Usuario registrado exitosamente. Por favor inicia sesión manualmente.",
-      };
-    }
-  } catch (error) {
-    console.error("Error during auto-login:", error);
-    return {
-      success: true,
-      user: registrationResult.user,
-      error:
-        "Usuario registrado exitosamente. Por favor inicia sesión manualmente.",
-    };
-  }
+  // Registro exitoso - devolver información para redirección al login
+  return {
+    success: true,
+    user: registrationResult.user,
+  };
 };
 
 // Función helper para generar username desde email

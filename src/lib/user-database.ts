@@ -184,59 +184,7 @@ export const updateLastLogin = (userId: string): void => {
   }
 };
 
-// Clave para localStorage donde se guardan usuarios registrados
-const REGISTERED_USERS_KEY = "club_salvadoreno_registered_users";
-
-// Obtener usuarios registrados desde localStorage
-export const getRegisteredUsers = (): User[] => {
-  try {
-    const stored = localStorage.getItem(REGISTERED_USERS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (error) {
-    console.error("Error reading registered users:", error);
-    return [];
-  }
-};
-
-// Guardar usuarios registrados en localStorage
-const saveRegisteredUsers = (users: User[]): void => {
-  try {
-    localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
-  } catch (error) {
-    console.error("Error saving registered users:", error);
-  }
-};
-
-// Obtener todos los usuarios (predefinidos + registrados)
-export const getAllUsers = (): User[] => {
-  const registeredUsersFromStorage = getRegisteredUsers();
-  return [...registeredUsers, ...registeredUsersFromStorage];
-};
-
-// Verificar si username ya existe
-export const isUsernameAvailable = (username: string): boolean => {
-  const allUsers = getAllUsers();
-  return !allUsers.some(
-    (user) => user.username.toLowerCase() === username.toLowerCase(),
-  );
-};
-
-// Verificar si email ya existe
-export const isEmailAvailable = (email: string): boolean => {
-  const allUsers = getAllUsers();
-  return !allUsers.some(
-    (user) => user.email.toLowerCase() === email.toLowerCase(),
-  );
-};
-
-// Generar ID único para nuevo usuario
-const generateUserId = (): string => {
-  const allUsers = getAllUsers();
-  const maxId = Math.max(...allUsers.map((user) => parseInt(user.id, 10)), 0);
-  return (maxId + 1).toString();
-};
-
-// Registrar nuevo usuario
+// Interfaz para datos de nuevo usuario
 export interface NewUserData {
   firstName: string;
   lastName: string;
@@ -248,91 +196,118 @@ export interface NewUserData {
   password: string;
 }
 
-export const registerNewUser = (
-  userData: NewUserData,
-): { success: boolean; user?: User; error?: string } => {
-  // Validar que username sea único (usar email como username)
-  const username = userData.email.split("@")[0]; // Usar parte del email como username
+export interface RegistrationResult {
+  success: boolean;
+  user?: User;
+  error?: string;
+}
 
-  if (!isUsernameAvailable(username)) {
-    return { success: false, error: "El nombre de usuario ya está en uso" };
+// Verificar si un email está disponible
+export const isEmailAvailable = (email: string): boolean => {
+  return !registeredUsers.some(
+    (user) => user.email.toLowerCase() === email.toLowerCase(),
+  );
+};
+
+// Verificar si un username está disponible
+export const isUsernameAvailable = (username: string): boolean => {
+  return !registeredUsers.some(
+    (user) => user.username.toLowerCase() === username.toLowerCase(),
+  );
+};
+
+// Generar ID único para nuevo usuario
+const generateUserId = (): string => {
+  const maxId = Math.max(...registeredUsers.map((user) => parseInt(user.id)));
+  return (maxId + 1).toString();
+};
+
+// Generar username único desde email
+const generateUsernameFromEmail = (email: string): string => {
+  const baseUsername = email.split("@")[0].toLowerCase();
+  let username = baseUsername;
+  let counter = 1;
+
+  // Si ya existe, agregar número
+  while (!isUsernameAvailable(username)) {
+    username = `${baseUsername}${counter}`;
+    counter++;
   }
 
-  if (!isEmailAvailable(userData.email)) {
+  return username;
+};
+
+// Formatear número de teléfono
+const formatPhone = (phone: string): string => {
+  // Asegurar formato +503 XXXX-XXXX
+  const cleaned = phone.replace(/[^\d]/g, "");
+
+  if (cleaned.length === 8) {
+    return `+503 ${cleaned.substring(0, 4)}-${cleaned.substring(4)}`;
+  } else if (cleaned.length === 11 && cleaned.startsWith("503")) {
+    const number = cleaned.substring(3);
+    return `+503 ${number.substring(0, 4)}-${number.substring(4)}`;
+  }
+
+  return phone; // Devolver original si no se puede formatear
+};
+
+// Registrar nuevo usuario
+export const registerNewUser = (userData: NewUserData): RegistrationResult => {
+  const {
+    firstName,
+    lastName,
+    email,
+    documentType,
+    documentNumber,
+    memberCode,
+    phone,
+    password,
+  } = userData;
+
+  // Verificar que el email no exista
+  if (!isEmailAvailable(email)) {
     return {
       success: false,
-      error: "El correo electrónico ya está registrado",
+      error: "Este correo electrónico ya está registrado",
     };
   }
+
+  // Generar username único
+  const username = generateUsernameFromEmail(email);
 
   // Crear nuevo usuario
   const newUser: User = {
     id: generateUserId(),
     username,
-    password: userData.password,
-    email: userData.email,
-    phone: userData.phone,
-    fullName: `${userData.firstName} ${userData.lastName}`,
-    role: "user", // Usuarios registrados son "user" por defecto
+    password, // En producción, esto debería estar hasheado
+    email: email.toLowerCase(),
+    phone: formatPhone(phone),
+    fullName: `${firstName} ${lastName}`,
+    role: "user", // Nuevos usuarios son "user" por defecto
     isActive: true,
     createdAt: new Date(),
   };
 
-  // Agregar a la lista de usuarios registrados
-  const currentRegistered = getRegisteredUsers();
-  const updatedUsers = [...currentRegistered, newUser];
-  saveRegisteredUsers(updatedUsers);
+  // Agregar a la lista de usuarios
+  registeredUsers.push(newUser);
 
-  return { success: true, user: newUser };
+  console.log("🎉 Nuevo usuario registrado:", {
+    username: newUser.username,
+    email: newUser.email,
+    fullName: newUser.fullName,
+  });
+
+  return {
+    success: true,
+    user: newUser,
+  };
 };
 
-// Actualizar funciones existentes para incluir usuarios registrados
-export const findUserByUsernameWithRegistered = (
-  username: string,
-): User | undefined => {
-  // Buscar primero en usuarios predefinidos
-  let user = findUserByUsername(username);
-  if (user) return user;
-
-  // Buscar en usuarios registrados
-  const registeredUsers = getRegisteredUsers();
-  return registeredUsers.find(
-    (user) => user.username.toLowerCase() === username.toLowerCase(),
+// Obtener usuarios registrados recientemente (para debugging)
+export const getRecentlyRegisteredUsers = (): User[] => {
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  return registeredUsers.filter(
+    (user) => user.createdAt && user.createdAt > oneHourAgo,
   );
-};
-
-export const findUserByEmailWithRegistered = (
-  email: string,
-): User | undefined => {
-  // Buscar primero en usuarios predefinidos
-  let user = findUserByEmail(email);
-  if (user) return user;
-
-  // Buscar en usuarios registrados
-  const registeredUsers = getRegisteredUsers();
-  return registeredUsers.find(
-    (user) => user.email.toLowerCase() === email.toLowerCase(),
-  );
-};
-
-export const isValidUserWithRegistered = (
-  username: string,
-  password: string,
-): User | null => {
-  // Buscar en todos los usuarios (predefinidos + registrados)
-  const user = findUserByUsernameWithRegistered(username);
-
-  if (!user) {
-    return null;
-  }
-
-  if (!user.isActive) {
-    return null;
-  }
-
-  if (user.password !== password) {
-    return null;
-  }
-
-  return user;
 };

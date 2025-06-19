@@ -298,7 +298,7 @@ REACT_APP_EMAIL_VERIFICATION=true
 1. **Username correcto**: Usar la parte del email antes del @
 2. **Contraseña exacta**: Case-sensitive
 3. **LocalStorage**: Verificar que el usuario esté guardado
-4. **Función de búsqueda**: Verificar `findUserByUsernameWithRegistered`
+4. **Función de búsqueda**: Verificar `findUserByUsername`
 
 #### Datos no persisten
 
@@ -319,8 +319,8 @@ console.log(
 console.log("Registration result:", registrationResult);
 
 // Verificar función de búsqueda
-import { findUserByUsernameWithRegistered } from "./lib/user-database";
-console.log("Find user:", findUserByUsernameWithRegistered("juan.perez"));
+import { findUserByUsername } from "./lib/user-database";
+console.log("Find user:", findUserByUsername("juan.perez"));
 ```
 
 ## Mejoras Futuras
