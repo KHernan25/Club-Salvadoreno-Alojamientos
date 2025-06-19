@@ -46,6 +46,36 @@ export interface Translations {
     profile: string;
     clubName: string;
     accommodationReservations: string;
+    // Hero descriptions
+    corintoHeroDescription: string;
+    elSunzalHeroDescription: string;
+    countryClubHeroDescription: string;
+    learnMore: string;
+    // Welcome section
+    welcomeDescription: string;
+    welcomeSubtitle: string;
+    // Activities
+    activitiesTitle: string;
+    surf: string;
+    surfDescription: string;
+    golf: string;
+    golfDescription: string;
+    tennis: string;
+    tennisDescription: string;
+    sailing: string;
+    sailingDescription: string;
+    // Dependencies/Accommodations section
+    dependenciesTitle: string;
+    seeDetails: string;
+    // Corinto
+    corintoSubtitle: string;
+    corintoDescription: string;
+    // El Sunzal
+    elSunzalSubtitle: string;
+    elSunzalDescription: string;
+    // Country Club
+    countryClubSubtitle: string;
+    countryClubDescription: string;
   };
 
   // Acomodaciones
@@ -254,7 +284,7 @@ const esTranslations: Translations = {
   validation: {
     required: "Este campo es obligatorio",
     invalidEmail: "Por favor ingresa un correo electrónico válido",
-    invalidPhone: "Por favor ingresa un n��mero de teléfono válido",
+    invalidPhone: "Por favor ingresa un número de teléfono válido",
     passwordTooShort: "La contraseña debe tener al menos 8 caracteres",
     passwordsNotMatch: "Las contraseñas no coinciden",
     invalidCredentials: "Credenciales inválidas",
