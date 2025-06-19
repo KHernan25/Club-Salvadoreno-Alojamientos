@@ -76,6 +76,7 @@ const App = () => (
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/demo" element={<AuthDemo />} />
+              <Route path="/navigation-demo" element={<NavigationDemo />} />
               <Route path="/country-club" element={<CountryClub />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
