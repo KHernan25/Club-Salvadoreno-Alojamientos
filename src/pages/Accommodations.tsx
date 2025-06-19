@@ -213,7 +213,9 @@ const Accommodations = () => {
         />
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
           <div className="text-white">
-            <h1 className="text-5xl font-bold mb-4">ALOJAMIENTOS</h1>
+            <h1 className="text-5xl font-bold mb-4">
+              {t.accommodations.title.toUpperCase()}
+            </h1>
             <p className="text-xl">
               Explora nuestras opciones de alojamiento, elige tu sede favorita y
               asegura tu lugar con solo unos clics.
