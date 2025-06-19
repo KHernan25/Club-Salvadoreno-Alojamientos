@@ -27,6 +27,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AuthDemo from "./pages/AuthDemo";
 import NavigationDemo from "./pages/NavigationDemo";
+import TranslationTest from "./pages/TranslationTest";
 import CountryClub from "./pages/CountryClub";
 import NotFound from "./pages/NotFound";
 
