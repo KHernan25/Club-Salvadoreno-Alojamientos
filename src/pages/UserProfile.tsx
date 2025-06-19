@@ -23,6 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
+import { useTranslations } from "@/contexts/LanguageContext";
+import Layout from "@/components/Layout";
 import {
   Menu,
   Globe,

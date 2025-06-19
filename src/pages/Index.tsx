@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, logout } from "@/lib/auth-service";
-import { useToast } from "@/hooks/use-toast";
+import { getCurrentUser } from "@/lib/auth-service";
+import { useTranslations } from "@/contexts/LanguageContext";
+import Navbar from "@/components/Navbar";
 import {
   User,
   Settings,
@@ -35,7 +36,7 @@ import { useRef } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const t = useTranslations();
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [currentUser, setCurrentUser] = useState(getCurrentUser());
 
@@ -153,67 +154,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate("/dashboard")}
-              >
-                <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-                  <img
-                    src="/logo_menu.png"
-                    alt="Logo Club Salvadoreño"
-                    className="max-w-[35px] mx-auto object-contain"
-                  />
-                </div>
-                <span className="text-xl font-semibold text-slate-900">
-                  Club Salvadoreño
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6">
-              {currentUser && (
-                <div className="flex items-center gap-2 text-sm text-slate-600">
-                  <User className="h-4 w-4" />
-                  <span>{currentUser.fullName}</span>
-                  {currentUser.role === "admin" && (
-                    <Badge variant="secondary" className="text-xs">
-                      Admin
-                    </Badge>
-                  )}
-                </div>
-              )}
-
-              <Button
-                variant="ghost"
-                onClick={() => navigate("/perfil")}
-                className="gap-2"
-              >
-                <Settings className="h-4 w-4" />
-                Mi Perfil
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  logout();
-                  toast({
-                    title: "Sesión cerrada",
-                    description: "Has cerrado sesión exitosamente",
-                  });
-                  navigate("/", { replace: true });
-                }}
-                className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <Activity className="h-4 w-4" />
-                Cerrar Sesión
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Carousel Section */}
       <section className="relative h-screen bg-gradient-to-b from-blue-900 to-blue-800 overflow-hidden">
@@ -286,7 +227,7 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-slate-900 mb-6">
-                BIENVENIDO
+                {t.dashboard.welcome.toUpperCase()}
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-8">
                 En el Club Salvadoreño celebramos nuestro hogar, nuestra
