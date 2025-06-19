@@ -223,14 +223,10 @@ const Index = () => {
                 {t.dashboard.welcome.toUpperCase()}
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-8">
-                En el Club Salvadoreño celebramos nuestro hogar, nuestra
-                tradición para la artesanía tradicional, eventos sociales,
-                deportes y actividades. Ubicado en zonas para disfrute de los
-                miembros salvadoreños desde donde se puede disfrutar de la
-                riqueza cultural que nos caracteriza en forma de ubicación.
+                {t.dashboard.welcomeDescription}
               </p>
               <p className="text-slate-600 italic">
-                Te damos la bienvenida a tu Club, tu hogar de descanso.
+                {t.dashboard.welcomeSubtitle}
               </p>
             </div>
             <div className="relative">
