@@ -27,6 +27,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AuthDemo from "./pages/AuthDemo";
 import NavigationDemo from "./pages/NavigationDemo";
+import TranslationTest from "./pages/TranslationTest";
 import CountryClub from "./pages/CountryClub";
 import NotFound from "./pages/NotFound";
 
@@ -77,6 +78,7 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/demo" element={<AuthDemo />} />
               <Route path="/navigation-demo" element={<NavigationDemo />} />
+              <Route path="/translation-test" element={<TranslationTest />} />
               <Route path="/country-club" element={<CountryClub />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

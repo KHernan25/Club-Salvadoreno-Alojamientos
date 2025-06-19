@@ -43,30 +43,27 @@ const Index = () => {
   // Hero carousel data
   const heroSlides = [
     {
-      title: "Corinto",
-      description:
-        "Descubre la tranquilidad del lago en nuestro refugio natural, donde la serenidad se encuentra con la aventura.",
-      buttonText: "Conoce más",
+      title: t.locations.corinto,
+      description: t.dashboard.corintoHeroDescription,
+      buttonText: t.dashboard.learnMore,
       buttonColor: "bg-green-600 hover:bg-green-700",
       backgroundImage: "/DSC_5547.jpg",
       route: "/corinto",
     },
     {
-      title: "El Sunzal",
-      description:
-        "El conjunto ideal del alojamiento, Sol, mar y vida nocturna en un ambiente. Disfruta sus mejores playas, preciosas paisajes de vaste y la diversión de El Salvador.",
-      buttonText: "Conoce más",
+      title: t.locations.elSunzal,
+      description: t.dashboard.elSunzalHeroDescription,
+      buttonText: t.dashboard.learnMore,
       buttonColor: "bg-blue-600 hover:bg-blue-700",
-      backgroundImage: "/DSC_5259.jpg",
+      backgroundImage: "/DSC_5408.jpg",
       route: "/el-sunzal",
     },
     {
-      title: "Country Club",
-      description:
-        "Un espacio exclusivo en la ciudad para disfrutar deportes y entretenimiento. Donde las familias se reúnen para disfrutar de excelencia.",
-      buttonText: "Conoce más",
+      title: t.locations.countryClub,
+      description: t.dashboard.countryClubHeroDescription,
+      buttonText: t.dashboard.learnMore,
       buttonColor: "bg-teal-500 hover:bg-teal-600",
-      backgroundImage: "/DSC_5078.jpg",
+      backgroundImage: "/DSC_5096.jpg",
       route: "/country-club",
     },
   ];
@@ -94,51 +91,47 @@ const Index = () => {
 
   const activities = [
     {
-      title: "Surf",
+      title: t.dashboard.surf,
       image: "/_DSC4735-2.jpg",
-      description: "Disfruta de las mejores olas en las playas de El Salvador",
+      description: t.dashboard.surfDescription,
     },
     {
-      title: "Golf",
+      title: t.dashboard.golf,
       image: "/DSC_3895.jpg",
-      description: "Campo de golf profesional con vistas espectaculares",
+      description: t.dashboard.golfDescription,
     },
     {
-      title: "Tenis",
+      title: t.dashboard.tennis,
       image: "/DSC_5168.jpg",
-      description: "Canchas de tenis de clase mundial para tu entretenimiento",
+      description: t.dashboard.tennisDescription,
     },
     {
-      title: "Vela",
+      title: t.dashboard.sailing,
       image: "/Vela.jpeg",
-      description: "Navega por las cristalinas aguas del Lago de Ilopango",
+      description: t.dashboard.sailingDescription,
     },
   ];
 
   const accommodations = [
     {
-      title: "CORINTO",
-      subtitle:
-        "Relájate de la velocidad del lago al tiempo de recreo, donde el",
-      description:
-        "mundo más tranquilo es disponible para descanso entre los habitantes acuáticos y disfruta tu",
-      buttonText: "Ver Detalles",
+      title: t.locations.corinto.toUpperCase(),
+      subtitle: t.dashboard.corintoSubtitle,
+      description: t.dashboard.corintoDescription,
+      buttonText: t.dashboard.seeDetails,
       image: "/DSC_5451.jpg",
     },
     {
-      title: "EL SUNZAL",
-      subtitle: "Escápate del surf oceanográfico. El Sunzal te espera con sus",
-      description:
-        "perfectos rompientes, ambiente y la experiencia perfecta para familia amantes.",
-      buttonText: "Ver Detalles",
+      title: t.locations.elSunzal.toUpperCase(),
+      subtitle: t.dashboard.elSunzalSubtitle,
+      description: t.dashboard.elSunzalDescription,
+      buttonText: t.dashboard.seeDetails,
       image: "/DSC_5408.jpg",
     },
     {
-      title: "COUNTRY CLUB",
-      subtitle: "Un espacio exclusivo en la ciudad para disfrutar deportes y",
-      description:
-        "entretenimiento. Donde las familias se reúnen para disfrutar de excelencia y entretenimiento.",
-      buttonText: "Ver Detalles",
+      title: t.locations.countryClub.toUpperCase(),
+      subtitle: t.dashboard.countryClubSubtitle,
+      description: t.dashboard.countryClubDescription,
+      buttonText: t.dashboard.seeDetails,
       image: "/DSC_5096.jpg",
     },
   ];
@@ -230,14 +223,10 @@ const Index = () => {
                 {t.dashboard.welcome.toUpperCase()}
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-8">
-                En el Club Salvadoreño celebramos nuestro hogar, nuestra
-                tradición para la artesanía tradicional, eventos sociales,
-                deportes y actividades. Ubicado en zonas para disfrute de los
-                miembros salvadoreños desde donde se puede disfrutar de la
-                riqueza cultural que nos caracteriza en forma de ubicación.
+                {t.dashboard.welcomeDescription}
               </p>
               <p className="text-slate-600 italic">
-                Te damos la bienvenida a tu Club, tu hogar de descanso.
+                {t.dashboard.welcomeSubtitle}
               </p>
             </div>
             <div className="relative">
@@ -285,7 +274,7 @@ const Index = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-slate-900 mb-12">
-            DEPENDENCIAS
+            {t.dashboard.dependenciesTitle}
           </h2>
 
           <div className="grid gap-8 lg:grid-cols-3">
