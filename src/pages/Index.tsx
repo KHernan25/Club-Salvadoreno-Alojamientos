@@ -227,7 +227,7 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-slate-900 mb-6">
-                BIENVENIDO
+                {t.dashboard.welcome.toUpperCase()}
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-8">
                 En el Club Salvadoreño celebramos nuestro hogar, nuestra
