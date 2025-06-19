@@ -378,6 +378,46 @@ const enTranslations: Translations = {
     profile: "Profile",
     clubName: "Salvadoran Club",
     accommodationReservations: "Accommodation Reservations",
+    // Hero descriptions
+    corintoHeroDescription:
+      "Discover the tranquility of the lake in our natural refuge, where serenity meets adventure.",
+    elSunzalHeroDescription:
+      "The ideal combination of accommodation, sun, sea and nightlife in one environment. Enjoy its best beaches, beautiful landscapes and the fun of El Salvador.",
+    countryClubHeroDescription:
+      "An exclusive space in the city to enjoy sports and entertainment. Where families gather to enjoy excellence.",
+    learnMore: "Learn More",
+    // Welcome section
+    welcomeDescription:
+      "At the Salvadoran Club we celebrate our home, our tradition for traditional crafts, social events, sports and activities. Located in areas for the enjoyment of Salvadoran members where you can enjoy the cultural richness that characterizes us.",
+    welcomeSubtitle: "We welcome you to your Club, your home away from home.",
+    // Activities
+    activitiesTitle: "Activities",
+    surf: "Surf",
+    surfDescription: "Enjoy the best waves on the beaches of El Salvador",
+    golf: "Golf",
+    golfDescription: "Professional golf course with spectacular views",
+    tennis: "Tennis",
+    tennisDescription: "World-class tennis courts for your entertainment",
+    sailing: "Sailing",
+    sailingDescription:
+      "Sail through the crystal clear waters of Lake Ilopango",
+    // Dependencies/Accommodations section
+    dependenciesTitle: "FACILITIES",
+    seeDetails: "See Details",
+    // Corinto
+    corintoSubtitle:
+      "Relax from the speed of the lake to recreation time, where the",
+    corintoDescription:
+      "quietest world is available for rest among aquatic inhabitants and enjoy your",
+    // El Sunzal
+    elSunzalSubtitle:
+      "Escape from oceanographic surfing. El Sunzal awaits you with its",
+    elSunzalDescription:
+      "perfect breaks, atmosphere and the perfect experience for loving families.",
+    // Country Club
+    countryClubSubtitle: "An exclusive space in the city to enjoy sports and",
+    countryClubDescription:
+      "entertainment. Where families gather to enjoy excellence and entertainment.",
   },
 
   accommodations: {
