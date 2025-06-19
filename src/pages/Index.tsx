@@ -43,30 +43,27 @@ const Index = () => {
   // Hero carousel data
   const heroSlides = [
     {
-      title: "Corinto",
-      description:
-        "Descubre la tranquilidad del lago en nuestro refugio natural, donde la serenidad se encuentra con la aventura.",
-      buttonText: "Conoce más",
+      title: t.locations.corinto,
+      description: t.dashboard.corintoHeroDescription,
+      buttonText: t.dashboard.learnMore,
       buttonColor: "bg-green-600 hover:bg-green-700",
       backgroundImage: "/DSC_5547.jpg",
       route: "/corinto",
     },
     {
-      title: "El Sunzal",
-      description:
-        "El conjunto ideal del alojamiento, Sol, mar y vida nocturna en un ambiente. Disfruta sus mejores playas, preciosas paisajes de vaste y la diversión de El Salvador.",
-      buttonText: "Conoce más",
+      title: t.locations.elSunzal,
+      description: t.dashboard.elSunzalHeroDescription,
+      buttonText: t.dashboard.learnMore,
       buttonColor: "bg-blue-600 hover:bg-blue-700",
-      backgroundImage: "/DSC_5259.jpg",
+      backgroundImage: "/DSC_5408.jpg",
       route: "/el-sunzal",
     },
     {
-      title: "Country Club",
-      description:
-        "Un espacio exclusivo en la ciudad para disfrutar deportes y entretenimiento. Donde las familias se reúnen para disfrutar de excelencia.",
-      buttonText: "Conoce más",
+      title: t.locations.countryClub,
+      description: t.dashboard.countryClubHeroDescription,
+      buttonText: t.dashboard.learnMore,
       buttonColor: "bg-teal-500 hover:bg-teal-600",
-      backgroundImage: "/DSC_5078.jpg",
+      backgroundImage: "/DSC_5096.jpg",
       route: "/country-club",
     },
   ];
