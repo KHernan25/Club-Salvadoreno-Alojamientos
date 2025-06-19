@@ -114,28 +114,24 @@ const Index = () => {
 
   const accommodations = [
     {
-      title: "CORINTO",
-      subtitle:
-        "Relájate de la velocidad del lago al tiempo de recreo, donde el",
-      description:
-        "mundo más tranquilo es disponible para descanso entre los habitantes acuáticos y disfruta tu",
-      buttonText: "Ver Detalles",
+      title: t.locations.corinto.toUpperCase(),
+      subtitle: t.dashboard.corintoSubtitle,
+      description: t.dashboard.corintoDescription,
+      buttonText: t.dashboard.seeDetails,
       image: "/DSC_5451.jpg",
     },
     {
-      title: "EL SUNZAL",
-      subtitle: "Escápate del surf oceanográfico. El Sunzal te espera con sus",
-      description:
-        "perfectos rompientes, ambiente y la experiencia perfecta para familia amantes.",
-      buttonText: "Ver Detalles",
+      title: t.locations.elSunzal.toUpperCase(),
+      subtitle: t.dashboard.elSunzalSubtitle,
+      description: t.dashboard.elSunzalDescription,
+      buttonText: t.dashboard.seeDetails,
       image: "/DSC_5408.jpg",
     },
     {
-      title: "COUNTRY CLUB",
-      subtitle: "Un espacio exclusivo en la ciudad para disfrutar deportes y",
-      description:
-        "entretenimiento. Donde las familias se reúnen para disfrutar de excelencia y entretenimiento.",
-      buttonText: "Ver Detalles",
+      title: t.locations.countryClub.toUpperCase(),
+      subtitle: t.dashboard.countryClubSubtitle,
+      description: t.dashboard.countryClubDescription,
+      buttonText: t.dashboard.seeDetails,
       image: "/DSC_5096.jpg",
     },
   ];
