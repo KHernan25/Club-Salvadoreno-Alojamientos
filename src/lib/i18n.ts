@@ -46,6 +46,36 @@ export interface Translations {
     profile: string;
     clubName: string;
     accommodationReservations: string;
+    // Hero descriptions
+    corintoHeroDescription: string;
+    elSunzalHeroDescription: string;
+    countryClubHeroDescription: string;
+    learnMore: string;
+    // Welcome section
+    welcomeDescription: string;
+    welcomeSubtitle: string;
+    // Activities
+    activitiesTitle: string;
+    surf: string;
+    surfDescription: string;
+    golf: string;
+    golfDescription: string;
+    tennis: string;
+    tennisDescription: string;
+    sailing: string;
+    sailingDescription: string;
+    // Dependencies/Accommodations section
+    dependenciesTitle: string;
+    seeDetails: string;
+    // Corinto
+    corintoSubtitle: string;
+    corintoDescription: string;
+    // El Sunzal
+    elSunzalSubtitle: string;
+    elSunzalDescription: string;
+    // Country Club
+    countryClubSubtitle: string;
+    countryClubDescription: string;
   };
 
   // Acomodaciones
@@ -179,6 +209,48 @@ const esTranslations: Translations = {
     profile: "Perfil",
     clubName: "Club Salvadoreño",
     accommodationReservations: "Reservas de Alojamientos",
+    // Hero descriptions
+    corintoHeroDescription:
+      "Descubre la tranquilidad del lago en nuestro refugio natural, donde la serenidad se encuentra con la aventura.",
+    elSunzalHeroDescription:
+      "El conjunto ideal del alojamiento, Sol, mar y vida nocturna en un ambiente. Disfruta sus mejores playas, preciosas paisajes de vaste y la diversión de El Salvador.",
+    countryClubHeroDescription:
+      "Un espacio exclusivo en la ciudad para disfrutar deportes y entretenimiento. Donde las familias se reúnen para disfrutar de excelencia.",
+    learnMore: "Conoce más",
+    // Welcome section
+    welcomeDescription:
+      "En el Club Salvadoreño celebramos nuestro hogar, nuestra tradición para la artesanía tradicional, eventos sociales, deportes y actividades. Ubicado en zonas para disfrute de los miembros salvadoreños desde donde se puede disfrutar de la riqueza cultural que nos caracteriza en forma de ubicación.",
+    welcomeSubtitle: "Te damos la bienvenida a tu Club, tu hogar de descanso.",
+    // Activities
+    activitiesTitle: "Actividades",
+    surf: "Surf",
+    surfDescription:
+      "Disfruta de las mejores olas en las playas de El Salvador",
+    golf: "Golf",
+    golfDescription: "Campo de golf profesional con vistas espectaculares",
+    tennis: "Tenis",
+    tennisDescription:
+      "Canchas de tenis de clase mundial para tu entretenimiento",
+    sailing: "Vela",
+    sailingDescription: "Navega por las cristalinas aguas del Lago de Ilopango",
+    // Dependencies/Accommodations section
+    dependenciesTitle: "DEPENDENCIAS",
+    seeDetails: "Ver Detalles",
+    // Corinto
+    corintoSubtitle:
+      "Relájate de la velocidad del lago al tiempo de recreo, donde el",
+    corintoDescription:
+      "mundo más tranquilo es disponible para descanso entre los habitantes acuáticos y disfruta tu",
+    // El Sunzal
+    elSunzalSubtitle:
+      "Escápate del surf oceanográfico. El Sunzal te espera con sus",
+    elSunzalDescription:
+      "perfectos rompientes, ambiente y la experiencia perfecta para familia amantes.",
+    // Country Club
+    countryClubSubtitle:
+      "Un espacio exclusivo en la ciudad para disfrutar deportes y",
+    countryClubDescription:
+      "entretenimiento. Donde las familias se reúnen para disfrutar de excelencia y entretenimiento.",
   },
 
   accommodations: {
@@ -254,7 +326,7 @@ const esTranslations: Translations = {
   validation: {
     required: "Este campo es obligatorio",
     invalidEmail: "Por favor ingresa un correo electrónico válido",
-    invalidPhone: "Por favor ingresa un n��mero de teléfono válido",
+    invalidPhone: "Por favor ingresa un número de teléfono válido",
     passwordTooShort: "La contraseña debe tener al menos 8 caracteres",
     passwordsNotMatch: "Las contraseñas no coinciden",
     invalidCredentials: "Credenciales inválidas",
@@ -306,6 +378,46 @@ const enTranslations: Translations = {
     profile: "Profile",
     clubName: "Salvadoran Club",
     accommodationReservations: "Accommodation Reservations",
+    // Hero descriptions
+    corintoHeroDescription:
+      "Discover the tranquility of the lake in our natural refuge, where serenity meets adventure.",
+    elSunzalHeroDescription:
+      "The ideal combination of accommodation, sun, sea and nightlife in one environment. Enjoy its best beaches, beautiful landscapes and the fun of El Salvador.",
+    countryClubHeroDescription:
+      "An exclusive space in the city to enjoy sports and entertainment. Where families gather to enjoy excellence.",
+    learnMore: "Learn More",
+    // Welcome section
+    welcomeDescription:
+      "At the Salvadoran Club we celebrate our home, our tradition for traditional crafts, social events, sports and activities. Located in areas for the enjoyment of Salvadoran members where you can enjoy the cultural richness that characterizes us.",
+    welcomeSubtitle: "We welcome you to your Club, your home away from home.",
+    // Activities
+    activitiesTitle: "Activities",
+    surf: "Surf",
+    surfDescription: "Enjoy the best waves on the beaches of El Salvador",
+    golf: "Golf",
+    golfDescription: "Professional golf course with spectacular views",
+    tennis: "Tennis",
+    tennisDescription: "World-class tennis courts for your entertainment",
+    sailing: "Sailing",
+    sailingDescription:
+      "Sail through the crystal clear waters of Lake Ilopango",
+    // Dependencies/Accommodations section
+    dependenciesTitle: "FACILITIES",
+    seeDetails: "See Details",
+    // Corinto
+    corintoSubtitle:
+      "Relax from the speed of the lake to recreation time, where the",
+    corintoDescription:
+      "quietest world is available for rest among aquatic inhabitants and enjoy your",
+    // El Sunzal
+    elSunzalSubtitle:
+      "Escape from oceanographic surfing. El Sunzal awaits you with its",
+    elSunzalDescription:
+      "perfect breaks, atmosphere and the perfect experience for loving families.",
+    // Country Club
+    countryClubSubtitle: "An exclusive space in the city to enjoy sports and",
+    countryClubDescription:
+      "entertainment. Where families gather to enjoy excellence and entertainment.",
   },
 
   accommodations: {
@@ -433,6 +545,50 @@ const frTranslations: Translations = {
     profile: "Profil",
     clubName: "Club Salvadorien",
     accommodationReservations: "Réservations d'Hébergement",
+    // Hero descriptions
+    corintoHeroDescription:
+      "Découvrez la tranquillité du lac dans notre refuge naturel, où la sérénité rencontre l'aventure.",
+    elSunzalHeroDescription:
+      "La combinaison idéale d'hébergement, soleil, mer et vie nocturne en un seul environnement. Profitez de ses meilleures plages, de magnifiques paysages et du plaisir du Salvador.",
+    countryClubHeroDescription:
+      "Un espace exclusif en ville pour profiter du sport et du divertissement. Où les familles se rassemblent pour profiter de l'excellence.",
+    learnMore: "En Savoir Plus",
+    // Welcome section
+    welcomeDescription:
+      "Au Club Salvadorien, nous célébrons notre maison, notre tradition pour l'artisanat traditionnel, les événements sociaux, les sports et les activités. Situé dans des zones pour le plaisir des membres salvadoriens où vous pouvez profiter de la richesse culturelle qui nous caractérise.",
+    welcomeSubtitle:
+      "Nous vous souhaitons la bienvenue dans votre Club, votre maison loin de chez vous.",
+    // Activities
+    activitiesTitle: "Activités",
+    surf: "Surf",
+    surfDescription:
+      "Profitez des meilleures vagues sur les plages du Salvador",
+    golf: "Golf",
+    golfDescription:
+      "Terrain de golf professionnel avec des vues spectaculaires",
+    tennis: "Tennis",
+    tennisDescription:
+      "Courts de tennis de classe mondiale pour votre divertissement",
+    sailing: "Voile",
+    sailingDescription: "Naviguez dans les eaux cristallines du lac Ilopango",
+    // Dependencies/Accommodations section
+    dependenciesTitle: "INSTALLATIONS",
+    seeDetails: "Voir les Détails",
+    // Corinto
+    corintoSubtitle:
+      "Détendez-vous de la vitesse du lac au temps de loisir, où le",
+    corintoDescription:
+      "monde le plus tranquille est disponible pour se reposer parmi les habitants aquatiques et profiter de votre",
+    // El Sunzal
+    elSunzalSubtitle:
+      "Échappez au surf océanographique. El Sunzal vous attend avec ses",
+    elSunzalDescription:
+      "breaks parfaits, ambiance et l'expérience parfaite pour les familles aimantes.",
+    // Country Club
+    countryClubSubtitle:
+      "Un espace exclusif en ville pour profiter du sport et du",
+    countryClubDescription:
+      "divertissement. Où les familles se rassemblent pour profiter de l'excellence et du divertissement.",
   },
 
   accommodations: {
