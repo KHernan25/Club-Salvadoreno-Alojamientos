@@ -36,7 +36,7 @@ import { useRef } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const t = useTranslations();
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [currentUser, setCurrentUser] = useState(getCurrentUser());
 
