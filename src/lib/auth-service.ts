@@ -1,11 +1,6 @@
 // Servicio de autenticación para manejo de login y sesiones
 
-import {
-  User,
-  isValidUserWithRegistered,
-  updateLastLogin,
-  findUserByUsernameWithRegistered,
-} from "./user-database";
+import { User, isValidUser, updateLastLogin } from "./user-database";
 
 export interface LoginCredentials {
   username: string;
@@ -47,11 +42,12 @@ export const authenticateUser = async (
   }
 
   // Verificar credenciales
-  const user = isValidUserWithRegistered(username.trim(), password);
+  const user = isValidUser(username.trim(), password);
 
   if (!user) {
     // Verificar si el usuario existe pero la contraseña es incorrecta
-    const existingUser = findUserByUsernameWithRegistered(username.trim());
+    const { findUserByUsername } = await import("./user-database");
+    const existingUser = findUserByUsername(username.trim());
 
     if (existingUser && !existingUser.isActive) {
       return {
