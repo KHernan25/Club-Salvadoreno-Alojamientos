@@ -6,8 +6,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { User, UserPlus, Shield, Key, ArrowRight, Home } from "lucide-react";
+import {
+  User,
+  UserPlus,
+  Shield,
+  Key,
+  ArrowRight,
+  Home,
+  Clock,
+} from "lucide-react";
+import {
+  getRecentlyRegisteredUsers,
+  getAvailableCredentials,
+} from "@/lib/user-database";
 
 const AuthDemo = () => {
   const navigate = useNavigate();
