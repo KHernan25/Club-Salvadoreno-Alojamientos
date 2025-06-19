@@ -11,17 +11,17 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { 
-  Smartphone, 
-  Monitor, 
-  Tablet, 
-  Globe, 
-  User, 
+import {
+  Smartphone,
+  Monitor,
+  Tablet,
+  Globe,
+  User,
   Menu,
   Check,
   Star,
   Target,
-  Zap
+  Zap,
 } from "lucide-react";
 import { useLanguage, useTranslations } from "@/contexts/LanguageContext";
 import { availableLanguages } from "@/lib/i18n";
@@ -32,7 +32,9 @@ const NavigationDemo = () => {
   const { language, setLanguage } = useLanguage();
   const t = useTranslations();
   const currentUser = getCurrentUser();
-  const [selectedDevice, setSelectedDevice] = useState<"mobile" | "tablet" | "desktop">("desktop");
+  const [selectedDevice, setSelectedDevice] = useState<
+    "mobile" | "tablet" | "desktop"
+  >("desktop");
 
   const features = [
     {
@@ -43,8 +45,8 @@ const NavigationDemo = () => {
         "Cambio en tiempo real",
         "3 idiomas disponibles",
         "Persistencia en localStorage",
-        "Context API para gestión global"
-      ]
+        "Context API para gestión global",
+      ],
     },
     {
       icon: Smartphone,
@@ -54,8 +56,8 @@ const NavigationDemo = () => {
         "Menú hamburguesa en móvil",
         "Información compacta en tablet",
         "Vista completa en desktop",
-        "Touch-friendly interactions"
-      ]
+        "Touch-friendly interactions",
+      ],
     },
     {
       icon: User,
@@ -65,8 +67,8 @@ const NavigationDemo = () => {
         "Avatar con iniciales",
         "Nombre completo",
         "Badge de rol (Admin)",
-        "Username en móvil"
-      ]
+        "Username en móvil",
+      ],
     },
     {
       icon: Menu,
@@ -76,9 +78,9 @@ const NavigationDemo = () => {
         "Mi Perfil",
         "Selector de idioma",
         "Cerrar sesión",
-        "Dashboard (logo)"
-      ]
-    }
+        "Dashboard (logo)",
+      ],
+    },
   ];
 
   const deviceSpecs = {
@@ -86,20 +88,20 @@ const NavigationDemo = () => {
       icon: Smartphone,
       name: "Móvil",
       width: "375px",
-      features: ["Menú hamburguesa", "Panel lateral", "Touch-friendly"]
+      features: ["Menú hamburguesa", "Panel lateral", "Touch-friendly"],
     },
     tablet: {
       icon: Tablet,
       name: "Tablet",
       width: "768px",
-      features: ["Navbar compacto", "Iconos prominentes", "Textos reducidos"]
+      features: ["Navbar compacto", "Iconos prominentes", "Textos reducidos"],
     },
     desktop: {
       icon: Monitor,
       name: "Desktop",
       width: "1024px+",
-      features: ["Vista completa", "Todos los elementos", "Hover effects"]
-    }
+      features: ["Vista completa", "Todos los elementos", "Hover effects"],
+    },
   };
 
   const handleQuickLanguageChange = (lang: string) => {
@@ -109,12 +111,12 @@ const NavigationDemo = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      
+
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-slate-900 mb-4">
-            {t.nav.language} & {t.dashboard.welcome} 
+            {t.nav.language} & {t.dashboard.welcome}
           </h1>
           <p className="text-xl text-slate-600 mb-6">
             Sistema de navegación responsiva con internacionalización completa
@@ -156,7 +158,11 @@ const NavigationDemo = () => {
                 </div>
                 <div>
                   <p className="text-sm text-slate-600">Rol</p>
-                  <Badge variant={currentUser.role === 'admin' ? 'default' : 'secondary'}>
+                  <Badge
+                    variant={
+                      currentUser.role === "admin" ? "default" : "secondary"
+                    }
+                  >
                     {currentUser.role}
                   </Badge>
                 </div>
@@ -177,7 +183,8 @@ const NavigationDemo = () => {
               Demo de Cambio de Idioma
             </CardTitle>
             <CardDescription>
-              Prueba cambiar el idioma y observa cómo toda la página se actualiza instantáneamente
+              Prueba cambiar el idioma y observa cómo toda la página se
+              actualiza instantáneamente
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -191,13 +198,11 @@ const NavigationDemo = () => {
                 >
                   <span className="text-2xl">{lang.flag}</span>
                   <span className="text-sm">{lang.name}</span>
-                  {language === lang.code && (
-                    <Check className="h-3 w-3 mt-1" />
-                  )}
+                  {language === lang.code && <Check className="h-3 w-3 mt-1" />}
                 </Button>
               ))}
             </div>
-            
+
             <div className="bg-slate-50 rounded-lg p-4">
               <h4 className="font-medium mb-2">Textos de ejemplo:</h4>
               <div className="grid md:grid-cols-2 gap-3 text-sm">
@@ -210,8 +215,12 @@ const NavigationDemo = () => {
                   <span className="ml-2 font-medium">{t.nav.logout}</span>
                 </div>
                 <div>
-                  <span className="text-slate-600">{t.dashboard.accommodations}:</span>
-                  <span className="ml-2 font-medium">{t.dashboard.accommodations}</span>
+                  <span className="text-slate-600">
+                    {t.dashboard.accommodations}:
+                  </span>
+                  <span className="ml-2 font-medium">
+                    {t.dashboard.accommodations}
+                  </span>
                 </div>
                 <div>
                   <span className="text-slate-600">{t.common.save}:</span>
@@ -238,7 +247,10 @@ const NavigationDemo = () => {
               <CardContent>
                 <ul className="space-y-2">
                   {feature.items.map((item, itemIndex) => (
-                    <li key={itemIndex} className="flex items-center gap-2 text-sm">
+                    <li
+                      key={itemIndex}
+                      className="flex items-center gap-2 text-sm"
+                    >
                       <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
                       {item}
                     </li>
@@ -279,17 +291,27 @@ const NavigationDemo = () => {
             {/* Device Info */}
             <div className="bg-slate-50 rounded-lg p-6">
               <div className="flex items-center gap-3 mb-4">
-                <deviceSpecs[selectedDevice].icon className="h-6 w-6 text-slate-600" />
+                {(() => {
+                  const IconComponent = deviceSpecs[selectedDevice].icon;
+                  return <IconComponent className="h-6 w-6 text-slate-600" />;
+                })()}
                 <div>
-                  <h4 className="font-medium">{deviceSpecs[selectedDevice].name}</h4>
-                  <p className="text-sm text-slate-600">{deviceSpecs[selectedDevice].width}</p>
+                  <h4 className="font-medium">
+                    {deviceSpecs[selectedDevice].name}
+                  </h4>
+                  <p className="text-sm text-slate-600">
+                    {deviceSpecs[selectedDevice].width}
+                  </p>
                 </div>
               </div>
-              
+
               <h5 className="font-medium mb-2">Características:</h5>
               <ul className="space-y-1">
                 {deviceSpecs[selectedDevice].features.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-2 text-sm text-slate-700">
+                  <li
+                    key={index}
+                    className="flex items-center gap-2 text-sm text-slate-700"
+                  >
                     <Star className="h-3 w-3 text-yellow-500" />
                     {feature}
                   </li>
@@ -309,11 +331,20 @@ const NavigationDemo = () => {
           </CardHeader>
           <CardContent className="text-green-700">
             <ol className="list-decimal list-inside space-y-2 text-sm">
-              <li>Cambia el idioma usando los botones de arriba o el selector del navbar</li>
-              <li>Observa cómo todos los textos se actualizan instantáneamente</li>
-              <li>Redimensiona la ventana para ver el comportamiento responsivo</li>
+              <li>
+                Cambia el idioma usando los botones de arriba o el selector del
+                navbar
+              </li>
+              <li>
+                Observa cómo todos los textos se actualizan instantáneamente
+              </li>
+              <li>
+                Redimensiona la ventana para ver el comportamiento responsivo
+              </li>
               <li>En móvil, prueba el menú hamburguesa</li>
-              <li>Recarga la página para verificar que el idioma se mantiene</li>
+              <li>
+                Recarga la página para verificar que el idioma se mantiene
+              </li>
               <li>Navega a otras páginas para ver la consistencia</li>
             </ol>
           </CardContent>
