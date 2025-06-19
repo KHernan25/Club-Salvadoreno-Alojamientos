@@ -121,6 +121,7 @@ export interface Translations {
     filter: string;
     sort: string;
     noResults: string;
+    current: string;
   };
 
   // Validaciones y errores
@@ -249,6 +250,7 @@ const esTranslations: Translations = {
     filter: "Filtrar",
     sort: "Ordenar",
     noResults: "No se encontraron resultados",
+    current: "Actual",
   },
 
   validation: {
@@ -376,6 +378,7 @@ const enTranslations: Translations = {
     filter: "Filter",
     sort: "Sort",
     noResults: "No results found",
+    current: "Current",
   },
 
   validation: {
@@ -503,6 +506,7 @@ const frTranslations: Translations = {
     filter: "Filtrer",
     sort: "Trier",
     noResults: "Aucun résultat trouvé",
+    current: "Actuel",
   },
 
   validation: {
