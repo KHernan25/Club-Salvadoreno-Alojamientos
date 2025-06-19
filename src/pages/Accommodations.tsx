@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { useTranslations } from "@/contexts/LanguageContext";
+import Navbar from "@/components/Navbar";
 import {
   Menu,
   Globe,
