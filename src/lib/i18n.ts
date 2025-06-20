@@ -404,7 +404,7 @@ const enTranslations: Translations = {
     sailingDescription:
       "Sail through the crystal clear waters of Lake Ilopango",
     // Dependencies/Accommodations section
-    dependenciesTitle: "FACILITIES",
+    dependenciesTitle: "DEPENDENCIES",
     seeDetails: "See Details",
     // Corinto
     corintoSubtitle:
@@ -565,7 +565,7 @@ const frTranslations: Translations = {
     activitiesTitle: "Activités",
     surf: "Surf",
     surfDescription:
-      "Profitez des meilleures vagues sur les plages du Salvador",
+      "Profitez des meilleures vagues sur les plages du El Salvador",
     golf: "Golf",
     golfDescription:
       "Terrain de golf professionnel avec des vues spectaculaires",
@@ -575,7 +575,7 @@ const frTranslations: Translations = {
     sailing: "Voile",
     sailingDescription: "Naviguez dans les eaux cristallines du lac Ilopango",
     // Dependencies/Accommodations section
-    dependenciesTitle: "INSTALLATIONS",
+    dependenciesTitle: "DÉPENDANCES",
     seeDetails: "Voir les Détails",
     // Corinto
     corintoSubtitle:

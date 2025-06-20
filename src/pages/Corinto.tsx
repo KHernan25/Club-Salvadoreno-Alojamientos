@@ -20,9 +20,11 @@ import {
   Bed,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useTranslations } from "@/contexts/LanguageContext";
 
 const Corinto = () => {
   const navigate = useNavigate();
+  const t = useTranslations();
 
   return (
     <div className="min-h-screen bg-white">
