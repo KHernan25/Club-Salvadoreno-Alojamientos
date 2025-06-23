@@ -13,6 +13,7 @@ import SuiteDetail from "./pages/SuiteDetail";
 import Corinto from "./pages/Corinto";
 import ElSunzal from "./pages/ElSunzal";
 import CorintoCasas from "./pages/CorintoCasas";
+import CorintoApartamentos from "./pages/CorintoApartamentos";
 import ElSunzalCasas from "./pages/ElSunzalCasas";
 import ElSunzalApartamentos from "./pages/ElSunzalApartamentos";
 import ElSunzalSuites from "./pages/ElSunzalSuites";
@@ -52,6 +53,10 @@ const App = () => (
               <Route path="/corinto" element={<Corinto />} />
               <Route path="/el-sunzal" element={<ElSunzal />} />
               <Route path="/corinto/casas" element={<CorintoCasas />} />
+              <Route
+                path="/corinto/apartamentos"
+                element={<CorintoApartamentos />}
+              />
               <Route path="/el-sunzal/casas" element={<ElSunzalCasas />} />
               <Route
                 path="/el-sunzal/apartamentos"
