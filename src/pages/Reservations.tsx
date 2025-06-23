@@ -548,27 +548,94 @@ const Reservations = () => {
                   </div>
 
                   <div className="border-t border-slate-200 pt-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-slate-600">
-                        {isWeekend ? "Fin de semana" : "Día de semana"}
-                      </span>
-                      <span className="font-medium">${currentPrice}.00</span>
-                    </div>
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-2xl font-bold text-slate-900">
-                        Total: ${currentPrice}
-                      </span>
-                      <Button
-                        className="bg-blue-900 hover:bg-blue-800"
-                        onClick={() =>
-                          navigate(
-                            `/confirmacion/${reservationCode}?checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${currentPrice}`,
-                          )
-                        }
-                      >
-                        PAGAR RESERVA
-                      </Button>
-                    </div>
+                    {/* Detailed Price Breakdown */}
+                    {priceCalculation ? (
+                      <div className="space-y-3 mb-4">
+                        <h4 className="font-semibold text-slate-800 text-sm">
+                          Desglose de Precios:
+                        </h4>
+                        <div className="space-y-2">
+                          {priceCalculation.weekdayDays > 0 && (
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-slate-600">
+                                {priceCalculation.weekdayDays} noche(s) entre
+                                semana
+                              </span>
+                              <span className="font-medium">
+                                {formatPrice(priceCalculation.weekdayTotal)}
+                              </span>
+                            </div>
+                          )}
+                          {priceCalculation.weekendDays > 0 && (
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-slate-600">
+                                {priceCalculation.weekendDays} noche(s) fin de
+                                semana
+                              </span>
+                              <span className="font-medium">
+                                {formatPrice(priceCalculation.weekendTotal)}
+                              </span>
+                            </div>
+                          )}
+                          {priceCalculation.holidayDays > 0 && (
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-slate-600">
+                                {priceCalculation.holidayDays} noche(s) feriado
+                              </span>
+                              <span className="font-medium text-red-600">
+                                {formatPrice(priceCalculation.holidayTotal)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="border-t border-slate-200 pt-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-lg font-bold text-slate-900">
+                              Total: {formatPrice(priceCalculation.totalPrice)}
+                            </span>
+                            <Button
+                              className="bg-blue-900 hover:bg-blue-800"
+                              onClick={() =>
+                                navigate(
+                                  `/confirmacion/${reservationCode}?checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${priceCalculation.totalPrice}`,
+                                )
+                              }
+                            >
+                              PAGAR RESERVA
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      // Fallback si no hay cálculo de precios
+                      <div className="space-y-2 mb-4">
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-slate-600">
+                            {isWeekend ? "Fin de semana" : "Día de semana"}
+                          </span>
+                          <span className="font-medium">
+                            ${currentPrice}.00
+                          </span>
+                        </div>
+                        <div className="border-t border-slate-200 pt-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-lg font-bold text-slate-900">
+                              Total: ${currentPrice}
+                            </span>
+                            <Button
+                              className="bg-blue-900 hover:bg-blue-800"
+                              onClick={() =>
+                                navigate(
+                                  `/confirmacion/${reservationCode}?checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${currentPrice}`,
+                                )
+                              }
+                            >
+                              PAGAR RESERVA
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
