@@ -10,6 +10,7 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   // Función para validar autenticación
   const validateAuth = () => {
@@ -28,15 +29,34 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
         location.pathname === route || location.pathname.startsWith(route),
     );
 
-    // Si intenta acceder a rutas protegidas sin autenticación
+    console.log(
+      "RouteGuard: Validating auth for",
+      location.pathname,
+      "isPublic:",
+      isPublicRoute,
+    );
+
+    // Si intenta acceder a rutas protegidas
     if (!isPublicRoute) {
       if (!requireAuth()) {
         console.log(
-          "Access denied: No valid authentication for protected route",
+          "Access denied: No valid authentication for protected route:",
+          location.pathname,
         );
+        setIsAuthorized(false);
+        setAuthChecked(true);
         navigate("/login", { replace: true });
-        return;
+        return false;
+      } else {
+        console.log(
+          "Access granted: Valid authentication for protected route:",
+          location.pathname,
+        );
+        setIsAuthorized(true);
       }
+    } else {
+      // Es ruta pública
+      setIsAuthorized(true);
     }
 
     // Si está autenticado y trata de acceder al login, redirigir al dashboard
@@ -48,6 +68,7 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
     }
 
     setAuthChecked(true);
+    return true;
   };
 
   // Validar autenticación en cada cambio de ruta
