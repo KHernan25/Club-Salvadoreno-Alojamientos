@@ -37,7 +37,7 @@ export const authenticateUser = async (
   if (!username.trim() || !password.trim()) {
     return {
       success: false,
-      error: "Por favor ingresa tu usuario y contraseña",
+      error: "Por favor ingresa tu correo/usuario y contraseña",
     };
   }
 
@@ -46,8 +46,12 @@ export const authenticateUser = async (
 
   if (!user) {
     // Verificar si el usuario existe pero la contraseña es incorrecta
-    const { findUserByUsername } = await import("./user-database");
-    const existingUser = findUserByUsername(username.trim());
+    const { findUserByUsername, findUserByEmail } = await import(
+      "./user-database"
+    );
+    const existingUserByUsername = findUserByUsername(username.trim());
+    const existingUserByEmail = findUserByEmail(username.trim());
+    const existingUser = existingUserByUsername || existingUserByEmail;
 
     if (existingUser && !existingUser.isActive) {
       return {
@@ -65,7 +69,7 @@ export const authenticateUser = async (
 
     return {
       success: false,
-      error: "Usuario no encontrado. Verifica tu nombre de usuario.",
+      error: "Usuario o correo no encontrado. Verifica tus datos.",
     };
   }
 
