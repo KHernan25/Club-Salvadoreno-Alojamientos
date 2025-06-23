@@ -20,6 +20,10 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+
+  // Prevenir navegación hacia atrás en página de login
+  useAuthPageProtection();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
