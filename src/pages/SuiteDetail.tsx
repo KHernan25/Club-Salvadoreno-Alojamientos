@@ -328,13 +328,16 @@ const SuiteDetail = () => {
               <button
                 key={tab.id}
                 onClick={() => navigate(`/suite/${tab.id}`)}
-                className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 ${
+                className={`relative px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-all duration-200 ${
                   tab.id === id
-                    ? "border-blue-500 text-blue-600 bg-white"
-                    : "border-transparent text-slate-600 hover:text-slate-900"
+                    ? "border-purple-500 text-purple-600 bg-white shadow-sm"
+                    : "border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
               >
                 {tab.label}
+                {tab.id === id && (
+                  <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-purple-500 rounded-full"></div>
+                )}
               </button>
             ))}
           </div>
@@ -586,9 +589,9 @@ const SuiteDetail = () => {
                     size="sm"
                     variant="outline"
                     className="w-full mt-2 text-xs"
-                    onClick={() => navigate("/casa/casa1")}
+                    onClick={() => navigate("/el-sunzal/casas")}
                   >
-                    Ver Detalles
+                    Ver Casas
                   </Button>
                 </CardContent>
               </Card>
@@ -612,9 +615,9 @@ const SuiteDetail = () => {
                     size="sm"
                     variant="outline"
                     className="w-full mt-2 text-xs"
-                    onClick={() => navigate("/alojamientos")}
+                    onClick={() => navigate("/el-sunzal/apartamentos")}
                   >
-                    Ver Detalles
+                    Ver Apartamentos
                   </Button>
                 </CardContent>
               </Card>

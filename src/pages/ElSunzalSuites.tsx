@@ -19,115 +19,147 @@ const ElSunzalSuites = () => {
   const suites = [
     {
       id: "suite-1",
-      name: "Suite Ejecutiva",
+      name: "Suite Ejecutiva Presidencial",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 650, weekend: 850, daily: 750 },
+      description:
+        "Elegante suite ejecutiva con vista al océano, perfecta para escapadas románticas y viajes de negocios. Incluye jacuzzi privado y terraza exclusiva.",
     },
     {
       id: "suite-2",
-      name: "Suite Presidencial",
+      name: "Suite Presidencial Ocean View",
       level: "Presidencial",
       guests: 2,
       pricing: { weekday: 750, weekend: 950, daily: 850 },
+      description:
+        "Suite presidencial con vistas panorámicas al Pacífico. Cuenta con sala de estar separada, bar privado y servicios de mayordomo personalizado.",
     },
     {
       id: "suite-3",
-      name: "Suite Royal",
+      name: "Suite Royal Penthouse",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 850, weekend: 1150, daily: 950 },
+      description:
+        "El penthouse más exclusivo del resort con dos plantas de lujo. Jacuzzi infinity, terraza de 360° y servicio de chef privado disponible.",
     },
     {
       id: "suite-4",
-      name: "Suite Oceanfront",
+      name: "Suite Oceanfront Deluxe",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 680, weekend: 880, daily: 780 },
+      description:
+        "Suite frente al mar con acceso directo a la playa privada. Diseño contemporáneo con amenidades de lujo y servicio personalizado.",
     },
     {
       id: "suite-5",
-      name: "Suite Paradise",
+      name: "Suite Paradise Tropical",
       level: "Presidencial",
       guests: 3,
       pricing: { weekday: 780, weekend: 980, daily: 880 },
+      description:
+        "Suite tropical inspirada en la naturaleza local. Terraza jardín privado, productos de spa orgánicos y experiencias de wellness exclusivas.",
     },
     {
       id: "suite-6",
-      name: "Suite Imperial",
+      name: "Suite Imperial Elite",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 900, weekend: 1200, daily: 1000 },
+      description:
+        "Suite imperial con acabados dorados y mármol italiano. Biblioteca privada, sala de cine personal y mayordomo disponible 24/7.",
     },
     {
       id: "suite-7",
-      name: "Suite Tropical",
+      name: "Suite Tropical Sunset",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 670, weekend: 870, daily: 770 },
+      description:
+        "Suite orientada al oeste para disfrutar los mejores atardeceres. Terraza romántica con hamaca doble y área de meditación privada.",
     },
     {
       id: "suite-8",
-      name: "Suite Deluxe",
+      name: "Suite Deluxe Infinity",
       level: "Presidencial",
       guests: 3,
       pricing: { weekday: 800, weekend: 1000, daily: 900 },
+      description:
+        "Suite con piscina infinity privada y vista ininterrumpida al océano. Sala de yoga, área de descanso zen y servicios de spa en suite.",
     },
     {
       id: "suite-9",
-      name: "Suite Supreme",
+      name: "Suite Supreme Royale",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 920, weekend: 1250, daily: 1020 },
+      description:
+        "La suite más grande del resort con dos dormitorios master. Terraza de fiesta privada, bar completo y helipuerto para llegadas VIP.",
     },
     {
       id: "suite-10",
-      name: "Suite Premium",
+      name: "Suite Premium Surf",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 690, weekend: 890, daily: 790 },
+      description:
+        "Suite diseñada para surfistas con almacenamiento especializado para tablas. Vista directa al break y servicio de instructor privado.",
     },
     {
       id: "suite-11",
-      name: "Suite Elite",
+      name: "Suite Elite Diamond",
       level: "Presidencial",
       guests: 3,
       pricing: { weekday: 820, weekend: 1020, daily: 920 },
+      description:
+        "Suite de cristal con paredes transparentes hacia el océano. Cama flotante, baño de cristal y experiencia de dormir bajo las estrellas.",
     },
     {
       id: "suite-12",
-      name: "Suite Majestic",
+      name: "Suite Majestic Palace",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 950, weekend: 1300, daily: 1050 },
+      description:
+        "Suite tipo palacio con arquitectura colonial moderna. Patio andaluz, fuente privada y servicio de protocolo real disponible.",
     },
     {
       id: "suite-13",
-      name: "Suite Exclusive",
+      name: "Suite Exclusive Artist",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 700, weekend: 900, daily: 800 },
+      description:
+        "Suite inspirada en el arte local con obras exclusivas de artistas salvadoreños. Estudio de arte privado y talleres creativos disponibles.",
     },
     {
       id: "suite-14",
-      name: "Suite Platinum",
+      name: "Suite Platinum Sky",
       level: "Presidencial",
       guests: 3,
       pricing: { weekday: 840, weekend: 1040, daily: 940 },
+      description:
+        "Suite en el último piso con techo retráctil para observación astronómica. Telescopio profesional y experiencias de astronomía privadas.",
     },
     {
       id: "suite-15",
-      name: "Suite Diamond",
+      name: "Suite Diamond Eternal",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 980, weekend: 1350, daily: 1080 },
+      description:
+        "Suite con decoración de diamantes y cristales naturales. Sala de meditación con cuarzos, terapias de cristales y energía curativa.",
     },
     {
       id: "suite-16",
-      name: "Suite Ultimate",
+      name: "Suite Ultimate Paradise",
       level: "Royal",
       guests: 6,
       pricing: { weekday: 1200, weekend: 1600, daily: 1300 },
+      description:
+        "La experiencia definitiva: villa privada dentro del resort. Dos plantas, piscina privada, chef exclusivo y equipo de servicio personal completo.",
     },
   ];
 
@@ -213,10 +245,14 @@ const ElSunzalSuites = () => {
                   </div>
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="text-lg font-bold text-slate-900 mb-1 flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
                     <Crown className="h-4 w-4 text-yellow-600" />
                     {suite.name}
                   </h3>
+
+                  <p className="text-sm text-slate-600 mb-3 line-clamp-3 leading-relaxed">
+                    {suite.description}
+                  </p>
 
                   <div className="flex items-center gap-2 mb-3 text-xs text-slate-600">
                     <Users className="h-3 w-3" />

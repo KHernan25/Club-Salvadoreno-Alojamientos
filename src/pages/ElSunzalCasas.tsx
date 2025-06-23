@@ -31,14 +31,14 @@ import Navbar from "@/components/Navbar";
 const ElSunzalCasas = () => {
   const navigate = useNavigate();
 
-  // Simulated 6 houses data for El Sunzal
+  // Complete 6 houses data for El Sunzal with personalized descriptions
   const casas = [
     {
       id: "sunzal-casa-1",
       name: "Casa Surf Paradise",
       image: "/placeholder.svg",
       description:
-        "Casa frente al mar diseñada para surfistas, con almacenamiento para tablas.",
+        "Casa frente al mar diseñada específicamente para surfistas, con almacenamiento especializado para tablas y ducha exterior para después de las sesiones. Ubicada en primera línea de playa con acceso directo al break más famoso de El Sunzal.",
       features: [
         { icon: Bed, text: "3 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -58,7 +58,7 @@ const ElSunzalCasas = () => {
       name: "Casa Tropical Family",
       image: "/placeholder.svg",
       description:
-        "Amplia casa familiar con jardín tropical y área de juegos para niños.",
+        "Amplia casa familiar con jardín tropical exuberante y área de juegos diseñada especialmente para niños. Perfecta para familias que buscan espacios seguros y cómodos sin renunciar al lujo tropical. Incluye piscina infantil privada y zona de parrilla para reuniones familiares.",
       features: [
         { icon: Bed, text: "4 habitaciones" },
         { icon: Bath, text: "3 baños" },
@@ -73,7 +73,7 @@ const ElSunzalCasas = () => {
       name: "Casa Vista Océano",
       image: "/placeholder.svg",
       description:
-        "Casa con vista panorámica al océano desde todas las habitaciones.",
+        "Casa estratégicamente construida en una elevación privilegiada que ofrece vistas panorámicas de 360° al océano Pacífico desde todas las habitaciones. Ideal para quienes buscan una conexión total con el mar y disfrutar de amaneceres y atardeceres espectaculares desde la comodidad de su hogar temporal.",
       features: [
         { icon: Bed, text: "3 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -93,7 +93,7 @@ const ElSunzalCasas = () => {
       name: "Casa Beach Club",
       image: "/placeholder.svg",
       description:
-        "Casa con acceso directo a la playa y área de entretenimiento.",
+        "Casa premium con acceso directo a la playa privada y área de entretenimiento completa. Diseñada para grupos que buscan la experiencia de un beach club privado con todas las comodidades. Incluye equipo completo de deportes acuáticos y área de bar exterior para fiestas junto al mar.",
       features: [
         { icon: Bed, text: "4 habitaciones" },
         { icon: Bath, text: "3 baños" },
@@ -113,7 +113,7 @@ const ElSunzalCasas = () => {
       name: "Casa Bohemia",
       image: "/placeholder.svg",
       description:
-        "Casa de estilo bohemio con decoración artística y ambiente relajado.",
+        "Casa de estilo bohemio con decoración artística única y ambiente completamente relajado. Inspirada en la cultura artística local, cuenta con obras de arte originales, biblioteca curada y espacios zen para meditación. Perfecta para retiros creativos y estancias de desconexión digital.",
       features: [
         { icon: Bed, text: "2 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -128,7 +128,7 @@ const ElSunzalCasas = () => {
       name: "Casa Premium Oceanfront",
       image: "/placeholder.svg",
       description:
-        "La casa más exclusiva con todas las comodidades de lujo frente al mar.",
+        "La casa más exclusiva y lujosa de El Sunzal, ubicada en primera línea de playa con todas las comodidades de un resort cinco estrellas. Cuenta con servicios de lujo incluyendo chef privado, mayordomo personal y spa privado. Diseñada para huéspedes VIP que buscan la máxima exclusividad y confort.",
       features: [
         { icon: Bed, text: "5 habitaciones" },
         { icon: Bath, text: "4 baños" },

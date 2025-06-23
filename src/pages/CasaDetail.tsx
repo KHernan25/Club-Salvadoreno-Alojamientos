@@ -1062,9 +1062,9 @@ const CasaDetail = () => {
                         size="sm"
                         variant="outline"
                         className="w-full mt-2 text-xs"
-                        onClick={() => navigate("/casa/casa1")}
+                        onClick={() => navigate("/el-sunzal/casas")}
                       >
-                        Ver El Sunzal
+                        Ver Casas El Sunzal
                       </Button>
                     </CardContent>
                   </Card>
@@ -1091,9 +1091,9 @@ const CasaDetail = () => {
                         size="sm"
                         variant="outline"
                         className="w-full mt-2 text-xs"
-                        onClick={() => navigate("/alojamientos")}
+                        onClick={() => navigate("/el-sunzal/apartamentos")}
                       >
-                        Ver Detalles
+                        Ver Apartamentos
                       </Button>
                     </CardContent>
                   </Card>
@@ -1118,9 +1118,9 @@ const CasaDetail = () => {
                         size="sm"
                         variant="outline"
                         className="w-full mt-2 text-xs"
-                        onClick={() => navigate("/casa/corinto-casa-1")}
+                        onClick={() => navigate("/corinto/casas")}
                       >
-                        Ver Corinto
+                        Ver Casas Corinto
                       </Button>
                     </CardContent>
                   </Card>

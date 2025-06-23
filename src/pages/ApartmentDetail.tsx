@@ -1091,9 +1091,9 @@ const ApartmentDetail = () => {
                     size="sm"
                     variant="outline"
                     className="w-full mt-2 text-xs"
-                    onClick={() => navigate("/alojamientos")}
+                    onClick={() => navigate("/el-sunzal/casas")}
                   >
-                    Ver Detalles
+                    Ver Casas
                   </Button>
                 </CardContent>
               </Card>
@@ -1118,9 +1118,9 @@ const ApartmentDetail = () => {
                     size="sm"
                     variant="outline"
                     className="w-full mt-2 text-xs"
-                    onClick={() => navigate("/alojamientos")}
+                    onClick={() => navigate("/el-sunzal/suites")}
                   >
-                    Ver Detalles
+                    Ver Suites
                   </Button>
                 </CardContent>
               </Card>
