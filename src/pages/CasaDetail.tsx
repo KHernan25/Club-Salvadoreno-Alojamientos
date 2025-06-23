@@ -1032,7 +1032,7 @@ const CasaDetail = () => {
                         size="sm"
                         variant="outline"
                         className="w-full mt-2 text-xs"
-                        onClick={() => navigate("/corinto-apartamentos")}
+                        onClick={() => navigate("/corinto/apartamentos")}
                       >
                         Ver Apartamentos
                       </Button>
