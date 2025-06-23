@@ -335,6 +335,9 @@ const SuiteDetail = () => {
                 }`}
               >
                 {tab.label}
+                {tab.id === id && (
+                  <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-purple-500 rounded-full"></div>
+                )}
               </button>
             ))}
           </div>
