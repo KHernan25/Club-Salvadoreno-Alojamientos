@@ -213,29 +213,32 @@ const Reservations = () => {
     }
 
     // Simulate availability - some days are available, some reserved, some blocked
-    if ([15, 16, 23, 24].includes(day)) return "reserved"; // Reserved
+    if ([15, 16, 23, 24].includes(day)) return "reserved"; // Reserved (rojo)
+    if ([10, 11, 17, 18].includes(day)) return "blocked"; // Blocked (gris)
     if (date.getMonth() !== selectedMonth) return "other-month";
     if (dateStr < today) return "past"; // Past dates
 
-    return "available";
+    return "available"; // Available (blanco)
   };
 
   const getDayClass = (status: string) => {
     switch (status) {
       case "check-in":
-        return "bg-green-500 text-white font-bold";
+        return "bg-green-500 text-white font-bold"; // Verde para fechas seleccionadas
       case "check-out":
-        return "bg-red-500 text-white font-bold";
+        return "bg-green-500 text-white font-bold"; // Verde para fechas seleccionadas
       case "selected-range":
-        return "bg-blue-200 text-blue-800";
+        return "bg-green-200 text-green-800 font-medium"; // Verde claro para rango seleccionado
       case "reserved":
-        return "bg-gray-400 text-white";
+        return "bg-red-500 text-white cursor-not-allowed"; // Rojo para fechas reservadas
+      case "blocked":
+        return "bg-gray-400 text-white cursor-not-allowed"; // Gris para fechas bloqueadas
       case "other-month":
         return "text-gray-300";
       case "past":
         return "text-gray-400 cursor-not-allowed";
       default:
-        return "hover:bg-blue-100 cursor-pointer";
+        return "bg-white text-gray-900 hover:bg-gray-50 cursor-pointer border-gray-200"; // Blanco para fechas disponibles
     }
   };
 
