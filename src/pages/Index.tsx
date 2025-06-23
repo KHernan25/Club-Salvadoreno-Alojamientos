@@ -43,6 +43,42 @@ const Index = () => {
   const t = useTranslations();
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [currentUser, setCurrentUser] = useState(getCurrentUser());
+  const [authValidated, setAuthValidated] = useState(false);
+
+  // VALIDACIÓN INMEDIATA DE AUTENTICACIÓN
+  useEffect(() => {
+    console.log("Index: Validating authentication...");
+
+    // Verificar autenticación inmediatamente
+    if (!isAuthenticated() || !requireAuth()) {
+      console.log("Index: Authentication failed, redirecting to login");
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    const user = getCurrentUser();
+    if (!user) {
+      console.log("Index: No current user found, redirecting to login");
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    console.log("Index: Authentication validated for user:", user.username);
+    setCurrentUser(user);
+    setAuthValidated(true);
+  }, [navigate]);
+
+  // No renderizar hasta que la autenticación sea validada
+  if (!authValidated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-600">Validando acceso...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Hero carousel data
   const heroSlides = [
