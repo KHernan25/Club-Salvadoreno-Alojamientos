@@ -18,6 +18,7 @@ import ElSunzalCasas from "./pages/ElSunzalCasas";
 import ElSunzalApartamentos from "./pages/ElSunzalApartamentos";
 import ElSunzalSuites from "./pages/ElSunzalSuites";
 import Reservations from "./pages/Reservations";
+import PaymentGateway from "./pages/PaymentGateway";
 import ReservationConfirmation from "./pages/ReservationConfirmation";
 import MyReservations from "./pages/MyReservations";
 import UserProfile from "./pages/UserProfile";
@@ -64,6 +65,7 @@ const App = () => (
               />
               <Route path="/el-sunzal/suites" element={<ElSunzalSuites />} />
               <Route path="/reservas" element={<Reservations />} />
+              <Route path="/pago" element={<PaymentGateway />} />
               <Route
                 path="/confirmacion/:reservationCode"
                 element={<ReservationConfirmation />}
