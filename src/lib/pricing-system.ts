@@ -79,12 +79,19 @@ export const getDayType = (date: Date): "weekday" | "weekend" | "holiday" => {
 
   const dayOfWeek = date.getDay(); // 0 = Domingo, 6 = Sábado
 
+  // Debug logging
+  console.log(
+    `getDayType - Date: ${date.toISOString()}, Day of week: ${dayOfWeek}, Date string: ${date.toString()}`,
+  );
+
   // Solo Sábado (6) y Domingo (0) son fin de semana
   if (dayOfWeek === 0 || dayOfWeek === 6) {
+    console.log(`Weekend detected for ${date.toISOString()}`);
     return "weekend";
   }
 
   // Lunes (1) a Viernes (5) son días de semana
+  console.log(`Weekday detected for ${date.toISOString()}`);
   return "weekday";
 };
 
