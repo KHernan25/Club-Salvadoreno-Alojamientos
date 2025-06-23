@@ -62,6 +62,7 @@ const Reservations = () => {
   // State for price calculation
   const [priceCalculation, setPriceCalculation] = useState(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [dateError, setDateError] = useState("");
 
   // Generate unique reservation code
   const generateReservationCode = () => {
@@ -104,8 +105,12 @@ const Reservations = () => {
 
     if (!validation.valid) {
       setPriceCalculation(null);
+      setDateError(validation.error || "Error en las fechas seleccionadas");
       return;
     }
+
+    // Clear any previous errors
+    setDateError("");
 
     const rates = getAccommodationRates(accommodationId);
 
@@ -454,10 +459,17 @@ const Reservations = () => {
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                       <p className="text-xs text-slate-500 mt-1">
-                        Mínimo 1 noche de estadía
+                        Máximo 7 días consecutivos
                       </p>
                     </div>
                   </div>
+
+                  {/* Error message for date validation */}
+                  {dateError && (
+                    <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <p className="text-sm text-red-600">{dateError}</p>
+                    </div>
+                  )}
 
                   <Button
                     className="w-full mt-6 bg-blue-900 hover:bg-blue-800 py-3"
