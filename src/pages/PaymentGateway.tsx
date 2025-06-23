@@ -38,6 +38,7 @@ import {
   Users,
   MapPin,
 } from "lucide-react";
+import Navbar from "@/components/Navbar";
 
 type PaymentState = "form" | "processing" | "success";
 
@@ -737,50 +738,7 @@ const PaymentGateway = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate("/dashboard")}
-              >
-                <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CS</span>
-                </div>
-                <span className="text-xl font-semibold text-slate-900">
-                  Club Salvadoreño
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6">
-              {paymentState === "form" && (
-                <Button
-                  variant="ghost"
-                  className="gap-2"
-                  onClick={() => navigate(-1)}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Volver
-                </Button>
-              )}
-              <Button variant="ghost" className="gap-2">
-                <Globe className="h-4 w-4" />
-                ES
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" className="gap-2">
-                <User className="h-4 w-4" />
-                {currentUser?.firstName || "Usuario"}
-              </Button>
-              <Button variant="ghost">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Main Content */}
       {paymentState === "form" && renderPaymentForm()}
@@ -788,12 +746,16 @@ const PaymentGateway = () => {
       {paymentState === "success" && renderSuccess()}
 
       {/* Footer */}
-      <footer className="bg-blue-900 text-white py-8 mt-16">
+      <footer className="bg-blue-900 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-blue-900 font-bold text-sm">CS</span>
+                <img
+                  src="/logo_azul.png"
+                  alt="Logo Club Salvadoreño"
+                  className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>

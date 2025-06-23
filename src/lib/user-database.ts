@@ -3,6 +3,8 @@
 
 export interface User {
   id: string;
+  firstName: string;
+  lastName: string;
   username: string;
   password: string; // En producción, esto debería estar hasheado
   email: string;
@@ -19,6 +21,8 @@ export const registeredUsers: User[] = [
   // Usuarios Admin
   {
     id: "1",
+    firstName: "Administrador",
+    lastName: "Sistema",
     username: "admin",
     password: "Admin123",
     email: "admin@clubsalvadoreno.com",
@@ -30,6 +34,8 @@ export const registeredUsers: User[] = [
   },
   {
     id: "2",
+    firstName: "Gerente",
+    lastName: "General",
     username: "gerente",
     password: "Gerente2024",
     email: "gerente@clubsalvadoreno.com",
@@ -43,6 +49,8 @@ export const registeredUsers: User[] = [
   // Staff
   {
     id: "3",
+    firstName: "Recepcionista",
+    lastName: "General",
     username: "recepcion",
     password: "Recepcion123",
     email: "recepcion@clubsalvadoreno.com",
@@ -56,6 +64,8 @@ export const registeredUsers: User[] = [
   // Usuarios Regulares
   {
     id: "4",
+    firstName: "María José",
+    lastName: "González",
     username: "usuario1",
     password: "Usuario123",
     email: "usuario1@email.com",
@@ -67,6 +77,8 @@ export const registeredUsers: User[] = [
   },
   {
     id: "5",
+    firstName: "Carlos",
+    lastName: "Rivera",
     username: "carlos.rivera",
     password: "Carlos2024",
     email: "carlos.rivera@email.com",
@@ -78,6 +90,8 @@ export const registeredUsers: User[] = [
   },
   {
     id: "6",
+    firstName: "Ana",
+    lastName: "Martínez",
     username: "ana.martinez",
     password: "Ana123456",
     email: "ana.martinez@email.com",
@@ -89,6 +103,8 @@ export const registeredUsers: User[] = [
   },
   {
     id: "7",
+    firstName: "Juan",
+    lastName: "Pérez",
     username: "jperez",
     password: "JuanP123",
     email: "juan.perez@email.com",
@@ -102,6 +118,8 @@ export const registeredUsers: User[] = [
   // Usuario de prueba común
   {
     id: "8",
+    firstName: "Demo",
+    lastName: "Usuario",
     username: "demo",
     password: "demo123",
     email: "demo@clubsalvadoreno.com",
@@ -115,6 +133,8 @@ export const registeredUsers: User[] = [
   // Usuario inactivo (para testing)
   {
     id: "9",
+    firstName: "Inactivo",
+    lastName: "Usuario",
     username: "inactivo",
     password: "Inactivo123",
     email: "inactivo@email.com",
@@ -279,6 +299,8 @@ export const registerNewUser = (userData: NewUserData): RegistrationResult => {
   // Crear nuevo usuario
   const newUser: User = {
     id: generateUserId(),
+    firstName,
+    lastName,
     username,
     password, // En producción, esto debería estar hasheado
     email: email.toLowerCase(),
