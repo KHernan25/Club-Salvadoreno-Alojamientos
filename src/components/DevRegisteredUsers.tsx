@@ -8,7 +8,29 @@ import { Trash2, Eye, EyeOff } from "lucide-react";
 
 const DevRegisteredUsers = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [registeredUsers, setRegisteredUsers] = useState(getRegisteredUsers());
+
+  // Función para obtener todos los usuarios registrados (localStorage + estáticos)
+  const getRegisteredUsers = (): User[] => {
+    const localStorageUsers = localStorage.getItem(
+      "club_salvadoreno_registered_users",
+    );
+    const dynamicUsers = localStorageUsers ? JSON.parse(localStorageUsers) : [];
+
+    // Combinar usuarios estáticos con los del localStorage
+    // Usar Map para evitar duplicados por ID
+    const allUsersMap = new Map();
+
+    // Agregar usuarios estáticos primero
+    registeredUsers.forEach((user) => allUsersMap.set(user.id, user));
+
+    // Agregar/sobrescribir con usuarios del localStorage
+    dynamicUsers.forEach((user: User) => allUsersMap.set(user.id, user));
+
+    return Array.from(allUsersMap.values());
+  };
+
+  const [allRegisteredUsers, setAllRegisteredUsers] =
+    useState(getRegisteredUsers());
 
   // Solo mostrar en desarrollo
   if (process.env.NODE_ENV !== "development") {
