@@ -328,10 +328,10 @@ const SuiteDetail = () => {
               <button
                 key={tab.id}
                 onClick={() => navigate(`/suite/${tab.id}`)}
-                className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 ${
+                className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-all duration-200 ${
                   tab.id === id
-                    ? "border-blue-500 text-blue-600 bg-white"
-                    : "border-transparent text-slate-600 hover:text-slate-900"
+                    ? "border-purple-500 text-purple-600 bg-white shadow-sm"
+                    : "border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
               >
                 {tab.label}
