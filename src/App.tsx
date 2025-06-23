@@ -13,10 +13,12 @@ import SuiteDetail from "./pages/SuiteDetail";
 import Corinto from "./pages/Corinto";
 import ElSunzal from "./pages/ElSunzal";
 import CorintoCasas from "./pages/CorintoCasas";
+import CorintoApartamentos from "./pages/CorintoApartamentos";
 import ElSunzalCasas from "./pages/ElSunzalCasas";
 import ElSunzalApartamentos from "./pages/ElSunzalApartamentos";
 import ElSunzalSuites from "./pages/ElSunzalSuites";
 import Reservations from "./pages/Reservations";
+import PaymentGateway from "./pages/PaymentGateway";
 import ReservationConfirmation from "./pages/ReservationConfirmation";
 import MyReservations from "./pages/MyReservations";
 import UserProfile from "./pages/UserProfile";
@@ -52,6 +54,10 @@ const App = () => (
               <Route path="/corinto" element={<Corinto />} />
               <Route path="/el-sunzal" element={<ElSunzal />} />
               <Route path="/corinto/casas" element={<CorintoCasas />} />
+              <Route
+                path="/corinto/apartamentos"
+                element={<CorintoApartamentos />}
+              />
               <Route path="/el-sunzal/casas" element={<ElSunzalCasas />} />
               <Route
                 path="/el-sunzal/apartamentos"
@@ -59,6 +65,7 @@ const App = () => (
               />
               <Route path="/el-sunzal/suites" element={<ElSunzalSuites />} />
               <Route path="/reservas" element={<Reservations />} />
+              <Route path="/pago" element={<PaymentGateway />} />
               <Route
                 path="/confirmacion/:reservationCode"
                 element={<ReservationConfirmation />}

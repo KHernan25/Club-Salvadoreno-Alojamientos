@@ -246,25 +246,41 @@ export const getNextAvailableCheckOut = (checkIn: string): string => {
   return checkOutDate.toISOString().split("T")[0];
 };
 
-// Precios de ejemplo para diferentes tipos de alojamiento
+// Precios completos para todos los alojamientos
 export const accommodationRates: Record<string, PricingRates> = {
   // Apartamentos El Sunzal
   "1A": { weekday: 110, weekend: 230, holiday: 280 },
   "1B": { weekday: 95, weekend: 210, holiday: 250 },
   "2A": { weekday: 120, weekend: 250, holiday: 300 },
+  "2B": { weekday: 115, weekend: 240, holiday: 290 },
+  "3A": { weekday: 140, weekend: 280, holiday: 350 },
+  "3B": { weekday: 135, weekend: 270, holiday: 340 },
 
-  // Casas
+  // Casas El Sunzal
   casa1: { weekday: 200, weekend: 350, holiday: 400 },
-  casa2: { weekday: 180, weekend: 320, holiday: 380 },
+  casa2: { weekday: 280, weekend: 420, holiday: 480 },
+  casa3: { weekday: 240, weekend: 380, holiday: 450 },
 
-  // Suites
+  // Suites El Sunzal
   suite1: { weekday: 300, weekend: 450, holiday: 500 },
-  suite2: { weekday: 280, weekend: 420, holiday: 480 },
+  suite2: { weekday: 500, weekend: 750, holiday: 850 },
+  suite3: { weekday: 800, weekend: 1200, holiday: 1500 },
 
   // Apartamentos Corinto
   corinto1A: { weekday: 100, weekend: 210, holiday: 260 },
   corinto1B: { weekday: 85, weekend: 190, holiday: 230 },
   corinto2A: { weekday: 110, weekend: 230, holiday: 280 },
+  corinto2B: { weekday: 105, weekend: 220, holiday: 270 },
+  corinto3A: { weekday: 130, weekend: 260, holiday: 320 },
+  corinto3B: { weekday: 125, weekend: 250, holiday: 310 },
+
+  // Casas Corinto
+  "corinto-casa-1": { weekday: 280, weekend: 380, holiday: 420 },
+  "corinto-casa-2": { weekday: 350, weekend: 450, holiday: 500 },
+  "corinto-casa-3": { weekday: 220, weekend: 320, holiday: 370 },
+  "corinto-casa-4": { weekday: 260, weekend: 360, holiday: 410 },
+  "corinto-casa-5": { weekday: 300, weekend: 400, holiday: 450 },
+  "corinto-casa-6": { weekday: 320, weekend: 420, holiday: 480 },
 };
 
 // Función para obtener las tarifas de un alojamiento

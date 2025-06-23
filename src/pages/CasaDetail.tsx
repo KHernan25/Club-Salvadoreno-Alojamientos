@@ -55,7 +55,7 @@ const CasaDetail = () => {
     }
   }, [checkInDate, checkOutDate]);
 
-  // Simulated casa data
+  // Complete casa data for all El Sunzal houses
   const casaData = {
     casa1: {
       name: "Casa Familiar Premium",
@@ -99,17 +99,171 @@ const CasaDetail = () => {
         weekday: {
           label: "Día de Semana",
           sublabel: "(Precio por noche)",
-          price: 350,
+          price: 200,
         },
         weekend: {
           label: "Fin de Semana",
           sublabel: "(Precio por noche)",
-          price: 450,
+          price: 350,
         },
         daily: {
           label: "Asueto (Día)",
           sublabel: "(Precio por noche)",
           price: 400,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+      maxGuests: 8,
+    },
+    casa2: {
+      name: "Casa Premium Vista Mar",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "Casa premium con vista directa al mar, diseñada para huéspedes que buscan el máximo lujo familiar en una ubicación privilegiada frente al océano Pacífico.",
+      fullDescription:
+        "Esta casa premium se distingue por su ubicación privilegiada en primera línea de playa y su diseño arquitectónico superior. Con acabados de lujo y espacios amplios, ofrece una experiencia de resort privado para grupos exclusivos.",
+      additionalInfo:
+        "La casa cuenta con terraza panorámica de 180 grados frente al mar, cocina gourmet con isla central, master suite con baño tipo spa y sala de entretenimiento con sistema de audio profesional. Ideal para celebraciones especiales y retiros familiares.",
+      note: "Casa Premium incluye servicios VIP como chef privado bajo solicitud, servicio de limpieza dos veces al día, amenidades de lujo y acceso prioritario a todas las instalaciones del club.",
+      finalNote:
+        "Casa Premium Vista Mar: donde el lujo familiar se encuentra con las mejores vistas del Pacífico para crear experiencias extraordinarias.",
+      features: [
+        {
+          icon: Bed,
+          text: "5 habitaciones con camas king y queen",
+          included: true,
+        },
+        { icon: Bath, text: "4 baños con acabados de mármol", included: true },
+        {
+          icon: Utensils,
+          text: "Cocina gourmet con electrodomésticos premium",
+          included: true,
+        },
+        {
+          icon: Car,
+          text: "Estacionamiento privado para 3 autos",
+          included: true,
+        },
+        {
+          icon: Tv,
+          text: "Centro de entretenimiento en cada habitación",
+          included: true,
+        },
+        {
+          icon: Wifi,
+          text: "Internet Wi-Fi dedicado de fibra óptica",
+          included: true,
+        },
+        {
+          icon: Wind,
+          text: "Climatización inteligente por zonas",
+          included: true,
+        },
+        {
+          icon: Trees,
+          text: "Terraza panorámica de 180° frente al mar",
+          included: true,
+        },
+        {
+          icon: Crown,
+          text: "Servicio de limpieza premium dos veces al día",
+          included: true,
+        },
+        {
+          icon: Waves,
+          text: "Acceso privado directo a la playa",
+          included: true,
+        },
+        { icon: Users, text: "Capacidad para 10 huéspedes", included: true },
+        {
+          icon: Home,
+          text: "Sala de entretenimiento con sistema de audio",
+          included: true,
+        },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 280,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 420,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 480,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+      maxGuests: 10,
+    },
+    casa3: {
+      name: "Casa Deluxe Tropical",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "Casa deluxe rodeada de jardines tropicales exuberantes, perfecta para grupos que buscan privacidad total en un ambiente natural paradisíaco.",
+      fullDescription:
+        "Esta casa deluxe está estratégicamente ubicada en el corazón de los jardines tropicales del resort, ofreciendo máxima privacidad y conexión con la naturaleza. Diseñada para grupos que valoran la tranquilidad y el ambiente tropical auténtico.",
+      additionalInfo:
+        "Rodeada de palmeras centenarias y jardines de especies nativas, la casa ofrece múltiples terrazas y áreas de descanso al aire libre. Incluye rancho privado con hamacas, zona de BBQ profesional y senderos privados hacia la playa.",
+      note: "Casa Deluxe Tropical es ideal para retiros familiares, reuniones corporativas pequeñas y grupos que buscan desconectarse en un ambiente natural sin sacrificar comodidades modernas.",
+      finalNote:
+        "Casa Deluxe Tropical: un refugio natural donde la privacidad absoluta se combina con el lujo discreto en el corazón del paraíso tropical.",
+      features: [
+        {
+          icon: Bed,
+          text: "4 habitaciones amplias con camas king",
+          included: true,
+        },
+        {
+          icon: Bath,
+          text: "3 baños completos + medio baño social",
+          included: true,
+        },
+        {
+          icon: Utensils,
+          text: "Cocina completa con despensa grande",
+          included: true,
+        },
+        { icon: Car, text: "Estacionamiento privado cubierto", included: true },
+        { icon: Tv, text: "Smart TVs en áreas principales", included: true },
+        {
+          icon: Wifi,
+          text: "Internet Wi-Fi de alta velocidad",
+          included: true,
+        },
+        {
+          icon: Wind,
+          text: "Ventilación natural + aire acondicionado",
+          included: true,
+        },
+        { icon: Trees, text: "Rancho privado con hamacas", included: true },
+        { icon: Crown, text: "Servicio de jardinería privado", included: true },
+        { icon: Waves, text: "Sendero privado a la playa", included: true },
+        { icon: Users, text: "Capacidad para 8 huéspedes", included: true },
+        { icon: Home, text: "Zona de BBQ y comedor exterior", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 240,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 380,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 450,
         },
       },
       checkIn: "3:00 pm",
