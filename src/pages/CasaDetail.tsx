@@ -512,7 +512,7 @@ const CasaDetail = () => {
         "La casa cuenta con cocina completamente equipada, sala de estar amplia, comedor para 8 personas y acceso directo a jardín privado. Ubicada en la zona más tranquila del resort, garantiza privacidad y tranquilidad.",
       note: "Todas las casas cuentan con servicio de limpieza diario, acceso a todas las instalaciones del club y estacionamiento privado para 2 vehículos.",
       finalNote:
-        "Casa Familiar Premium: el refugio perfecto para crear memorias familiares inolvidables en el paraíso tropical del Club Salvadoreño.",
+        "Casa Familiar Premium: el refugio perfecto para crear memorias familiares inolvidables en el para��so tropical del Club Salvadoreño.",
       features: [
         { icon: Bed, text: "4 habitaciones con camas queen", included: true },
         { icon: Bath, text: "3 baños completos", included: true },
@@ -772,7 +772,7 @@ const CasaDetail = () => {
                 </button>
                 <span>›</span>
                 <button
-                  onClick={() => navigate("/corinto-casas")}
+                  onClick={() => navigate("/corinto/casas")}
                   className="hover:text-blue-600"
                 >
                   Casas
