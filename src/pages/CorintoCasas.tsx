@@ -30,14 +30,14 @@ import Navbar from "@/components/Navbar";
 const CorintoCasas = () => {
   const navigate = useNavigate();
 
-  // Simulated 6 houses data for Corinto
+  // Simulated 6 houses data for Corinto - todas con la misma descripción
   const casas = [
     {
       id: "corinto-casa-1",
       name: "Casa del Lago",
       image: "/placeholder.svg",
       description:
-        "Hermosa casa frente al lago con amplia terraza y jardín privado.",
+        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
       features: [
         { icon: Bed, text: "3 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -57,7 +57,7 @@ const CorintoCasas = () => {
       name: "Casa Familiar Vista Lago",
       image: "/placeholder.svg",
       description:
-        "Espaciosa casa ideal para reuniones familiares con vista panorámica al lago.",
+        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
       features: [
         { icon: Bed, text: "4 habitaciones" },
         { icon: Bath, text: "3 baños" },
@@ -77,7 +77,7 @@ const CorintoCasas = () => {
       name: "Casa Tranquilidad",
       image: "/placeholder.svg",
       description:
-        "Refugio perfecto para descansar en un ambiente natural y silencioso.",
+        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
       features: [
         { icon: Bed, text: "2 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -92,7 +92,7 @@ const CorintoCasas = () => {
       name: "Casa Pescador",
       image: "/placeholder.svg",
       description:
-        "Casa temática para amantes de la pesca con equipo incluido.",
+        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
       features: [
         { icon: Bed, text: "3 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -112,7 +112,7 @@ const CorintoCasas = () => {
       name: "Casa Reuniones",
       image: "/placeholder.svg",
       description:
-        "Perfecta para eventos familiares con amplio salón y comedor.",
+        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
       features: [
         { icon: Bed, text: "4 habitaciones" },
         { icon: Bath, text: "3 baños" },
@@ -127,7 +127,7 @@ const CorintoCasas = () => {
       name: "Casa Premium Lago",
       image: "/placeholder.svg",
       description:
-        "La casa más exclusiva con todas las comodidades y vista espectacular.",
+        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
       features: [
         { icon: Bed, text: "5 habitaciones" },
         { icon: Bath, text: "4 baños" },
@@ -285,9 +285,9 @@ const CorintoCasas = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate("/reservas")}
+                      onClick={() => navigate(`/casa/${casa.id}#precios`)}
                     >
-                      Reservar
+                      Ver Precios
                     </Button>
                   </div>
                 </CardContent>

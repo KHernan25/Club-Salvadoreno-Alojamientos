@@ -498,7 +498,7 @@ const CasaDetail = () => {
                     )
                   }
                 >
-                  Ver disponibilidad
+                  Ver disponibilidad y precios
                 </Button>
               </CardContent>
             </Card>

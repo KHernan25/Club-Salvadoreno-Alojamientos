@@ -206,19 +206,19 @@ const Login = () => {
                 <p className="text-red-100 text-sm">{error}</p>
               </div>
             )}
-            {/* Usuario */}
+            {/* Correo */}
             <div>
               <Label
                 htmlFor="username"
                 className="text-white font-medium mb-2 block"
               >
-                Usuario
+                Correo
               </Label>
               <div className="relative">
                 <Input
                   id="username"
                   type="text"
-                  placeholder="Ingresar Usuario"
+                  placeholder="Correo o Usuario"
                   value={formData.username}
                   onChange={(e) =>
                     handleInputChange("username", e.target.value)
@@ -337,6 +337,12 @@ const Login = () => {
                         <code className="bg-black/20 px-1 rounded">admin</code>
                       </p>
                       <p>
+                        Email:{" "}
+                        <code className="bg-black/20 px-1 rounded">
+                          admin@clubsalvadoreno.com
+                        </code>
+                      </p>
+                      <p>
                         Contraseña:{" "}
                         <code className="bg-black/20 px-1 rounded">
                           Admin123
@@ -352,6 +358,12 @@ const Login = () => {
                         <code className="bg-black/20 px-1 rounded">demo</code>
                       </p>
                       <p>
+                        Email:{" "}
+                        <code className="bg-black/20 px-1 rounded">
+                          demo@clubsalvadoreno.com
+                        </code>
+                      </p>
+                      <p>
                         Contraseña:{" "}
                         <code className="bg-black/20 px-1 rounded">
                           demo123
@@ -361,22 +373,19 @@ const Login = () => {
                   </div>
                   <div className="border-t border-yellow-500/30 pt-2">
                     <p className="font-medium text-yellow-200">
-                      Otros usuarios disponibles:
+                      Puedes usar usuario o email para iniciar sesión:
                     </p>
                     <p>
                       <code className="bg-black/20 px-1 rounded">usuario1</code>{" "}
-                      /{" "}
+                      o{" "}
                       <code className="bg-black/20 px-1 rounded">
-                        Usuario123
+                        usuario1@email.com
                       </code>
                     </p>
                     <p>
+                      Contraseña:{" "}
                       <code className="bg-black/20 px-1 rounded">
-                        carlos.rivera
-                      </code>{" "}
-                      /{" "}
-                      <code className="bg-black/20 px-1 rounded">
-                        Carlos2024
+                        Usuario123
                       </code>
                     </p>
                   </div>
