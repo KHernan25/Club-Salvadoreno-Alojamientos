@@ -1,0 +1,254 @@
+// Sistema de gestión de precios y fechas para reservaciones
+
+export interface PricingRates {
+  weekday: number; // Lunes a Jueves
+  weekend: number; // Viernes a Domingo
+  holiday: number; // Días feriados/asuetos
+}
+
+export interface DateRange {
+  checkIn: Date;
+  checkOut: Date;
+}
+
+export interface PriceCalculation {
+  totalDays: number;
+  weekdayDays: number;
+  weekendDays: number;
+  holidayDays: number;
+  weekdayTotal: number;
+  weekendTotal: number;
+  holidayTotal: number;
+  totalPrice: number;
+  breakdown: Array<{
+    date: Date;
+    dayType: "weekday" | "weekend" | "holiday";
+    price: number;
+  }>;
+}
+
+// Días feriados de El Salvador 2025-2026
+export const holidays2025: string[] = [
+  "2025-01-01", // Año Nuevo
+  "2025-03-28", // Jueves Santo
+  "2025-03-29", // Viernes Santo
+  "2025-03-30", // Sábado Santo
+  "2025-05-01", // Día del Trabajo
+  "2025-05-10", // Día de la Madre
+  "2025-06-17", // Día del Padre
+  "2025-08-06", // Día del Salvador del Mundo (patronales)
+  "2025-09-15", // Día de la Independencia
+  "2025-11-02", // Día de los Difuntos
+  "2025-12-25", // Navidad
+];
+
+export const holidays2026: string[] = [
+  "2026-01-01", // Año Nuevo
+  "2026-04-17", // Jueves Santo
+  "2026-04-18", // Viernes Santo
+  "2026-04-19", // Sábado Santo
+  "2026-05-01", // Día del Trabajo
+  "2026-05-10", // Día de la Madre
+  "2026-06-17", // Día del Padre
+  "2026-08-06", // Día del Salvador del Mundo
+  "2026-09-15", // Día de la Independencia
+  "2026-11-02", // Día de los Difuntos
+  "2026-12-25", // Navidad
+];
+
+const allHolidays = [...holidays2025, ...holidays2026];
+
+// Función para obtener el mínimo día seleccionable (mañana)
+export const getMinimumDate = (): string => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow.toISOString().split("T")[0];
+};
+
+// Función para verificar si una fecha es feriado
+export const isHoliday = (date: Date): boolean => {
+  const dateString = date.toISOString().split("T")[0];
+  return allHolidays.includes(dateString);
+};
+
+// Función para determinar el tipo de día
+export const getDayType = (date: Date): "weekday" | "weekend" | "holiday" => {
+  if (isHoliday(date)) {
+    return "holiday";
+  }
+
+  const dayOfWeek = date.getDay(); // 0 = Domingo, 6 = Sábado
+
+  // Viernes (5), Sábado (6), Domingo (0) son fin de semana
+  if (dayOfWeek === 0 || dayOfWeek === 5 || dayOfWeek === 6) {
+    return "weekend";
+  }
+
+  // Lunes (1) a Jueves (4) son días de semana
+  return "weekday";
+};
+
+// Función para calcular el precio total de una estadía
+export const calculateStayPrice = (
+  checkIn: Date,
+  checkOut: Date,
+  rates: PricingRates,
+): PriceCalculation => {
+  const breakdown: PriceCalculation["breakdown"] = [];
+
+  let weekdayDays = 0;
+  let weekendDays = 0;
+  let holidayDays = 0;
+
+  let weekdayTotal = 0;
+  let weekendTotal = 0;
+  let holidayTotal = 0;
+
+  // Iterar sobre cada día de la estadía
+  const currentDate = new Date(checkIn);
+
+  while (currentDate < checkOut) {
+    const dayType = getDayType(currentDate);
+    let price = 0;
+
+    switch (dayType) {
+      case "weekday":
+        price = rates.weekday;
+        weekdayDays++;
+        weekdayTotal += price;
+        break;
+      case "weekend":
+        price = rates.weekend;
+        weekendDays++;
+        weekendTotal += price;
+        break;
+      case "holiday":
+        price = rates.holiday;
+        holidayDays++;
+        holidayTotal += price;
+        break;
+    }
+
+    breakdown.push({
+      date: new Date(currentDate),
+      dayType,
+      price,
+    });
+
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  const totalDays = weekdayDays + weekendDays + holidayDays;
+  const totalPrice = weekdayTotal + weekendTotal + holidayTotal;
+
+  return {
+    totalDays,
+    weekdayDays,
+    weekendDays,
+    holidayDays,
+    weekdayTotal,
+    weekendTotal,
+    holidayTotal,
+    totalPrice,
+    breakdown,
+  };
+};
+
+// Función para validar fechas de reserva
+export const validateReservationDates = (
+  checkIn: string,
+  checkOut: string,
+): { valid: boolean; error?: string } => {
+  const checkInDate = new Date(checkIn);
+  const checkOutDate = new Date(checkOut);
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+
+  // Verificar que check-in sea al menos mañana
+  if (checkInDate < tomorrow) {
+    return {
+      valid: false,
+      error: "La fecha de entrada debe ser al menos mañana",
+    };
+  }
+
+  // Verificar que check-out sea después de check-in
+  if (checkOutDate <= checkInDate) {
+    return {
+      valid: false,
+      error: "La fecha de salida debe ser posterior a la fecha de entrada",
+    };
+  }
+
+  // Verificar que la estadía no sea más de 30 días
+  const diffTime = checkOutDate.getTime() - checkInDate.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays > 30) {
+    return {
+      valid: false,
+      error: "La estadía no puede exceder 30 días",
+    };
+  }
+
+  return { valid: true };
+};
+
+// Función para formatear fechas en español
+export const formatDateSpanish = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  return date.toLocaleDateString("es-ES", options);
+};
+
+// Función para formatear precios en dólares
+export const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price);
+};
+
+// Función para generar el próximo día disponible de check-out
+export const getNextAvailableCheckOut = (checkIn: string): string => {
+  const checkInDate = new Date(checkIn);
+  const checkOutDate = new Date(checkInDate);
+  checkOutDate.setDate(checkOutDate.getDate() + 1);
+  return checkOutDate.toISOString().split("T")[0];
+};
+
+// Precios de ejemplo para diferentes tipos de alojamiento
+export const accommodationRates: Record<string, PricingRates> = {
+  // Apartamentos El Sunzal
+  "1A": { weekday: 110, weekend: 230, holiday: 280 },
+  "1B": { weekday: 95, weekend: 210, holiday: 250 },
+  "2A": { weekday: 120, weekend: 250, holiday: 300 },
+
+  // Casas
+  casa1: { weekday: 200, weekend: 350, holiday: 400 },
+  casa2: { weekday: 180, weekend: 320, holiday: 380 },
+
+  // Suites
+  suite1: { weekday: 300, weekend: 450, holiday: 500 },
+  suite2: { weekday: 280, weekend: 420, holiday: 480 },
+
+  // Apartamentos Corinto
+  corinto1A: { weekday: 100, weekend: 210, holiday: 260 },
+  corinto1B: { weekday: 85, weekend: 190, holiday: 230 },
+  corinto2A: { weekday: 110, weekend: 230, holiday: 280 },
+};
+
+// Función para obtener las tarifas de un alojamiento
+export const getAccommodationRates = (
+  accommodationId: string,
+): PricingRates | null => {
+  return accommodationRates[accommodationId] || null;
+};
