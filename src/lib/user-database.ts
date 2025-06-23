@@ -164,10 +164,16 @@ export const findUserById = (id: string): User | undefined => {
 };
 
 export const isValidUser = (
-  username: string,
+  usernameOrEmail: string,
   password: string,
 ): User | null => {
-  const user = findUserByUsername(username);
+  // Buscar por username o email
+  let user = findUserByUsername(usernameOrEmail);
+
+  // Si no se encuentra por username, buscar por email
+  if (!user) {
+    user = findUserByEmail(usernameOrEmail);
+  }
 
   if (!user) {
     return null;
