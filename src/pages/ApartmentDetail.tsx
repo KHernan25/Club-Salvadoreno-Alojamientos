@@ -463,6 +463,291 @@ const ApartmentDetail = () => {
       checkIn: "3:00 pm",
       checkOut: "12:00 md",
     },
+    // Corinto Apartments
+    corinto1A: {
+      name: "Apartamento 1A Lago",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "Apartamento en primera planta con vista directa al Lago de Ilopango, ideal para parejas que buscan tranquilidad lakeside.",
+      fullDescription:
+        "Ubicado en primera planta con acceso directo sin escaleras, este apartamento ofrece vistas panorámicas del Lago de Ilopango. Perfecto para huéspedes que buscan tranquilidad y conexión con la naturaleza lacustre.",
+      additionalInfo:
+        "Las ventanas amplias capturan la brisa del lago y los reflejos dorados del atardecer sobre el agua. El apartamento está estratégicamente ubicado para maximizar las vistas mientras mantiene la privacidad.",
+      note: "Incluye acceso directo a los muelles privados del club y actividades acuáticas exclusivas del Lago de Ilopango. Ideal para pesca deportiva y deportes acuáticos.",
+      finalNote:
+        "Apartamento 1A Lago: donde la tranquilidad lakeside se combina con comodidad moderna en el corazón del Lago de Ilopango.",
+      features: [
+        { icon: Bed, text: "2 camas full", included: true },
+        { icon: Bath, text: "1 baño", included: true },
+        { icon: Wifi, text: "Internet Wi-Fi alta velocidad", included: true },
+        { icon: Users, text: "Hasta 4 huéspedes", included: true },
+        { icon: Utensils, text: "Cocina equipada", included: true },
+        { icon: Car, text: "Estacionamiento", included: true },
+        { icon: Wind, text: "Aire Acondicionado", included: true },
+        { icon: Crown, text: "Terraza vista lago", included: true },
+        { icon: Tv, text: "Smart TV", included: true },
+        { icon: Home, text: "Acceso sin escaleras", included: true },
+        { icon: Users, text: "Acceso a muelles privados", included: true },
+        { icon: Wind, text: "Brisa natural del lago", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 100,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 210,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 260,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    corinto1B: {
+      name: "Apartamento 1B Jardín",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "Apartamento en primera planta rodeado de jardines tropicales, con ambiente natural y privacidad total.",
+      fullDescription:
+        "Rodeado de exuberantes jardines tropicales, este apartamento ofrece máxima privacidad y conexión con la naturaleza. Ideal para huéspedes que buscan tranquilidad en un ambiente natural privilegiado.",
+      additionalInfo:
+        "Los jardines incluyen especies nativas como ceibas, laureles y flores tropicales que atraen aves locales. La terraza privada está diseñada como una extensión del jardín natural.",
+      note: "Perfecto para observación de aves, meditación al aire libre y huéspedes que buscan desconectarse en un ambiente completamente natural sin sacrificar comodidades modernas.",
+      finalNote:
+        "Apartamento 1B Jardín: un oasis natural donde la privacidad tropical se encuentra con el confort moderno.",
+      features: [
+        { icon: Bed, text: "2 camas full", included: true },
+        { icon: Bath, text: "1 baño", included: true },
+        { icon: Wifi, text: "Internet Wi-Fi", included: true },
+        { icon: Users, text: "Hasta 4 huéspedes", included: true },
+        { icon: Utensils, text: "Cocina completa", included: true },
+        { icon: Car, text: "Estacionamiento", included: true },
+        { icon: Wind, text: "Aire Acondicionado", included: true },
+        { icon: Crown, text: "Jardín privado", included: true },
+        { icon: Tv, text: "Smart TV", included: true },
+        { icon: Home, text: "Terraza jardín", included: true },
+        { icon: Users, text: "Área de meditación", included: true },
+        { icon: Wind, text: "Observación de aves", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 85,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 190,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 230,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    corinto2A: {
+      name: "Apartamento 2A Premium",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "Apartamento en segunda planta con vistas elevadas del lago y acabados premium para una experiencia superior.",
+      fullDescription:
+        "En segunda planta con vistas elevadas del lago, este apartamento premium ofrece acabados superiores y comodidades mejoradas. Perfecto para huéspedes que buscan lujo discreto con vistas espectaculares.",
+      additionalInfo:
+        "Los acabados premium incluyen pisos de cerámica italiana, electrodomésticos de acero inoxidable y mobiliario seleccionado. El balcón premium está equipado con mobiliario de teca.",
+      note: "Incluye servicios premium como limpieza diaria, amenidades de cortesía mejoradas y acceso prioritario a reservas en el restaurante del club.",
+      finalNote:
+        "Apartamento 2A Premium: donde el lujo discreto se eleva con las mejores vistas del Lago de Ilopango.",
+      features: [
+        { icon: Bed, text: "2 camas queen", included: true },
+        { icon: Bath, text: "1 baño premium", included: true },
+        { icon: Wifi, text: "Internet Wi-Fi fibra óptica", included: true },
+        { icon: Users, text: "Hasta 4 huéspedes", included: true },
+        { icon: Utensils, text: "Cocina gourmet", included: true },
+        { icon: Car, text: "Estacionamiento", included: true },
+        { icon: Wind, text: "Aire Acondicionado silencioso", included: true },
+        { icon: Crown, text: "Balcón premium", included: true },
+        { icon: Tv, text: "Smart TV premium", included: true },
+        { icon: Home, text: "Acabados de lujo", included: true },
+        { icon: Users, text: "Servicios premium incluidos", included: true },
+        { icon: Wind, text: "Vista elevada del lago", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 110,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 230,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 280,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    corinto2B: {
+      name: "Apartamento 2B Familiar",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "Apartamento familiar en segunda planta con espacios amplios y distribución óptima para familias.",
+      fullDescription:
+        "Diseñado especialmente para familias, este apartamento ofrece espacios amplios y distribución funcional. Con área de juegos para niños y comodidades familiares en un ambiente seguro.",
+      additionalInfo:
+        "La distribución incluye área de juegos segura en la terraza, rincón de lectura infantil, y baño familiar con bañera. Todas las ventanas tienen protecciones de seguridad para niños.",
+      note: "Incluye kit de bienvenida para niños, juegos de mesa, y acceso prioritario a las áreas familiares del club. Personal entrenado en atención familiar disponible.",
+      finalNote:
+        "Apartamento 2B Familiar: donde cada miembro de la familia encuentra su espacio perfecto con vista al lago.",
+      features: [
+        { icon: Bed, text: "2 camas + sofá cama", included: true },
+        { icon: Bath, text: "1 baño familiar", included: true },
+        { icon: Wifi, text: "Internet Wi-Fi", included: true },
+        { icon: Users, text: "Hasta 6 huéspedes", included: true },
+        { icon: Utensils, text: "Cocina extendida", included: true },
+        { icon: Car, text: "Estacionamiento", included: true },
+        { icon: Wind, text: "Aire Acondicionado", included: true },
+        { icon: Crown, text: "Área de juegos", included: true },
+        { icon: Tv, text: "Smart TV + consola", included: true },
+        { icon: Home, text: "Espacios amplios", included: true },
+        { icon: Users, text: "Seguridad para niños", included: true },
+        { icon: Wind, text: "Kit familiar incluido", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 105,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 220,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 270,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    corinto3A: {
+      name: "Apartamento 3A Penthouse",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "Apartamento penthouse en tercera planta con las mejores vistas panorámicas del Lago de Ilopango.",
+      fullDescription:
+        "El apartamento más exclusivo de Corinto, ubicado en la tercera planta con vistas panorámicas de 360 grados. Acabados de lujo y la experiencia de alojamiento más premium disponible.",
+      additionalInfo:
+        "Las vistas incluyen el lago completo, los volcanes circundantes y la ciudad de San Salvador en la distancia. La terraza panorámica cuenta con mobiliario de lujo y zona de descanso premium.",
+      note: "Incluye servicios VIP como mayordomo personal, amenidades de lujo, traslados premium y acceso exclusivo a áreas VIP del club. Perfecto para ocasiones especiales.",
+      finalNote:
+        "Apartamento 3A Penthouse: la cima del lujo lakeside donde las vistas panorámicas se encuentran con el servicio excepcional.",
+      features: [
+        { icon: Bed, text: "2 camas king", included: true },
+        { icon: Bath, text: "1 baño de lujo", included: true },
+        { icon: Wifi, text: "Internet Wi-Fi premium", included: true },
+        { icon: Users, text: "Hasta 4 huéspedes", included: true },
+        { icon: Utensils, text: "Cocina de lujo", included: true },
+        { icon: Car, text: "Estacionamiento VIP", included: true },
+        { icon: Wind, text: "Climatización premium", included: true },
+        { icon: Crown, text: "Terraza panorámica", included: true },
+        { icon: Tv, text: "Sistema entretenimiento premium", included: true },
+        { icon: Home, text: "Acabados de lujo", included: true },
+        { icon: Users, text: "Servicios VIP incluidos", included: true },
+        { icon: Wind, text: "Vistas 360° del lago", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 130,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 260,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 320,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    corinto3B: {
+      name: "Apartamento 3B Vista Total",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "Apartamento premium en tercera planta con vistas totales del lago y montañas circundantes.",
+      fullDescription:
+        "Con vistas totales del lago y las montañas, este apartamento premium ofrece una experiencia visual incomparable. Ideal para huéspedes que buscan las mejores vistas en un ambiente de lujo discreto.",
+      additionalInfo:
+        "Las vistas se extienden desde el volcán de San Salvador hasta las montañas de Chalatenango, con el lago completo en primer plano. Perfecto para fotografía de paisajes y contemplación.",
+      note: "Incluye telescopio para observación de paisajes, área de contemplación en la terraza y acceso a actividades de turismo ecológico del lago. Ideal para nature lovers.",
+      finalNote:
+        "Apartamento 3B Vista Total: donde la naturaleza se despliega en 360 grados desde tu terraza privada.",
+      features: [
+        { icon: Bed, text: "2 camas king", included: true },
+        { icon: Bath, text: "1 baño spa", included: true },
+        {
+          icon: Wifi,
+          text: "Internet Wi-Fi de alta velocidad",
+          included: true,
+        },
+        { icon: Users, text: "Hasta 4 huéspedes", included: true },
+        {
+          icon: Utensils,
+          text: "Cocina completamente equipada",
+          included: true,
+        },
+        { icon: Car, text: "Estacionamiento premium", included: true },
+        { icon: Wind, text: "Climatización inteligente", included: true },
+        { icon: Crown, text: "Terraza vista total", included: true },
+        { icon: Tv, text: "Smart TV premium", included: true },
+        { icon: Home, text: "Área de contemplación", included: true },
+        { icon: Users, text: "Telescopio incluido", included: true },
+        { icon: Wind, text: "Vistas totales lago y montañas", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 125,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 250,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 310,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
   };
 
   const apartment =
@@ -478,14 +763,29 @@ const ApartmentDetail = () => {
     );
   };
 
-  const apartmentTabs = [
-    { id: "1A", label: "Apartamento 1A" },
-    { id: "1B", label: "Apartamento 1B" },
-    { id: "2A", label: "Apartamento 2A" },
-    { id: "2B", label: "Apartamento 2B" },
-    { id: "3A", label: "Apartamento 3A" },
-    { id: "3B", label: "Apartamento 3B" },
-  ];
+  // Dynamic apartment tabs based on location
+  const getApartmentTabs = () => {
+    if (id?.startsWith("corinto")) {
+      return [
+        { id: "corinto1A", label: "Apartamento 1A Lago" },
+        { id: "corinto1B", label: "Apartamento 1B Jardín" },
+        { id: "corinto2A", label: "Apartamento 2A Premium" },
+        { id: "corinto2B", label: "Apartamento 2B Familiar" },
+        { id: "corinto3A", label: "Apartamento 3A Penthouse" },
+        { id: "corinto3B", label: "Apartamento 3B Vista Total" },
+      ];
+    }
+    return [
+      { id: "1A", label: "Apartamento 1A" },
+      { id: "1B", label: "Apartamento 1B" },
+      { id: "2A", label: "Apartamento 2A" },
+      { id: "2B", label: "Apartamento 2B" },
+      { id: "3A", label: "Apartamento 3A" },
+      { id: "3B", label: "Apartamento 3B" },
+    ];
+  };
+
+  const apartmentTabs = getApartmentTabs();
 
   return (
     <div className="min-h-screen bg-white">
