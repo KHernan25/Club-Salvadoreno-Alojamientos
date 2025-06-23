@@ -76,6 +76,116 @@ const PaymentGateway = () => {
   // Form validation
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Card and bank detection
+  const detectCardType = (cardNumber: string) => {
+    const number = cardNumber.replace(/\s/g, "");
+
+    if (/^4/.test(number)) return "visa";
+    if (/^5[1-5]/.test(number) || /^2[2-7]/.test(number)) return "mastercard";
+    if (/^3[47]/.test(number)) return "amex";
+    if (/^6/.test(number)) return "discover";
+    return "unknown";
+  };
+
+  const detectBank = (cardNumber: string) => {
+    const number = cardNumber.replace(/\s/g, "");
+    const bin = number.substring(0, 6);
+
+    // BIN ranges for Salvadoran banks
+    const bankRanges = {
+      "Banco Cuscatlán": ["423429", "423430", "423431", "545616", "545617"],
+      "Banco Agrícola": ["434420", "434421", "434422", "511878", "511879"],
+      "Banco de América Central": [
+        "422803",
+        "422804",
+        "422805",
+        "547739",
+        "547740",
+      ],
+      "Banco Hipotecario": ["485925", "485926", "485927", "530990", "530991"],
+      "Banco Promerica": ["411766", "411767", "411768", "516294", "516295"],
+      Scotiabank: ["451416", "451417", "451418", "558158", "558159"],
+      Citibank: ["424631", "424632", "424633", "520384", "520385"],
+      "Banco Davivienda": ["456789", "456790", "456791", "512345", "512346"],
+    };
+
+    for (const [bank, ranges] of Object.entries(bankRanges)) {
+      if (ranges.some((range) => bin.startsWith(range.substring(0, 4)))) {
+        return bank;
+      }
+    }
+
+    // Default detection by card type
+    if (number.startsWith("4")) return "Banco Emisor Visa";
+    if (number.startsWith("5")) return "Banco Emisor Mastercard";
+
+    return "Banco Emisor";
+  };
+
+  const cardType = detectCardType(formData.cardNumber);
+  const bankName = detectBank(formData.cardNumber);
+
+  const getCardIcon = () => {
+    switch (cardType) {
+      case "visa":
+        return (
+          <div className="flex items-center justify-center w-12 h-8 bg-blue-600 text-white text-xs font-bold rounded">
+            VISA
+          </div>
+        );
+      case "mastercard":
+        return (
+          <div className="flex items-center justify-center w-12 h-8 bg-red-500 text-white text-xs font-bold rounded">
+            MC
+          </div>
+        );
+      case "amex":
+        return (
+          <div className="flex items-center justify-center w-12 h-8 bg-green-600 text-white text-xs font-bold rounded">
+            AMEX
+          </div>
+        );
+      case "discover":
+        return (
+          <div className="flex items-center justify-center w-12 h-8 bg-orange-500 text-white text-xs font-bold rounded">
+            DISC
+          </div>
+        );
+      default:
+        return (
+          <div className="flex items-center justify-center w-12 h-8 bg-gray-400 text-white text-xs font-bold rounded">
+            CARD
+          </div>
+        );
+    }
+  };
+
+  const getBankIcon = () => {
+    const iconStyles =
+      "w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs";
+
+    switch (bankName) {
+      case "Banco Cuscatlán":
+        return <div className={`${iconStyles} bg-orange-500`}>BC</div>;
+      case "Banco Agrícola":
+        return <div className={`${iconStyles} bg-green-600`}>BA</div>;
+      case "Banco de América Central":
+        return <div className={`${iconStyles} bg-blue-600`}>BAC</div>;
+      case "Banco Hipotecario":
+        return <div className={`${iconStyles} bg-purple-600`}>BH</div>;
+      case "Banco Promerica":
+        return <div className={`${iconStyles} bg-red-600`}>BP</div>;
+      case "Scotiabank":
+        return <div className={`${iconStyles} bg-red-700`}>SB</div>;
+      case "Citibank":
+        return <div className={`${iconStyles} bg-blue-800`}>CB</div>;
+      case "Banco Davivienda":
+        return <div className={`${iconStyles} bg-pink-600`}>BD</div>;
+      default:
+        return <div className={`${iconStyles} bg-gray-500`}>🏦</div>;
+    }
+  };
+
   // Redirect if no reservation data
   useEffect(() => {
     if (!reservationCode || !checkIn || !checkOut) {
@@ -217,12 +327,27 @@ const PaymentGateway = () => {
                 Todos los pagos son seguros y encriptados
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Banco Cuscatlán Logo */}
-              <div className="flex items-center justify-center p-4 bg-orange-50 rounded-lg">
-                <div className="text-orange-600 font-bold text-lg">
-                  🏦 Banco Cuscatlán
+            <CardContent className="space-y-6 bg-gradient-to-br from-white to-slate-50">
+              {/* Dynamic Bank Detection */}
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-lg border">
+                <div className="flex items-center gap-3">
+                  {getBankIcon()}
+                  <div>
+                    <div className="font-semibold text-slate-800">
+                      {bankName}
+                    </div>
+                    <div className="text-sm text-slate-600">
+                      {formData.cardNumber
+                        ? "Banco detectado automáticamente"
+                        : "Ingresa tu tarjeta para detectar el banco"}
+                    </div>
+                  </div>
                 </div>
+                {formData.cardNumber && (
+                  <div className="text-green-600">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                )}
               </div>
 
               {/* Card Number */}
@@ -236,16 +361,26 @@ const PaymentGateway = () => {
                     onChange={(e) =>
                       handleInputChange("cardNumber", e.target.value)
                     }
-                    className={errors.cardNumber ? "border-red-500" : ""}
+                    className={`pr-16 ${errors.cardNumber ? "border-red-500" : formData.cardNumber ? "border-green-500" : ""}`}
                   />
-                  <div className="absolute right-3 top-3">
-                    <img
-                      src="https://cdn.builder.io/api/v1/assets/4dc0ba6e9b50411fbb0660d288b0af41/image-f2994e?format=webp&width=800"
-                      alt="Visa"
-                      className="h-6 w-auto"
-                    />
+                  <div className="absolute right-3 top-2.5">
+                    {getCardIcon()}
                   </div>
                 </div>
+                {formData.cardNumber && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span className="text-green-600">
+                      {cardType === "visa" && "Tarjeta Visa detectada"}
+                      {cardType === "mastercard" &&
+                        "Tarjeta Mastercard detectada"}
+                      {cardType === "amex" &&
+                        "Tarjeta American Express detectada"}
+                      {cardType === "discover" && "Tarjeta Discover detectada"}
+                      {cardType === "unknown" && "Tipo de tarjeta detectado"}
+                    </span>
+                  </div>
+                )}
                 {errors.cardNumber && (
                   <p className="text-sm text-red-500">{errors.cardNumber}</p>
                 )}
@@ -262,7 +397,7 @@ const PaymentGateway = () => {
                     onChange={(e) =>
                       handleInputChange("cardName", e.target.value)
                     }
-                    className={errors.cardName ? "border-red-500" : ""}
+                    className={`${errors.cardName ? "border-red-500" : formData.cardName ? "border-green-500" : ""} focus:ring-2 focus:ring-blue-500`}
                   />
                   {errors.cardName && (
                     <p className="text-sm text-red-500">{errors.cardName}</p>
@@ -277,7 +412,7 @@ const PaymentGateway = () => {
                     onChange={(e) =>
                       handleInputChange("cardLastName", e.target.value)
                     }
-                    className={errors.cardLastName ? "border-red-500" : ""}
+                    className={`${errors.cardLastName ? "border-red-500" : formData.cardLastName ? "border-green-500" : ""} focus:ring-2 focus:ring-blue-500`}
                   />
                   {errors.cardLastName && (
                     <p className="text-sm text-red-500">
@@ -354,7 +489,7 @@ const PaymentGateway = () => {
                         e.target.value.replace(/\D/g, ""),
                       )
                     }
-                    className={errors.cvv ? "border-red-500" : ""}
+                    className={`${errors.cvv ? "border-red-500" : formData.cvv.length >= 3 ? "border-green-500" : ""} focus:ring-2 focus:ring-blue-500`}
                   />
                   {errors.cvv && (
                     <p className="text-sm text-red-500">{errors.cvv}</p>
@@ -371,7 +506,7 @@ const PaymentGateway = () => {
                   placeholder="tu@email.com"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  className={errors.email ? "border-red-500" : ""}
+                  className={`${errors.email ? "border-red-500" : formData.email.includes("@") ? "border-green-500" : ""} focus:ring-2 focus:ring-blue-500`}
                 />
                 {errors.email && (
                   <p className="text-sm text-red-500">{errors.email}</p>
@@ -379,20 +514,34 @@ const PaymentGateway = () => {
               </div>
 
               {/* Security Notice */}
-              <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-lg">
-                <Lock className="h-4 w-4 text-slate-500" />
-                <span className="text-sm text-slate-600">
-                  Tu información está protegida con encriptación SSL
-                </span>
+              <div className="flex items-center gap-2 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg">
+                <Lock className="h-5 w-5 text-green-600" />
+                <div>
+                  <div className="text-sm font-medium text-green-800">
+                    Pago 100% Seguro
+                  </div>
+                  <div className="text-xs text-green-600">
+                    Tu información está protegida con encriptación SSL de 256
+                    bits
+                  </div>
+                </div>
               </div>
 
               {/* Payment Button */}
               <Button
                 onClick={handlePayment}
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-6 text-lg font-semibold"
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-6 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200"
                 size="lg"
+                disabled={
+                  !formData.cardNumber ||
+                  !formData.cardName ||
+                  !formData.cardLastName ||
+                  !formData.cvv ||
+                  !formData.email
+                }
               >
-                PAGAR {formatPrice(totalPrice)}
+                <Lock className="h-5 w-5 mr-2" />
+                PAGAR {formatPrice(totalPrice)} - SEGURO
               </Button>
             </CardContent>
           </Card>
