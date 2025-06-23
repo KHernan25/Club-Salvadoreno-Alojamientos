@@ -10,6 +10,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate, useParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import {
+  getMinimumDate,
+  getNextAvailableCheckOut,
+  validateReservationDates,
+  calculateStayPrice,
+  getAccommodationRates,
+  formatPrice,
+  formatDateSpanish,
+} from "@/lib/pricing-system";
 import {
   Menu,
   Globe,
@@ -37,21 +47,72 @@ import Navbar from "@/components/Navbar";
 const ApartmentDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { toast } = useToast();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [checkInDate, setCheckInDate] = useState("2025-06-07");
-  const [checkOutDate, setCheckOutDate] = useState("2025-06-08");
 
-  // Set minimum date to today
-  const today = new Date().toISOString().split("T")[0];
+  // Fechas iniciales: mañana para check-in, pasado mañana para check-out
+  const minDate = getMinimumDate();
+  const [checkInDate, setCheckInDate] = useState(minDate);
+  const [checkOutDate, setCheckOutDate] = useState(
+    getNextAvailableCheckOut(minDate),
+  );
+  const [priceCalculation, setPriceCalculation] = useState(null);
+  const [isCalculating, setIsCalculating] = useState(false);
 
   useEffect(() => {
-    // Ensure check-out is always after check-in
+    // Asegurar que check-out sea siempre después de check-in
     if (checkInDate >= checkOutDate) {
-      const nextDay = new Date(checkInDate);
-      nextDay.setDate(nextDay.getDate() + 1);
-      setCheckOutDate(nextDay.toISOString().split("T")[0]);
+      const nextDay = getNextAvailableCheckOut(checkInDate);
+      setCheckOutDate(nextDay);
     }
-  }, [checkInDate, checkOutDate]);
+  }, [checkInDate]);
+
+  // Función para calcular disponibilidad y precios
+  const handleCheckAvailability = () => {
+    // Validar fechas
+    const validation = validateReservationDates(checkInDate, checkOutDate);
+
+    if (!validation.valid) {
+      toast({
+        title: "Error en las fechas",
+        description: validation.error,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsCalculating(true);
+
+    // Simular carga de datos
+    setTimeout(() => {
+      const rates = getAccommodationRates(id || "1A");
+
+      if (!rates) {
+        toast({
+          title: "Error",
+          description:
+            "No se pudieron obtener las tarifas para este alojamiento",
+          variant: "destructive",
+        });
+        setIsCalculating(false);
+        return;
+      }
+
+      const calculation = calculateStayPrice(
+        new Date(checkInDate),
+        new Date(checkOutDate),
+        rates,
+      );
+
+      setPriceCalculation(calculation);
+      setIsCalculating(false);
+
+      toast({
+        title: "Disponibilidad verificada",
+        description: `Total: ${formatPrice(calculation.totalPrice)} por ${calculation.totalDays} ${calculation.totalDays === 1 ? "noche" : "noches"}`,
+      });
+    }, 1000);
+  };
 
   // Simulated apartment data - in real app this would come from API
   const apartmentData = {
@@ -309,12 +370,15 @@ const ApartmentDetail = () => {
                     <div className="relative">
                       <input
                         type="date"
-                        min={today}
+                        min={getMinimumDate()}
                         value={checkInDate}
                         onChange={(e) => setCheckInDate(e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Selecciona a partir de mañana
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -323,25 +387,91 @@ const ApartmentDetail = () => {
                     <div className="relative">
                       <input
                         type="date"
-                        min={checkInDate}
+                        min={getNextAvailableCheckOut(checkInDate)}
                         value={checkOutDate}
                         onChange={(e) => setCheckOutDate(e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Mínimo 1 noche de estadía
+                    </p>
                   </div>
                 </div>
 
+                {/* Price Calculation Display */}
+                {priceCalculation && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
+                    <h4 className="font-semibold text-green-800 mb-2">
+                      Cálculo de Precios
+                    </h4>
+                    <div className="space-y-2 text-sm">
+                      {priceCalculation.weekdayDays > 0 && (
+                        <div className="flex justify-between">
+                          <span>
+                            {priceCalculation.weekdayDays} noche(s) entre semana
+                          </span>
+                          <span className="font-medium">
+                            {formatPrice(priceCalculation.weekdayTotal)}
+                          </span>
+                        </div>
+                      )}
+                      {priceCalculation.weekendDays > 0 && (
+                        <div className="flex justify-between">
+                          <span>
+                            {priceCalculation.weekendDays} noche(s) fin de
+                            semana
+                          </span>
+                          <span className="font-medium">
+                            {formatPrice(priceCalculation.weekendTotal)}
+                          </span>
+                        </div>
+                      )}
+                      {priceCalculation.holidayDays > 0 && (
+                        <div className="flex justify-between">
+                          <span>
+                            {priceCalculation.holidayDays} noche(s) feriado
+                          </span>
+                          <span className="font-medium">
+                            {formatPrice(priceCalculation.holidayTotal)}
+                          </span>
+                        </div>
+                      )}
+                      <div className="border-t border-green-300 pt-2 flex justify-between font-bold text-green-800">
+                        <span>Total ({priceCalculation.totalDays} noches)</span>
+                        <span>{formatPrice(priceCalculation.totalPrice)}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <Button
-                  className="w-full bg-blue-900 hover:bg-blue-800 py-3"
-                  onClick={() =>
-                    navigate(
-                      `/reservas?checkIn=${checkInDate}&checkOut=${checkOutDate}&accommodation=apartamento&id=${id}&name=${encodeURIComponent(apartment.name)}`,
-                    )
-                  }
+                  className="w-full bg-blue-900 hover:bg-blue-800 py-3 mt-4"
+                  onClick={handleCheckAvailability}
+                  disabled={isCalculating}
                 >
-                  Ver disponibilidad
+                  {isCalculating ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Calculando...
+                    </>
+                  ) : (
+                    "Ver disponibilidad y precios"
+                  )}
                 </Button>
+
+                {priceCalculation && (
+                  <Button
+                    className="w-full bg-green-600 hover:bg-green-700 py-3 mt-2"
+                    onClick={() =>
+                      navigate(
+                        `/reservas?checkIn=${checkInDate}&checkOut=${checkOutDate}&accommodation=apartamento&id=${id}&name=${encodeURIComponent(apartment.name)}&totalPrice=${priceCalculation.totalPrice}`,
+                      )
+                    }
+                  >
+                    Reservar ahora - {formatPrice(priceCalculation.totalPrice)}
+                  </Button>
+                )}
               </CardContent>
             </Card>
 

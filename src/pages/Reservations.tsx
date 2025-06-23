@@ -16,6 +16,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import {
+  getMinimumDate,
+  getNextAvailableCheckOut,
+  validateReservationDates,
+  calculateStayPrice,
+  getAccommodationRates,
+  formatPrice,
+  formatDateSpanish,
+} from "@/lib/pricing-system";
 import {
   Menu,
   Globe,
@@ -32,20 +42,28 @@ import Navbar from "@/components/Navbar";
 const Reservations = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   const [selectedMonth, setSelectedMonth] = useState(5); // June (0-based)
   const [selectedYear, setSelectedYear] = useState(2025);
   const [guests, setGuests] = useState(2);
 
-  // Get dates from URL parameters or use defaults
+  // Get dates from URL parameters or use defaults (minimum tomorrow)
+  const minDate = getMinimumDate();
   const [selectedDates, setSelectedDates] = useState({
-    checkIn: searchParams.get("checkIn") || "2025-06-07",
-    checkOut: searchParams.get("checkOut") || "2025-06-08",
+    checkIn: searchParams.get("checkIn") || minDate,
+    checkOut: searchParams.get("checkOut") || getNextAvailableCheckOut(minDate),
   });
 
   // Get accommodation info from URL parameters
   const accommodationType = searchParams.get("accommodation") || "apartamento";
   const accommodationId = searchParams.get("id") || "1A";
   const accommodationName = searchParams.get("name") || "Apartamento 1A";
+  const totalPrice = searchParams.get("totalPrice");
+
+  // State for price calculation
+  const [priceCalculation, setPriceCalculation] = useState(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [dateError, setDateError] = useState("");
 
   // Generate unique reservation code
   const generateReservationCode = () => {
@@ -53,6 +71,14 @@ const Reservations = () => {
     const random = Math.random().toString(36).substring(2, 8).toUpperCase();
     const letters = Math.random().toString(36).substring(2, 4).toUpperCase();
     return `${letters}${timestamp.toString().slice(-4)}${random.slice(0, 4)}`;
+  };
+
+  // Calculate maximum checkout date (7 days from checkin)
+  const getMaxCheckOutDate = (checkInDate: string): string => {
+    const checkIn = new Date(checkInDate);
+    const maxCheckOut = new Date(checkIn);
+    maxCheckOut.setDate(maxCheckOut.getDate() + 7);
+    return maxCheckOut.toISOString().split("T")[0];
   };
 
   const [reservationCode, setReservationCode] = useState(() =>
@@ -65,14 +91,63 @@ const Reservations = () => {
   useEffect(() => {
     // Ensure check-out is always after check-in
     if (selectedDates.checkIn >= selectedDates.checkOut) {
-      const nextDay = new Date(selectedDates.checkIn);
-      nextDay.setDate(nextDay.getDate() + 1);
+      const nextDay = getNextAvailableCheckOut(selectedDates.checkIn);
       setSelectedDates((prev) => ({
         ...prev,
-        checkOut: nextDay.toISOString().split("T")[0],
+        checkOut: nextDay,
       }));
     }
   }, [selectedDates.checkIn]);
+
+  // Calculate prices when dates change
+  useEffect(() => {
+    if (selectedDates.checkIn && selectedDates.checkOut) {
+      calculatePrices();
+    }
+  }, [selectedDates.checkIn, selectedDates.checkOut, accommodationId]);
+
+  const calculatePrices = () => {
+    const validation = validateReservationDates(
+      selectedDates.checkIn,
+      selectedDates.checkOut,
+    );
+
+    if (!validation.valid) {
+      setPriceCalculation(null);
+      setDateError(validation.error || "Error en las fechas seleccionadas");
+      return;
+    }
+
+    // Clear any previous errors
+    setDateError("");
+
+    const rates = getAccommodationRates(accommodationId);
+
+    if (!rates) {
+      setPriceCalculation(null);
+      return;
+    }
+
+    // Create dates in local timezone to avoid timezone shift issues
+    const checkInParts = selectedDates.checkIn.split("-");
+    const checkOutParts = selectedDates.checkOut.split("-");
+
+    const checkInDate = new Date(
+      parseInt(checkInParts[0]),
+      parseInt(checkInParts[1]) - 1,
+      parseInt(checkInParts[2]),
+    );
+
+    const checkOutDate = new Date(
+      parseInt(checkOutParts[0]),
+      parseInt(checkOutParts[1]) - 1,
+      parseInt(checkOutParts[2]),
+    );
+
+    const calculation = calculateStayPrice(checkInDate, checkOutDate, rates);
+
+    setPriceCalculation(calculation);
+  };
 
   // Update calendar when dates change
   useEffect(() => {
@@ -335,7 +410,7 @@ const Reservations = () => {
                       </label>
                       <input
                         type="date"
-                        min={today}
+                        min={getMinimumDate()}
                         value={selectedDates.checkIn}
                         onChange={(e) =>
                           setSelectedDates({
@@ -345,6 +420,9 @@ const Reservations = () => {
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
+                      <p className="text-xs text-slate-500 mt-1">
+                        Selecciona a partir de mañana
+                      </p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -352,7 +430,8 @@ const Reservations = () => {
                       </label>
                       <input
                         type="date"
-                        min={selectedDates.checkIn}
+                        min={getNextAvailableCheckOut(selectedDates.checkIn)}
+                        max={getMaxCheckOutDate(selectedDates.checkIn)}
                         value={selectedDates.checkOut}
                         onChange={(e) =>
                           setSelectedDates({
@@ -362,8 +441,18 @@ const Reservations = () => {
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
+                      <p className="text-xs text-slate-500 mt-1">
+                        Máximo 7 días consecutivos
+                      </p>
                     </div>
                   </div>
+
+                  {/* Error message for date validation */}
+                  {dateError && (
+                    <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <p className="text-sm text-red-600">{dateError}</p>
+                    </div>
+                  )}
 
                   <Button
                     className="w-full mt-6 bg-blue-900 hover:bg-blue-800 py-3"
@@ -454,27 +543,94 @@ const Reservations = () => {
                   </div>
 
                   <div className="border-t border-slate-200 pt-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-slate-600">
-                        {isWeekend ? "Fin de semana" : "Día de semana"}
-                      </span>
-                      <span className="font-medium">${currentPrice}.00</span>
-                    </div>
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-2xl font-bold text-slate-900">
-                        Total: ${currentPrice}
-                      </span>
-                      <Button
-                        className="bg-blue-900 hover:bg-blue-800"
-                        onClick={() =>
-                          navigate(
-                            `/confirmacion/${reservationCode}?checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${currentPrice}`,
-                          )
-                        }
-                      >
-                        PAGAR RESERVA
-                      </Button>
-                    </div>
+                    {/* Detailed Price Breakdown */}
+                    {priceCalculation ? (
+                      <div className="space-y-3 mb-4">
+                        <h4 className="font-semibold text-slate-800 text-sm">
+                          Desglose de Precios:
+                        </h4>
+                        <div className="space-y-2">
+                          {priceCalculation.weekdayDays > 0 && (
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-slate-600">
+                                {priceCalculation.weekdayDays} noche(s) entre
+                                semana
+                              </span>
+                              <span className="font-medium">
+                                {formatPrice(priceCalculation.weekdayTotal)}
+                              </span>
+                            </div>
+                          )}
+                          {priceCalculation.weekendDays > 0 && (
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-slate-600">
+                                {priceCalculation.weekendDays} noche(s) fin de
+                                semana
+                              </span>
+                              <span className="font-medium">
+                                {formatPrice(priceCalculation.weekendTotal)}
+                              </span>
+                            </div>
+                          )}
+                          {priceCalculation.holidayDays > 0 && (
+                            <div className="flex justify-between items-center text-sm">
+                              <span className="text-slate-600">
+                                {priceCalculation.holidayDays} noche(s) feriado
+                              </span>
+                              <span className="font-medium text-red-600">
+                                {formatPrice(priceCalculation.holidayTotal)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="border-t border-slate-200 pt-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-lg font-bold text-slate-900">
+                              Total: {formatPrice(priceCalculation.totalPrice)}
+                            </span>
+                            <Button
+                              className="bg-blue-900 hover:bg-blue-800"
+                              onClick={() =>
+                                navigate(
+                                  `/confirmacion/${reservationCode}?checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${priceCalculation.totalPrice}`,
+                                )
+                              }
+                            >
+                              PAGAR RESERVA
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      // Fallback si no hay cálculo de precios
+                      <div className="space-y-2 mb-4">
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-slate-600">
+                            {isWeekend ? "Fin de semana" : "Día de semana"}
+                          </span>
+                          <span className="font-medium">
+                            ${currentPrice}.00
+                          </span>
+                        </div>
+                        <div className="border-t border-slate-200 pt-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-lg font-bold text-slate-900">
+                              Total: ${currentPrice}
+                            </span>
+                            <Button
+                              className="bg-blue-900 hover:bg-blue-800"
+                              onClick={() =>
+                                navigate(
+                                  `/confirmacion/${reservationCode}?checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${currentPrice}`,
+                                )
+                              }
+                            >
+                              PAGAR RESERVA
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>

@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth-service";
 import { useTranslations } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import {
   User,
   Settings,
@@ -34,7 +35,7 @@ import {
 } from "lucide-react";
 import { useRef } from "react";
 
-const Index = () => {
+const IndexContent = () => {
   const navigate = useNavigate();
   const t = useTranslations();
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
@@ -342,6 +343,15 @@ const Index = () => {
         </div>
       </footer>
     </div>
+  );
+};
+
+// Componente protegido exportado
+const Index = () => {
+  return (
+    <ProtectedRoute>
+      <IndexContent />
+    </ProtectedRoute>
   );
 };
 
