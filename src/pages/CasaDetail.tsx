@@ -41,11 +41,13 @@ const CasaDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [checkInDate, setCheckInDate] = useState("2025-06-07");
-  const [checkOutDate, setCheckOutDate] = useState("2025-06-08");
 
-  // Set minimum date to today
-  const today = new Date().toISOString().split("T")[0];
+  // Initialize dates with getMinimumDate (tomorrow) for check-in and day after for check-out
+  const minDate = getMinimumDate();
+  const [checkInDate, setCheckInDate] = useState(minDate);
+  const [checkOutDate, setCheckOutDate] = useState(
+    getNextAvailableCheckOut(minDate),
+  );
 
   useEffect(() => {
     // Ensure check-out is always after check-in
