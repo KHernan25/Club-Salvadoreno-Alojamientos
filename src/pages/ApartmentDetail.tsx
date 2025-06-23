@@ -62,10 +62,56 @@ const ApartmentDetail = () => {
     // Asegurar que check-out sea siempre después de check-in
     if (checkInDate >= checkOutDate) {
       const nextDay = getNextAvailableCheckOut(checkInDate);
-      nextDay.setDate(nextDay.getDate() + 1);
-      setCheckOutDate(nextDay.toISOString().split("T")[0]);
+      setCheckOutDate(nextDay);
     }
-  }, [checkInDate, checkOutDate]);
+  }, [checkInDate]);
+
+  // Función para calcular disponibilidad y precios
+  const handleCheckAvailability = () => {
+    // Validar fechas
+    const validation = validateReservationDates(checkInDate, checkOutDate);
+
+    if (!validation.valid) {
+      toast({
+        title: "Error en las fechas",
+        description: validation.error,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsCalculating(true);
+
+    // Simular carga de datos
+    setTimeout(() => {
+      const rates = getAccommodationRates(id || "1A");
+
+      if (!rates) {
+        toast({
+          title: "Error",
+          description:
+            "No se pudieron obtener las tarifas para este alojamiento",
+          variant: "destructive",
+        });
+        setIsCalculating(false);
+        return;
+      }
+
+      const calculation = calculateStayPrice(
+        new Date(checkInDate),
+        new Date(checkOutDate),
+        rates,
+      );
+
+      setPriceCalculation(calculation);
+      setIsCalculating(false);
+
+      toast({
+        title: "Disponibilidad verificada",
+        description: `Total: ${formatPrice(calculation.totalPrice)} por ${calculation.totalDays} ${calculation.totalDays === 1 ? "noche" : "noches"}`,
+      });
+    }, 1000);
+  };
 
   // Simulated apartment data - in real app this would come from API
   const apartmentData = {
