@@ -168,7 +168,7 @@ const Navbar = ({ className }: NavbarProps) => {
               />
             </div>
             <span className="text-xl font-semibold text-slate-900 hidden sm:block">
-              {t.dashboard.clubName}
+              Club Salvadoreño
             </span>
           </div>
 
@@ -203,7 +203,7 @@ const Navbar = ({ className }: NavbarProps) => {
                 <Button variant="ghost" className="gap-2 h-9">
                   <Globe className="h-4 w-4" />
                   <span className="hidden lg:inline">
-                    {currentLanguage?.flag} {currentLanguage?.name}
+                    {currentLanguage?.name}
                   </span>
                   <span className="lg:hidden">{currentLanguage?.flag}</span>
                   <ChevronDown className="h-3 w-3" />

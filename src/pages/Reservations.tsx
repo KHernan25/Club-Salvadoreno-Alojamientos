@@ -37,6 +37,7 @@ import {
   Users,
   Clock,
 } from "lucide-react";
+import Navbar from "@/components/Navbar";
 
 const Reservations = () => {
   const navigate = useNavigate();
@@ -289,46 +290,7 @@ const Reservations = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-800">
       {/* Navigation */}
-      <nav className="bg-white/10 backdrop-blur-sm border-b border-white/20">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate("/dashboard")}
-              >
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-blue-900 font-bold text-sm">CS</span>
-                </div>
-                <span className="text-xl font-semibold text-white">
-                  Club Salvadoreño
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6">
-              <Button
-                variant="ghost"
-                className="gap-2 text-white hover:bg-white/10"
-              >
-                <Globe className="h-4 w-4" />
-                ES
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="gap-2 text-white hover:bg-white/10"
-              >
-                <User className="h-4 w-4" />
-                EN
-              </Button>
-              <Button variant="ghost" className="text-white hover:bg-white/10">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="py-16">
