@@ -79,12 +79,12 @@ export const getDayType = (date: Date): "weekday" | "weekend" | "holiday" => {
 
   const dayOfWeek = date.getDay(); // 0 = Domingo, 6 = Sábado
 
-  // Viernes (5), Sábado (6), Domingo (0) son fin de semana
-  if (dayOfWeek === 0 || dayOfWeek === 5 || dayOfWeek === 6) {
+  // Solo Sábado (6) y Domingo (0) son fin de semana
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
     return "weekend";
   }
 
-  // Lunes (1) a Jueves (4) son días de semana
+  // Lunes (1) a Viernes (5) son días de semana
   return "weekday";
 };
 
@@ -181,14 +181,14 @@ export const validateReservationDates = (
     };
   }
 
-  // Verificar que la estadía no sea más de 30 días
+  // Verificar que la estadía no sea más de 7 días
   const diffTime = checkOutDate.getTime() - checkInDate.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffDays > 30) {
+  if (diffDays > 7) {
     return {
       valid: false,
-      error: "La estadía no puede exceder 30 días",
+      error: "La estadía no puede exceder 7 días consecutivos",
     };
   }
 
