@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { getRegisteredUsers } from "@/lib/user-database";
+import { registeredUsers, User } from "@/lib/user-database";
 import { Trash2, Eye, EyeOff } from "lucide-react";
 
 const DevRegisteredUsers = () => {
