@@ -127,11 +127,23 @@ const Reservations = () => {
       return;
     }
 
-    const calculation = calculateStayPrice(
-      new Date(selectedDates.checkIn),
-      new Date(selectedDates.checkOut),
-      rates,
+    // Create dates in local timezone to avoid timezone shift issues
+    const checkInParts = selectedDates.checkIn.split("-");
+    const checkOutParts = selectedDates.checkOut.split("-");
+
+    const checkInDate = new Date(
+      parseInt(checkInParts[0]),
+      parseInt(checkInParts[1]) - 1,
+      parseInt(checkInParts[2]),
     );
+
+    const checkOutDate = new Date(
+      parseInt(checkOutParts[0]),
+      parseInt(checkOutParts[1]) - 1,
+      parseInt(checkOutParts[2]),
+    );
+
+    const calculation = calculateStayPrice(checkInDate, checkOutDate, rates);
 
     setPriceCalculation(calculation);
   };
