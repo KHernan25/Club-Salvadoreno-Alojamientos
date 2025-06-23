@@ -1011,59 +1011,118 @@ const CasaDetail = () => {
 
             {/* Additional Options */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-                <div className="relative h-32 overflow-hidden rounded-t-lg">
-                  <img
-                    src="/placeholder.svg"
-                    alt="APARTAMENTOS"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-2 left-2 bg-green-600 text-white px-2 py-1 rounded text-sm">
-                    APARTAMENTOS
-                  </div>
-                </div>
-                <CardContent className="p-3">
-                  <p className="text-xs text-slate-600 leading-tight">
-                    Ideales para estancias cómodas con todas las comodidades
-                    modernas.
-                  </p>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="w-full mt-2 text-xs"
-                    onClick={() => navigate("/alojamientos")}
-                  >
-                    Ver Detalles
-                  </Button>
-                </CardContent>
-              </Card>
+              {isCorintoHouse ? (
+                <>
+                  <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                    <div className="relative h-32 overflow-hidden rounded-t-lg">
+                      <img
+                        src="/placeholder.svg"
+                        alt="APARTAMENTOS CORINTO"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-2 left-2 bg-green-600 text-white px-2 py-1 rounded text-sm">
+                        APARTAMENTOS
+                      </div>
+                    </div>
+                    <CardContent className="p-3">
+                      <p className="text-xs text-slate-600 leading-tight">
+                        Apartamentos modernos en Corinto con vista al lago.
+                      </p>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full mt-2 text-xs"
+                        onClick={() => navigate("/corinto-apartamentos")}
+                      >
+                        Ver Apartamentos
+                      </Button>
+                    </CardContent>
+                  </Card>
 
-              <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-                <div className="relative h-32 overflow-hidden rounded-t-lg">
-                  <img
-                    src="/placeholder.svg"
-                    alt="SUITES"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-2 left-2 bg-green-600 text-white px-2 py-1 rounded text-sm">
-                    SUITES
-                  </div>
-                </div>
-                <CardContent className="p-3">
-                  <p className="text-xs text-slate-600 leading-tight">
-                    Pensadas para una estadía íntima, elegante y llena de
-                    confort.
-                  </p>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="w-full mt-2 text-xs"
-                    onClick={() => navigate("/suite/suite1")}
-                  >
-                    Ver Detalles
-                  </Button>
-                </CardContent>
-              </Card>
+                  <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                    <div className="relative h-32 overflow-hidden rounded-t-lg">
+                      <img
+                        src="/placeholder.svg"
+                        alt="EL SUNZAL"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-sm">
+                        EL SUNZAL
+                      </div>
+                    </div>
+                    <CardContent className="p-3">
+                      <p className="text-xs text-slate-600 leading-tight">
+                        Casas frente al mar en El Sunzal para experiencias
+                        únicas.
+                      </p>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full mt-2 text-xs"
+                        onClick={() => navigate("/casa/casa1")}
+                      >
+                        Ver El Sunzal
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </>
+              ) : (
+                <>
+                  <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                    <div className="relative h-32 overflow-hidden rounded-t-lg">
+                      <img
+                        src="/placeholder.svg"
+                        alt="APARTAMENTOS"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-2 left-2 bg-green-600 text-white px-2 py-1 rounded text-sm">
+                        APARTAMENTOS
+                      </div>
+                    </div>
+                    <CardContent className="p-3">
+                      <p className="text-xs text-slate-600 leading-tight">
+                        Ideales para estancias cómodas con todas las comodidades
+                        modernas.
+                      </p>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full mt-2 text-xs"
+                        onClick={() => navigate("/alojamientos")}
+                      >
+                        Ver Detalles
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                    <div className="relative h-32 overflow-hidden rounded-t-lg">
+                      <img
+                        src="/placeholder.svg"
+                        alt="CORINTO"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-sm">
+                        CORINTO
+                      </div>
+                    </div>
+                    <CardContent className="p-3">
+                      <p className="text-xs text-slate-600 leading-tight">
+                        Casas junto al lago en Corinto para escapadas
+                        tranquilas.
+                      </p>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full mt-2 text-xs"
+                        onClick={() => navigate("/casa/corinto-casa-1")}
+                      >
+                        Ver Corinto
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
             </div>
           </div>
         </div>
