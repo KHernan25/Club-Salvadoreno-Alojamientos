@@ -60,7 +60,7 @@ const DevRegisteredUsers = () => {
           <Eye className="h-4 w-4" />
         )}
         {isVisible ? "Ocultar" : "Ver"} Usuarios Registrados (
-        {registeredUsers.length})
+        {allRegisteredUsers.length})
       </Button>
 
       {isVisible && (
