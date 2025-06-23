@@ -9,13 +9,10 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import {
-  getCurrentUser,
-  isAuthenticated,
-  requireAuth,
-} from "@/lib/auth-service";
+import { getCurrentUser } from "@/lib/auth-service";
 import { useTranslations } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import {
   User,
   Settings,
