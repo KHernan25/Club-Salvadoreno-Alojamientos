@@ -113,20 +113,20 @@ const ApartmentDetail = () => {
     }, 1000);
   };
 
-  // Simulated apartment data - in real app this would come from API
+  // Complete apartment data for all El Sunzal apartments
   const apartmentData = {
     "1A": {
       name: "Apartamento 1A",
       images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
       description:
-        "El apartamento 1A está diseñado para brindarle una experiencia de descanso y comodidad en un entorno natural privilegiado, justo en el corazón de la Costa Brava de la costa salvadoreña.",
+        "El apartamento 1A está diseñado para brindarle una experiencia de descanso y comodidad en un entorno natural privilegiado, ubicado en la primera planta con fácil acceso.",
       fullDescription:
-        "Es un espacio íntimo, funcional y encantador, donde cada detalle está diseñado para que usted descanse reparador después de un día de piscina en la terraza privada en su centro perfecto para activar su manera privada de vivir el momento.",
+        "Este apartamento de primera planta combina comodidad y accesibilidad. Con una distribución funcional y vistas parciales al mar, es perfecto para parejas o familias pequeñas que buscan un refugio tranquilo.",
       additionalInfo:
-        "El centro, funciones específicas en cualquier momento de sus aventuras que le serán y le permiten disfrutar del tiempo cómodo y fresco para contemplar de tranquilidad necesario en toda actividad para la aventura que alentara para la serenidad y vivir al momento.",
-      note: "Todo esto sitio permitido únicamente con un ambiente cálido, limpio y bien cuidado, donde la privacidad es amistoso para la costa o la aventura. las áreas comunes del centro viven, compartidas como un restaurant, piscina y otros eventos, considerando una experiencia inolvidable.",
+        "Ubicado estratégicamente en el primer nivel, ofrece acceso directo sin escaleras y proximidad a las áreas comunes. La distribución incluye sala-comedor integrada, kitchenette equipada y dormitorio principal con baño privado.",
+      note: "El apartamento 1A cuenta con terraza privada orientada hacia la piscina y jardines, ideal para relajarse mientras disfruta del clima tropical. Incluye estacionamiento designado.",
       finalNote:
-        "Apartamento 1A un espacio íntimo, funcional y encantador, donde cada detalle está diseñado para que usted vea el descanso que merece, a solo unos pasos de las olas del Pacífico.",
+        "Apartamento 1A: comodidad accesible en primera planta, donde la funcionalidad se encuentra con la tranquilidad a pasos del océano Pacífico.",
       features: [
         { icon: Bed, text: "2 camas full", included: true },
         { icon: Tv, text: "LCD Smart TV Pantalla Plana", included: true },
@@ -163,7 +163,301 @@ const ApartmentDetail = () => {
         daily: {
           label: "Asueto (Día)",
           sublabel: "(Precio por noche)",
+          price: 280,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    "1B": {
+      name: "Apartamento 1B",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "El apartamento 1B ofrece una experiencia renovada en primera planta, con acabados modernos y una terraza ampliada que maximiza las vistas al jardín tropical.",
+      fullDescription:
+        "Recientemente renovado, este apartamento destaca por sus acabados contemporáneos y distribución optimizada. La terraza ampliada se convierte en una extensión natural del espacio interior, perfecta para el descanso al aire libre.",
+      additionalInfo:
+        "Con una cocina actualizada y baño remodelado, el 1B ofrece todas las comodidades modernas. La terraza cuenta con mobiliario nuevo y vista directa a los jardines de palmas y la zona de piscina.",
+      note: "Este apartamento ha sido especialmente diseñado para huéspedes que valoran los detalles modernos sin sacrificar la esencia tropical del resort. Incluye upgrade en amenidades.",
+      finalNote:
+        "Apartamento 1B: modernidad tropical en primera planta, donde el confort contemporáneo abraza la belleza natural del Club Salvadoreño.",
+      features: [
+        { icon: Bed, text: "2 camas full renovadas", included: true },
+        { icon: Tv, text: 'Smart TV 55" con streaming', included: true },
+        {
+          icon: Wifi,
+          text: "Internet Wi-Fi de alta velocidad",
+          included: true,
+        },
+        { icon: Bath, text: "1 Baño remodelado", included: true },
+        { icon: Utensils, text: "Cocina equipada modernizada", included: true },
+        { icon: Users, text: "Caja Fuerte digital", included: true },
+        { icon: Wind, text: "Cafetera premium", included: true },
+        { icon: Home, text: "Toallas de algodón egipcio", included: true },
+        { icon: Tv, text: "Electrodomésticos actualizados", included: true },
+        { icon: Wind, text: "Aire Acondicionado silencioso", included: true },
+        { icon: Crown, text: "Netflix y Amazon Prime", included: true },
+        {
+          icon: Users,
+          text: "Terraza ampliada con mobiliario nuevo",
+          included: true,
+        },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 95,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 210,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 250,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    "2A": {
+      name: "Apartamento 2A",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "El apartamento 2A en segunda planta ofrece vistas elevadas al océano Pacífico, combinando altura perfecta con panorámicas espectaculares del atardecer.",
+      fullDescription:
+        "Ubicado en el segundo nivel, este apartamento ofrece la elevación ideal para disfrutar vistas panorámicas sin estar demasiado alto. Las ventanas amplias capturan la brisa marina y los colores del atardecer pacífico.",
+      additionalInfo:
+        "La altura del segundo piso proporciona privacidad adicional y vistas superiores de la costa. El apartamento cuenta con balcón privado orientado al oeste, perfecto para contemplar los atardeceres dorados sobre el océano.",
+      note: "El apartamento 2A es especialmente popular entre parejas y huéspedes que buscan romance, gracias a sus vistas privilegiadas y ambiente íntimo en la altura perfecta.",
+      finalNote:
+        "Apartamento 2A: romance en las alturas, donde cada atardecer se convierte en un espectáculo privado desde tu balcón frente al Pacífico.",
+      features: [
+        { icon: Bed, text: "2 camas full con vista", included: true },
+        { icon: Tv, text: "Smart TV con canales premium", included: true },
+        { icon: Wifi, text: "Internet Wi-Fi fibra óptica", included: true },
+        { icon: Bath, text: "1 Baño con ventana al exterior", included: true },
+        {
+          icon: Utensils,
+          text: "Cocina con barra desayunador",
+          included: true,
+        },
+        { icon: Users, text: "Caja Fuerte", included: true },
+        { icon: Wind, text: "Cafetera", included: true },
+        { icon: Home, text: "Ropa de cama premium", included: true },
+        { icon: Tv, text: "Microondas y refrigeradora", included: true },
+        { icon: Wind, text: "Aire Acondicionado inverter", included: true },
+        {
+          icon: Crown,
+          text: "Balcón privado con vista al mar",
+          included: true,
+        },
+        {
+          icon: Users,
+          text: "Mobiliario de balcón para atardeceres",
+          included: true,
+        },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 120,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 250,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 300,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    "2B": {
+      name: "Apartamento 2B",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "El apartamento 2B combina las ventajas de la segunda planta con una distribución espaciosa, ideal para familias que buscan comodidad y vistas panorámicas.",
+      fullDescription:
+        "Este apartamento familiar en segunda planta maximiza el espacio disponible con una distribución inteligente. Perfecto para familias, ofrece áreas separadas para adultos y niños, manteniendo la privacidad y comodidad para todos.",
+      additionalInfo:
+        "Con un dormitorio principal amplio y área de estar extendida, el 2B acomoda cómodamente hasta 4 personas. Las ventanas panorámicas en ambas habitaciones aseguran que todos disfruten de las vistas y la brisa marina.",
+      note: "Popular entre familias por su distribución práctica y segura para niños, con balcón protegido y proximidad a las escaleras principales para fácil acceso a la piscina.",
+      finalNote:
+        "Apartamento 2B: comodidad familiar en segunda planta, donde cada miembro de la familia encuentra su espacio perfecto con vista al paraíso.",
+      features: [
+        { icon: Bed, text: "2 camas full + sofá cama", included: true },
+        { icon: Tv, text: "2 Smart TVs (sala y dormitorio)", included: true },
+        {
+          icon: Wifi,
+          text: "Internet Wi-Fi de alta velocidad",
+          included: true,
+        },
+        { icon: Bath, text: "1 Baño amplio familiar", included: true },
+        {
+          icon: Utensils,
+          text: "Cocina extendida con comedor",
+          included: true,
+        },
+        { icon: Users, text: "Caja Fuerte familiar", included: true },
+        { icon: Wind, text: "Cafetera y tetera", included: true },
+        { icon: Home, text: "Toallas para toda la familia", included: true },
+        { icon: Tv, text: "Consola de videojuegos", included: true },
+        { icon: Wind, text: "AC en todas las áreas", included: true },
+        {
+          icon: Crown,
+          text: "Balcón protegido family-friendly",
+          included: true,
+        },
+        { icon: Users, text: "Espacio de juegos para niños", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 115,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 240,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 290,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    "3A": {
+      name: "Apartamento 3A",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "El apartamento 3A en la planta más alta ofrece vistas sin obstáculos del océano Pacífico, siendo el refugio perfecto para quienes buscan panorámicas espectaculares.",
+      fullDescription:
+        "Ubicado en el tercer y último piso, este apartamento premium ofrece las mejores vistas del complejo. Sin obstáculos visuales, las panorámicas de 180 grados del océano crean una experiencia visual inigualable.",
+      additionalInfo:
+        "La altura máxima proporciona privacidad total y vistas que abarcan desde las montañas hasta el horizonte marino. El apartamento cuenta con ventanas del piso al techo y una terraza que se siente como un mirador privado.",
+      note: "Considerado el apartamento premium de El Sunzal, el 3A es perfecto para ocasiones especiales, lunas de miel o huéspedes que buscan la experiencia de alojamiento más exclusiva.",
+      finalNote:
+        "Apartamento 3A: la cima del lujo con vistas, donde el cielo se encuentra con el mar en tu terraza privada en las alturas del paraíso.",
+      features: [
+        { icon: Bed, text: "2 camas queen premium", included: true },
+        { icon: Tv, text: 'Smart TV 65" con sistema surround', included: true },
+        { icon: Wifi, text: "Internet Wi-Fi premium dedicado", included: true },
+        {
+          icon: Bath,
+          text: "Baño de lujo con ventanas panorámicas",
+          included: true,
+        },
+        {
+          icon: Utensils,
+          text: "Cocina premium totalmente equipada",
+          included: true,
+        },
+        { icon: Users, text: "Caja Fuerte digital premium", included: true },
+        { icon: Wind, text: "Cafetera espresso automática", included: true },
+        { icon: Home, text: "Amenidades de lujo incluidas", included: true },
+        {
+          icon: Tv,
+          text: "Centro de entretenimiento completo",
+          included: true,
+        },
+        { icon: Wind, text: "Climatización dual premium", included: true },
+        {
+          icon: Crown,
+          text: "Terraza panorámica sin obstáculos",
+          included: true,
+        },
+        { icon: Users, text: "Mobiliario de terraza de lujo", included: true },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
           price: 140,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 280,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 350,
+        },
+      },
+      checkIn: "3:00 pm",
+      checkOut: "12:00 md",
+    },
+    "3B": {
+      name: "Apartamento 3B",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "El apartamento 3B en la planta superior combina vistas espectaculares con espacio adicional, ofreciendo una experiencia de penthouse familiar.",
+      fullDescription:
+        "Este apartamento tipo penthouse familiar en el último piso ofrece el máximo espacio disponible con las mejores vistas. Ideal para familias que desean lujo y comodidad sin comprometer el espacio para todos.",
+      additionalInfo:
+        "Con la distribución más amplia del edificio y acceso a una terraza extendida, el 3B ofrece áreas separadas para relajación y entretenimiento. Las vistas abarcan tanto el océano como los volcanes en el horizonte.",
+      note: "El apartamento 3B es único por combinar el lujo de las vistas del tercer piso con la funcionalidad familiar, incluyendo área de juegos en la terraza y espacios para toda la familia.",
+      finalNote:
+        "Apartamento 3B: penthouse familiar en las alturas, donde el lujo espacioso se encuentra con vistas panorámicas para crear recuerdos familiares únicos.",
+      features: [
+        { icon: Bed, text: "2 camas queen + área de descanso", included: true },
+        { icon: Tv, text: "3 Smart TVs distribuidas", included: true },
+        {
+          icon: Wifi,
+          text: "Internet Wi-Fi de máxima velocidad",
+          included: true,
+        },
+        { icon: Bath, text: "Baño master con bañera y vista", included: true },
+        {
+          icon: Utensils,
+          text: "Cocina gourmet con isla central",
+          included: true,
+        },
+        { icon: Users, text: "Sistema de seguridad premium", included: true },
+        { icon: Wind, text: "Estación de café y té premium", included: true },
+        { icon: Home, text: "Amenidades VIP incluidas", included: true },
+        {
+          icon: Tv,
+          text: "Sistema de entretenimiento integral",
+          included: true,
+        },
+        { icon: Wind, text: "Climatización inteligente", included: true },
+        { icon: Crown, text: "Terraza penthouse extendida", included: true },
+        {
+          icon: Users,
+          text: "Área de entretenimiento familiar",
+          included: true,
+        },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 135,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 270,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 340,
         },
       },
       checkIn: "3:00 pm",
