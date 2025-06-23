@@ -586,9 +586,9 @@ const SuiteDetail = () => {
                     size="sm"
                     variant="outline"
                     className="w-full mt-2 text-xs"
-                    onClick={() => navigate("/casa/casa1")}
+                    onClick={() => navigate("/el-sunzal/casas")}
                   >
-                    Ver Detalles
+                    Ver Casas
                   </Button>
                 </CardContent>
               </Card>
