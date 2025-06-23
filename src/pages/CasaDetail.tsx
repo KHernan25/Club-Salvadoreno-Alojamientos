@@ -751,6 +751,56 @@ const CasaDetail = () => {
       {/* Navigation */}
       <Navbar />
 
+      {/* Breadcrumb */}
+      <div className="bg-slate-50 py-4">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-2 text-sm text-slate-600">
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="hover:text-blue-600"
+            >
+              Inicio
+            </button>
+            <span>›</span>
+            {isCorintoHouse ? (
+              <>
+                <button
+                  onClick={() => navigate("/corinto")}
+                  className="hover:text-blue-600"
+                >
+                  Corinto
+                </button>
+                <span>›</span>
+                <button
+                  onClick={() => navigate("/corinto-casas")}
+                  className="hover:text-blue-600"
+                >
+                  Casas
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigate("/sunzal")}
+                  className="hover:text-blue-600"
+                >
+                  El Sunzal
+                </button>
+                <span>›</span>
+                <button
+                  onClick={() => navigate("/alojamientos")}
+                  className="hover:text-blue-600"
+                >
+                  Casas
+                </button>
+              </>
+            )}
+            <span>›</span>
+            <span className="text-slate-900 font-medium">{casa.name}</span>
+          </div>
+        </div>
+      </div>
+
       {/* Casa Tabs */}
       <div className="bg-slate-50 border-b border-slate-200">
         <div className="container mx-auto px-4">
