@@ -46,17 +46,22 @@ import {
 const ApartmentDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { toast } = useToast();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [checkInDate, setCheckInDate] = useState("2025-06-07");
-  const [checkOutDate, setCheckOutDate] = useState("2025-06-08");
 
-  // Set minimum date to today
-  const today = new Date().toISOString().split("T")[0];
+  // Fechas iniciales: mañana para check-in, pasado mañana para check-out
+  const minDate = getMinimumDate();
+  const [checkInDate, setCheckInDate] = useState(minDate);
+  const [checkOutDate, setCheckOutDate] = useState(
+    getNextAvailableCheckOut(minDate),
+  );
+  const [priceCalculation, setPriceCalculation] = useState(null);
+  const [isCalculating, setIsCalculating] = useState(false);
 
   useEffect(() => {
-    // Ensure check-out is always after check-in
+    // Asegurar que check-out sea siempre después de check-in
     if (checkInDate >= checkOutDate) {
-      const nextDay = new Date(checkInDate);
+      const nextDay = getNextAvailableCheckOut(checkInDate);
       nextDay.setDate(nextDay.getDate() + 1);
       setCheckOutDate(nextDay.toISOString().split("T")[0]);
     }
