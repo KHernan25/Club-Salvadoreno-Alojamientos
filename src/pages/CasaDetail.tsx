@@ -728,11 +728,23 @@ const CasaDetail = () => {
     );
   };
 
-  const casaTabs = [
-    { id: "casa1", label: "Casa Familiar" },
-    { id: "casa2", label: "Casa Premium" },
-    { id: "casa3", label: "Casa Deluxe" },
-  ];
+  // Determine which tabs to show based on current house type
+  const isCorintoHouse = id?.startsWith("corinto-casa-");
+
+  const casaTabs = isCorintoHouse
+    ? [
+        { id: "corinto-casa-1", label: "Casa del Lago" },
+        { id: "corinto-casa-2", label: "Casa Familiar Vista" },
+        { id: "corinto-casa-3", label: "Casa Tranquilidad" },
+        { id: "corinto-casa-4", label: "Casa Pescador" },
+        { id: "corinto-casa-5", label: "Casa Reuniones" },
+        { id: "corinto-casa-6", label: "Casa Premium" },
+      ]
+    : [
+        { id: "casa1", label: "Casa Familiar" },
+        { id: "casa2", label: "Casa Premium" },
+        { id: "casa3", label: "Casa Deluxe" },
+      ];
 
   return (
     <div className="min-h-screen bg-white">
