@@ -41,20 +41,27 @@ import {
 const Reservations = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   const [selectedMonth, setSelectedMonth] = useState(5); // June (0-based)
   const [selectedYear, setSelectedYear] = useState(2025);
   const [guests, setGuests] = useState(2);
 
-  // Get dates from URL parameters or use defaults
+  // Get dates from URL parameters or use defaults (minimum tomorrow)
+  const minDate = getMinimumDate();
   const [selectedDates, setSelectedDates] = useState({
-    checkIn: searchParams.get("checkIn") || "2025-06-07",
-    checkOut: searchParams.get("checkOut") || "2025-06-08",
+    checkIn: searchParams.get("checkIn") || minDate,
+    checkOut: searchParams.get("checkOut") || getNextAvailableCheckOut(minDate),
   });
 
   // Get accommodation info from URL parameters
   const accommodationType = searchParams.get("accommodation") || "apartamento";
   const accommodationId = searchParams.get("id") || "1A";
   const accommodationName = searchParams.get("name") || "Apartamento 1A";
+  const totalPrice = searchParams.get("totalPrice");
+
+  // State for price calculation
+  const [priceCalculation, setPriceCalculation] = useState(null);
+  const [isCalculating, setIsCalculating] = useState(false);
 
   // Generate unique reservation code
   const generateReservationCode = () => {
