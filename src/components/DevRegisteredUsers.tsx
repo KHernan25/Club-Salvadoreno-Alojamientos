@@ -3,12 +3,34 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { getRegisteredUsers } from "@/lib/user-database";
+import { registeredUsers, User } from "@/lib/user-database";
 import { Trash2, Eye, EyeOff } from "lucide-react";
 
 const DevRegisteredUsers = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [registeredUsers, setRegisteredUsers] = useState(getRegisteredUsers());
+
+  // Función para obtener todos los usuarios registrados (localStorage + estáticos)
+  const getRegisteredUsers = (): User[] => {
+    const localStorageUsers = localStorage.getItem(
+      "club_salvadoreno_registered_users",
+    );
+    const dynamicUsers = localStorageUsers ? JSON.parse(localStorageUsers) : [];
+
+    // Combinar usuarios estáticos con los del localStorage
+    // Usar Map para evitar duplicados por ID
+    const allUsersMap = new Map();
+
+    // Agregar usuarios estáticos primero
+    registeredUsers.forEach((user) => allUsersMap.set(user.id, user));
+
+    // Agregar/sobrescribir con usuarios del localStorage
+    dynamicUsers.forEach((user: User) => allUsersMap.set(user.id, user));
+
+    return Array.from(allUsersMap.values());
+  };
+
+  const [allRegisteredUsers, setAllRegisteredUsers] =
+    useState(getRegisteredUsers());
 
   // Solo mostrar en desarrollo
   if (process.env.NODE_ENV !== "development") {
@@ -16,12 +38,12 @@ const DevRegisteredUsers = () => {
   }
 
   const refreshUsers = () => {
-    setRegisteredUsers(getRegisteredUsers());
+    setAllRegisteredUsers(getRegisteredUsers());
   };
 
   const clearAllUsers = () => {
     localStorage.removeItem("club_salvadoreno_registered_users");
-    setRegisteredUsers([]);
+    setAllRegisteredUsers(getRegisteredUsers());
   };
 
   return (
@@ -38,7 +60,7 @@ const DevRegisteredUsers = () => {
           <Eye className="h-4 w-4" />
         )}
         {isVisible ? "Ocultar" : "Ver"} Usuarios Registrados (
-        {registeredUsers.length})
+        {allRegisteredUsers.length})
       </Button>
 
       {isVisible && (
@@ -67,13 +89,13 @@ const DevRegisteredUsers = () => {
             </div>
           </div>
 
-          {registeredUsers.length === 0 ? (
+          {allRegisteredUsers.length === 0 ? (
             <p className="text-gray-500 text-sm">
               No hay usuarios registrados aún
             </p>
           ) : (
             <div className="space-y-3">
-              {registeredUsers.map((user) => (
+              {allRegisteredUsers.map((user) => (
                 <div
                   key={user.id}
                   className="p-3 bg-gray-50 rounded border text-xs"
