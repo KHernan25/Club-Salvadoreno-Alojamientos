@@ -38,12 +38,12 @@ const DevRegisteredUsers = () => {
   }
 
   const refreshUsers = () => {
-    setRegisteredUsers(getRegisteredUsers());
+    setAllRegisteredUsers(getRegisteredUsers());
   };
 
   const clearAllUsers = () => {
     localStorage.removeItem("club_salvadoreno_registered_users");
-    setRegisteredUsers([]);
+    setAllRegisteredUsers(getRegisteredUsers());
   };
 
   return (
