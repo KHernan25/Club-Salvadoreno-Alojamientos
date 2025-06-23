@@ -50,6 +50,7 @@ import {
   AlertCircle,
   Plus,
 } from "lucide-react";
+import Navbar from "@/components/Navbar";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -166,55 +167,7 @@ const UserProfile = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Navigation */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate("/")}
-              >
-                <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CS</span>
-                </div>
-                <span className="text-xl font-semibold text-slate-900">
-                  Club Salvadoreño
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6">
-              <Button variant="ghost" className="gap-2">
-                <Globe className="h-4 w-4" />
-                ES
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" className="gap-2">
-                <User className="h-4 w-4" />
-                EN
-              </Button>
-              <Button
-                variant="ghost"
-                className="gap-2"
-                onClick={() => navigate("/mis-reservas")}
-              >
-                <Calendar className="h-4 w-4" />
-                Mis Reservas
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => navigate("/")}
-                className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                Cerrar Sesión
-              </Button>
-              <Button variant="ghost">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="container mx-auto px-4 py-8">
         {/* Profile Header */}

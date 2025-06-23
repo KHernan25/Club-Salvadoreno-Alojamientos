@@ -188,7 +188,7 @@ const Register = () => {
             <div className="mb-8 bg-green-500/20 border border-green-500/30 rounded-lg p-4 flex items-center gap-3">
               <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
               <p className="text-green-100 text-sm">
-                ¡Cuenta creada exitosamente! Redirigiendo al dashboard...
+                ¡Cuenta creada exitosamente! Redirigiendo al Inicio de Sesión...
               </p>
             </div>
           )}
