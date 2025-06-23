@@ -217,8 +217,8 @@ const Login = () => {
               <div className="relative">
                 <Input
                   id="username"
-                  type="email"
-                  placeholder="Ingresar Correo"
+                  type="text"
+                  placeholder="Correo o Usuario"
                   value={formData.username}
                   onChange={(e) =>
                     handleInputChange("username", e.target.value)
