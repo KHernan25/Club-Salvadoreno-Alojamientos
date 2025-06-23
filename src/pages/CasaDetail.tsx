@@ -429,7 +429,7 @@ const CasaDetail = () => {
         "Casa Premium Lago representa la cúspide del lujo en el Lago de Ilopango. Esta propiedad exclusiva combina amenidades de clase mundial con vistas espectaculares y servicios personalizados para crear una experiencia verdaderamente extraordinaria.",
       additionalInfo:
         "La casa incluye cinco habitaciones de lujo, cada una con baño privado y vista al lago. El jacuzzi exterior ofrece vistas panorámicas del lago, mientras que la lancha privada permite explorar las aguas en completa privacidad. Los servicios incluyen chef privado, mayordomía y concierge personal.",
-      note: "Los servicios premium incluyen chef privado disponible las 24 horas, servicio de limpieza dos veces al d��a, mayordomía personal, traslados en lancha privada y coordinación de experiencias exclusivas como cenas privadas en el lago y tours personalizados.",
+      note: "Los servicios premium incluyen chef privado disponible las 24 horas, servicio de limpieza dos veces al día, mayordomía personal, traslados en lancha privada y coordinación de experiencias exclusivas como cenas privadas en el lago y tours personalizados.",
       finalNote:
         "Casa Premium Lago: donde el lujo absoluto y la exclusividad se encuentran para crear la experiencia más extraordinaria del Lago de Ilopango.",
       features: [
@@ -1118,9 +1118,9 @@ const CasaDetail = () => {
                         size="sm"
                         variant="outline"
                         className="w-full mt-2 text-xs"
-                        onClick={() => navigate("/casa/corinto-casa-1")}
+                        onClick={() => navigate("/corinto/casas")}
                       >
-                        Ver Corinto
+                        Ver Casas Corinto
                       </Button>
                     </CardContent>
                   </Card>
