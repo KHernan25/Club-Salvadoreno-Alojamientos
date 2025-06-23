@@ -89,13 +89,13 @@ const DevRegisteredUsers = () => {
             </div>
           </div>
 
-          {registeredUsers.length === 0 ? (
+          {allRegisteredUsers.length === 0 ? (
             <p className="text-gray-500 text-sm">
               No hay usuarios registrados aún
             </p>
           ) : (
             <div className="space-y-3">
-              {registeredUsers.map((user) => (
+              {allRegisteredUsers.map((user) => (
                 <div
                   key={user.id}
                   className="p-3 bg-gray-50 rounded border text-xs"
