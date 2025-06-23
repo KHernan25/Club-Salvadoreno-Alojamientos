@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2020",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true
+  },
+  "include": ["src/server/**/*", "src/lib/**/*"],
+  "exclude": [
+    "src/pages/**/*",
+    "src/components/**/*",
+    "src/hooks/**/*",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "node_modules",
+    "dist"
+  ]
+}
