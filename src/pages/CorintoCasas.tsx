@@ -30,14 +30,14 @@ import Navbar from "@/components/Navbar";
 const CorintoCasas = () => {
   const navigate = useNavigate();
 
-  // Simulated 6 houses data for Corinto - todas con la misma descripción
+  // Casas de Corinto con descripciones personalizadas únicas
   const casas = [
     {
       id: "corinto-casa-1",
       name: "Casa del Lago",
       image: "/placeholder.svg",
       description:
-        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
+        "Casa ideal para familias que buscan comodidad y tranquilidad junto al agua. Ubicada en una posición estratégica con vista directa al lago, ofrece espacios amplios y un jardín privado perfecto para relajarse mientras disfrutan de la brisa lacustre.",
       features: [
         { icon: Bed, text: "3 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -57,7 +57,7 @@ const CorintoCasas = () => {
       name: "Casa Familiar Vista Lago",
       image: "/placeholder.svg",
       description:
-        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
+        "Diseñada especialmente para familias numerosas, esta casa combina amplitud y confort con vistas panorámicas al Lago de Ilopango. Con capacidad para 8 personas, incluye muelle privado y espacios de entretenimiento ideales para reuniones familiares memorables.",
       features: [
         { icon: Bed, text: "4 habitaciones" },
         { icon: Bath, text: "3 baños" },
@@ -77,7 +77,7 @@ const CorintoCasas = () => {
       name: "Casa Tranquilidad",
       image: "/placeholder.svg",
       description:
-        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
+        "Refugio perfecto para parejas o familias pequeñas que buscan paz absoluta. Esta casa íntima cuenta con un jardín zen único, espacios de meditación y un ambiente sereno que invita al descanso y la contemplación junto al lago.",
       features: [
         { icon: Bed, text: "2 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -92,7 +92,7 @@ const CorintoCasas = () => {
       name: "Casa Pescador",
       image: "/placeholder.svg",
       description:
-        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
+        "Casa temática diseñada para los amantes de la pesca deportiva y actividades acuáticas. Incluye equipo especializado, acceso directo al lago, y facilidades para limpiar y preparar las capturas del día en un ambiente auténticamente lacustre.",
       features: [
         { icon: Bed, text: "3 habitaciones" },
         { icon: Bath, text: "2 baños" },
@@ -112,7 +112,7 @@ const CorintoCasas = () => {
       name: "Casa Reuniones",
       image: "/placeholder.svg",
       description:
-        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
+        "Casa especialmente equipada para eventos familiares, reuniones corporativas o celebraciones especiales. Con capacidad para 10 personas, incluye cocina industrial, sistema de sonido y espacios amplios diseñados para grupos que buscan compartir experiencias únicas.",
       features: [
         { icon: Bed, text: "4 habitaciones" },
         { icon: Bath, text: "3 baños" },
@@ -127,7 +127,7 @@ const CorintoCasas = () => {
       name: "Casa Premium Lago",
       image: "/placeholder.svg",
       description:
-        "Hermosas casas ubicadas a orillas del majestuoso Lago de Ilopango, perfectas para quienes buscan tranquilidad con una vista espectacular. Ideales para escapadas en pareja o en familia, combinan naturaleza, brisa fresca y la belleza de un entorno lacustre único.",
+        "La experiencia más exclusiva en Corinto. Casa de lujo con capacidad para 12 huéspedes que incluye jacuzzi, lancha privada y servicios premium. Perfecta para ocasiones especiales, luna de miel o grupos que buscan el máximo nivel de comodidad y exclusividad.",
       features: [
         { icon: Bed, text: "5 habitaciones" },
         { icon: Bath, text: "4 baños" },
