@@ -370,23 +370,29 @@ const Reservations = () => {
                     <CardTitle className="text-2xl font-bold text-slate-900">
                       ¡Está Disponible!
                     </CardTitle>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-wrap">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-white border border-gray-300 rounded"></div>
+                        <span className="text-sm text-slate-600">
+                          Disponible
+                        </span>
+                      </div>
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-green-500 rounded"></div>
-                        <span className="text-sm text-slate-600">Entrada</span>
+                        <span className="text-sm text-slate-600">
+                          Seleccionada
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-red-500 rounded"></div>
-                        <span className="text-sm text-slate-600">Salida</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 bg-blue-200 rounded"></div>
-                        <span className="text-sm text-slate-600">Estadía</span>
+                        <span className="text-sm text-slate-600">
+                          Reservada
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 bg-gray-400 rounded"></div>
                         <span className="text-sm text-slate-600">
-                          Reservado
+                          Bloqueada
                         </span>
                       </div>
                     </div>
