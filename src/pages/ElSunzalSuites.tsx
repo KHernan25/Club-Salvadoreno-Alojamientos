@@ -245,10 +245,14 @@ const ElSunzalSuites = () => {
                   </div>
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="text-lg font-bold text-slate-900 mb-1 flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
                     <Crown className="h-4 w-4 text-yellow-600" />
                     {suite.name}
                   </h3>
+
+                  <p className="text-sm text-slate-600 mb-3 line-clamp-3 leading-relaxed">
+                    {suite.description}
+                  </p>
 
                   <div className="flex items-center gap-2 mb-3 text-xs text-slate-600">
                     <Users className="h-3 w-3" />
