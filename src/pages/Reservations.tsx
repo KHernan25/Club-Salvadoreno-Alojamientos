@@ -81,14 +81,47 @@ const Reservations = () => {
   useEffect(() => {
     // Ensure check-out is always after check-in
     if (selectedDates.checkIn >= selectedDates.checkOut) {
-      const nextDay = new Date(selectedDates.checkIn);
-      nextDay.setDate(nextDay.getDate() + 1);
+      const nextDay = getNextAvailableCheckOut(selectedDates.checkIn);
       setSelectedDates((prev) => ({
         ...prev,
-        checkOut: nextDay.toISOString().split("T")[0],
+        checkOut: nextDay,
       }));
     }
   }, [selectedDates.checkIn]);
+
+  // Calculate prices when dates change
+  useEffect(() => {
+    if (selectedDates.checkIn && selectedDates.checkOut) {
+      calculatePrices();
+    }
+  }, [selectedDates.checkIn, selectedDates.checkOut, accommodationId]);
+
+  const calculatePrices = () => {
+    const validation = validateReservationDates(
+      selectedDates.checkIn,
+      selectedDates.checkOut,
+    );
+
+    if (!validation.valid) {
+      setPriceCalculation(null);
+      return;
+    }
+
+    const rates = getAccommodationRates(accommodationId);
+
+    if (!rates) {
+      setPriceCalculation(null);
+      return;
+    }
+
+    const calculation = calculateStayPrice(
+      new Date(selectedDates.checkIn),
+      new Date(selectedDates.checkOut),
+      rates,
+    );
+
+    setPriceCalculation(calculation);
+  };
 
   // Update calendar when dates change
   useEffect(() => {
