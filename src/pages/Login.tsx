@@ -206,19 +206,19 @@ const Login = () => {
                 <p className="text-red-100 text-sm">{error}</p>
               </div>
             )}
-            {/* Usuario */}
+            {/* Correo */}
             <div>
               <Label
                 htmlFor="username"
                 className="text-white font-medium mb-2 block"
               >
-                Usuario
+                Correo
               </Label>
               <div className="relative">
                 <Input
                   id="username"
-                  type="text"
-                  placeholder="Ingresar Usuario"
+                  type="email"
+                  placeholder="Ingresar Correo"
                   value={formData.username}
                   onChange={(e) =>
                     handleInputChange("username", e.target.value)
