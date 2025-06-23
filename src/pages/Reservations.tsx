@@ -72,6 +72,14 @@ const Reservations = () => {
     return `${letters}${timestamp.toString().slice(-4)}${random.slice(0, 4)}`;
   };
 
+  // Calculate maximum checkout date (7 days from checkin)
+  const getMaxCheckOutDate = (checkInDate: string): string => {
+    const checkIn = new Date(checkInDate);
+    const maxCheckOut = new Date(checkIn);
+    maxCheckOut.setDate(maxCheckOut.getDate() + 7);
+    return maxCheckOut.toISOString().split("T")[0];
+  };
+
   const [reservationCode, setReservationCode] = useState(() =>
     generateReservationCode(),
   );
@@ -449,6 +457,7 @@ const Reservations = () => {
                       <input
                         type="date"
                         min={getNextAvailableCheckOut(selectedDates.checkIn)}
+                        max={getMaxCheckOutDate(selectedDates.checkIn)}
                         value={selectedDates.checkOut}
                         onChange={(e) =>
                           setSelectedDates({
