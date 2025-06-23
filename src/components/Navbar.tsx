@@ -95,13 +95,24 @@ const Navbar = ({ className }: NavbarProps) => {
 
   // Manejar logout
   const handleLogout = () => {
+    // Limpiar sesión completamente
     logout();
     setCurrentUser(null);
+
+    // Mostrar notificación
     toast({
       title: t.common.success,
       description: t.nav.logout,
     });
-    navigate("/", { replace: true });
+
+    // Navegar al login y limpiar historial
+    navigate("/login", { replace: true });
+
+    // Asegurar que no se pueda navegar hacia atrás
+    setTimeout(() => {
+      window.history.pushState(null, "", "/login");
+      window.history.pushState(null, "", "/login");
+    }, 100);
   };
 
   // Navegar al perfil

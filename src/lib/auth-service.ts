@@ -130,8 +130,20 @@ export const getCurrentUser = (): User | null => {
 
 // Cerrar sesión
 export const logout = (): void => {
+  // Limpiar todos los datos de sesión
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(REMEMBER_KEY);
+
+  // Limpiar cualquier otro dato relacionado con la sesión
+  sessionStorage.clear();
+
+  // Disparar evento personalizado para notificar el logout
+  window.dispatchEvent(new CustomEvent("userLoggedOut"));
+
+  // Limpiar historial para prevenir navegación hacia atrás
+  if (window.history.replaceState) {
+    window.history.replaceState(null, "", "/login");
+  }
 };
 
 // Verificar si la sesión es válida (no expirada, etc.)
@@ -162,11 +174,42 @@ export const renewSession = (): void => {
 
 // Función helper para proteger rutas
 export const requireAuth = (): boolean => {
-  if (!isAuthenticated() || !isSessionValid()) {
-    logout(); // Limpiar sesión inválida
+  try {
+    // Verificar autenticación básica
+    if (!isAuthenticated()) {
+      console.log("requireAuth: Not authenticated");
+      logout(); // Limpiar cualquier sesión corrupta
+      return false;
+    }
+
+    // Verificar validez de sesión
+    if (!isSessionValid()) {
+      console.log("requireAuth: Session invalid");
+      logout(); // Limpiar sesión inválida
+      return false;
+    }
+
+    // Verificar que el usuario actual exista
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      console.log("requireAuth: No current user");
+      logout(); // Limpiar sesión sin usuario
+      return false;
+    }
+
+    // Verificar que el usuario esté activo
+    if (!currentUser.isActive) {
+      console.log("requireAuth: User is not active");
+      logout(); // Limpiar sesión de usuario inactivo
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("requireAuth: Error validating session", error);
+    logout(); // Limpiar en caso de error
     return false;
   }
-  return true;
 };
 
 // Verificar permisos por rol
