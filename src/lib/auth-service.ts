@@ -130,8 +130,20 @@ export const getCurrentUser = (): User | null => {
 
 // Cerrar sesión
 export const logout = (): void => {
+  // Limpiar todos los datos de sesión
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(REMEMBER_KEY);
+
+  // Limpiar cualquier otro dato relacionado con la sesión
+  sessionStorage.clear();
+
+  // Disparar evento personalizado para notificar el logout
+  window.dispatchEvent(new CustomEvent("userLoggedOut"));
+
+  // Limpiar historial para prevenir navegación hacia atrás
+  if (window.history.replaceState) {
+    window.history.replaceState(null, "", "/login");
+  }
 };
 
 // Verificar si la sesión es válida (no expirada, etc.)
