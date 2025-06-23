@@ -55,7 +55,7 @@ const SuiteDetail = () => {
     }
   }, [checkInDate, checkOutDate]);
 
-  // Simulated suite data
+  // Complete suite data for all El Sunzal suites
   const suiteData = {
     suite1: {
       name: "Suite Ejecutiva Presidencial",
@@ -111,22 +111,188 @@ const SuiteDetail = () => {
         weekday: {
           label: "Día de Semana",
           sublabel: "(Precio por noche)",
-          price: 650,
+          price: 300,
         },
         weekend: {
           label: "Fin de Semana",
           sublabel: "(Precio por noche)",
-          price: 850,
+          price: 450,
         },
         daily: {
           label: "Asueto (Día)",
           sublabel: "(Precio por noche)",
-          price: 750,
+          price: 500,
         },
       },
       checkIn: "2:00 pm",
       checkOut: "1:00 pm",
       maxGuests: 2,
+    },
+    suite2: {
+      name: "Suite Presidencial Ocean View",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "La Suite Presidencial representa el más alto nivel de lujo y exclusividad, diseñada para huéspedes que buscan una experiencia presidencial con vistas incomparables al océano.",
+      fullDescription:
+        "Esta suite de nivel presidencial ofrece el máximo lujo disponible en el resort. Con espacios amplios, acabados excepcionales y servicios personalizados, está diseñada para dignatarios, celebridades y huéspedes que exigen lo mejor.",
+      additionalInfo:
+        "La suite incluye sala de recepción privada, comedor formal, dormitorio master con vestidor tipo boutique, baño spa con productos de Bulgari, terraza presidencial de 50m² y servicio de mayordomo exclusivo entrenado en protocolo internacional.",
+      note: "La Suite Presidencial incluye servicios VIP como traslado en helicóptero bajo solicitud, chef privado, servicio de seguridad discreta y acceso a la playa presidencial privada del resort.",
+      finalNote:
+        "Suite Presidencial Ocean View: la definición del lujo absoluto donde cada detalle está diseñado para una experiencia presidencial inolvidable.",
+      features: [
+        {
+          icon: Crown,
+          text: "Suite presidencial con cama emperor",
+          included: true,
+        },
+        { icon: Bath, text: "Baño spa con productos Bulgari", included: true },
+        {
+          icon: Mountain,
+          text: "Terraza presidencial de 50m²",
+          included: true,
+        },
+        {
+          icon: Sparkles,
+          text: "Mayordomo exclusivo protocolo VIP",
+          included: true,
+        },
+        { icon: Wine, text: "Bar privado con licores premium", included: true },
+        {
+          icon: Tv,
+          text: "Sistema de entretenimiento Bang & Olufsen",
+          included: true,
+        },
+        { icon: Wifi, text: "Internet privado dedicado", included: true },
+        {
+          icon: Wind,
+          text: "Sistema de climatización inteligente",
+          included: true,
+        },
+        {
+          icon: Car,
+          text: "Traslados en vehículo presidencial",
+          included: true,
+        },
+        {
+          icon: Users,
+          text: "Acceso exclusivo a playa presidencial",
+          included: true,
+        },
+        {
+          icon: Utensils,
+          text: "Chef privado disponible 24/7",
+          included: true,
+        },
+        {
+          icon: Crown,
+          text: "Amenidades presidenciales exclusivas",
+          included: true,
+        },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 500,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 750,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 850,
+        },
+      },
+      checkIn: "2:00 pm",
+      checkOut: "1:00 pm",
+      maxGuests: 4,
+    },
+    suite3: {
+      name: "Suite Royal Penthouse",
+      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      description:
+        "La Suite Royal Penthouse corona el resort como la experiencia de alojamiento más exclusiva, combinando lujo real con vistas de 360 grados desde la posición más privilegiada.",
+      fullDescription:
+        "Ubicada en el punto más alto del resort, esta suite tipo penthouse ofrece una experiencia real única. Con dos plantas de lujo absoluto, vistas panorámicas de 360 grados y servicios de realeza, representa la cumbre del lujo hospitalario.",
+      additionalInfo:
+        "El penthouse incluye planta baja con sala de estar real, comedor de gala, bar privado y terraza infinity; planta superior con master suite real, vestidor tipo palacio, baño imperial con tina de mármol italiano y terraza real privada con jacuzzi infinity frente al océano.",
+      note: "La Suite Royal incluye servicios de realeza como mayordomo real entrenado en Inglaterra, chef ejecutivo personal, servicio de limpieza invisible, seguridad privada 24/7 y acceso en helicóptero privado al resort.",
+      finalNote:
+        "Suite Royal Penthouse: donde los sueños de realeza se hacen realidad en el paraíso tropical más exclusivo de Centroamérica.",
+      features: [
+        { icon: Crown, text: "Penthouse real de dos plantas", included: true },
+        {
+          icon: Bath,
+          text: "Baño imperial con tina de mármol italiano",
+          included: true,
+        },
+        {
+          icon: Mountain,
+          text: "Terraza infinity con jacuzzi privado",
+          included: true,
+        },
+        {
+          icon: Sparkles,
+          text: "Mayordomo real entrenado en Inglaterra",
+          included: true,
+        },
+        {
+          icon: Wine,
+          text: "Bodega privada con vinos de colección",
+          included: true,
+        },
+        {
+          icon: Tv,
+          text: "Sala de entretenimiento con cine privado",
+          included: true,
+        },
+        {
+          icon: Wifi,
+          text: "Red privada con conexión satelital",
+          included: true,
+        },
+        {
+          icon: Wind,
+          text: "Sistema de climatización de palacio",
+          included: true,
+        },
+        { icon: Car, text: "Helicóptero privado disponible", included: true },
+        {
+          icon: Users,
+          text: "Acceso exclusivo a isla privada",
+          included: true,
+        },
+        { icon: Utensils, text: "Chef ejecutivo personal", included: true },
+        {
+          icon: Crown,
+          text: "Amenidades reales de Harrods London",
+          included: true,
+        },
+      ],
+      pricing: {
+        weekday: {
+          label: "Día de Semana",
+          sublabel: "(Precio por noche)",
+          price: 800,
+        },
+        weekend: {
+          label: "Fin de Semana",
+          sublabel: "(Precio por noche)",
+          price: 1200,
+        },
+        daily: {
+          label: "Asueto (Día)",
+          sublabel: "(Precio por noche)",
+          price: 1500,
+        },
+      },
+      checkIn: "2:00 pm",
+      checkOut: "1:00 pm",
+      maxGuests: 6,
     },
   };
 
