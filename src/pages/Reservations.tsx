@@ -423,7 +423,7 @@ const Reservations = () => {
                       </label>
                       <input
                         type="date"
-                        min={today}
+                        min={getMinimumDate()}
                         value={selectedDates.checkIn}
                         onChange={(e) =>
                           setSelectedDates({
@@ -433,6 +433,9 @@ const Reservations = () => {
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
+                      <p className="text-xs text-slate-500 mt-1">
+                        Selecciona a partir de mañana
+                      </p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -440,7 +443,7 @@ const Reservations = () => {
                       </label>
                       <input
                         type="date"
-                        min={selectedDates.checkIn}
+                        min={getNextAvailableCheckOut(selectedDates.checkIn)}
                         value={selectedDates.checkOut}
                         onChange={(e) =>
                           setSelectedDates({
@@ -450,8 +453,100 @@ const Reservations = () => {
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
+                      <p className="text-xs text-slate-500 mt-1">
+                        Mínimo 1 noche de estadía
+                      </p>
                     </div>
                   </div>
+
+                  {/* Price Calculation Display */}
+                  {priceCalculation && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                      <h4 className="font-semibold text-blue-800 mb-3">
+                        Desglose de Precios
+                      </h4>
+                      <div className="space-y-2 text-sm">
+                        {priceCalculation.weekdayDays > 0 && (
+                          <div className="flex justify-between">
+                            <span>
+                              {priceCalculation.weekdayDays} noche(s) entre
+                              semana
+                            </span>
+                            <span className="font-medium">
+                              {formatPrice(priceCalculation.weekdayTotal)}
+                            </span>
+                          </div>
+                        )}
+                        {priceCalculation.weekendDays > 0 && (
+                          <div className="flex justify-between">
+                            <span>
+                              {priceCalculation.weekendDays} noche(s) fin de
+                              semana
+                            </span>
+                            <span className="font-medium">
+                              {formatPrice(priceCalculation.weekendTotal)}
+                            </span>
+                          </div>
+                        )}
+                        {priceCalculation.holidayDays > 0 && (
+                          <div className="flex justify-between">
+                            <span>
+                              {priceCalculation.holidayDays} noche(s) feriado
+                            </span>
+                            <span className="font-medium text-red-600">
+                              {formatPrice(priceCalculation.holidayTotal)}
+                            </span>
+                          </div>
+                        )}
+                        <div className="border-t border-blue-300 pt-2 flex justify-between font-bold text-blue-800 text-base">
+                          <span>
+                            Total ({priceCalculation.totalDays} noches)
+                          </span>
+                          <span>
+                            {formatPrice(priceCalculation.totalPrice)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Price breakdown details */}
+                      <div className="mt-3 pt-3 border-t border-blue-200">
+                        <p className="text-xs text-blue-600 mb-2">
+                          Detalles por día:
+                        </p>
+                        <div className="grid grid-cols-1 gap-1 text-xs">
+                          {priceCalculation.breakdown.map((day, index) => (
+                            <div
+                              key={index}
+                              className="flex justify-between items-center"
+                            >
+                              <span className="flex items-center gap-2">
+                                {formatDateSpanish(day.date)}
+                                <Badge
+                                  variant={
+                                    day.dayType === "holiday"
+                                      ? "destructive"
+                                      : day.dayType === "weekend"
+                                        ? "secondary"
+                                        : "outline"
+                                  }
+                                  className="text-xs px-1 py-0"
+                                >
+                                  {day.dayType === "holiday"
+                                    ? "Feriado"
+                                    : day.dayType === "weekend"
+                                      ? "Fin de semana"
+                                      : "Entre semana"}
+                                </Badge>
+                              </span>
+                              <span className="font-medium">
+                                {formatPrice(day.price)}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <Button
                     className="w-full mt-6 bg-blue-900 hover:bg-blue-800 py-3"
