@@ -17,7 +17,7 @@ import {
   formatPrice,
   formatDateSpanish,
 } from "@/lib/pricing-system";
-import { getAuthenticatedUser } from "@/lib/auth-service";
+import { getCurrentUser } from "@/lib/auth-service";
 import {
   Menu,
   Globe,
@@ -61,7 +61,7 @@ const ReservationConfirmation = () => {
   const totalPrice = parseFloat(searchParams.get("price") || "0");
 
   // Get authenticated user
-  const currentUser = getAuthenticatedUser();
+  const currentUser = getCurrentUser();
 
   // State for price breakdown
   const [priceBreakdown, setPriceBreakdown] = useState(null);
