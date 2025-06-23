@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate, useParams } from "react-router-dom";
+import { getMinimumDate, getNextAvailableCheckOut } from "@/lib/pricing-system";
 import {
   Menu,
   Globe,
@@ -40,11 +41,13 @@ const CasaDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [checkInDate, setCheckInDate] = useState("2025-06-07");
-  const [checkOutDate, setCheckOutDate] = useState("2025-06-08");
 
-  // Set minimum date to today
-  const today = new Date().toISOString().split("T")[0];
+  // Initialize dates with getMinimumDate (tomorrow) for check-in and day after for check-out
+  const minDate = getMinimumDate();
+  const [checkInDate, setCheckInDate] = useState(minDate);
+  const [checkOutDate, setCheckOutDate] = useState(
+    getNextAvailableCheckOut(minDate),
+  );
 
   useEffect(() => {
     // Ensure check-out is always after check-in
@@ -973,7 +976,7 @@ const CasaDetail = () => {
                     <div className="relative">
                       <input
                         type="date"
-                        min={today}
+                        min={getMinimumDate()}
                         value={checkInDate}
                         onChange={(e) => setCheckInDate(e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
