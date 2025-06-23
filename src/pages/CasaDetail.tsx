@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate, useParams } from "react-router-dom";
+import { getMinimumDate, getNextAvailableCheckOut } from "@/lib/pricing-system";
 import {
   Menu,
   Globe,
