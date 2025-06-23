@@ -166,8 +166,22 @@ export const validateReservationDates = (
   checkIn: string,
   checkOut: string,
 ): { valid: boolean; error?: string } => {
-  const checkInDate = new Date(checkIn);
-  const checkOutDate = new Date(checkOut);
+  // Create dates in local timezone to avoid timezone shift issues
+  const checkInParts = checkIn.split("-");
+  const checkOutParts = checkOut.split("-");
+
+  const checkInDate = new Date(
+    parseInt(checkInParts[0]),
+    parseInt(checkInParts[1]) - 1,
+    parseInt(checkInParts[2]),
+  );
+
+  const checkOutDate = new Date(
+    parseInt(checkOutParts[0]),
+    parseInt(checkOutParts[1]) - 1,
+    parseInt(checkOutParts[2]),
+  );
+
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow.setHours(0, 0, 0, 0);
