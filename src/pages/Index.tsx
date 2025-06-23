@@ -346,4 +346,13 @@ const IndexContent = () => {
   );
 };
 
+// Componente protegido exportado
+const Index = () => {
+  return (
+    <ProtectedRoute>
+      <IndexContent />
+    </ProtectedRoute>
+  );
+};
+
 export default Index;
