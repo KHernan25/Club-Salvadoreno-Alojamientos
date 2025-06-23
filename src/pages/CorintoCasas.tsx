@@ -285,9 +285,9 @@ const CorintoCasas = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate("/reservas")}
+                      onClick={() => navigate(`/casa/${casa.id}#precios`)}
                     >
-                      Reservar
+                      Ver Precios
                     </Button>
                   </div>
                 </CardContent>
