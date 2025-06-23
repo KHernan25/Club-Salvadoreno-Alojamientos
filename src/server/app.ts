@@ -65,6 +65,92 @@ app.get("/health", (req: Request, res: Response) => {
   });
 });
 
+// API base endpoint - información de la API
+app.get("/api", (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: "🏨 Club Salvadoreño API",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
+    endpoints: {
+      health: {
+        path: "/health",
+        method: "GET",
+        description: "Health check del servidor",
+      },
+      auth: {
+        path: "/api/auth",
+        methods: ["POST"],
+        description: "Autenticación de usuarios",
+        endpoints: [
+          "POST /api/auth/login - Iniciar sesión",
+          "POST /api/auth/register - Registrar usuario",
+          "POST /api/auth/logout - Cerrar sesión",
+          "POST /api/auth/refresh - Renovar token",
+        ],
+      },
+      users: {
+        path: "/api/users",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        description: "Gestión de usuarios",
+        endpoints: [
+          "GET /api/users - Listar usuarios",
+          "GET /api/users/:id - Obtener usuario",
+          "PUT /api/users/:id - Actualizar usuario",
+          "DELETE /api/users/:id - Eliminar usuario",
+        ],
+      },
+      accommodations: {
+        path: "/api/accommodations",
+        methods: ["GET"],
+        description: "Información de alojamientos",
+        endpoints: [
+          "GET /api/accommodations - Listar alojamientos",
+          "GET /api/accommodations/:id - Obtener alojamiento",
+          "GET /api/accommodations/location/:location - Alojamientos por ubicación",
+        ],
+      },
+      reservations: {
+        path: "/api/reservations",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        description: "Gestión de reservas",
+        endpoints: [
+          "GET /api/reservations - Listar reservas",
+          "POST /api/reservations - Crear reserva",
+          "GET /api/reservations/:id - Obtener reserva",
+          "PUT /api/reservations/:id - Actualizar reserva",
+          "DELETE /api/reservations/:id - Cancelar reserva",
+        ],
+      },
+      pricing: {
+        path: "/api/pricing",
+        methods: ["GET"],
+        description: "Sistema de precios",
+        endpoints: [
+          "GET /api/pricing/calculate - Calcular precios",
+          "GET /api/pricing/rates - Obtener tarifas",
+        ],
+      },
+      contact: {
+        path: "/api/contact",
+        methods: ["POST"],
+        description: "Formulario de contacto",
+        endpoints: ["POST /api/contact - Enviar mensaje de contacto"],
+      },
+    },
+    rateLimit: {
+      general: "100 requests por 15 minutos",
+      auth: "5 requests por 15 minutos",
+    },
+    docs: {
+      authentication: "Usar Bearer token en header Authorization",
+      contentType: "application/json",
+      cors: "Habilitado para desarrollo",
+    },
+  });
+});
+
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
