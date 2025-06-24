@@ -30,19 +30,25 @@ router.post(
   "/login",
   validateLogin,
   asyncHandler(async (req: AuthenticatedRequest, res) => {
+    console.log("🔐 Login attempt received:", { username: req.body.username });
+
     const { username, password, rememberMe } = req.body;
 
     // Validar credenciales usando la función del backend
     const user = isValidUser(username.trim(), password);
 
     if (!user) {
+      console.log("❌ Invalid credentials for:", username);
       throw createError("Credenciales incorrectas", 401);
     }
 
     // Verificar que el usuario esté activo
     if (!user.isActive) {
+      console.log("❌ User inactive:", username);
       throw createError("Cuenta desactivada. Contacta al administrador.", 401);
     }
+
+    console.log("✅ Login successful for:", user.fullName);
 
     // Generar JWT token
     const jwtSecret = process.env.JWT_SECRET || "your-secret-key";
@@ -61,9 +67,9 @@ router.post(
     // Actualizar último login
     updateLastLogin(user.id);
 
-    res.json({
+    // Respuesta simplificada para evitar problemas de parsing
+    const response = {
       success: true,
-      message: "Inicio de sesión exitoso",
       data: {
         user: {
           id: user.id,
@@ -74,12 +80,13 @@ router.post(
           fullName: user.fullName,
           role: user.role,
           phone: user.phone,
-          lastLogin: user.lastLogin,
         },
-        token,
-        expiresIn: tokenExpiry,
+        token: token,
       },
-    });
+    };
+
+    console.log("📤 Sending response:", { success: true, userRole: user.role });
+    res.status(200).json(response);
   }),
 );
 
