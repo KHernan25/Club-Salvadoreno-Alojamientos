@@ -127,6 +127,11 @@ const apiRequest = async <T>(
 
 // Check if API is available
 export const isApiAvailable = async (): Promise<boolean> => {
+  // Temporalmente devolver false para usar solo datos mock
+  // TODO: Restaurar una vez que el proxy esté funcionando
+  return false;
+
+  /*
   try {
     const response = await fetch("/health", {
       method: "GET",
@@ -137,6 +142,7 @@ export const isApiAvailable = async (): Promise<boolean> => {
     console.log("API not available:", error);
     return false;
   }
+  */
 };
 
 // Authentication functions
