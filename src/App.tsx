@@ -115,6 +115,14 @@ const App = () => (
                 }
               />
               <Route
+                path="/admin/users/new"
+                element={
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
+                    <AdminUsers />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
                 path="/admin/accommodations"
                 element={
                   <AdminProtectedRoute requiredRole="anfitrion">

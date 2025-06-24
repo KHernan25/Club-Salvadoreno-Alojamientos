@@ -81,6 +81,8 @@ import {
 import { getRolePermissions } from "@/lib/user-database";
 
 const AdminUsers = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [users, setUsers] = useState<ApiUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -104,6 +106,13 @@ const AdminUsers = () => {
   useEffect(() => {
     loadUsers();
   }, []);
+
+  useEffect(() => {
+    // Auto-open new user dialog if URL is /admin/users/new
+    if (location.pathname === "/admin/users/new") {
+      setIsNewUserDialogOpen(true);
+    }
+  }, [location.pathname]);
 
   const loadUsers = async () => {
     try {
@@ -268,6 +277,10 @@ const AdminUsers = () => {
         role: "user",
         password: "",
       });
+      // Navigate back to main users page if came from /new route
+      if (location.pathname === "/admin/users/new") {
+        navigate("/admin/users");
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -763,7 +776,13 @@ const AdminUsers = () => {
             <DialogFooter>
               <Button
                 variant="outline"
-                onClick={() => setIsNewUserDialogOpen(false)}
+                onClick={() => {
+                  setIsNewUserDialogOpen(false);
+                  // Navigate back if came from /new route
+                  if (location.pathname === "/admin/users/new") {
+                    navigate("/admin/users");
+                  }
+                }}
               >
                 Cancelar
               </Button>
