@@ -830,7 +830,6 @@ const AdminAccommodations = () => {
                             {accommodation.available
                               ? "Disponible"
                               : "No disponible"}
-                            </Badge>
                           </Badge>
                         </TableCell>
                         <TableCell>
