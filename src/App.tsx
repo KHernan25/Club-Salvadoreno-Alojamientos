@@ -188,6 +188,14 @@ const App = () => (
                   </AdminProtectedRoute>
                 }
               />
+              <Route
+                path="/admin/site-content"
+                element={
+                  <AdminProtectedRoute requiredRole="mercadeo">
+                    <AdminSiteContent />
+                  </AdminProtectedRoute>
+                }
+              />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
