@@ -179,6 +179,14 @@ const App = () => (
                   </AdminProtectedRoute>
                 }
               />
+              <Route
+                path="/admin/profile"
+                element={
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
+                    <AdminProfile />
+                  </AdminProtectedRoute>
+                }
+              />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
