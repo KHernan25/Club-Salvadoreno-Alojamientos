@@ -566,11 +566,13 @@ const AdminUsers = () => {
                     <SelectValue placeholder="Todos los roles" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(users || []).map((user) => (
-                      <SelectItem key={user.id} value={user.id}>
-                        {user.firstName} {user.lastName} - {user.email}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="all">Todos los roles</SelectItem>
+                    <SelectItem value="super_admin">Super Administrador</SelectItem>
+                    <SelectItem value="atencion_miembro">Atención al Miembro</SelectItem>
+                    <SelectItem value="anfitrion">Anfitrión</SelectItem>
+                    <SelectItem value="monitor">Monitor</SelectItem>
+                    <SelectItem value="mercadeo">Mercadeo</SelectItem>
+                    <SelectItem value="user">Usuario</SelectItem>
                   </SelectContent>
               </div>
               <div>
