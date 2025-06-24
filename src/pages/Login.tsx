@@ -109,7 +109,13 @@ const Login = () => {
         });
 
         // Redirect based on user role
-        if (result.user.role === "admin" || result.user.role === "staff") {
+        if (
+          result.user.role === "super_admin" ||
+          result.user.role === "atencion_miembro" ||
+          result.user.role === "anfitrion" ||
+          result.user.role === "monitor" ||
+          result.user.role === "mercadeo"
+        ) {
           navigate("/admin/dashboard", { replace: true });
         } else {
           navigate("/dashboard", { replace: true });
