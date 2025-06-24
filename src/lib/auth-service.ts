@@ -1,6 +1,7 @@
 // Servicio de autenticación para manejo de login y sesiones
 
 import { User, isValidUser, updateLastLogin } from "./user-database";
+import { apiLogin, apiLogout, isApiAvailable } from "./api-service";
 
 export interface LoginCredentials {
   username: string;
@@ -28,9 +29,6 @@ const REMEMBER_KEY = "club_salvadoreno_remember";
 export const authenticateUser = async (
   credentials: LoginCredentials,
 ): Promise<AuthResult> => {
-  // Simular delay de red/validación
-  await new Promise((resolve) => setTimeout(resolve, 800));
-
   const { username, password, rememberMe = false } = credentials;
 
   // Validar que no estén vacíos
@@ -41,7 +39,57 @@ export const authenticateUser = async (
     };
   }
 
-  // Verificar credenciales
+  // Intentar autenticación con API real primero
+  try {
+    const apiConnected = await isApiAvailable();
+
+    if (apiConnected) {
+      console.log("🔗 Usando autenticación con API real");
+      const result = await apiLogin({
+        username: username.trim(),
+        password,
+        rememberMe,
+      });
+
+      if (result.success && result.user) {
+        // Verificar estado de aprobación
+        if (result.user.status === "pending") {
+          return {
+            success: false,
+            error:
+              "Tu cuenta está pendiente de aprobación. Contacta al administrador.",
+          };
+        }
+
+        if (!result.user.isActive) {
+          return {
+            success: false,
+            error: "Tu cuenta está desactivada. Contacta al administrador.",
+          };
+        }
+
+        return {
+          success: true,
+          user: result.user,
+        };
+      }
+
+      return {
+        success: false,
+        error: result.error || "Credenciales incorrectas",
+      };
+    }
+  } catch (error) {
+    console.warn("⚠️ API no disponible, usando autenticación local:", error);
+  }
+
+  // Fallback a autenticación local (modo desarrollo)
+  console.log("🔄 Usando autenticación local de desarrollo");
+
+  // Simular delay de red/validación
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
+  // Verificar credenciales locales
   const user = isValidUser(username.trim(), password);
 
   if (!user) {
@@ -133,8 +181,22 @@ export const getCurrentUser = (): User | null => {
 };
 
 // Cerrar sesión
-export const logout = (): void => {
-  // Limpiar todos los datos de sesión
+export const logout = async (): Promise<void> => {
+  try {
+    // Intentar cerrar sesión con API real
+    const apiConnected = await isApiAvailable();
+    if (apiConnected) {
+      console.log("🔗 Cerrando sesión con API real");
+      await apiLogout();
+    }
+  } catch (error) {
+    console.warn(
+      "⚠️ Error al cerrar sesión con API, continuando con limpieza local:",
+      error,
+    );
+  }
+
+  // Limpiar todos los datos de sesión local
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(REMEMBER_KEY);
 

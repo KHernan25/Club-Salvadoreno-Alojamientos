@@ -197,9 +197,12 @@ export const registerUser = async (
   }
 
   // Registro exitoso - devolver información para redirección al login
+  // IMPORTANTE: El usuario queda en estado "pending" hasta ser aprobado por un administrador
   return {
     success: true,
     user: registrationResult.user,
+    message:
+      "Registro exitoso. Tu cuenta está pendiente de aprobación por parte del administrador. Te notificaremos por correo cuando sea activada.",
   };
 };
 
