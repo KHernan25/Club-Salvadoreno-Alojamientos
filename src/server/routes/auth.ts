@@ -28,7 +28,6 @@ const router = Router();
 // POST /api/auth/login
 router.post(
   "/login",
-  validateLogin,
   asyncHandler(async (req: AuthenticatedRequest, res) => {
     console.log("🔐 Login attempt received:", { username: req.body.username });
 
