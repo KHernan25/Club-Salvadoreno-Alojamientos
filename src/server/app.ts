@@ -14,6 +14,9 @@ import { errorHandler } from "./middleware/errorHandler";
 // Crear aplicación Express
 const app: Application = express();
 
+// Configure trust proxy for cloud environments
+app.set("trust proxy", true);
+
 // Middleware de seguridad
 app.use(helmet());
 
