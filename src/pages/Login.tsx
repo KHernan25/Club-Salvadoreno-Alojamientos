@@ -109,8 +109,8 @@ const Login = () => {
         });
 
         // Redirect based on user role
-        if (result.user.role === "admin") {
-          navigate("/dashboard", { replace: true });
+        if (result.user.role === "admin" || result.user.role === "staff") {
+          navigate("/admin/dashboard", { replace: true });
         } else {
           navigate("/dashboard", { replace: true });
         }
