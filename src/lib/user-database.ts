@@ -10,7 +10,13 @@ export interface User {
   email: string;
   phone: string;
   fullName: string;
-  role: "admin" | "user" | "staff";
+  role:
+    | "super_admin"
+    | "atencion_miembro"
+    | "anfitrion"
+    | "monitor"
+    | "mercadeo"
+    | "user";
   isActive: boolean;
   lastLogin?: Date;
   createdAt: Date;
