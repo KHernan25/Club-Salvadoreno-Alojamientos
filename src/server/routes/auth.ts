@@ -1,12 +1,13 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { authenticateUser, getCurrentUser } from "../../lib/auth-service";
 import { registerUser } from "../../lib/registration-service";
 import {
   findUserByEmail,
   findUserById,
+  findUserByUsername,
   updateLastLogin,
+  isValidUser,
 } from "../../lib/user-database";
 import {
   sendPasswordResetEmail,
