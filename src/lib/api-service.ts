@@ -108,7 +108,7 @@ const apiRequest = async <T>(
 // Check if API is available
 export const isApiAvailable = async (): Promise<boolean> => {
   try {
-    const response = await fetch(`${API_BASE_URL.replace("/api", "")}/health`, {
+    const response = await fetch("/health", {
       method: "GET",
       timeout: 5000,
     } as RequestInit);
