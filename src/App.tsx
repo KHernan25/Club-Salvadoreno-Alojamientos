@@ -94,11 +94,11 @@ const App = () => (
               <Route path="/translation-test" element={<TranslationTest />} />
               <Route path="/country-club" element={<CountryClub />} />
 
-              {/* Admin Routes - Protected for admin/staff only */}
+              {/* Admin Routes - Protected for backoffice roles only */}
               <Route
                 path="/admin/dashboard"
                 element={
-                  <AdminProtectedRoute requiredRole="staff">
+                  <AdminProtectedRoute requiredRole="mercadeo">
                     <AdminDashboard />
                   </AdminProtectedRoute>
                 }
@@ -106,7 +106,7 @@ const App = () => (
               <Route
                 path="/admin/users"
                 element={
-                  <AdminProtectedRoute requiredRole="staff">
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
                     <AdminUsers />
                   </AdminProtectedRoute>
                 }
@@ -114,7 +114,7 @@ const App = () => (
               <Route
                 path="/admin/accommodations"
                 element={
-                  <AdminProtectedRoute requiredRole="staff">
+                  <AdminProtectedRoute requiredRole="anfitrion">
                     <AdminAccommodations />
                   </AdminProtectedRoute>
                 }
@@ -122,7 +122,7 @@ const App = () => (
               <Route
                 path="/admin/reservations"
                 element={
-                  <AdminProtectedRoute requiredRole="staff">
+                  <AdminProtectedRoute requiredRole="monitor">
                     <AdminReservations />
                   </AdminProtectedRoute>
                 }
@@ -130,7 +130,7 @@ const App = () => (
               <Route
                 path="/admin/calendar"
                 element={
-                  <AdminProtectedRoute requiredRole="staff">
+                  <AdminProtectedRoute requiredRole="anfitrion">
                     <AdminCalendar />
                   </AdminProtectedRoute>
                 }

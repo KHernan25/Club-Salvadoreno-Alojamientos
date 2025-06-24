@@ -14,7 +14,7 @@ export const errorHandler = (
 ) => {
   let { statusCode = 500, message } = error;
 
-  // Log del error
+  // Log del error (separate from response)
   console.error("🚨 Error:", {
     error: message,
     stack: error.stack,
@@ -53,14 +53,12 @@ export const errorHandler = (
     message = "El recurso ya existe";
   }
 
-  // Respuesta de error
+  // Respuesta de error limpia
   const errorResponse = {
     success: false,
     error: message,
-    ...(process.env.NODE_ENV === "development" && {
-      stack: error.stack,
-      details: error,
-    }),
+    statusCode,
+    timestamp: new Date().toISOString(),
   };
 
   res.status(statusCode).json(errorResponse);

@@ -39,48 +39,54 @@ export const authenticateUser = async (
     };
   }
 
-  // Intentar autenticación con API real primero
-  try {
-    const apiConnected = await isApiAvailable();
+  // Temporalmente usar solo autenticación local para evitar problemas de proxy
+  // TODO: Restaurar API una vez que el proxy esté funcionando
+  const USE_API = false;
 
-    if (apiConnected) {
-      console.log("🔗 Usando autenticación con API real");
-      const result = await apiLogin({
-        username: username.trim(),
-        password,
-        rememberMe,
-      });
+  if (USE_API) {
+    try {
+      const apiConnected = await isApiAvailable();
 
-      if (result.success && result.user) {
-        // Verificar estado de aprobación
-        if (result.user.status === "pending") {
+      if (apiConnected) {
+        console.log("🔗 Usando autenticación con API real");
+        const result = await apiLogin({
+          username: username.trim(),
+          password,
+          rememberMe,
+        });
+
+        if (result.success && result.user) {
+          // Verificar estado de aprobación
+          if (result.user.status === "pending") {
+            return {
+              success: false,
+              error:
+                "Tu cuenta está pendiente de aprobación. Contacta al administrador.",
+            };
+          }
+
+          if (!result.user.isActive) {
+            return {
+              success: false,
+              error: "Tu cuenta está desactivada. Contacta al administrador.",
+            };
+          }
+
           return {
-            success: false,
-            error:
-              "Tu cuenta está pendiente de aprobación. Contacta al administrador.",
-          };
-        }
-
-        if (!result.user.isActive) {
-          return {
-            success: false,
-            error: "Tu cuenta está desactivada. Contacta al administrador.",
+            success: true,
+            user: result.user,
           };
         }
 
         return {
-          success: true,
-          user: result.user,
+          success: false,
+          error: result.error || "Credenciales incorrectas",
         };
       }
-
-      return {
-        success: false,
-        error: result.error || "Credenciales incorrectas",
-      };
+    } catch (error) {
+      console.warn("⚠️ API error, fallback to local auth:", error);
+      // Forzar fallback a autenticación local
     }
-  } catch (error) {
-    console.warn("⚠️ API no disponible, usando autenticación local:", error);
   }
 
   // Fallback a autenticación local (modo desarrollo)
@@ -182,26 +188,26 @@ export const getCurrentUser = (): User | null => {
 
 // Cerrar sesión
 export const logout = async (): Promise<void> => {
+  // Primero limpiar datos locales para prevenir loops
+  sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(REMEMBER_KEY);
+  sessionStorage.clear();
+
   try {
-    // Intentar cerrar sesión con API real
+    // Intentar cerrar sesión con API real (si hay token válido)
     const apiConnected = await isApiAvailable();
     if (apiConnected) {
       console.log("🔗 Cerrando sesión con API real");
+      // Solo intentar logout de API si realmente hay una sesión válida
       await apiLogout();
     }
   } catch (error) {
+    // No hacer nada, ya limpiamos los datos locales
     console.warn(
-      "⚠️ Error al cerrar sesión con API, continuando con limpieza local:",
+      "⚠️ API logout falló, pero sesión local ya está limpia:",
       error,
     );
   }
-
-  // Limpiar todos los datos de sesión local
-  sessionStorage.removeItem(SESSION_KEY);
-  localStorage.removeItem(REMEMBER_KEY);
-
-  // Limpiar cualquier otro dato relacionado con la sesión
-  sessionStorage.clear();
 
   // Disparar evento personalizado para notificar el logout
   window.dispatchEvent(new CustomEvent("userLoggedOut"));
@@ -284,8 +290,11 @@ export const hasRole = (requiredRole: User["role"]): boolean => {
   if (!user) return false;
 
   const roleHierarchy = {
-    admin: 3,
-    staff: 2,
+    super_admin: 5,
+    atencion_miembro: 4,
+    anfitrion: 3,
+    monitor: 2,
+    mercadeo: 2,
     user: 1,
   };
 

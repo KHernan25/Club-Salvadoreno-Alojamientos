@@ -1,12 +1,13 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { authenticateUser, getCurrentUser } from "../../lib/auth-service";
 import { registerUser } from "../../lib/registration-service";
 import {
   findUserByEmail,
   findUserById,
+  findUserByUsername,
   updateLastLogin,
+  isValidUser,
 } from "../../lib/user-database";
 import {
   sendPasswordResetEmail,
@@ -27,16 +28,35 @@ const router = Router();
 // POST /api/auth/login
 router.post(
   "/login",
-  validateLogin,
   asyncHandler(async (req: AuthenticatedRequest, res) => {
+    console.log("🔐 Login attempt received:", { username: req.body.username });
+
     const { username, password, rememberMe } = req.body;
 
-    // Usar el servicio de autenticación existente
-    const result = await authenticateUser({ username, password, rememberMe });
-
-    if (!result.success) {
-      throw createError(result.error || "Error de autenticación", 401);
+    // Validación básica manual
+    if (!username || !password) {
+      console.log("❌ Missing username or password");
+      return res.status(400).json({
+        success: false,
+        error: "Usuario y contraseña son requeridos",
+      });
     }
+
+    // Validar credenciales usando la función del backend
+    const user = isValidUser(username.trim(), password);
+
+    if (!user) {
+      console.log("❌ Invalid credentials for:", username);
+      throw createError("Credenciales incorrectas", 401);
+    }
+
+    // Verificar que el usuario esté activo
+    if (!user.isActive) {
+      console.log("❌ User inactive:", username);
+      throw createError("Cuenta desactivada. Contacta al administrador.", 401);
+    }
+
+    console.log("✅ Login successful for:", user.fullName);
 
     // Generar JWT token
     const jwtSecret = process.env.JWT_SECRET || "your-secret-key";
@@ -44,36 +64,37 @@ router.post(
 
     const token = jwt.sign(
       {
-        userId: result.user!.id,
-        email: result.user!.email,
-        role: result.user!.role,
+        userId: user.id,
+        email: user.email,
+        role: user.role,
       },
       jwtSecret,
       { expiresIn: tokenExpiry },
     );
 
     // Actualizar último login
-    updateLastLogin(result.user!.id);
+    updateLastLogin(user.id);
 
-    res.json({
+    // Respuesta simplificada para evitar problemas de parsing
+    const response = {
       success: true,
-      message: "Inicio de sesión exitoso",
       data: {
         user: {
-          id: result.user!.id,
-          firstName: result.user!.firstName,
-          lastName: result.user!.lastName,
-          username: result.user!.username,
-          email: result.user!.email,
-          fullName: result.user!.fullName,
-          role: result.user!.role,
-          phone: result.user!.phone,
-          lastLogin: result.user!.lastLogin,
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          username: user.username,
+          email: user.email,
+          fullName: user.fullName,
+          role: user.role,
+          phone: user.phone,
         },
-        token,
-        expiresIn: tokenExpiry,
+        token: token,
       },
-    });
+    };
+
+    console.log("📤 Sending response:", { success: true, userRole: user.role });
+    res.status(200).json(response);
   }),
 );
 

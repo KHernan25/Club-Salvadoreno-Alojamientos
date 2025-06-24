@@ -10,7 +10,13 @@ export interface User {
   email: string;
   phone: string;
   fullName: string;
-  role: "admin" | "user" | "staff";
+  role:
+    | "super_admin"
+    | "atencion_miembro"
+    | "anfitrion"
+    | "monitor"
+    | "mercadeo"
+    | "user";
   isActive: boolean;
   lastLogin?: Date;
   createdAt: Date;
@@ -18,52 +24,84 @@ export interface User {
 
 // Lista de usuarios registrados
 export const registeredUsers: User[] = [
-  // Usuarios Admin
+  // Super Admin
   {
     id: "1",
-    firstName: "Administrador",
-    lastName: "Sistema",
-    username: "admin",
-    password: "Admin123",
-    email: "admin@clubsalvadoreno.com",
+    firstName: "Super",
+    lastName: "Administrador",
+    username: "superadmin",
+    password: "SuperAdmin123",
+    email: "superadmin@clubsalvadoreno.com",
     phone: "+503 2345-6789",
-    fullName: "Administrador del Sistema",
-    role: "admin",
-    isActive: true,
-    createdAt: new Date("2024-01-01"),
-  },
-  {
-    id: "2",
-    firstName: "Gerente",
-    lastName: "General",
-    username: "gerente",
-    password: "Gerente2024",
-    email: "gerente@clubsalvadoreno.com",
-    phone: "+503 2345-6790",
-    fullName: "Gerente General",
-    role: "admin",
+    fullName: "Super Administrador",
+    role: "super_admin",
     isActive: true,
     createdAt: new Date("2024-01-01"),
   },
 
-  // Staff
+  // Atención al Miembro
+  {
+    id: "2",
+    firstName: "Ana",
+    lastName: "García",
+    username: "atencion",
+    password: "Atencion123",
+    email: "atencion@clubsalvadoreno.com",
+    phone: "+503 2345-6790",
+    fullName: "Ana García - Atención al Miembro",
+    role: "atencion_miembro",
+    isActive: true,
+    createdAt: new Date("2024-01-01"),
+  },
+
+  // Anfitrión
   {
     id: "3",
-    firstName: "Recepcionista",
-    lastName: "General",
-    username: "recepcion",
-    password: "Recepcion123",
-    email: "recepcion@clubsalvadoreno.com",
+    firstName: "Carlos",
+    lastName: "Rodríguez",
+    username: "anfitrion",
+    password: "Anfitrion123",
+    email: "anfitrion@clubsalvadoreno.com",
     phone: "+503 2345-6791",
-    fullName: "Personal de Recepción",
-    role: "staff",
+    fullName: "Carlos Rodríguez - Anfitrión",
+    role: "anfitrion",
+    isActive: true,
+    createdAt: new Date("2024-01-15"),
+  },
+
+  // Monitor
+  {
+    id: "4",
+    firstName: "David",
+    lastName: "López",
+    username: "monitor",
+    password: "Monitor123",
+    email: "monitor@clubsalvadoreno.com",
+    phone: "+503 2345-6792",
+    fullName: "David López - Monitor",
+    role: "monitor",
+    isActive: true,
+    createdAt: new Date("2024-01-15"),
+  },
+
+  // Mercadeo
+  {
+    id: "5",
+    firstName: "Elena",
+    lastName: "Martínez",
+    username: "mercadeo",
+    password: "Mercadeo123",
+    email: "mercadeo@clubsalvadoreno.com",
+    phone: "+503 2345-6793",
+    fullName: "Elena Martínez - Mercadeo",
+    role: "mercadeo",
     isActive: true,
     createdAt: new Date("2024-01-15"),
   },
 
   // Usuarios Regulares
   {
-    id: "4",
+    id: "6",
     firstName: "María José",
     lastName: "González",
     username: "usuario1",
@@ -76,7 +114,7 @@ export const registeredUsers: User[] = [
     createdAt: new Date("2024-02-01"),
   },
   {
-    id: "5",
+    id: "7",
     firstName: "Carlos",
     lastName: "Rivera",
     username: "carlos.rivera",
@@ -89,7 +127,7 @@ export const registeredUsers: User[] = [
     createdAt: new Date("2024-02-10"),
   },
   {
-    id: "6",
+    id: "8",
     firstName: "Ana",
     lastName: "Martínez",
     username: "ana.martinez",
@@ -102,7 +140,7 @@ export const registeredUsers: User[] = [
     createdAt: new Date("2024-02-15"),
   },
   {
-    id: "7",
+    id: "9",
     firstName: "Juan",
     lastName: "Pérez",
     username: "jperez",
@@ -117,7 +155,7 @@ export const registeredUsers: User[] = [
 
   // Usuario de prueba común
   {
-    id: "8",
+    id: "10",
     firstName: "Demo",
     lastName: "Usuario",
     username: "demo",
@@ -132,7 +170,7 @@ export const registeredUsers: User[] = [
 
   // Usuario inactivo (para testing)
   {
-    id: "9",
+    id: "11",
     firstName: "Inactivo",
     lastName: "Usuario",
     username: "inactivo",
