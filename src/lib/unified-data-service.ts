@@ -1,4 +1,5 @@
 // Servicio de datos unificado para sincronizar información entre backoffice y sitio principal
+import { useState, useEffect } from "react";
 
 export interface UnifiedAccommodation {
   id: string;
