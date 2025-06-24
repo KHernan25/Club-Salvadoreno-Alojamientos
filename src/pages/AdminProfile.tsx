@@ -46,6 +46,9 @@ import {
   Building2,
   MessageSquare,
   BarChart3,
+  Camera,
+  Upload,
+  Trash2,
 } from "lucide-react";
 import { getCurrentUser, isSuperAdmin } from "@/lib/auth-service";
 import { getRolePermissions } from "@/lib/user-database";
@@ -55,6 +58,8 @@ import { toast } from "@/hooks/use-toast";
 const AdminProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
+  const [profileImage, setProfileImage] = useState<string>("");
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
     smsNotifications: false,
@@ -101,6 +106,73 @@ const AdminProfile = () => {
       timezone: "America/El_Salvador",
       language: "es",
     });
+  };
+
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validar tipo de archivo
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Error",
+        description: "Por favor selecciona solo archivos de imagen.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validar tamaño (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Error",
+        description: "La imagen debe ser menor a 5MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUploadingImage(true);
+
+    try {
+      // Simular subida de imagen
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setProfileImage(result);
+
+        toast({
+          title: "Imagen actualizada",
+          description: "Tu foto de perfil ha sido actualizada exitosamente.",
+        });
+
+        setIsUploadingImage(false);
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo subir la imagen. Intenta nuevamente.",
+        variant: "destructive",
+      });
+      setIsUploadingImage(false);
+    }
+  };
+
+  const removeProfileImage = () => {
+    setProfileImage("");
+    toast({
+      title: "Imagen eliminada",
+      description: "Tu foto de perfil ha sido eliminada.",
+    });
+  };
+
+  const getCurrentProfileImage = () => {
+    if (profileImage) return profileImage;
+    if (currentUser.profileImage) return currentUser.profileImage;
+    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.email}`;
   };
 
   const getRoleName = (role: string) => {
@@ -267,15 +339,51 @@ const AdminProfile = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center space-x-4">
-                    <Avatar className="w-20 h-20">
-                      <AvatarImage
-                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.email}`}
-                      />
-                      <AvatarFallback className="text-xl">
-                        {currentUser.firstName[0]}
-                        {currentUser.lastName[0]}
-                      </AvatarFallback>
-                    </Avatar>
+                    <div className="relative">
+                      <Avatar className="w-20 h-20">
+                        <AvatarImage src={getCurrentProfileImage()} />
+                        <AvatarFallback className="text-xl">
+                          {currentUser.firstName[0]}
+                          {currentUser.lastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="absolute -bottom-2 -right-2 flex space-x-1">
+                        <div className="relative">
+                          <input
+                            type="file"
+                            id="profile-image"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                          />
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="w-8 h-8 rounded-full p-0 bg-white shadow-md"
+                            onClick={() =>
+                              document.getElementById("profile-image")?.click()
+                            }
+                            disabled={isUploadingImage}
+                          >
+                            {isUploadingImage ? (
+                              <div className="w-3 h-3 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <Camera className="w-3 h-3" />
+                            )}
+                          </Button>
+                        </div>
+                        {(profileImage || currentUser.profileImage) && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="w-8 h-8 rounded-full p-0 bg-white shadow-md text-red-600 hover:text-red-700"
+                            onClick={removeProfileImage}
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
                     <div className="space-y-1">
                       <h3 className="text-lg font-semibold">
                         {currentUser.firstName} {currentUser.lastName}
@@ -286,6 +394,10 @@ const AdminProfile = () => {
                       <Badge variant="outline">
                         {getRoleName(currentUser.role)}
                       </Badge>
+                      <p className="text-xs text-gray-500">
+                        Haz clic en <Camera className="w-3 h-3 inline mx-1" />{" "}
+                        para cambiar tu foto
+                      </p>
                     </div>
                   </div>
 

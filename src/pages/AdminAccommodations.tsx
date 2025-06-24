@@ -69,42 +69,39 @@ import {
   apiUpdateAccommodation,
   Accommodation,
 } from "@/lib/api-service";
-import { hasPermission } from "@/lib/auth-service";
+import { hasPermission, getCurrentUser } from "@/lib/auth-service";
+import {
+  useUnifiedData,
+  UnifiedAccommodation,
+} from "@/lib/unified-data-service";
 
 const AdminAccommodations = () => {
-  const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    accommodations,
+    stats,
+    updateAccommodation,
+    searchAccommodations,
+    getFilteredAccommodations,
+  } = useUnifiedData();
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedAccommodation, setSelectedAccommodation] =
-    useState<Accommodation | null>(null);
+    useState<UnifiedAccommodation | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
-  const [editForm, setEditForm] = useState<Partial<Accommodation>>({});
+  const [editForm, setEditForm] = useState<Partial<UnifiedAccommodation>>({});
+
+  const currentUser = getCurrentUser();
 
   // Permisos del usuario actual
   const canEditContent = hasPermission("canEditSiteContent");
   const canManageImages = hasPermission("canManageImages");
   const canManageAccommodations = hasPermission("canManageAccommodations");
 
-  useEffect(() => {
-    loadAccommodations();
-  }, []);
-
-  const loadAccommodations = async () => {
-    try {
-      setLoading(true);
-      // Usar directamente los datos completos del sistema
-      setAccommodations(getCompleteAccommodationsList());
-    } catch (error) {
-      console.error("Error loading accommodations:", error);
-      // Fallback a datos completos del sistema
-      setAccommodations(getCompleteAccommodationsList());
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Los datos ya están disponibles a través del hook useUnifiedData
+  // No necesitamos cargar datos por separado
 
   // Lista completa de alojamientos basada en la estructura real del sistema
   const getCompleteAccommodationsList = (): Accommodation[] => [
@@ -359,18 +356,27 @@ const AdminAccommodations = () => {
   ];
 
   const handleUpdateAccommodation = async () => {
-    if (!selectedAccommodation) return;
+    if (!selectedAccommodation || !currentUser) return;
 
     try {
-      await apiUpdateAccommodation(selectedAccommodation.id, editForm);
-      toast({
-        title: "Alojamiento actualizado",
-        description: "Los cambios han sido guardados exitosamente.",
-      });
-      setIsEditDialogOpen(false);
-      setSelectedAccommodation(null);
-      setEditForm({});
-      loadAccommodations();
+      const success = updateAccommodation(
+        selectedAccommodation.id,
+        editForm,
+        `${currentUser.firstName} ${currentUser.lastName}`,
+      );
+
+      if (success) {
+        toast({
+          title: "Alojamiento actualizado",
+          description:
+            "Los cambios han sido guardados y sincronizados con el sitio principal.",
+        });
+        setIsEditDialogOpen(false);
+        setSelectedAccommodation(null);
+        setEditForm({});
+      } else {
+        throw new Error("No se pudo actualizar");
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -380,19 +386,17 @@ const AdminAccommodations = () => {
     }
   };
 
-  const filteredAccommodations = (accommodations || []).filter(
-    (accommodation) => {
-      const matchesSearch = accommodation.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const matchesLocation =
-        locationFilter === "all" || accommodation.location === locationFilter;
-      const matchesType =
-        typeFilter === "all" || accommodation.type === typeFilter;
-
-      return matchesSearch && matchesLocation && matchesType;
-    },
-  );
+  const filteredAccommodations = searchTerm
+    ? searchAccommodations(searchTerm).filter((acc) => {
+        const matchesLocation =
+          locationFilter === "all" || acc.location === locationFilter;
+        const matchesType = typeFilter === "all" || acc.type === typeFilter;
+        return matchesLocation && matchesType;
+      })
+    : getFilteredAccommodations({
+        location: locationFilter === "all" ? undefined : locationFilter,
+        type: typeFilter === "all" ? undefined : typeFilter,
+      });
 
   const getLocationName = (location: string) => {
     return location === "el-sunzal" ? "El Sunzal" : "Corinto";
@@ -441,7 +445,7 @@ const AdminAccommodations = () => {
     "Balcón privado": Home,
   };
 
-  const openEditDialog = (accommodation: Accommodation) => {
+  const openEditDialog = (accommodation: UnifiedAccommodation) => {
     setSelectedAccommodation(accommodation);
     setEditForm({
       name: accommodation.name,
@@ -455,7 +459,7 @@ const AdminAccommodations = () => {
     setIsEditDialogOpen(true);
   };
 
-  const openViewDialog = (accommodation: Accommodation) => {
+  const openViewDialog = (accommodation: UnifiedAccommodation) => {
     setSelectedAccommodation(accommodation);
     setIsViewDialogOpen(true);
   };
@@ -490,7 +494,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">
-                {accommodations?.length || 0}
+                {stats.total}
               </div>
               <p className="text-xs text-muted-foreground">
                 En ambas ubicaciones
@@ -503,11 +507,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {
-                  (accommodations || []).filter(
-                    (a) => a.location === "el-sunzal",
-                  ).length
-                }
+                {stats.elSunzal}
               </div>
               <p className="text-xs text-muted-foreground">
                 Apt, casas y suites
@@ -520,13 +520,10 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-purple-600">
-                {
-                  (accommodations || []).filter((a) => a.location === "corinto")
-                    .length
-                }
+                {stats.corinto}
               </div>
               <p className="text-xs text-muted-foreground">
-                Apartamentos y casas
+                Solo casas familiares
               </p>
             </CardContent>
           </Card>
@@ -536,7 +533,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-emerald-600">
-                {(accommodations || []).filter((a) => a.available).length}
+                {stats.available}
               </div>
               <p className="text-xs text-muted-foreground">
                 Listos para reservar
@@ -551,13 +548,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">
-                $
-                {Math.round(
-                  (accommodations || []).reduce(
-                    (acc, a) => acc + a.pricing.weekend,
-                    0,
-                  ) / (accommodations?.length || 1),
-                )}
+                ${stats.avgPrice}
               </div>
               <p className="text-xs text-muted-foreground">Fin de semana</p>
             </CardContent>
