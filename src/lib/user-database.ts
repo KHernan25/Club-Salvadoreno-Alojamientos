@@ -130,6 +130,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: true, // Puede editar configuración del sitio
         canAccessAllLocations: true,
         canCreateRoles: false,
+        canEditSiteContent: true, // Permiso específico para editar contenido del sitio
+        canManageImages: true, // Permiso específico para gestionar imágenes
       };
     default:
       return {
@@ -146,6 +148,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: false,
         canAccessAllLocations: false,
         canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
       };
   }
 };
