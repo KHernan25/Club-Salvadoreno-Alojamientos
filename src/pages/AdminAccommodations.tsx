@@ -95,8 +95,8 @@ const AdminAccommodations = () => {
   const loadAccommodations = async () => {
     try {
       setLoading(true);
-      const response = await apiGetAccommodations();
-      setAccommodations(response.accommodations);
+      // Usar directamente los datos completos del sistema
+      setAccommodations(getCompleteAccommodationsList());
     } catch (error) {
       console.error("Error loading accommodations:", error);
       // Fallback a datos completos del sistema
