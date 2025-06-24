@@ -69,42 +69,39 @@ import {
   apiUpdateAccommodation,
   Accommodation,
 } from "@/lib/api-service";
-import { hasPermission } from "@/lib/auth-service";
+import { hasPermission, getCurrentUser } from "@/lib/auth-service";
+import {
+  useUnifiedData,
+  UnifiedAccommodation,
+} from "@/lib/unified-data-service";
 
 const AdminAccommodations = () => {
-  const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    accommodations,
+    stats,
+    updateAccommodation,
+    searchAccommodations,
+    getFilteredAccommodations,
+  } = useUnifiedData();
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedAccommodation, setSelectedAccommodation] =
-    useState<Accommodation | null>(null);
+    useState<UnifiedAccommodation | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
-  const [editForm, setEditForm] = useState<Partial<Accommodation>>({});
+  const [editForm, setEditForm] = useState<Partial<UnifiedAccommodation>>({});
+
+  const currentUser = getCurrentUser();
 
   // Permisos del usuario actual
   const canEditContent = hasPermission("canEditSiteContent");
   const canManageImages = hasPermission("canManageImages");
   const canManageAccommodations = hasPermission("canManageAccommodations");
 
-  useEffect(() => {
-    loadAccommodations();
-  }, []);
-
-  const loadAccommodations = async () => {
-    try {
-      setLoading(true);
-      const response = await apiGetAccommodations();
-      setAccommodations(response.accommodations);
-    } catch (error) {
-      console.error("Error loading accommodations:", error);
-      // Fallback a datos completos del sistema
-      setAccommodations(getCompleteAccommodationsList());
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Los datos ya están disponibles a través del hook useUnifiedData
+  // No necesitamos cargar datos por separado
 
   // Lista completa de alojamientos basada en la estructura real del sistema
   const getCompleteAccommodationsList = (): Accommodation[] => [
@@ -327,128 +324,6 @@ const AdminAccommodations = () => {
       view: "Premium",
     })),
 
-    // Corinto - Apartamentos
-    {
-      id: "corinto1A",
-      name: "Apartamento Corinto 1A",
-      type: "apartamento",
-      location: "corinto",
-      capacity: 2,
-      description:
-        "Apartamento con hermosa vista al lago. Ambiente tranquilo y relajante ideal para una escapada romántica.",
-      amenities: ["Wi-Fi", "Aire acondicionado", "TV", "Kitchenette"],
-      pricing: { weekday: 85, weekend: 180, holiday: 220 },
-      images: [
-        "/images/corinto/corinto1a-1.jpg",
-        "/images/corinto/corinto1a-2.jpg",
-      ],
-      available: true,
-      view: "Vista lago",
-    },
-    {
-      id: "corinto1B",
-      name: "Apartamento Corinto 1B",
-      type: "apartamento",
-      location: "corinto",
-      capacity: 2,
-      description:
-        "Acogedor apartamento en Corinto con vista parcial. Perfecto para una estancia tranquila en contacto con la naturaleza.",
-      amenities: ["Wi-Fi", "Aire acondicionado", "TV", "Kitchenette"],
-      pricing: { weekday: 80, weekend: 170, holiday: 210 },
-      images: [
-        "/images/corinto/corinto1b-1.jpg",
-        "/images/corinto/corinto1b-2.jpg",
-      ],
-      available: true,
-      view: "Vista parcial",
-    },
-    {
-      id: "corinto2A",
-      name: "Apartamento Corinto 2A",
-      type: "apartamento",
-      location: "corinto",
-      capacity: 4,
-      description:
-        "Apartamento familiar con vista premium al lago. Balcón privado y cocina completa para una estancia cómoda.",
-      amenities: [
-        "Wi-Fi",
-        "Aire acondicionado",
-        "TV",
-        "Cocina completa",
-        "Balcón",
-      ],
-      pricing: { weekday: 100, weekend: 210, holiday: 260 },
-      images: [
-        "/images/corinto/corinto2a-1.jpg",
-        "/images/corinto/corinto2a-2.jpg",
-      ],
-      available: true,
-      view: "Vista lago premium",
-    },
-    {
-      id: "corinto2B",
-      name: "Apartamento Corinto 2B",
-      type: "apartamento",
-      location: "corinto",
-      capacity: 4,
-      description:
-        "Apartamento con vista al jardín tropical. Espacioso y confortable, ideal para familias que buscan tranquilidad.",
-      amenities: ["Wi-Fi", "Aire acondicionado", "TV", "Cocina completa"],
-      pricing: { weekday: 95, weekend: 200, holiday: 250 },
-      images: [
-        "/images/corinto/corinto2b-1.jpg",
-        "/images/corinto/corinto2b-2.jpg",
-      ],
-      available: true,
-      view: "Vista jardín",
-    },
-    {
-      id: "corinto3A",
-      name: "Apartamento Corinto 3A",
-      type: "apartamento",
-      location: "corinto",
-      capacity: 6,
-      description:
-        "Penthouse en Corinto con vista espectacular. Terraza amplia y cocina gourmet para grupos grandes.",
-      amenities: [
-        "Wi-Fi",
-        "Aire acondicionado",
-        "TV",
-        "Cocina gourmet",
-        "Terraza",
-      ],
-      pricing: { weekday: 140, weekend: 280, holiday: 350 },
-      images: [
-        "/images/corinto/corinto3a-1.jpg",
-        "/images/corinto/corinto3a-2.jpg",
-      ],
-      available: true,
-      view: "Penthouse",
-    },
-    {
-      id: "corinto3B",
-      name: "Apartamento Corinto 3B",
-      type: "apartamento",
-      location: "corinto",
-      capacity: 6,
-      description:
-        "Apartamento espacioso con vista lateral al lago. Terraza privada y todas las comodidades para una estancia perfecta.",
-      amenities: [
-        "Wi-Fi",
-        "Aire acondicionado",
-        "TV",
-        "Cocina completa",
-        "Terraza",
-      ],
-      pricing: { weekday: 135, weekend: 270, holiday: 340 },
-      images: [
-        "/images/corinto/corinto3b-1.jpg",
-        "/images/corinto/corinto3b-2.jpg",
-      ],
-      available: true,
-      view: "Vista lateral",
-    },
-
     // Corinto - Casas
     ...Array.from({ length: 6 }, (_, i) => ({
       id: `corinto-casa-${i + 1}`,
@@ -481,18 +356,27 @@ const AdminAccommodations = () => {
   ];
 
   const handleUpdateAccommodation = async () => {
-    if (!selectedAccommodation) return;
+    if (!selectedAccommodation || !currentUser) return;
 
     try {
-      await apiUpdateAccommodation(selectedAccommodation.id, editForm);
-      toast({
-        title: "Alojamiento actualizado",
-        description: "Los cambios han sido guardados exitosamente.",
-      });
-      setIsEditDialogOpen(false);
-      setSelectedAccommodation(null);
-      setEditForm({});
-      loadAccommodations();
+      const success = updateAccommodation(
+        selectedAccommodation.id,
+        editForm,
+        `${currentUser.firstName} ${currentUser.lastName}`,
+      );
+
+      if (success) {
+        toast({
+          title: "Alojamiento actualizado",
+          description:
+            "Los cambios han sido guardados y sincronizados con el sitio principal.",
+        });
+        setIsEditDialogOpen(false);
+        setSelectedAccommodation(null);
+        setEditForm({});
+      } else {
+        throw new Error("No se pudo actualizar");
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -502,19 +386,17 @@ const AdminAccommodations = () => {
     }
   };
 
-  const filteredAccommodations = (accommodations || []).filter(
-    (accommodation) => {
-      const matchesSearch = accommodation.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const matchesLocation =
-        locationFilter === "all" || accommodation.location === locationFilter;
-      const matchesType =
-        typeFilter === "all" || accommodation.type === typeFilter;
-
-      return matchesSearch && matchesLocation && matchesType;
-    },
-  );
+  const filteredAccommodations = searchTerm
+    ? searchAccommodations(searchTerm).filter((acc) => {
+        const matchesLocation =
+          locationFilter === "all" || acc.location === locationFilter;
+        const matchesType = typeFilter === "all" || acc.type === typeFilter;
+        return matchesLocation && matchesType;
+      })
+    : getFilteredAccommodations({
+        location: locationFilter === "all" ? undefined : locationFilter,
+        type: typeFilter === "all" ? undefined : typeFilter,
+      });
 
   const getLocationName = (location: string) => {
     return location === "el-sunzal" ? "El Sunzal" : "Corinto";
@@ -563,7 +445,7 @@ const AdminAccommodations = () => {
     "Balcón privado": Home,
   };
 
-  const openEditDialog = (accommodation: Accommodation) => {
+  const openEditDialog = (accommodation: UnifiedAccommodation) => {
     setSelectedAccommodation(accommodation);
     setEditForm({
       name: accommodation.name,
@@ -577,7 +459,7 @@ const AdminAccommodations = () => {
     setIsEditDialogOpen(true);
   };
 
-  const openViewDialog = (accommodation: Accommodation) => {
+  const openViewDialog = (accommodation: UnifiedAccommodation) => {
     setSelectedAccommodation(accommodation);
     setIsViewDialogOpen(true);
   };
@@ -612,7 +494,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">
-                {accommodations?.length || 0}
+                {stats.total}
               </div>
               <p className="text-xs text-muted-foreground">
                 En ambas ubicaciones
@@ -625,11 +507,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {
-                  (accommodations || []).filter(
-                    (a) => a.location === "el-sunzal",
-                  ).length
-                }
+                {stats.elSunzal}
               </div>
               <p className="text-xs text-muted-foreground">
                 Apt, casas y suites
@@ -642,13 +520,10 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-purple-600">
-                {
-                  (accommodations || []).filter((a) => a.location === "corinto")
-                    .length
-                }
+                {stats.corinto}
               </div>
               <p className="text-xs text-muted-foreground">
-                Apartamentos y casas
+                Solo casas familiares
               </p>
             </CardContent>
           </Card>
@@ -658,7 +533,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-emerald-600">
-                {(accommodations || []).filter((a) => a.available).length}
+                {stats.available}
               </div>
               <p className="text-xs text-muted-foreground">
                 Listos para reservar
@@ -673,13 +548,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">
-                $
-                {Math.round(
-                  (accommodations || []).reduce(
-                    (acc, a) => acc + a.pricing.weekend,
-                    0,
-                  ) / (accommodations?.length || 1),
-                )}
+                ${stats.avgPrice}
               </div>
               <p className="text-xs text-muted-foreground">Fin de semana</p>
             </CardContent>
