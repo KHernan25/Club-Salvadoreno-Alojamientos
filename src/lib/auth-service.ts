@@ -182,26 +182,26 @@ export const getCurrentUser = (): User | null => {
 
 // Cerrar sesión
 export const logout = async (): Promise<void> => {
+  // Primero limpiar datos locales para prevenir loops
+  sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(REMEMBER_KEY);
+  sessionStorage.clear();
+
   try {
-    // Intentar cerrar sesión con API real
+    // Intentar cerrar sesión con API real (si hay token válido)
     const apiConnected = await isApiAvailable();
     if (apiConnected) {
       console.log("🔗 Cerrando sesión con API real");
+      // Solo intentar logout de API si realmente hay una sesión válida
       await apiLogout();
     }
   } catch (error) {
+    // No hacer nada, ya limpiamos los datos locales
     console.warn(
-      "⚠️ Error al cerrar sesión con API, continuando con limpieza local:",
+      "⚠️ API logout falló, pero sesión local ya está limpia:",
       error,
     );
   }
-
-  // Limpiar todos los datos de sesión local
-  sessionStorage.removeItem(SESSION_KEY);
-  localStorage.removeItem(REMEMBER_KEY);
-
-  // Limpiar cualquier otro dato relacionado con la sesión
-  sessionStorage.clear();
 
   // Disparar evento personalizado para notificar el logout
   window.dispatchEvent(new CustomEvent("userLoggedOut"));
