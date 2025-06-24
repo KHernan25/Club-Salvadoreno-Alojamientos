@@ -313,7 +313,7 @@ const AdminReservations = () => {
     }
   };
 
-  const filteredReservations = reservations.filter((reservation) => {
+  const filteredReservations = (reservations || []).filter((reservation) => {
     const user = users.find((u) => u.id === reservation.userId);
     const accommodation = accommodations.find(
       (a) => a.id === reservation.accommodationId,
@@ -411,7 +411,9 @@ const AdminReservations = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{reservations.length}</div>
+              <div className="text-2xl font-bold">
+                {reservations?.length || 0}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Todas las reservas
               </p>
@@ -423,7 +425,10 @@ const AdminReservations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {reservations.filter((r) => r.status === "confirmed").length}
+                {
+                  (reservations || []).filter((r) => r.status === "confirmed")
+                    .length
+                }
               </div>
               <p className="text-xs text-muted-foreground">Reservas activas</p>
             </CardContent>
@@ -434,7 +439,10 @@ const AdminReservations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">
-                {reservations.filter((r) => r.status === "pending").length}
+                {
+                  (reservations || []).filter((r) => r.status === "pending")
+                    .length
+                }
               </div>
               <p className="text-xs text-muted-foreground">
                 Requieren atención
@@ -448,7 +456,7 @@ const AdminReservations = () => {
             <CardContent>
               <div className="text-2xl font-bold text-emerald-600">
                 $
-                {reservations
+                {(reservations || [])
                   .filter((r) => r.paymentStatus === "paid")
                   .reduce((sum, r) => sum + r.totalPrice, 0)
                   .toLocaleString()}
