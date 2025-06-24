@@ -14,7 +14,7 @@ export const errorHandler = (
 ) => {
   let { statusCode = 500, message } = error;
 
-  // Log del error
+  // Log del error (separate from response)
   console.error("🚨 Error:", {
     error: message,
     stack: error.stack,
