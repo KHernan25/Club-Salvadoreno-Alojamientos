@@ -28,6 +28,7 @@ import {
   Bell,
   UserPlus,
   MapPin,
+  Globe,
 } from "lucide-react";
 import {
   getCurrentUser,
@@ -100,6 +101,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       icon: MessageSquare,
       permission: "canManageMessages",
       badge: "2", // Unread messages
+    },
+    {
+      label: "Contenido del Sitio",
+      href: "/admin/site-content",
+      icon: Globe,
+      permission: "canEditSiteContent",
     },
     {
       label: "Configuración",
@@ -224,13 +231,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <span>Crear Usuario</span>
             </Link>
           )}
-          <Link
-            to="/dashboard"
+          <a
+            href="/dashboard"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-blue-50"
           >
             <Home className="h-4 w-4" />
-            <span>Ver Sitio Público</span>
-          </Link>
+            <span>Ver Sitio (Nueva Pestaña)</span>
+          </a>
         </div>
       </div>
     </div>
@@ -290,6 +299,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                     "Gestión de Precios"}
                   {location.pathname === "/admin/messages" &&
                     "Mensajes de Contacto"}
+                  {location.pathname === "/admin/site-content" &&
+                    "Gestión de Contenido"}
                   {location.pathname === "/admin/settings" && "Configuración"}
                 </h1>
               </div>
@@ -333,7 +344,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to="/perfil" className="cursor-pointer">
+                    <Link to="/admin/profile" className="cursor-pointer">
                       <User className="mr-2 h-4 w-4" />
                       <span>Mi Perfil</span>
                     </Link>

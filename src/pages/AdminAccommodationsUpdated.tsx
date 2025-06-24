@@ -71,7 +71,7 @@ import {
 } from "@/lib/api-service";
 import { hasPermission } from "@/lib/auth-service";
 
-const AdminAccommodations = () => {
+const AdminAccommodationsUpdated = () => {
   const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -1317,4 +1317,4 @@ const AdminAccommodations = () => {
   );
 };
 
-export default AdminAccommodations;
+export default AdminAccommodationsUpdated;

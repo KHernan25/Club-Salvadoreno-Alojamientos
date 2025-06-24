@@ -37,6 +37,8 @@ export interface RolePermissions {
   canManageSettings: boolean;
   canAccessAllLocations: boolean;
   canCreateRoles: boolean;
+  canEditSiteContent: boolean; // Nuevo permiso para editar contenido del sitio
+  canManageImages: boolean; // Nuevo permiso para gestionar imágenes
 }
 
 export const getRolePermissions = (role: User["role"]): RolePermissions => {
@@ -56,6 +58,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: true,
         canAccessAllLocations: true,
         canCreateRoles: true,
+        canEditSiteContent: true,
+        canManageImages: true,
       };
     case "atencion_miembro":
       return {
@@ -72,6 +76,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: false,
         canAccessAllLocations: true,
         canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
       };
     case "anfitrion":
       return {
@@ -88,6 +94,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: false,
         canAccessAllLocations: false,
         canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: true, // Anfitriones pueden gestionar imágenes de alojamientos
       };
     case "monitor":
       return {
@@ -104,6 +112,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: false,
         canAccessAllLocations: false,
         canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
       };
     case "mercadeo":
       return {
@@ -112,14 +122,16 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateUsers: false,
         canUpdateUsers: false,
         canDeleteUsers: false,
-        canManageAccommodations: false,
+        canManageAccommodations: true, // Puede editar información de alojamientos
         canManageReservations: false,
         canManageCalendar: false,
         canManagePricing: false,
         canManageMessages: true,
-        canManageSettings: false,
+        canManageSettings: true, // Puede editar configuración del sitio
         canAccessAllLocations: true,
         canCreateRoles: false,
+        canEditSiteContent: true, // Permiso específico para editar contenido del sitio
+        canManageImages: true, // Permiso específico para gestionar imágenes
       };
     default:
       return {
@@ -136,6 +148,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: false,
         canAccessAllLocations: false,
         canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
       };
   }
 };
