@@ -127,7 +127,7 @@ export const registeredUsers: User[] = [
     createdAt: new Date("2024-02-10"),
   },
   {
-    id: "6",
+    id: "8",
     firstName: "Ana",
     lastName: "Martínez",
     username: "ana.martinez",
@@ -140,7 +140,7 @@ export const registeredUsers: User[] = [
     createdAt: new Date("2024-02-15"),
   },
   {
-    id: "7",
+    id: "9",
     firstName: "Juan",
     lastName: "Pérez",
     username: "jperez",
@@ -155,7 +155,7 @@ export const registeredUsers: User[] = [
 
   // Usuario de prueba común
   {
-    id: "8",
+    id: "10",
     firstName: "Demo",
     lastName: "Usuario",
     username: "demo",
@@ -170,7 +170,7 @@ export const registeredUsers: User[] = [
 
   // Usuario inactivo (para testing)
   {
-    id: "9",
+    id: "11",
     firstName: "Inactivo",
     lastName: "Usuario",
     username: "inactivo",
