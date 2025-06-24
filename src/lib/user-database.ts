@@ -22,6 +22,124 @@ export interface User {
   createdAt: Date;
 }
 
+// Definir permisos por rol
+export interface RolePermissions {
+  canViewDashboard: boolean;
+  canManageUsers: boolean;
+  canCreateUsers: boolean;
+  canUpdateUsers: boolean;
+  canDeleteUsers: boolean;
+  canManageAccommodations: boolean;
+  canManageReservations: boolean;
+  canManageCalendar: boolean;
+  canManagePricing: boolean;
+  canManageMessages: boolean;
+  canManageSettings: boolean;
+  canAccessAllLocations: boolean;
+  canCreateRoles: boolean;
+}
+
+export const getRolePermissions = (role: User["role"]): RolePermissions => {
+  switch (role) {
+    case "super_admin":
+      return {
+        canViewDashboard: true,
+        canManageUsers: true,
+        canCreateUsers: true,
+        canUpdateUsers: true,
+        canDeleteUsers: true,
+        canManageAccommodations: true,
+        canManageReservations: true,
+        canManageCalendar: true,
+        canManagePricing: true,
+        canManageMessages: true,
+        canManageSettings: true,
+        canAccessAllLocations: true,
+        canCreateRoles: true,
+      };
+    case "atencion_miembro":
+      return {
+        canViewDashboard: true,
+        canManageUsers: true,
+        canCreateUsers: false,
+        canUpdateUsers: true,
+        canDeleteUsers: false,
+        canManageAccommodations: false,
+        canManageReservations: true,
+        canManageCalendar: true,
+        canManagePricing: false,
+        canManageMessages: true,
+        canManageSettings: false,
+        canAccessAllLocations: true,
+        canCreateRoles: false,
+      };
+    case "anfitrion":
+      return {
+        canViewDashboard: true,
+        canManageUsers: false,
+        canCreateUsers: false,
+        canUpdateUsers: false,
+        canDeleteUsers: false,
+        canManageAccommodations: true,
+        canManageReservations: true,
+        canManageCalendar: true,
+        canManagePricing: false,
+        canManageMessages: true,
+        canManageSettings: false,
+        canAccessAllLocations: false,
+        canCreateRoles: false,
+      };
+    case "monitor":
+      return {
+        canViewDashboard: true,
+        canManageUsers: false,
+        canCreateUsers: false,
+        canUpdateUsers: false,
+        canDeleteUsers: false,
+        canManageAccommodations: false,
+        canManageReservations: true,
+        canManageCalendar: true,
+        canManagePricing: false,
+        canManageMessages: false,
+        canManageSettings: false,
+        canAccessAllLocations: false,
+        canCreateRoles: false,
+      };
+    case "mercadeo":
+      return {
+        canViewDashboard: true,
+        canManageUsers: false,
+        canCreateUsers: false,
+        canUpdateUsers: false,
+        canDeleteUsers: false,
+        canManageAccommodations: false,
+        canManageReservations: false,
+        canManageCalendar: false,
+        canManagePricing: false,
+        canManageMessages: true,
+        canManageSettings: false,
+        canAccessAllLocations: true,
+        canCreateRoles: false,
+      };
+    default:
+      return {
+        canViewDashboard: false,
+        canManageUsers: false,
+        canCreateUsers: false,
+        canUpdateUsers: false,
+        canDeleteUsers: false,
+        canManageAccommodations: false,
+        canManageReservations: false,
+        canManageCalendar: false,
+        canManagePricing: false,
+        canManageMessages: false,
+        canManageSettings: false,
+        canAccessAllLocations: false,
+        canCreateRoles: false,
+      };
+  }
+};
+
 // Lista de usuarios registrados
 export const registeredUsers: User[] = [
   // Super Admin

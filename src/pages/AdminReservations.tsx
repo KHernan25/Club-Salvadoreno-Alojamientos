@@ -60,8 +60,10 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
+  MapPin,
+  Filter,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
 import {
   apiGetReservations,
@@ -74,12 +76,15 @@ import {
 } from "@/lib/api-service";
 
 const AdminReservations = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [accommodations, setAccommodations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [locationFilter, setLocationFilter] = useState("all");
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [isNewReservationDialogOpen, setIsNewReservationDialogOpen] =
@@ -97,6 +102,13 @@ const AdminReservations = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    // Auto-open new reservation dialog if URL is /admin/reservations/new
+    if (location.pathname === "/admin/reservations/new") {
+      setIsNewReservationDialogOpen(true);
+    }
+  }, [location.pathname]);
 
   const loadData = async () => {
     try {
@@ -192,9 +204,17 @@ const AdminReservations = () => {
 
   const getMockAccommodations = () => [
     { id: "1A", name: "Apartamento 1A", location: "el-sunzal", capacity: 2 },
+    { id: "2A", name: "Apartamento 2A", location: "el-sunzal", capacity: 2 },
+    { id: "3A", name: "Apartamento 3A", location: "el-sunzal", capacity: 2 },
     {
       id: "suite-1",
       name: "Suite Premium 1",
+      location: "el-sunzal",
+      capacity: 2,
+    },
+    {
+      id: "suite-2",
+      name: "Suite Premium 2",
       location: "el-sunzal",
       capacity: 2,
     },
@@ -203,6 +223,37 @@ const AdminReservations = () => {
       name: "Casa Familiar 1",
       location: "el-sunzal",
       capacity: 6,
+    },
+    {
+      id: "casa-2",
+      name: "Casa Familiar 2",
+      location: "el-sunzal",
+      capacity: 6,
+    },
+    // Corinto accommodations
+    {
+      id: "corinto-apto-1",
+      name: "Apartamento Corinto 1",
+      location: "corinto",
+      capacity: 4,
+    },
+    {
+      id: "corinto-apto-2",
+      name: "Apartamento Corinto 2",
+      location: "corinto",
+      capacity: 4,
+    },
+    {
+      id: "corinto-casa-1",
+      name: "Casa Corinto 1",
+      location: "corinto",
+      capacity: 8,
+    },
+    {
+      id: "corinto-casa-2",
+      name: "Casa Corinto 2",
+      location: "corinto",
+      capacity: 8,
     },
   ];
 
@@ -222,6 +273,10 @@ const AdminReservations = () => {
         guests: 1,
         specialRequests: "",
       });
+      // Navigate back to main reservations page if came from /new route
+      if (location.pathname === "/admin/reservations/new") {
+        navigate("/admin/reservations");
+      }
       loadData();
     } catch (error) {
       toast({
@@ -271,7 +326,7 @@ const AdminReservations = () => {
     }
   };
 
-  const filteredReservations = reservations.filter((reservation) => {
+  const filteredReservations = (reservations || []).filter((reservation) => {
     const user = users.find((u) => u.id === reservation.userId);
     const accommodation = accommodations.find(
       (a) => a.id === reservation.accommodationId,
@@ -288,7 +343,10 @@ const AdminReservations = () => {
     const matchesStatus =
       statusFilter === "all" || reservation.status === statusFilter;
 
-    return matchesSearch && matchesStatus;
+    const matchesLocation =
+      locationFilter === "all" || accommodation?.location === locationFilter;
+
+    return matchesSearch && matchesStatus && matchesLocation;
   });
 
   const getStatusBadge = (status: string) => {
@@ -335,6 +393,11 @@ const AdminReservations = () => {
     return accommodation ? accommodation.name : "Alojamiento no encontrado";
   };
 
+  const getAccommodationLocation = (accommodationId: string) => {
+    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    return accommodation?.location === "el-sunzal" ? "El Sunzal" : "Corinto";
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -361,7 +424,9 @@ const AdminReservations = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{reservations.length}</div>
+              <div className="text-2xl font-bold">
+                {reservations?.length || 0}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Todas las reservas
               </p>
@@ -373,7 +438,10 @@ const AdminReservations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {reservations.filter((r) => r.status === "confirmed").length}
+                {
+                  (reservations || []).filter((r) => r.status === "confirmed")
+                    .length
+                }
               </div>
               <p className="text-xs text-muted-foreground">Reservas activas</p>
             </CardContent>
@@ -384,7 +452,10 @@ const AdminReservations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">
-                {reservations.filter((r) => r.status === "pending").length}
+                {
+                  (reservations || []).filter((r) => r.status === "pending")
+                    .length
+                }
               </div>
               <p className="text-xs text-muted-foreground">
                 Requieren atención
@@ -398,7 +469,7 @@ const AdminReservations = () => {
             <CardContent>
               <div className="text-2xl font-bold text-emerald-600">
                 $
-                {reservations
+                {(reservations || [])
                   .filter((r) => r.paymentStatus === "paid")
                   .reduce((sum, r) => sum + r.totalPrice, 0)
                   .toLocaleString()}
@@ -427,6 +498,32 @@ const AdminReservations = () => {
                     className="pl-8"
                   />
                 </div>
+              </div>
+              <div>
+                <Label htmlFor="location-filter">Ubicación</Label>
+                <Select
+                  value={locationFilter}
+                  onValueChange={setLocationFilter}
+                >
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Todas las ubicaciones" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas las ubicaciones</SelectItem>
+                    <SelectItem value="el-sunzal">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4 text-blue-600" />
+                        <span>El Sunzal</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="corinto">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4 text-blue-600" />
+                        <span>Corinto</span>
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Label htmlFor="status-filter">Estado</Label>
@@ -471,7 +568,7 @@ const AdminReservations = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredReservations.map((reservation) => (
+                  {(filteredReservations || []).map((reservation) => (
                     <TableRow key={reservation.id}>
                       <TableCell>
                         <div className="space-y-1">
@@ -488,9 +585,19 @@ const AdminReservations = () => {
                           <p className="font-medium">
                             {getAccommodationName(reservation.accommodationId)}
                           </p>
-                          <div className="flex items-center space-x-1 text-sm text-gray-500">
-                            <Users className="h-3 w-3" />
-                            <span>{reservation.guests} huésped(es)</span>
+                          <div className="flex items-center space-x-3 text-sm text-gray-500">
+                            <div className="flex items-center space-x-1">
+                              <MapPin className="h-3 w-3 text-blue-600" />
+                              <span>
+                                {getAccommodationLocation(
+                                  reservation.accommodationId,
+                                )}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Users className="h-3 w-3" />
+                              <span>{reservation.guests} huésped(es)</span>
+                            </div>
                           </div>
                         </div>
                       </TableCell>
@@ -602,7 +709,7 @@ const AdminReservations = () => {
                     <SelectValue placeholder="Seleccionar usuario" />
                   </SelectTrigger>
                   <SelectContent>
-                    {users.map((user) => (
+                    {(users || []).map((user) => (
                       <SelectItem key={user.id} value={user.id}>
                         {user.firstName} {user.lastName} - {user.email}
                       </SelectItem>
@@ -625,12 +732,21 @@ const AdminReservations = () => {
                     <SelectValue placeholder="Seleccionar alojamiento" />
                   </SelectTrigger>
                   <SelectContent>
-                    {accommodations.map((accommodation) => (
+                    {(accommodations || []).map((accommodation) => (
                       <SelectItem
                         key={accommodation.id}
                         value={accommodation.id}
                       >
-                        {accommodation.name} (Cap: {accommodation.capacity})
+                        <div className="flex items-center space-x-2">
+                          <MapPin className="h-3 w-3 text-blue-600" />
+                          <span>
+                            {accommodation.name} -{" "}
+                            {accommodation.location === "el-sunzal"
+                              ? "El Sunzal"
+                              : "Corinto"}
+                            (Cap: {accommodation.capacity})
+                          </span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -700,7 +816,13 @@ const AdminReservations = () => {
             <DialogFooter>
               <Button
                 variant="outline"
-                onClick={() => setIsNewReservationDialogOpen(false)}
+                onClick={() => {
+                  setIsNewReservationDialogOpen(false);
+                  // Navigate back if came from /new route
+                  if (location.pathname === "/admin/reservations/new") {
+                    navigate("/admin/reservations");
+                  }
+                }}
               >
                 Cancelar
               </Button>

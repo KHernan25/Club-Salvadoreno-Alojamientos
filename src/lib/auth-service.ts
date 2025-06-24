@@ -1,6 +1,11 @@
 // Servicio de autenticación para manejo de login y sesiones
 
-import { User, isValidUser, updateLastLogin } from "./user-database";
+import {
+  User,
+  isValidUser,
+  updateLastLogin,
+  getRolePermissions,
+} from "./user-database";
 import { apiLogin, apiLogout, isApiAvailable } from "./api-service";
 
 export interface LoginCredentials {
@@ -302,6 +307,22 @@ export const hasRole = (requiredRole: User["role"]): boolean => {
   const requiredLevel = roleHierarchy[requiredRole] || 0;
 
   return userLevel >= requiredLevel;
+};
+
+// Verificar permisos específicos
+export const hasPermission = (permission: string): boolean => {
+  const user = getCurrentUser();
+  if (!user) return false;
+
+  const permissions = getRolePermissions(user.role);
+
+  return permissions[permission as keyof typeof permissions] || false;
+};
+
+// Verificar si el usuario es super admin
+export const isSuperAdmin = (): boolean => {
+  const user = getCurrentUser();
+  return user?.role === "super_admin" || false;
 };
 
 // Función para desarrollo - obtener credenciales de prueba

@@ -207,17 +207,19 @@ const AdminAccommodations = () => {
     }
   };
 
-  const filteredAccommodations = accommodations.filter((accommodation) => {
-    const matchesSearch = accommodation.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesLocation =
-      locationFilter === "all" || accommodation.location === locationFilter;
-    const matchesType =
-      typeFilter === "all" || accommodation.type === typeFilter;
+  const filteredAccommodations = (accommodations || []).filter(
+    (accommodation) => {
+      const matchesSearch = accommodation.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesLocation =
+        locationFilter === "all" || accommodation.location === locationFilter;
+      const matchesType =
+        typeFilter === "all" || accommodation.type === typeFilter;
 
-    return matchesSearch && matchesLocation && matchesType;
-  });
+      return matchesSearch && matchesLocation && matchesType;
+    },
+  );
 
   const getLocationName = (location: string) => {
     return location === "el-sunzal" ? "El Sunzal" : "Corinto";
@@ -278,7 +280,9 @@ const AdminAccommodations = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{accommodations.length}</div>
+              <div className="text-2xl font-bold">
+                {accommodations?.length || 0}
+              </div>
               <p className="text-xs text-muted-foreground">
                 En ambas ubicaciones
               </p>
@@ -291,8 +295,9 @@ const AdminAccommodations = () => {
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">
                 {
-                  accommodations.filter((a) => a.location === "el-sunzal")
-                    .length
+                  (accommodations || []).filter(
+                    (a) => a.location === "el-sunzal",
+                  ).length
                 }
               </div>
               <p className="text-xs text-muted-foreground">
@@ -306,7 +311,10 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {accommodations.filter((a) => a.location === "corinto").length}
+                {
+                  (accommodations || []).filter((a) => a.location === "corinto")
+                    .length
+                }
               </div>
               <p className="text-xs text-muted-foreground">
                 Casas y apartamentos
@@ -319,7 +327,7 @@ const AdminAccommodations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-emerald-600">
-                {accommodations.filter((a) => a.available).length}
+                {(accommodations || []).filter((a) => a.available).length}
               </div>
               <p className="text-xs text-muted-foreground">
                 Listos para reservar

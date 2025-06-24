@@ -170,7 +170,9 @@ const AdminCalendar = () => {
 
   const handleDeleteBlock = async (blockId: string) => {
     try {
-      setBlockedDates(blockedDates.filter((block) => block.id !== blockId));
+      setBlockedDates(
+        (blockedDates || []).filter((block) => block.id !== blockId),
+      );
 
       toast({
         title: "Bloqueo eliminado",
@@ -189,13 +191,15 @@ const AdminCalendar = () => {
     if (selectedAccommodation === "all") {
       return blockedDates;
     }
-    return blockedDates.filter(
+    return (blockedDates || []).filter(
       (block) => block.accommodationId === selectedAccommodation,
     );
   };
 
   const getAccommodationName = (accommodationId: string) => {
-    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    const accommodation = (accommodations || []).find(
+      (a) => a.id === accommodationId,
+    );
     return accommodation ? accommodation.name : "Alojamiento no encontrado";
   };
 
@@ -264,7 +268,9 @@ const AdminCalendar = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{blockedDates.length}</div>
+              <div className="text-2xl font-bold">
+                {blockedDates?.length || 0}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Fechas bloqueadas activas
               </p>
@@ -278,7 +284,10 @@ const AdminCalendar = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">
-                {blockedDates.filter((b) => b.type === "maintenance").length}
+                {
+                  (blockedDates || []).filter((b) => b.type === "maintenance")
+                    .length
+                }
               </div>
               <p className="text-xs text-muted-foreground">Por mantenimiento</p>
             </CardContent>
@@ -289,7 +298,10 @@ const AdminCalendar = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">
-                {blockedDates.filter((b) => b.type === "personal").length}
+                {
+                  (blockedDates || []).filter((b) => b.type === "personal")
+                    .length
+                }
               </div>
               <p className="text-xs text-muted-foreground">
                 Por eventos especiales
@@ -303,7 +315,7 @@ const AdminCalendar = () => {
             <CardContent>
               <div className="text-2xl font-bold text-emerald-600">
                 {
-                  blockedDates.filter((b) => {
+                  (blockedDates || []).filter((b) => {
                     const blockDate = new Date(b.startDate);
                     const now = new Date();
                     return (
@@ -337,7 +349,7 @@ const AdminCalendar = () => {
                       <SelectItem value="all">
                         Todos los alojamientos
                       </SelectItem>
-                      {accommodations.map((accommodation) => (
+                      {(accommodations || []).map((accommodation) => (
                         <SelectItem
                           key={accommodation.id}
                           value={accommodation.id}
@@ -382,7 +394,7 @@ const AdminCalendar = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {getFilteredBlockedDates().map((block) => (
+                {(getFilteredBlockedDates() || []).map((block) => (
                   <div key={block.id} className="border rounded-lg p-3">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
@@ -446,7 +458,7 @@ const AdminCalendar = () => {
                     <SelectValue placeholder="Seleccionar alojamiento" />
                   </SelectTrigger>
                   <SelectContent>
-                    {accommodations.map((accommodation) => (
+                    {(accommodations || []).map((accommodation) => (
                       <SelectItem
                         key={accommodation.id}
                         value={accommodation.id}

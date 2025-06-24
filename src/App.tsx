@@ -37,6 +37,9 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminAccommodations from "./pages/AdminAccommodations";
 import AdminReservations from "./pages/AdminReservations";
 import AdminCalendar from "./pages/AdminCalendar";
+import AdminPricing from "./pages/AdminPricing";
+import AdminMessages from "./pages/AdminMessages";
+import AdminSettings from "./pages/AdminSettings";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -112,6 +115,14 @@ const App = () => (
                 }
               />
               <Route
+                path="/admin/users/new"
+                element={
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
+                    <AdminUsers />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
                 path="/admin/accommodations"
                 element={
                   <AdminProtectedRoute requiredRole="anfitrion">
@@ -128,10 +139,42 @@ const App = () => (
                 }
               />
               <Route
+                path="/admin/reservations/new"
+                element={
+                  <AdminProtectedRoute requiredRole="monitor">
+                    <AdminReservations />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
                 path="/admin/calendar"
                 element={
                   <AdminProtectedRoute requiredRole="anfitrion">
                     <AdminCalendar />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/pricing"
+                element={
+                  <AdminProtectedRoute requiredRole="super_admin">
+                    <AdminPricing />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/messages"
+                element={
+                  <AdminProtectedRoute requiredRole="mercadeo">
+                    <AdminMessages />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/settings"
+                element={
+                  <AdminProtectedRoute requiredRole="super_admin">
+                    <AdminSettings />
                   </AdminProtectedRoute>
                 }
               />
