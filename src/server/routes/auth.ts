@@ -32,11 +32,16 @@ router.post(
   asyncHandler(async (req: AuthenticatedRequest, res) => {
     const { username, password, rememberMe } = req.body;
 
-    // Usar el servicio de autenticación existente
-    const result = await authenticateUser({ username, password, rememberMe });
+    // Validar credenciales usando la función del backend
+    const user = isValidUser(username.trim(), password);
 
-    if (!result.success) {
-      throw createError(result.error || "Error de autenticación", 401);
+    if (!user) {
+      throw createError("Credenciales incorrectas", 401);
+    }
+
+    // Verificar que el usuario esté activo
+    if (!user.isActive) {
+      throw createError("Cuenta desactivada. Contacta al administrador.", 401);
     }
 
     // Generar JWT token
@@ -45,31 +50,31 @@ router.post(
 
     const token = jwt.sign(
       {
-        userId: result.user!.id,
-        email: result.user!.email,
-        role: result.user!.role,
+        userId: user.id,
+        email: user.email,
+        role: user.role,
       },
       jwtSecret,
       { expiresIn: tokenExpiry },
     );
 
     // Actualizar último login
-    updateLastLogin(result.user!.id);
+    updateLastLogin(user.id);
 
     res.json({
       success: true,
       message: "Inicio de sesión exitoso",
       data: {
         user: {
-          id: result.user!.id,
-          firstName: result.user!.firstName,
-          lastName: result.user!.lastName,
-          username: result.user!.username,
-          email: result.user!.email,
-          fullName: result.user!.fullName,
-          role: result.user!.role,
-          phone: result.user!.phone,
-          lastLogin: result.user!.lastLogin,
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          username: user.username,
+          email: user.email,
+          fullName: user.fullName,
+          role: user.role,
+          phone: user.phone,
+          lastLogin: user.lastLogin,
         },
         token,
         expiresIn: tokenExpiry,
