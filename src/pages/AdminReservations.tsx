@@ -555,7 +555,7 @@ const AdminReservations = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredReservations.map((reservation) => (
+                  {(filteredReservations || []).map((reservation) => (
                     <TableRow key={reservation.id}>
                       <TableCell>
                         <div className="space-y-1">
@@ -696,7 +696,7 @@ const AdminReservations = () => {
                     <SelectValue placeholder="Seleccionar usuario" />
                   </SelectTrigger>
                   <SelectContent>
-                    {users.map((user) => (
+                    {(users || []).map((user) => (
                       <SelectItem key={user.id} value={user.id}>
                         {user.firstName} {user.lastName} - {user.email}
                       </SelectItem>
@@ -719,7 +719,7 @@ const AdminReservations = () => {
                     <SelectValue placeholder="Seleccionar alojamiento" />
                   </SelectTrigger>
                   <SelectContent>
-                    {accommodations.map((accommodation) => (
+                    {(accommodations || []).map((accommodation) => (
                       <SelectItem
                         key={accommodation.id}
                         value={accommodation.id}
