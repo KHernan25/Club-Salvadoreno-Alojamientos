@@ -73,11 +73,7 @@ import {
   apiUpdateUser,
   User as ApiUser,
 } from "@/lib/api-service";
-import {
-  getCurrentUser,
-  isSuperAdmin,
-  hasPermission,
-} from "@/lib/auth-service";
+import { getCurrentUser, isSuperAdmin, hasPermission } from "@/lib/auth-service";
 import { getRolePermissions } from "@/lib/user-database";
 
 const AdminUsers = () => {
@@ -245,15 +241,15 @@ const AdminUsers = () => {
     // In a real app, this would call an API
     try {
       // Mock user creation
-      const newUser: ApiUser = {
-        id: (users.length + 1).toString(),
+              const newUser: ApiUser = {
+        id: ((users?.length || 0) + 1).toString(),
         ...newUserForm,
         isActive: true,
         registeredAt: new Date().toISOString(),
         status: "active",
       };
 
-      setUsers([...users, newUser]);
+      setUsers([...(users || []), newUser]);
       toast({
         title: "Usuario creado",
         description: "El nuevo usuario ha sido creado exitosamente.",
@@ -294,7 +290,7 @@ const AdminUsers = () => {
     }
   };
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = (users || []).filter((user) => {
     const matchesSearch =
       user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -308,9 +304,9 @@ const AdminUsers = () => {
     return matchesSearch && matchesRole && matchesStatus;
   });
 
-  const pendingUsers = users.filter((user) => user.status === "pending");
-  const activeUsers = users.filter((user) => user.status === "active");
-  const inactiveUsers = users.filter((user) => user.status === "inactive");
+  const pendingUsers = (users || []).filter((user) => user.status === "pending");
+  const activeUsers = (users || []).filter((user) => user.status === "active");
+  const inactiveUsers = (users || []).filter((user) => user.status === "inactive");
 
   const UserRow = ({ user }: { user: ApiUser }) => (
     <TableRow>
@@ -346,11 +342,13 @@ const AdminUsers = () => {
               user.role === "super_admin"
                 ? "default"
                 : user.role === "admin"
-                  ? "default"
-                  : "secondary"
+                ? "default"
+                : "secondary"
             }
             className={
-              user.role === "super_admin" ? "bg-blue-600 hover:bg-blue-700" : ""
+              user.role === "super_admin"
+                ? "bg-blue-600 hover:bg-blue-700"
+                : ""
             }
           >
             {user.role === "super_admin" && <Crown className="h-3 w-3 mr-1" />}
@@ -494,7 +492,7 @@ const AdminUsers = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{users.length}</div>
+              <div className="text-2xl font-bold">{users?.length || 0}</div>
               <p className="text-xs text-muted-foreground">
                 Todos los usuarios registrados
               </p>
@@ -568,12 +566,12 @@ const AdminUsers = () => {
                     <SelectValue placeholder="Todos los roles" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todos los roles</SelectItem>
-                    <SelectItem value="admin">Administrador</SelectItem>
-                    <SelectItem value="staff">Personal</SelectItem>
-                    <SelectItem value="user">Usuario</SelectItem>
+                    {(users || []).map((user) => (
+                      <SelectItem key={user.id} value={user.id}>
+                        {user.firstName} {user.lastName} - {user.email}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
-                </Select>
               </div>
               <div>
                 <Label htmlFor="status-filter">Estado</Label>
@@ -626,10 +624,7 @@ const AdminUsers = () => {
         </Card>
 
         {/* New User Dialog */}
-        <Dialog
-          open={isNewUserDialogOpen}
-          onOpenChange={setIsNewUserDialogOpen}
-        >
+        <Dialog open={isNewUserDialogOpen} onOpenChange={setIsNewUserDialogOpen}>
           <DialogContent className="max-w-md">
             <DialogHeader>
               <DialogTitle className="flex items-center space-x-2">
@@ -637,8 +632,7 @@ const AdminUsers = () => {
                 <span>Crear Nuevo Usuario</span>
               </DialogTitle>
               <DialogDescription>
-                Solo el Super Administrador puede crear nuevos usuarios con
-                roles específicos
+                Solo el Super Administrador puede crear nuevos usuarios con roles específicos
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -649,10 +643,7 @@ const AdminUsers = () => {
                     id="new-firstName"
                     value={newUserForm.firstName}
                     onChange={(e) =>
-                      setNewUserForm({
-                        ...newUserForm,
-                        firstName: e.target.value,
-                      })
+                      setNewUserForm({ ...newUserForm, firstName: e.target.value })
                     }
                     placeholder="Nombre"
                   />
@@ -663,10 +654,7 @@ const AdminUsers = () => {
                     id="new-lastName"
                     value={newUserForm.lastName}
                     onChange={(e) =>
-                      setNewUserForm({
-                        ...newUserForm,
-                        lastName: e.target.value,
-                      })
+                      setNewUserForm({ ...newUserForm, lastName: e.target.value })
                     }
                     placeholder="Apellido"
                   />
@@ -734,9 +722,7 @@ const AdminUsers = () => {
                     <SelectItem value="mercadeo">Mercadeo</SelectItem>
                     <SelectItem value="monitor">Monitor</SelectItem>
                     <SelectItem value="anfitrion">Anfitrión</SelectItem>
-                    <SelectItem value="atencion_miembro">
-                      Atención al Miembro
-                    </SelectItem>
+                    <SelectItem value="atencion_miembro">Atención al Miembro</SelectItem>
                     {isSuperAdmin() && (
                       <SelectItem value="super_admin">
                         <div className="flex items-center space-x-2">
@@ -808,9 +794,7 @@ const AdminUsers = () => {
                       <SelectItem value="mercadeo">Mercadeo</SelectItem>
                       <SelectItem value="monitor">Monitor</SelectItem>
                       <SelectItem value="anfitrion">Anfitrión</SelectItem>
-                      <SelectItem value="atencion_miembro">
-                        Atención al Miembro
-                      </SelectItem>
+                      <SelectItem value="atencion_miembro">Atención al Miembro</SelectItem>
                       {isSuperAdmin() && (
                         <SelectItem value="super_admin">
                           <div className="flex items-center space-x-2">
