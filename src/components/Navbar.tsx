@@ -21,6 +21,8 @@ import {
   Globe,
   ChevronDown,
   Home,
+  Shield,
+  Calendar,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { availableLanguages, Language } from "@/lib/i18n";
@@ -337,6 +339,24 @@ const Navbar = ({ className }: NavbarProps) => {
                 </div>
               </div>
 
+              {/* Panel Administrativo - Solo para admin/staff */}
+              {(currentUser.role === "admin" ||
+                currentUser.role === "staff") && (
+                <button
+                  onClick={() => {
+                    navigate("/admin/dashboard");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 transition-colors"
+                >
+                  <Shield className="h-5 w-5 text-slate-600" />
+                  <span className="text-slate-900">Panel Administrativo</span>
+                  <Badge variant="secondary" className="text-xs ml-auto">
+                    {currentUser.role === "admin" ? "Admin" : "Staff"}
+                  </Badge>
+                </button>
+              )}
+
               {/* Mi Perfil */}
               <button
                 onClick={handleProfileClick}
@@ -344,6 +364,18 @@ const Navbar = ({ className }: NavbarProps) => {
               >
                 <User className="h-5 w-5 text-slate-600" />
                 <span className="text-slate-900">{t.nav.myProfile}</span>
+              </button>
+
+              {/* Mis Reservas */}
+              <button
+                onClick={() => {
+                  navigate("/mis-reservas");
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 transition-colors"
+              >
+                <Calendar className="h-5 w-5 text-slate-600" />
+                <span className="text-slate-900">Mis Reservas</span>
               </button>
 
               {/* Cerrar Sesión */}

@@ -99,7 +99,9 @@ const Register = () => {
         setIsSuccess(true);
         toast({
           title: "¡Registro Exitoso!",
-          description: `${result.user.fullName}, tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.`,
+          description:
+            result.message ||
+            `${result.user.fullName}, tu cuenta ha sido creada y está pendiente de aprobación por parte del administrador.`,
         });
 
         // Pequeño delay para mostrar el mensaje de éxito antes de redirigir al login
@@ -107,14 +109,16 @@ const Register = () => {
           navigate("/login", {
             replace: true,
             state: {
-              message: "Registro exitoso. Ya puedes iniciar sesión.",
+              message:
+                result.message ||
+                "Registro exitoso. Tu cuenta está pendiente de aprobación.",
               newUser: {
                 username: result.user.username,
                 fullName: result.user.fullName,
               },
             },
           });
-        }, 2000);
+        }, 3000);
       } else {
         setError(result.error || "Error desconocido al registrar usuario");
         toast({

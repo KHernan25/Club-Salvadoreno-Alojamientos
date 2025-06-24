@@ -1,0 +1,784 @@
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
+import {
+  Calendar,
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  Users,
+  DollarSign,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import AdminLayout from "@/components/AdminLayout";
+import {
+  apiGetReservations,
+  apiCreateReservation,
+  apiUpdateReservation,
+  apiCancelReservation,
+  apiGetUsers,
+  apiGetAccommodations,
+  Reservation,
+} from "@/lib/api-service";
+
+const AdminReservations = () => {
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [accommodations, setAccommodations] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedReservation, setSelectedReservation] =
+    useState<Reservation | null>(null);
+  const [isNewReservationDialogOpen, setIsNewReservationDialogOpen] =
+    useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [newReservationForm, setNewReservationForm] = useState({
+    userId: "",
+    accommodationId: "",
+    checkIn: "",
+    checkOut: "",
+    guests: 1,
+    specialRequests: "",
+  });
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [reservationsData, usersData, accommodationsData] =
+        await Promise.all([
+          apiGetReservations(),
+          apiGetUsers(),
+          apiGetAccommodations(),
+        ]);
+
+      setReservations(reservationsData.reservations);
+      setUsers(usersData.users);
+      setAccommodations(accommodationsData.accommodations);
+    } catch (error) {
+      console.error("Error loading data:", error);
+      // Cargar datos mock si la API no está disponible
+      setReservations(getMockReservations());
+      setUsers(getMockUsers());
+      setAccommodations(getMockAccommodations());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getMockReservations = (): Reservation[] => [
+    {
+      id: "res-1",
+      userId: "2",
+      accommodationId: "1A",
+      checkIn: "2024-01-15",
+      checkOut: "2024-01-17",
+      guests: 2,
+      status: "confirmed",
+      totalPrice: 460,
+      paymentStatus: "paid",
+      specialRequests: "Llegada tardía",
+      confirmationCode: "ABC123",
+      createdAt: "2024-01-10T10:00:00Z",
+      updatedAt: "2024-01-10T10:00:00Z",
+    },
+    {
+      id: "res-2",
+      userId: "3",
+      accommodationId: "suite-1",
+      checkIn: "2024-01-20",
+      checkOut: "2024-01-22",
+      guests: 2,
+      status: "pending",
+      totalPrice: 640,
+      paymentStatus: "pending",
+      confirmationCode: "DEF456",
+      createdAt: "2024-01-12T15:30:00Z",
+      updatedAt: "2024-01-12T15:30:00Z",
+    },
+    {
+      id: "res-3",
+      userId: "4",
+      accommodationId: "casa-1",
+      checkIn: "2024-01-25",
+      checkOut: "2024-01-28",
+      guests: 4,
+      status: "cancelled",
+      totalPrice: 1350,
+      paymentStatus: "refunded",
+      specialRequests: "Cancelación por motivos familiares",
+      confirmationCode: "GHI789",
+      createdAt: "2024-01-08T09:15:00Z",
+      updatedAt: "2024-01-14T11:20:00Z",
+    },
+  ];
+
+  const getMockUsers = () => [
+    {
+      id: "2",
+      firstName: "María",
+      lastName: "González",
+      email: "maria@email.com",
+    },
+    {
+      id: "3",
+      firstName: "Carlos",
+      lastName: "Méndez",
+      email: "carlos@email.com",
+    },
+    {
+      id: "4",
+      firstName: "Ana",
+      lastName: "Rodríguez",
+      email: "ana@email.com",
+    },
+  ];
+
+  const getMockAccommodations = () => [
+    { id: "1A", name: "Apartamento 1A", location: "el-sunzal", capacity: 2 },
+    {
+      id: "suite-1",
+      name: "Suite Premium 1",
+      location: "el-sunzal",
+      capacity: 2,
+    },
+    {
+      id: "casa-1",
+      name: "Casa Familiar 1",
+      location: "el-sunzal",
+      capacity: 6,
+    },
+  ];
+
+  const handleCreateReservation = async () => {
+    try {
+      await apiCreateReservation(newReservationForm);
+      toast({
+        title: "Reserva creada",
+        description: "La reserva ha sido creada exitosamente.",
+      });
+      setIsNewReservationDialogOpen(false);
+      setNewReservationForm({
+        userId: "",
+        accommodationId: "",
+        checkIn: "",
+        checkOut: "",
+        guests: 1,
+        specialRequests: "",
+      });
+      loadData();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo crear la reserva.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUpdateReservation = async (
+    reservationId: string,
+    updates: Partial<Reservation>,
+  ) => {
+    try {
+      await apiUpdateReservation(reservationId, updates);
+      toast({
+        title: "Reserva actualizada",
+        description: "Los cambios han sido guardados exitosamente.",
+      });
+      setIsEditDialogOpen(false);
+      setSelectedReservation(null);
+      loadData();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar la reserva.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCancelReservation = async (reservationId: string) => {
+    try {
+      await apiCancelReservation(reservationId);
+      toast({
+        title: "Reserva cancelada",
+        description: "La reserva ha sido cancelada exitosamente.",
+      });
+      loadData();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo cancelar la reserva.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const filteredReservations = reservations.filter((reservation) => {
+    const user = users.find((u) => u.id === reservation.userId);
+    const accommodation = accommodations.find(
+      (a) => a.id === reservation.accommodationId,
+    );
+
+    const matchesSearch =
+      reservation.confirmationCode
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      user?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      accommodation?.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "all" || reservation.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "confirmed":
+        return <Badge variant="default">Confirmada</Badge>;
+      case "pending":
+        return <Badge variant="outline">Pendiente</Badge>;
+      case "cancelled":
+        return <Badge variant="destructive">Cancelada</Badge>;
+      case "completed":
+        return <Badge variant="secondary">Completada</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
+  const getPaymentStatusBadge = (status: string) => {
+    switch (status) {
+      case "paid":
+        return (
+          <Badge variant="default" className="bg-green-500">
+            Pagado
+          </Badge>
+        );
+      case "pending":
+        return <Badge variant="outline">Pendiente</Badge>;
+      case "refunded":
+        return <Badge variant="secondary">Reembolsado</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+
+  const getUserName = (userId: string) => {
+    const user = users.find((u) => u.id === userId);
+    return user
+      ? `${user.firstName} ${user.lastName}`
+      : "Usuario no encontrado";
+  };
+
+  const getAccommodationName = (accommodationId: string) => {
+    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    return accommodation ? accommodation.name : "Alojamiento no encontrado";
+  };
+
+  return (
+    <AdminLayout>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Gestión de Reservas</h1>
+            <p className="text-gray-600">
+              Crea, modifica y administra las reservas del sistema
+            </p>
+          </div>
+          <Button onClick={() => setIsNewReservationDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Nueva Reserva
+          </Button>
+        </div>
+
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Reservas
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{reservations.length}</div>
+              <p className="text-xs text-muted-foreground">
+                Todas las reservas
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Confirmadas</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">
+                {reservations.filter((r) => r.status === "confirmed").length}
+              </div>
+              <p className="text-xs text-muted-foreground">Reservas activas</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Pendientes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">
+                {reservations.filter((r) => r.status === "pending").length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Requieren atención
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Ingresos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-emerald-600">
+                $
+                {reservations
+                  .filter((r) => r.paymentStatus === "paid")
+                  .reduce((sum, r) => sum + r.totalPrice, 0)
+                  .toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground">Pagos confirmados</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Filters */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Filtros y Búsqueda</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1">
+                <Label htmlFor="search">Buscar reservas</Label>
+                <div className="relative">
+                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="search"
+                    placeholder="Buscar por código, huésped o alojamiento..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-8"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="status-filter">Estado</Label>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Todos los estados" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos los estados</SelectItem>
+                    <SelectItem value="pending">Pendiente</SelectItem>
+                    <SelectItem value="confirmed">Confirmada</SelectItem>
+                    <SelectItem value="cancelled">Cancelada</SelectItem>
+                    <SelectItem value="completed">Completada</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Reservations Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">
+              Lista de Reservas ({filteredReservations.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <div className="text-center py-8">Cargando reservas...</div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Código/Huésped</TableHead>
+                    <TableHead>Alojamiento</TableHead>
+                    <TableHead>Fechas</TableHead>
+                    <TableHead>Estado</TableHead>
+                    <TableHead>Pago</TableHead>
+                    <TableHead>Total</TableHead>
+                    <TableHead>Acciones</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredReservations.map((reservation) => (
+                    <TableRow key={reservation.id}>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <p className="font-mono text-sm font-medium">
+                            {reservation.confirmationCode}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {getUserName(reservation.userId)}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <p className="font-medium">
+                            {getAccommodationName(reservation.accommodationId)}
+                          </p>
+                          <div className="flex items-center space-x-1 text-sm text-gray-500">
+                            <Users className="h-3 w-3" />
+                            <span>{reservation.guests} huésped(es)</span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1 text-sm">
+                          <p>
+                            {new Date(reservation.checkIn).toLocaleDateString()}
+                          </p>
+                          <p className="text-gray-500">
+                            {new Date(
+                              reservation.checkOut,
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(reservation.status)}
+                      </TableCell>
+                      <TableCell>
+                        {getPaymentStatusBadge(reservation.paymentStatus)}
+                      </TableCell>
+                      <TableCell>
+                        <p className="font-medium">
+                          ${reservation.totalPrice.toLocaleString()}
+                        </p>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setSelectedReservation(reservation);
+                              setIsEditDialogOpen(true);
+                            }}
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Editar
+                          </Button>
+                          {reservation.status !== "cancelled" && (
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button size="sm" variant="destructive">
+                                  <Trash2 className="h-3 w-3 mr-1" />
+                                  Cancelar
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Cancelar Reserva
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    ¿Estás seguro de que deseas cancelar la
+                                    reserva {reservation.confirmationCode}? Esta
+                                    acción no se puede deshacer.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>
+                                    Cancelar
+                                  </AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() =>
+                                      handleCancelReservation(reservation.id)
+                                    }
+                                  >
+                                    Confirmar Cancelación
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* New Reservation Dialog */}
+        <Dialog
+          open={isNewReservationDialogOpen}
+          onOpenChange={setIsNewReservationDialogOpen}
+        >
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Nueva Reserva</DialogTitle>
+              <DialogDescription>
+                Crea una nueva reserva en nombre de un usuario
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="user-select">Usuario</Label>
+                <Select
+                  value={newReservationForm.userId}
+                  onValueChange={(value) =>
+                    setNewReservationForm({
+                      ...newReservationForm,
+                      userId: value,
+                    })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar usuario" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {users.map((user) => (
+                      <SelectItem key={user.id} value={user.id}>
+                        {user.firstName} {user.lastName} - {user.email}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="accommodation-select">Alojamiento</Label>
+                <Select
+                  value={newReservationForm.accommodationId}
+                  onValueChange={(value) =>
+                    setNewReservationForm({
+                      ...newReservationForm,
+                      accommodationId: value,
+                    })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar alojamiento" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {accommodations.map((accommodation) => (
+                      <SelectItem
+                        key={accommodation.id}
+                        value={accommodation.id}
+                      >
+                        {accommodation.name} (Cap: {accommodation.capacity})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="check-in">Fecha de Entrada</Label>
+                  <Input
+                    id="check-in"
+                    type="date"
+                    value={newReservationForm.checkIn}
+                    onChange={(e) =>
+                      setNewReservationForm({
+                        ...newReservationForm,
+                        checkIn: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="check-out">Fecha de Salida</Label>
+                  <Input
+                    id="check-out"
+                    type="date"
+                    value={newReservationForm.checkOut}
+                    onChange={(e) =>
+                      setNewReservationForm({
+                        ...newReservationForm,
+                        checkOut: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="guests">Número de Huéspedes</Label>
+                <Input
+                  id="guests"
+                  type="number"
+                  min="1"
+                  max="10"
+                  value={newReservationForm.guests}
+                  onChange={(e) =>
+                    setNewReservationForm({
+                      ...newReservationForm,
+                      guests: parseInt(e.target.value),
+                    })
+                  }
+                />
+              </div>
+              <div>
+                <Label htmlFor="special-requests">Solicitudes Especiales</Label>
+                <Textarea
+                  id="special-requests"
+                  rows={3}
+                  value={newReservationForm.specialRequests}
+                  onChange={(e) =>
+                    setNewReservationForm({
+                      ...newReservationForm,
+                      specialRequests: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsNewReservationDialogOpen(false)}
+              >
+                Cancelar
+              </Button>
+              <Button onClick={handleCreateReservation}>Crear Reserva</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit Reservation Dialog */}
+        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Editar Reserva</DialogTitle>
+              <DialogDescription>
+                Modifica los detalles de la reserva
+              </DialogDescription>
+            </DialogHeader>
+            {selectedReservation && (
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="edit-status">Estado</Label>
+                  <Select defaultValue={selectedReservation.status}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">Pendiente</SelectItem>
+                      <SelectItem value="confirmed">Confirmada</SelectItem>
+                      <SelectItem value="cancelled">Cancelada</SelectItem>
+                      <SelectItem value="completed">Completada</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-payment-status">Estado de Pago</Label>
+                  <Select defaultValue={selectedReservation.paymentStatus}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">Pendiente</SelectItem>
+                      <SelectItem value="paid">Pagado</SelectItem>
+                      <SelectItem value="refunded">Reembolsado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-special-requests">
+                    Solicitudes Especiales
+                  </Label>
+                  <Textarea
+                    id="edit-special-requests"
+                    rows={3}
+                    defaultValue={selectedReservation.specialRequests}
+                  />
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditDialogOpen(false)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={() =>
+                  handleUpdateReservation(selectedReservation!.id, {})
+                }
+              >
+                Guardar Cambios
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </AdminLayout>
+  );
+};
+
+export default AdminReservations;

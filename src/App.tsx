@@ -32,6 +32,12 @@ import NavigationDemo from "./pages/NavigationDemo";
 import TranslationTest from "./pages/TranslationTest";
 import CountryClub from "./pages/CountryClub";
 import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminUsers from "./pages/AdminUsers";
+import AdminAccommodations from "./pages/AdminAccommodations";
+import AdminReservations from "./pages/AdminReservations";
+import AdminCalendar from "./pages/AdminCalendar";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +93,49 @@ const App = () => (
               <Route path="/navigation-demo" element={<NavigationDemo />} />
               <Route path="/translation-test" element={<TranslationTest />} />
               <Route path="/country-club" element={<CountryClub />} />
+
+              {/* Admin Routes - Protected for admin/staff only */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <AdminProtectedRoute requiredRole="staff">
+                    <AdminDashboard />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/users"
+                element={
+                  <AdminProtectedRoute requiredRole="staff">
+                    <AdminUsers />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/accommodations"
+                element={
+                  <AdminProtectedRoute requiredRole="staff">
+                    <AdminAccommodations />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/reservations"
+                element={
+                  <AdminProtectedRoute requiredRole="staff">
+                    <AdminReservations />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/calendar"
+                element={
+                  <AdminProtectedRoute requiredRole="staff">
+                    <AdminCalendar />
+                  </AdminProtectedRoute>
+                }
+              />
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
