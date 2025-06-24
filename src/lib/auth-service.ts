@@ -1,6 +1,11 @@
 // Servicio de autenticación para manejo de login y sesiones
 
-import { User, isValidUser, updateLastLogin } from "./user-database";
+import {
+  User,
+  isValidUser,
+  updateLastLogin,
+  getRolePermissions,
+} from "./user-database";
 import { apiLogin, apiLogout, isApiAvailable } from "./api-service";
 
 export interface LoginCredentials {
@@ -309,7 +314,6 @@ export const hasPermission = (permission: string): boolean => {
   const user = getCurrentUser();
   if (!user) return false;
 
-  const { getRolePermissions } = require("./user-database");
   const permissions = getRolePermissions(user.role);
 
   return permissions[permission as keyof typeof permissions] || false;
