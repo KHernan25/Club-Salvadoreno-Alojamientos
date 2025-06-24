@@ -94,6 +94,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: false,
         canAccessAllLocations: false,
         canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: true, // Anfitriones pueden gestionar imágenes de alojamientos
       };
     case "monitor":
       return {
@@ -110,6 +112,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: false,
         canAccessAllLocations: false,
         canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
       };
     case "mercadeo":
       return {
