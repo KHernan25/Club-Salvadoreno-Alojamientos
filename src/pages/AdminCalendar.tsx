@@ -1,0 +1,542 @@
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Calendar } from "@/components/ui/calendar";
+import { toast } from "@/hooks/use-toast";
+import {
+  CalendarDays,
+  Plus,
+  Edit,
+  Trash2,
+  AlertTriangle,
+  Check,
+  X,
+  Filter,
+  Building2,
+} from "lucide-react";
+import AdminLayout from "@/components/AdminLayout";
+import { apiGetAccommodations } from "@/lib/api-service";
+
+interface BlockedDate {
+  id: string;
+  accommodationId: string;
+  startDate: string;
+  endDate: string;
+  reason: string;
+  type: "maintenance" | "personal" | "other";
+  notes?: string;
+  createdBy: string;
+  createdAt: string;
+}
+
+const AdminCalendar = () => {
+  const [accommodations, setAccommodations] = useState<any[]>([]);
+  const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
+  const [selectedAccommodation, setSelectedAccommodation] = useState("all");
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
+  const [blockForm, setBlockForm] = useState({
+    accommodationId: "",
+    startDate: "",
+    endDate: "",
+    reason: "",
+    type: "maintenance" as const,
+    notes: "",
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const accommodationsData = await apiGetAccommodations();
+      setAccommodations(accommodationsData.accommodations);
+
+      // Cargar fechas bloqueadas mock
+      setBlockedDates(getMockBlockedDates());
+    } catch (error) {
+      console.error("Error loading data:", error);
+      setAccommodations(getMockAccommodations());
+      setBlockedDates(getMockBlockedDates());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getMockAccommodations = () => [
+    { id: "1A", name: "Apartamento 1A", location: "el-sunzal" },
+    { id: "suite-1", name: "Suite Premium 1", location: "el-sunzal" },
+    { id: "casa-1", name: "Casa Familiar 1", location: "el-sunzal" },
+    { id: "corinto-casa-1", name: "Casa Corinto 1", location: "corinto" },
+  ];
+
+  const getMockBlockedDates = (): BlockedDate[] => [
+    {
+      id: "block-1",
+      accommodationId: "1A",
+      startDate: "2024-01-20",
+      endDate: "2024-01-22",
+      reason: "Mantenimiento de aire acondicionado",
+      type: "maintenance",
+      notes: "Reemplazo de unidad",
+      createdBy: "admin",
+      createdAt: "2024-01-15T10:00:00Z",
+    },
+    {
+      id: "block-2",
+      accommodationId: "suite-1",
+      startDate: "2024-01-25",
+      endDate: "2024-01-25",
+      reason: "Evento privado del club",
+      type: "personal",
+      createdBy: "admin",
+      createdAt: "2024-01-10T15:30:00Z",
+    },
+    {
+      id: "block-3",
+      accommodationId: "casa-1",
+      startDate: "2024-02-01",
+      endDate: "2024-02-03",
+      reason: "Renovación de pintura",
+      type: "maintenance",
+      notes: "Pintura exterior e interior",
+      createdBy: "staff",
+      createdAt: "2024-01-18T09:00:00Z",
+    },
+  ];
+
+  const handleCreateBlock = async () => {
+    try {
+      const newBlock: BlockedDate = {
+        id: `block-${Date.now()}`,
+        ...blockForm,
+        createdBy: "current-user",
+        createdAt: new Date().toISOString(),
+      };
+
+      setBlockedDates([...blockedDates, newBlock]);
+
+      toast({
+        title: "Fechas bloqueadas",
+        description: "Las fechas han sido bloqueadas exitosamente.",
+      });
+
+      setIsBlockDialogOpen(false);
+      setBlockForm({
+        accommodationId: "",
+        startDate: "",
+        endDate: "",
+        reason: "",
+        type: "maintenance",
+        notes: "",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudieron bloquear las fechas.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteBlock = async (blockId: string) => {
+    try {
+      setBlockedDates(blockedDates.filter((block) => block.id !== blockId));
+
+      toast({
+        title: "Bloqueo eliminado",
+        description: "El bloqueo de fechas ha sido eliminado.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar el bloqueo.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getFilteredBlockedDates = () => {
+    if (selectedAccommodation === "all") {
+      return blockedDates;
+    }
+    return blockedDates.filter(
+      (block) => block.accommodationId === selectedAccommodation,
+    );
+  };
+
+  const getAccommodationName = (accommodationId: string) => {
+    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    return accommodation ? accommodation.name : "Alojamiento no encontrado";
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "maintenance":
+        return "bg-orange-100 text-orange-800";
+      case "personal":
+        return "bg-blue-100 text-blue-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case "maintenance":
+        return "Mantenimiento";
+      case "personal":
+        return "Personal";
+      default:
+        return "Otro";
+    }
+  };
+
+  // Crear fechas deshabilitadas para el calendario
+  const getDisabledDates = () => {
+    const disabled: Date[] = [];
+    const filtered = getFilteredBlockedDates();
+
+    filtered.forEach((block) => {
+      const start = new Date(block.startDate);
+      const end = new Date(block.endDate);
+
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        disabled.push(new Date(d));
+      }
+    });
+
+    return disabled;
+  };
+
+  return (
+    <AdminLayout>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Calendario y Bloqueos</h1>
+            <p className="text-gray-600">
+              Administra fechas bloqueadas y disponibilidad de alojamientos
+            </p>
+          </div>
+          <Button onClick={() => setIsBlockDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Bloquear Fechas
+          </Button>
+        </div>
+
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Bloqueos
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{blockedDates.length}</div>
+              <p className="text-xs text-muted-foreground">
+                Fechas bloqueadas activas
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                Mantenimiento
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">
+                {blockedDates.filter((b) => b.type === "maintenance").length}
+              </div>
+              <p className="text-xs text-muted-foreground">Por mantenimiento</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Eventos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">
+                {blockedDates.filter((b) => b.type === "personal").length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Por eventos especiales
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Este Mes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-emerald-600">
+                {
+                  blockedDates.filter((b) => {
+                    const blockDate = new Date(b.startDate);
+                    const now = new Date();
+                    return (
+                      blockDate.getMonth() === now.getMonth() &&
+                      blockDate.getFullYear() === now.getFullYear()
+                    );
+                  }).length
+                }
+              </div>
+              <p className="text-xs text-muted-foreground">Bloqueos este mes</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Calendar View */}
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                Calendario de Disponibilidad
+                <div className="flex items-center space-x-2">
+                  <Filter className="h-4 w-4" />
+                  <Select
+                    value={selectedAccommodation}
+                    onValueChange={setSelectedAccommodation}
+                  >
+                    <SelectTrigger className="w-48">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">
+                        Todos los alojamientos
+                      </SelectItem>
+                      {accommodations.map((accommodation) => (
+                        <SelectItem
+                          key={accommodation.id}
+                          value={accommodation.id}
+                        >
+                          {accommodation.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardTitle>
+              <CardDescription>
+                Las fechas marcadas en rojo están bloqueadas
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Calendar
+                mode="multiple"
+                selected={selectedDates}
+                onSelect={setSelectedDates}
+                disabled={getDisabledDates()}
+                className="rounded-md border"
+              />
+              <div className="mt-4 flex items-center space-x-4 text-sm">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-red-200 rounded"></div>
+                  <span>Fechas bloqueadas</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-green-200 rounded"></div>
+                  <span>Fechas disponibles</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Blocked Dates List */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Bloqueos Activos</CardTitle>
+              <CardDescription>Lista de fechas bloqueadas</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {getFilteredBlockedDates().map((block) => (
+                  <div key={block.id} className="border rounded-lg p-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <p className="font-medium text-sm">
+                          {getAccommodationName(block.accommodationId)}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {new Date(block.startDate).toLocaleDateString()} -{" "}
+                          {new Date(block.endDate).toLocaleDateString()}
+                        </p>
+                        <Badge
+                          className={`text-xs ${getTypeColor(block.type)}`}
+                        >
+                          {getTypeLabel(block.type)}
+                        </Badge>
+                        <p className="text-xs text-gray-700">{block.reason}</p>
+                        {block.notes && (
+                          <p className="text-xs text-gray-500">{block.notes}</p>
+                        )}
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleDeleteBlock(block.id)}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                {getFilteredBlockedDates().length === 0 && (
+                  <div className="text-center py-6 text-gray-500">
+                    <CalendarDays className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">No hay fechas bloqueadas</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Block Dates Dialog */}
+        <Dialog open={isBlockDialogOpen} onOpenChange={setIsBlockDialogOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Bloquear Fechas</DialogTitle>
+              <DialogDescription>
+                Selecciona las fechas y el motivo del bloqueo
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="accommodation-select">Alojamiento</Label>
+                <Select
+                  value={blockForm.accommodationId}
+                  onValueChange={(value) =>
+                    setBlockForm({ ...blockForm, accommodationId: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar alojamiento" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {accommodations.map((accommodation) => (
+                      <SelectItem
+                        key={accommodation.id}
+                        value={accommodation.id}
+                      >
+                        {accommodation.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="start-date">Fecha Inicio</Label>
+                  <Input
+                    id="start-date"
+                    type="date"
+                    value={blockForm.startDate}
+                    onChange={(e) =>
+                      setBlockForm({ ...blockForm, startDate: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="end-date">Fecha Fin</Label>
+                  <Input
+                    id="end-date"
+                    type="date"
+                    value={blockForm.endDate}
+                    onChange={(e) =>
+                      setBlockForm({ ...blockForm, endDate: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="type-select">Tipo de Bloqueo</Label>
+                <Select
+                  value={blockForm.type}
+                  onValueChange={(
+                    value: "maintenance" | "personal" | "other",
+                  ) => setBlockForm({ ...blockForm, type: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="maintenance">Mantenimiento</SelectItem>
+                    <SelectItem value="personal">Evento Personal</SelectItem>
+                    <SelectItem value="other">Otro</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="reason">Motivo</Label>
+                <Input
+                  id="reason"
+                  placeholder="Describe el motivo del bloqueo"
+                  value={blockForm.reason}
+                  onChange={(e) =>
+                    setBlockForm({ ...blockForm, reason: e.target.value })
+                  }
+                />
+              </div>
+              <div>
+                <Label htmlFor="notes">Notas Adicionales (Opcional)</Label>
+                <Textarea
+                  id="notes"
+                  rows={3}
+                  placeholder="Información adicional..."
+                  value={blockForm.notes}
+                  onChange={(e) =>
+                    setBlockForm({ ...blockForm, notes: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsBlockDialogOpen(false)}
+              >
+                Cancelar
+              </Button>
+              <Button onClick={handleCreateBlock}>Bloquear Fechas</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </AdminLayout>
+  );
+};
+
+export default AdminCalendar;
