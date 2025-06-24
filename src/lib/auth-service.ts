@@ -304,6 +304,23 @@ export const hasRole = (requiredRole: User["role"]): boolean => {
   return userLevel >= requiredLevel;
 };
 
+// Verificar permisos específicos
+export const hasPermission = (permission: string): boolean => {
+  const user = getCurrentUser();
+  if (!user) return false;
+
+  const { getRolePermissions } = require("./user-database");
+  const permissions = getRolePermissions(user.role);
+
+  return permissions[permission as keyof typeof permissions] || false;
+};
+
+// Verificar si el usuario es super admin
+export const isSuperAdmin = (): boolean => {
+  const user = getCurrentUser();
+  return user?.role === "super_admin" || false;
+};
+
 // Función para desarrollo - obtener credenciales de prueba
 export const getTestCredentials = () => {
   const { getAvailableCredentials } = require("./user-database");
