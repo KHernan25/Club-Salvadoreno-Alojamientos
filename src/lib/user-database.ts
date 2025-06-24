@@ -101,7 +101,7 @@ export const registeredUsers: User[] = [
 
   // Usuarios Regulares
   {
-    id: "4",
+    id: "6",
     firstName: "María José",
     lastName: "González",
     username: "usuario1",
@@ -114,7 +114,7 @@ export const registeredUsers: User[] = [
     createdAt: new Date("2024-02-01"),
   },
   {
-    id: "5",
+    id: "7",
     firstName: "Carlos",
     lastName: "Rivera",
     username: "carlos.rivera",
