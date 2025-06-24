@@ -83,7 +83,18 @@ const apiRequest = async <T>(
       ...options,
     });
 
-    const data = await response.json();
+    // Try to parse JSON, but handle malformed responses
+    let data: any;
+    try {
+      const text = await response.text();
+      data = text ? JSON.parse(text) : {};
+    } catch (parseError) {
+      console.warn("Failed to parse response as JSON:", parseError);
+      return {
+        success: false,
+        error: `Invalid response format: ${response.status}`,
+      };
+    }
 
     if (!response.ok) {
       return {
