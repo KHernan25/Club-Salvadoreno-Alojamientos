@@ -284,8 +284,11 @@ export const hasRole = (requiredRole: User["role"]): boolean => {
   if (!user) return false;
 
   const roleHierarchy = {
-    admin: 3,
-    staff: 2,
+    super_admin: 5,
+    atencion_miembro: 4,
+    anfitrion: 3,
+    monitor: 2,
+    mercadeo: 2,
     user: 1,
   };
 
