@@ -625,6 +625,147 @@ const AdminUsers = () => {
           </CardContent>
         </Card>
 
+        {/* New User Dialog */}
+        <Dialog
+          open={isNewUserDialogOpen}
+          onOpenChange={setIsNewUserDialogOpen}
+        >
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center space-x-2">
+                <Crown className="h-5 w-5 text-blue-600" />
+                <span>Crear Nuevo Usuario</span>
+              </DialogTitle>
+              <DialogDescription>
+                Solo el Super Administrador puede crear nuevos usuarios con
+                roles específicos
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="new-firstName">Nombre</Label>
+                  <Input
+                    id="new-firstName"
+                    value={newUserForm.firstName}
+                    onChange={(e) =>
+                      setNewUserForm({
+                        ...newUserForm,
+                        firstName: e.target.value,
+                      })
+                    }
+                    placeholder="Nombre"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="new-lastName">Apellido</Label>
+                  <Input
+                    id="new-lastName"
+                    value={newUserForm.lastName}
+                    onChange={(e) =>
+                      setNewUserForm({
+                        ...newUserForm,
+                        lastName: e.target.value,
+                      })
+                    }
+                    placeholder="Apellido"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="new-email">Email</Label>
+                <Input
+                  id="new-email"
+                  type="email"
+                  value={newUserForm.email}
+                  onChange={(e) =>
+                    setNewUserForm({ ...newUserForm, email: e.target.value })
+                  }
+                  placeholder="usuario@email.com"
+                />
+              </div>
+              <div>
+                <Label htmlFor="new-username">Nombre de Usuario</Label>
+                <Input
+                  id="new-username"
+                  value={newUserForm.username}
+                  onChange={(e) =>
+                    setNewUserForm({ ...newUserForm, username: e.target.value })
+                  }
+                  placeholder="nombre_usuario"
+                />
+              </div>
+              <div>
+                <Label htmlFor="new-phone">Teléfono</Label>
+                <Input
+                  id="new-phone"
+                  value={newUserForm.phone}
+                  onChange={(e) =>
+                    setNewUserForm({ ...newUserForm, phone: e.target.value })
+                  }
+                  placeholder="+503 XXXX-XXXX"
+                />
+              </div>
+              <div>
+                <Label htmlFor="new-password">Contraseña Temporal</Label>
+                <Input
+                  id="new-password"
+                  type="password"
+                  value={newUserForm.password}
+                  onChange={(e) =>
+                    setNewUserForm({ ...newUserForm, password: e.target.value })
+                  }
+                  placeholder="Contraseña temporal"
+                />
+              </div>
+              <div>
+                <Label htmlFor="new-role">Rol del Usuario</Label>
+                <Select
+                  value={newUserForm.role}
+                  onValueChange={(value: ApiUser["role"]) =>
+                    setNewUserForm({ ...newUserForm, role: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="user">Usuario Regular</SelectItem>
+                    <SelectItem value="mercadeo">Mercadeo</SelectItem>
+                    <SelectItem value="monitor">Monitor</SelectItem>
+                    <SelectItem value="anfitrion">Anfitrión</SelectItem>
+                    <SelectItem value="atencion_miembro">
+                      Atención al Miembro
+                    </SelectItem>
+                    {isSuperAdmin() && (
+                      <SelectItem value="super_admin">
+                        <div className="flex items-center space-x-2">
+                          <Crown className="h-4 w-4 text-blue-600" />
+                          <span>Super Administrador</span>
+                        </div>
+                      </SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsNewUserDialogOpen(false)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleCreateUser}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Crear Usuario
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         {/* Edit User Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent className="max-w-md">
@@ -663,9 +804,21 @@ const AdminUsers = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="user">Usuario</SelectItem>
-                      <SelectItem value="staff">Personal</SelectItem>
-                      <SelectItem value="admin">Administrador</SelectItem>
+                      <SelectItem value="user">Usuario Regular</SelectItem>
+                      <SelectItem value="mercadeo">Mercadeo</SelectItem>
+                      <SelectItem value="monitor">Monitor</SelectItem>
+                      <SelectItem value="anfitrion">Anfitrión</SelectItem>
+                      <SelectItem value="atencion_miembro">
+                        Atención al Miembro
+                      </SelectItem>
+                      {isSuperAdmin() && (
+                        <SelectItem value="super_admin">
+                          <div className="flex items-center space-x-2">
+                            <Crown className="h-4 w-4 text-blue-600" />
+                            <span>Super Administrador</span>
+                          </div>
+                        </SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -678,7 +831,10 @@ const AdminUsers = () => {
               >
                 Cancelar
               </Button>
-              <Button onClick={() => handleUpdateUser({})}>
+              <Button
+                onClick={() => handleUpdateUser({})}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
                 Guardar Cambios
               </Button>
             </DialogFooter>
