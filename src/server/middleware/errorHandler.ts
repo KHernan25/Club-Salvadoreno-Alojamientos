@@ -53,14 +53,12 @@ export const errorHandler = (
     message = "El recurso ya existe";
   }
 
-  // Respuesta de error
+  // Respuesta de error limpia
   const errorResponse = {
     success: false,
     error: message,
-    ...(process.env.NODE_ENV === "development" && {
-      stack: error.stack,
-      details: error,
-    }),
+    statusCode,
+    timestamp: new Date().toISOString(),
   };
 
   res.status(statusCode).json(errorResponse);
