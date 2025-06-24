@@ -21,6 +21,8 @@ import {
   Globe,
   ChevronDown,
   Home,
+  Shield,
+  Calendar,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { availableLanguages, Language } from "@/lib/i18n";
