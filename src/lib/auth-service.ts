@@ -48,44 +48,45 @@ export const authenticateUser = async (
       const apiConnected = await isApiAvailable();
 
       if (apiConnected) {
-      console.log("🔗 Usando autenticación con API real");
-      const result = await apiLogin({
-        username: username.trim(),
-        password,
-        rememberMe,
-      });
+        console.log("🔗 Usando autenticación con API real");
+        const result = await apiLogin({
+          username: username.trim(),
+          password,
+          rememberMe,
+        });
 
-      if (result.success && result.user) {
-        // Verificar estado de aprobación
-        if (result.user.status === "pending") {
-          return {
-            success: false,
-            error:
-              "Tu cuenta está pendiente de aprobación. Contacta al administrador.",
-          };
-        }
+        if (result.success && result.user) {
+          // Verificar estado de aprobación
+          if (result.user.status === "pending") {
+            return {
+              success: false,
+              error:
+                "Tu cuenta está pendiente de aprobación. Contacta al administrador.",
+            };
+          }
 
-        if (!result.user.isActive) {
+          if (!result.user.isActive) {
+            return {
+              success: false,
+              error: "Tu cuenta está desactivada. Contacta al administrador.",
+            };
+          }
+
           return {
-            success: false,
-            error: "Tu cuenta está desactivada. Contacta al administrador.",
+            success: true,
+            user: result.user,
           };
         }
 
         return {
-          success: true,
-          user: result.user,
+          success: false,
+          error: result.error || "Credenciales incorrectas",
         };
       }
-
-      return {
-        success: false,
-        error: result.error || "Credenciales incorrectas",
-      };
+    } catch (error) {
+      console.warn("⚠️ API error, fallback to local auth:", error);
+      // Forzar fallback a autenticación local
     }
-  } catch (error) {
-    console.warn("⚠️ API error, fallback to local auth:", error);
-    // Forzar fallback a autenticación local
   }
 
   // Fallback a autenticación local (modo desarrollo)
@@ -202,7 +203,10 @@ export const logout = async (): Promise<void> => {
     }
   } catch (error) {
     // No hacer nada, ya limpiamos los datos locales
-    console.warn("⚠️ API logout falló, pero sesión local ya está limpia:", error);
+    console.warn(
+      "⚠️ API logout falló, pero sesión local ya está limpia:",
+      error,
+    );
   }
 
   // Disparar evento personalizado para notificar el logout
