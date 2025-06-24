@@ -299,6 +299,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                     "Gestión de Precios"}
                   {location.pathname === "/admin/messages" &&
                     "Mensajes de Contacto"}
+                  {location.pathname === "/admin/site-content" &&
+                    "Gestión de Contenido"}
                   {location.pathname === "/admin/settings" && "Configuración"}
                 </h1>
               </div>
