@@ -62,6 +62,8 @@ import {
   Clock,
   Mail,
   Phone,
+  Crown,
+  Settings,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import {
@@ -71,6 +73,12 @@ import {
   apiUpdateUser,
   User as ApiUser,
 } from "@/lib/api-service";
+import {
+  getCurrentUser,
+  isSuperAdmin,
+  hasPermission,
+} from "@/lib/auth-service";
+import { getRolePermissions } from "@/lib/user-database";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<ApiUser[]>([]);
@@ -81,6 +89,17 @@ const AdminUsers = () => {
   const [selectedUser, setSelectedUser] = useState<ApiUser | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isNewUserDialogOpen, setIsNewUserDialogOpen] = useState(false);
+  const [newUserForm, setNewUserForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    phone: "",
+    role: "user" as ApiUser["role"],
+    password: "",
+  });
+
+  const currentUser = getCurrentUser();
 
   useEffect(() => {
     loadUsers();
@@ -222,6 +241,59 @@ const AdminUsers = () => {
     }
   };
 
+  const handleCreateUser = async () => {
+    // In a real app, this would call an API
+    try {
+      // Mock user creation
+      const newUser: ApiUser = {
+        id: (users.length + 1).toString(),
+        ...newUserForm,
+        isActive: true,
+        registeredAt: new Date().toISOString(),
+        status: "active",
+      };
+
+      setUsers([...users, newUser]);
+      toast({
+        title: "Usuario creado",
+        description: "El nuevo usuario ha sido creado exitosamente.",
+      });
+      setIsNewUserDialogOpen(false);
+      setNewUserForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        username: "",
+        phone: "",
+        role: "user",
+        password: "",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo crear el usuario.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getRoleDisplayName = (role: string) => {
+    switch (role) {
+      case "super_admin":
+        return "Super Administrador";
+      case "atencion_miembro":
+        return "Atención al Miembro";
+      case "anfitrion":
+        return "Anfitrión";
+      case "monitor":
+        return "Monitor";
+      case "mercadeo":
+        return "Mercadeo";
+      default:
+        return "Usuario";
+    }
+  };
+
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
       user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -268,21 +340,23 @@ const AdminUsers = () => {
         </div>
       </TableCell>
       <TableCell>
-        <Badge
-          variant={
-            user.role === "admin"
-              ? "default"
-              : user.role === "staff"
-                ? "secondary"
-                : "outline"
-          }
-        >
-          {user.role === "admin"
-            ? "Administrador"
-            : user.role === "staff"
-              ? "Personal"
-              : "Usuario"}
-        </Badge>
+        <div className="flex items-center space-x-2">
+          <Badge
+            variant={
+              user.role === "super_admin"
+                ? "default"
+                : user.role === "admin"
+                  ? "default"
+                  : "secondary"
+            }
+            className={
+              user.role === "super_admin" ? "bg-blue-600 hover:bg-blue-700" : ""
+            }
+          >
+            {user.role === "super_admin" && <Crown className="h-3 w-3 mr-1" />}
+            {getRoleDisplayName(user.role)}
+          </Badge>
+        </div>
       </TableCell>
       <TableCell>
         <Badge
@@ -319,6 +393,7 @@ const AdminUsers = () => {
                 size="sm"
                 variant="default"
                 onClick={() => handleApproveUser(user.id)}
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 <Check className="h-3 w-3 mr-1" />
                 Aprobar
@@ -342,6 +417,7 @@ const AdminUsers = () => {
                   setSelectedUser(user);
                   setIsEditDialogOpen(true);
                 }}
+                className="border-blue-600 text-blue-600 hover:bg-blue-50"
               >
                 <Edit className="h-3 w-3 mr-1" />
                 Editar
@@ -398,10 +474,15 @@ const AdminUsers = () => {
               Administra usuarios y solicitudes de registro
             </p>
           </div>
-          <Button onClick={() => setIsNewUserDialogOpen(true)}>
-            <UserPlus className="mr-2 h-4 w-4" />
-            Nuevo Usuario
-          </Button>
+          {hasPermission("canCreateUsers") && (
+            <Button
+              onClick={() => setIsNewUserDialogOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <UserPlus className="mr-2 h-4 w-4" />
+              Nuevo Usuario
+            </Button>
+          )}
         </div>
 
         {/* Summary Cards */}
