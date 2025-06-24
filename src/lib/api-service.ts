@@ -3,7 +3,7 @@
 
 import { User } from "./user-database";
 
-const API_BASE_URL = "http://localhost:3001/api";
+const API_BASE_URL = "/api";
 
 // Response interfaces
 interface ApiResponse<T = any> {
