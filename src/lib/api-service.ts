@@ -173,8 +173,14 @@ export const apiLogout = async (): Promise<void> => {
 
 // User management functions
 export const apiGetUsers = async (): Promise<User[]> => {
+  // Devolver datos mock temporalmente - importar usuarios reales
+  const { registeredUsers } = await import("./user-database");
+  return registeredUsers;
+
+  /* API call - restaurar cuando el proxy funcione
   const result = await apiRequest<User[]>("/users");
   return result.data || [];
+  */
 };
 
 export const apiActivateUser = async (userId: string): Promise<boolean> => {
