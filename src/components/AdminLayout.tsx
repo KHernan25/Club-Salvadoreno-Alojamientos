@@ -28,6 +28,7 @@ import {
   Bell,
   UserPlus,
   MapPin,
+  Globe,
 } from "lucide-react";
 import {
   getCurrentUser,
@@ -100,6 +101,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       icon: MessageSquare,
       permission: "canManageMessages",
       badge: "2", // Unread messages
+    },
+    {
+      label: "Contenido del Sitio",
+      href: "/admin/site-content",
+      icon: Globe,
+      permission: "canEditSiteContent",
     },
     {
       label: "Configuración",
