@@ -39,6 +39,7 @@ import AdminReservations from "./pages/AdminReservations";
 import AdminCalendar from "./pages/AdminCalendar";
 import AdminPricing from "./pages/AdminPricing";
 import AdminMessages from "./pages/AdminMessages";
+import AdminSettings from "./pages/AdminSettings";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -150,6 +151,14 @@ const App = () => (
                 element={
                   <AdminProtectedRoute requiredRole="mercadeo">
                     <AdminMessages />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/settings"
+                element={
+                  <AdminProtectedRoute requiredRole="super_admin">
+                    <AdminSettings />
                   </AdminProtectedRoute>
                 }
               />
