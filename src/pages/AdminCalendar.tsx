@@ -337,7 +337,7 @@ const AdminCalendar = () => {
                       <SelectItem value="all">
                         Todos los alojamientos
                       </SelectItem>
-                      {accommodations.map((accommodation) => (
+                      {(accommodations || []).map((accommodation) => (
                         <SelectItem
                           key={accommodation.id}
                           value={accommodation.id}
@@ -382,7 +382,7 @@ const AdminCalendar = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {getFilteredBlockedDates().map((block) => (
+                {(getFilteredBlockedDates() || []).map((block) => (
                   <div key={block.id} className="border rounded-lg p-3">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
@@ -446,7 +446,7 @@ const AdminCalendar = () => {
                     <SelectValue placeholder="Seleccionar alojamiento" />
                   </SelectTrigger>
                   <SelectContent>
-                    {accommodations.map((accommodation) => (
+                    {(accommodations || []).map((accommodation) => (
                       <SelectItem
                         key={accommodation.id}
                         value={accommodation.id}
