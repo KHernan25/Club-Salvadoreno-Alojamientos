@@ -197,7 +197,9 @@ const AdminCalendar = () => {
   };
 
   const getAccommodationName = (accommodationId: string) => {
-    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    const accommodation = (accommodations || []).find(
+      (a) => a.id === accommodationId,
+    );
     return accommodation ? accommodation.name : "Alojamiento no encontrado";
   };
 
