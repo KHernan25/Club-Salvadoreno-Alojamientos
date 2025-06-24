@@ -39,11 +39,15 @@ export const authenticateUser = async (
     };
   }
 
-  // Intentar autenticación con API real primero
-  try {
-    const apiConnected = await isApiAvailable();
+  // Temporalmente usar solo autenticación local para evitar problemas de proxy
+  // TODO: Restaurar API una vez que el proxy esté funcionando
+  const USE_API = false;
 
-    if (apiConnected) {
+  if (USE_API) {
+    try {
+      const apiConnected = await isApiAvailable();
+
+      if (apiConnected) {
       console.log("🔗 Usando autenticación con API real");
       const result = await apiLogin({
         username: username.trim(),
@@ -198,10 +202,7 @@ export const logout = async (): Promise<void> => {
     }
   } catch (error) {
     // No hacer nada, ya limpiamos los datos locales
-    console.warn(
-      "⚠️ API logout falló, pero sesión local ya está limpia:",
-      error,
-    );
+    console.warn("⚠️ API logout falló, pero sesión local ya está limpia:", error);
   }
 
   // Disparar evento personalizado para notificar el logout
