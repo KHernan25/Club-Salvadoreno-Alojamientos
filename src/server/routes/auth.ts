@@ -33,6 +33,15 @@ router.post(
 
     const { username, password, rememberMe } = req.body;
 
+    // Validación básica manual
+    if (!username || !password) {
+      console.log("❌ Missing username or password");
+      return res.status(400).json({
+        success: false,
+        error: "Usuario y contraseña son requeridos",
+      });
+    }
+
     // Validar credenciales usando la función del backend
     const user = isValidUser(username.trim(), password);
 
