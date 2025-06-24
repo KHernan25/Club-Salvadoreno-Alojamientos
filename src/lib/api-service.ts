@@ -278,6 +278,16 @@ export const apiCancelReservation = async (
 };
 
 export const apiGetReservationStats = async (): Promise<ReservationStats> => {
+  // Devolver datos mock temporalmente
+  return {
+    total: 89,
+    confirmed: 67,
+    pending: 5,
+    cancelled: 17,
+    revenueThisMonth: 12450,
+  };
+
+  /* API call - restaurar cuando el proxy funcione
   const result = await apiRequest<ReservationStats>("/reservations/stats");
   return (
     result.data || {
@@ -288,6 +298,7 @@ export const apiGetReservationStats = async (): Promise<ReservationStats> => {
       revenueThisMonth: 0,
     }
   );
+  */
 };
 
 // Pricing functions
