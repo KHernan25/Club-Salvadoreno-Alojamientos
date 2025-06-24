@@ -323,15 +323,6 @@ const Login = () => {
                 Regístrate
               </button>
             </p>
-            <p className="text-white mt-2">
-              ¿Eres personal del club?{" "}
-              <button
-                onClick={() => navigate("/backoffice")}
-                className="text-blue-200 hover:text-white underline font-medium"
-              >
-                Acceder al Backoffice
-              </button>
-            </p>
           </div>
 
           {/* Development Credentials Helper */}
