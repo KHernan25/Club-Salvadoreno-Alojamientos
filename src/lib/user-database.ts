@@ -37,6 +37,8 @@ export interface RolePermissions {
   canManageSettings: boolean;
   canAccessAllLocations: boolean;
   canCreateRoles: boolean;
+  canEditSiteContent: boolean; // Nuevo permiso para editar contenido del sitio
+  canManageImages: boolean; // Nuevo permiso para gestionar imágenes
 }
 
 export const getRolePermissions = (role: User["role"]): RolePermissions => {
@@ -112,12 +114,12 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateUsers: false,
         canUpdateUsers: false,
         canDeleteUsers: false,
-        canManageAccommodations: false,
+        canManageAccommodations: true, // Puede editar información de alojamientos
         canManageReservations: false,
         canManageCalendar: false,
         canManagePricing: false,
         canManageMessages: true,
-        canManageSettings: false,
+        canManageSettings: true, // Puede editar configuración del sitio
         canAccessAllLocations: true,
         canCreateRoles: false,
       };
