@@ -232,8 +232,47 @@ export const apiGetUserStats = async (): Promise<UserStats> => {
 
 // Accommodation management functions
 export const apiGetAccommodations = async (): Promise<Accommodation[]> => {
+  // Devolver datos mock temporalmente
+  return [
+    {
+      id: "el-sunzal-apt-1",
+      name: "Apartamento El Sunzal 1",
+      type: "apartment",
+      location: "El Sunzal",
+      capacity: 4,
+      price: 120,
+      status: "available",
+      amenities: ["wifi", "ac", "parking", "kitchen"],
+      description: "Apartamento frente al mar con vista panorámica",
+    },
+    {
+      id: "el-sunzal-casa-1",
+      name: "Casa El Sunzal 1",
+      type: "house",
+      location: "El Sunzal",
+      capacity: 8,
+      price: 250,
+      status: "available",
+      amenities: ["wifi", "ac", "parking", "kitchen", "pool"],
+      description: "Casa familiar con piscina privada",
+    },
+    {
+      id: "corinto-casa-1",
+      name: "Casa Corinto 1",
+      type: "house",
+      location: "Corinto",
+      capacity: 6,
+      price: 180,
+      status: "available",
+      amenities: ["wifi", "ac", "parking", "kitchen"],
+      description: "Casa acogedora en zona tranquila",
+    },
+  ];
+
+  /* API call - restaurar cuando el proxy funcione
   const result = await apiRequest<Accommodation[]>("/accommodations");
   return result.data || [];
+  */
 };
 
 export const apiUpdateAccommodation = async (
