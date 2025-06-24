@@ -80,7 +80,8 @@ export const authenticateUser = async (
       };
     }
   } catch (error) {
-    console.warn("⚠️ API no disponible, usando autenticación local:", error);
+    console.warn("⚠️ API error, fallback to local auth:", error);
+    // Forzar fallback a autenticación local
   }
 
   // Fallback a autenticación local (modo desarrollo)
