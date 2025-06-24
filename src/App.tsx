@@ -32,6 +32,7 @@ import NavigationDemo from "./pages/NavigationDemo";
 import TranslationTest from "./pages/TranslationTest";
 import CountryClub from "./pages/CountryClub";
 import NotFound from "./pages/NotFound";
+import BackofficeLogin from "./pages/BackofficeLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
 import AdminAccommodations from "./pages/AdminAccommodations";
@@ -55,9 +56,13 @@ const App = () => (
         <BrowserRouter>
           <RouteGuard>
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Index />} />
+
+              {/* Backoffice Login */}
+              <Route path="/backoffice" element={<BackofficeLogin />} />
+              <Route path="/backoffice/login" element={<BackofficeLogin />} />
               <Route path="/alojamientos" element={<Accommodations />} />
               <Route path="/apartamento/:id" element={<ApartmentDetail />} />
               <Route path="/casa/:id" element={<CasaDetail />} />
