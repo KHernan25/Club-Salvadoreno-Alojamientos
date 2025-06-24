@@ -224,13 +224,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <span>Crear Usuario</span>
             </Link>
           )}
-          <Link
-            to="/dashboard"
+          <a
+            href="/dashboard"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-blue-50"
           >
             <Home className="h-4 w-4" />
-            <span>Ver Sitio Público</span>
-          </Link>
+            <span>Ver Sitio (Nueva Pestaña)</span>
+          </a>
         </div>
       </div>
     </div>
@@ -333,7 +335,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to="/perfil" className="cursor-pointer">
+                    <Link to="/admin/profile" className="cursor-pointer">
                       <User className="mr-2 h-4 w-4" />
                       <span>Mi Perfil</span>
                     </Link>
