@@ -37,23 +37,33 @@ const AdminDashboard = () => {
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
-        // Verificar conexión API
-        const connected = await isApiAvailable();
-        setApiConnected(connected);
+        // Temporalmente usar solo datos mock para evitar problemas de proxy
+        // TODO: Restaurar API una vez que el proxy esté funcionando
+        const USE_API = false;
 
-        if (connected) {
-          // Cargar estadísticas reales
-          const [userStats, reservationStats] = await Promise.all([
-            apiGetUserStats(),
-            apiGetReservationStats(),
-          ]);
+        if (USE_API) {
+          // Verificar conexión API
+          const connected = await isApiAvailable();
+          setApiConnected(connected);
 
-          setStats({
-            users: userStats,
-            reservations: reservationStats,
-          });
+          if (connected) {
+            // Cargar estadísticas reales
+            const [userStats, reservationStats] = await Promise.all([
+              apiGetUserStats(),
+              apiGetReservationStats(),
+            ]);
+
+            setStats({
+              users: userStats,
+              reservations: reservationStats,
+            });
+          } else {
+            // Datos mock para desarrollo
+            setStats(getMockStats());
+          }
         } else {
-          // Datos mock para desarrollo
+          // Usar datos mock directamente
+          setApiConnected(false);
           setStats(getMockStats());
         }
       } catch (error) {
