@@ -58,6 +58,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: true,
         canAccessAllLocations: true,
         canCreateRoles: true,
+        canEditSiteContent: true,
+        canManageImages: true,
       };
     case "atencion_miembro":
       return {
@@ -74,6 +76,8 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canManageSettings: false,
         canAccessAllLocations: true,
         canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
       };
     case "anfitrion":
       return {
