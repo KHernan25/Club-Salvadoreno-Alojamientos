@@ -60,6 +60,8 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
+  MapPin,
+  Filter,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
@@ -80,6 +82,7 @@ const AdminReservations = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [locationFilter, setLocationFilter] = useState("all");
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [isNewReservationDialogOpen, setIsNewReservationDialogOpen] =
@@ -192,9 +195,17 @@ const AdminReservations = () => {
 
   const getMockAccommodations = () => [
     { id: "1A", name: "Apartamento 1A", location: "el-sunzal", capacity: 2 },
+    { id: "2A", name: "Apartamento 2A", location: "el-sunzal", capacity: 2 },
+    { id: "3A", name: "Apartamento 3A", location: "el-sunzal", capacity: 2 },
     {
       id: "suite-1",
       name: "Suite Premium 1",
+      location: "el-sunzal",
+      capacity: 2,
+    },
+    {
+      id: "suite-2",
+      name: "Suite Premium 2",
       location: "el-sunzal",
       capacity: 2,
     },
@@ -203,6 +214,37 @@ const AdminReservations = () => {
       name: "Casa Familiar 1",
       location: "el-sunzal",
       capacity: 6,
+    },
+    {
+      id: "casa-2",
+      name: "Casa Familiar 2",
+      location: "el-sunzal",
+      capacity: 6,
+    },
+    // Corinto accommodations
+    {
+      id: "corinto-apto-1",
+      name: "Apartamento Corinto 1",
+      location: "corinto",
+      capacity: 4,
+    },
+    {
+      id: "corinto-apto-2",
+      name: "Apartamento Corinto 2",
+      location: "corinto",
+      capacity: 4,
+    },
+    {
+      id: "corinto-casa-1",
+      name: "Casa Corinto 1",
+      location: "corinto",
+      capacity: 8,
+    },
+    {
+      id: "corinto-casa-2",
+      name: "Casa Corinto 2",
+      location: "corinto",
+      capacity: 8,
     },
   ];
 
@@ -288,7 +330,10 @@ const AdminReservations = () => {
     const matchesStatus =
       statusFilter === "all" || reservation.status === statusFilter;
 
-    return matchesSearch && matchesStatus;
+    const matchesLocation =
+      locationFilter === "all" || accommodation?.location === locationFilter;
+
+    return matchesSearch && matchesStatus && matchesLocation;
   });
 
   const getStatusBadge = (status: string) => {
@@ -333,6 +378,11 @@ const AdminReservations = () => {
   const getAccommodationName = (accommodationId: string) => {
     const accommodation = accommodations.find((a) => a.id === accommodationId);
     return accommodation ? accommodation.name : "Alojamiento no encontrado";
+  };
+
+  const getAccommodationLocation = (accommodationId: string) => {
+    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    return accommodation?.location === "el-sunzal" ? "El Sunzal" : "Corinto";
   };
 
   return (
@@ -429,6 +479,32 @@ const AdminReservations = () => {
                 </div>
               </div>
               <div>
+                <Label htmlFor="location-filter">Ubicación</Label>
+                <Select
+                  value={locationFilter}
+                  onValueChange={setLocationFilter}
+                >
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Todas las ubicaciones" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas las ubicaciones</SelectItem>
+                    <SelectItem value="el-sunzal">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4 text-blue-600" />
+                        <span>El Sunzal</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="corinto">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4 text-blue-600" />
+                        <span>Corinto</span>
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
                 <Label htmlFor="status-filter">Estado</Label>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger className="w-40">
@@ -488,9 +564,19 @@ const AdminReservations = () => {
                           <p className="font-medium">
                             {getAccommodationName(reservation.accommodationId)}
                           </p>
-                          <div className="flex items-center space-x-1 text-sm text-gray-500">
-                            <Users className="h-3 w-3" />
-                            <span>{reservation.guests} huésped(es)</span>
+                          <div className="flex items-center space-x-3 text-sm text-gray-500">
+                            <div className="flex items-center space-x-1">
+                              <MapPin className="h-3 w-3 text-blue-600" />
+                              <span>
+                                {getAccommodationLocation(
+                                  reservation.accommodationId,
+                                )}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Users className="h-3 w-3" />
+                              <span>{reservation.guests} huésped(es)</span>
+                            </div>
                           </div>
                         </div>
                       </TableCell>
@@ -630,7 +716,16 @@ const AdminReservations = () => {
                         key={accommodation.id}
                         value={accommodation.id}
                       >
-                        {accommodation.name} (Cap: {accommodation.capacity})
+                        <div className="flex items-center space-x-2">
+                          <MapPin className="h-3 w-3 text-blue-600" />
+                          <span>
+                            {accommodation.name} -{" "}
+                            {accommodation.location === "el-sunzal"
+                              ? "El Sunzal"
+                              : "Corinto"}
+                            (Cap: {accommodation.capacity})
+                          </span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
