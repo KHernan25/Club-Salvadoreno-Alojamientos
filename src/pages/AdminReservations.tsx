@@ -63,7 +63,7 @@ import {
   MapPin,
   Filter,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
 import {
   apiGetReservations,
@@ -76,6 +76,8 @@ import {
 } from "@/lib/api-service";
 
 const AdminReservations = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [accommodations, setAccommodations] = useState<any[]>([]);
@@ -100,6 +102,13 @@ const AdminReservations = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    // Auto-open new reservation dialog if URL is /admin/reservations/new
+    if (location.pathname === "/admin/reservations/new") {
+      setIsNewReservationDialogOpen(true);
+    }
+  }, [location.pathname]);
 
   const loadData = async () => {
     try {
@@ -264,6 +273,10 @@ const AdminReservations = () => {
         guests: 1,
         specialRequests: "",
       });
+      // Navigate back to main reservations page if came from /new route
+      if (location.pathname === "/admin/reservations/new") {
+        navigate("/admin/reservations");
+      }
       loadData();
     } catch (error) {
       toast({
@@ -803,7 +816,13 @@ const AdminReservations = () => {
             <DialogFooter>
               <Button
                 variant="outline"
-                onClick={() => setIsNewReservationDialogOpen(false)}
+                onClick={() => {
+                  setIsNewReservationDialogOpen(false);
+                  // Navigate back if came from /new route
+                  if (location.pathname === "/admin/reservations/new") {
+                    navigate("/admin/reservations");
+                  }
+                }}
               >
                 Cancelar
               </Button>
