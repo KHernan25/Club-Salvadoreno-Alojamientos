@@ -4,12 +4,17 @@ import { getCurrentUser, requireAuth, hasRole } from "@/lib/auth-service";
 
 interface AdminProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: "admin" | "staff";
+  requiredRole?:
+    | "super_admin"
+    | "atencion_miembro"
+    | "anfitrion"
+    | "monitor"
+    | "mercadeo";
 }
 
 const AdminProtectedRoute = ({
   children,
-  requiredRole = "staff",
+  requiredRole = "mercadeo",
 }: AdminProtectedRouteProps) => {
   const navigate = useNavigate();
 
