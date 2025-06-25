@@ -278,42 +278,44 @@ export const PaymentOptionsModal = ({
             </div>
           </div>
 
-          {/* Payment Methods */}
+          {/* Main Options */}
           <div className="grid gap-4">
-            {paymentMethods.map((method) => (
+            {mainOptions.map((option) => (
               <Card
-                key={method.id}
+                key={option.id}
                 className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
-                  selectedPaymentMethod === method.id
+                  selectedMainOption === option.id
                     ? "ring-2 ring-blue-500 shadow-lg"
                     : "hover:ring-1 hover:ring-gray-300"
                 }`}
-                onClick={() => handlePaymentMethodSelect(method.id)}
+                onClick={() => handleMainOptionSelect(option.id)}
               >
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div
-                        className={`${method.color} p-3 rounded-full text-white`}
+                        className={`${option.color} p-3 rounded-full text-white`}
                       >
-                        {method.icon}
+                        {option.icon}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="font-semibold">{method.title}</h3>
-                          {method.badge && (
-                            <Badge className={method.badgeColor}>
-                              {method.badge}
+                          <h3 className="font-semibold text-lg">
+                            {option.title}
+                          </h3>
+                          {option.badge && (
+                            <Badge className={option.badgeColor}>
+                              {option.badge}
                             </Badge>
                           )}
                         </div>
                         <p className="text-sm text-gray-600">
-                          {method.description}
+                          {option.description}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center">
-                      {selectedPaymentMethod === method.id && (
+                      {selectedMainOption === option.id && (
                         <CheckCircle className="h-6 w-6 text-blue-500" />
                       )}
                     </div>
@@ -322,6 +324,53 @@ export const PaymentOptionsModal = ({
               </Card>
             ))}
           </div>
+
+          {/* Immediate Payment Sub-options */}
+          {selectedMainOption === "immediate" && (
+            <div className="space-y-4">
+              <div className="border-t pt-4">
+                <h3 className="text-lg font-semibold mb-4 text-center">
+                  Selecciona tu método de pago inmediato
+                </h3>
+                <div className="grid gap-3">
+                  {immediatePaymentMethods.map((method) => (
+                    <Card
+                      key={method.id}
+                      className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+                        selectedPaymentMethod === method.id
+                          ? "ring-2 ring-green-500 shadow-lg bg-green-50"
+                          : "hover:ring-1 hover:ring-gray-300"
+                      }`}
+                      onClick={() => handlePaymentMethodSelect(method.id)}
+                    >
+                      <CardContent className="p-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`${method.color} p-2 rounded-full text-white`}
+                            >
+                              {method.icon}
+                            </div>
+                            <div>
+                              <h4 className="font-medium">{method.title}</h4>
+                              <p className="text-sm text-gray-600">
+                                {method.description}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            {selectedPaymentMethod === method.id && (
+                              <CheckCircle className="h-5 w-5 text-green-500" />
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Transfer File Upload */}
           {selectedPaymentMethod === "transfer" && (
