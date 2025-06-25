@@ -195,36 +195,15 @@ export const PaymentOptionsModal = ({
     }
   };
 
-  const paymentMethods = [
+  const mainOptions = [
     {
       id: "immediate",
       title: "Pagar Inmediatamente",
-      description: "Tarjeta de crédito o débito",
+      description: "Procesar el pago ahora mismo",
       icon: <CreditCard className="h-6 w-6" />,
       color: "bg-blue-500",
       badge: "Recomendado",
       badgeColor: "bg-blue-100 text-blue-700",
-    },
-    {
-      id: "payment_link",
-      title: "Link de Pago",
-      description: "Recibe un enlace por correo",
-      icon: <Link className="h-6 w-6" />,
-      color: "bg-purple-500",
-    },
-    {
-      id: "transfer",
-      title: "Transferencia Bancaria",
-      description: "Sube el comprobante de pago",
-      icon: <Upload className="h-6 w-6" />,
-      color: "bg-green-500",
-    },
-    {
-      id: "credit",
-      title: "Pago con Crédito",
-      description: "Usar crédito disponible",
-      icon: <Banknote className="h-6 w-6" />,
-      color: "bg-yellow-500",
     },
     {
       id: "pay_later",
@@ -234,6 +213,37 @@ export const PaymentOptionsModal = ({
       color: "bg-orange-500",
       badge: "72 horas",
       badgeColor: "bg-orange-100 text-orange-700",
+    },
+  ];
+
+  const immediatePaymentMethods = [
+    {
+      id: "card",
+      title: "Tarjeta de Débito o Crédito",
+      description: "Pago seguro con tarjeta",
+      icon: <CreditCard className="h-5 w-5" />,
+      color: "bg-blue-500",
+    },
+    {
+      id: "payment_link",
+      title: "Link de Pago",
+      description: "Recibe un enlace por correo",
+      icon: <Link className="h-5 w-5" />,
+      color: "bg-purple-500",
+    },
+    {
+      id: "transfer",
+      title: "Transferencia Bancaria",
+      description: "Sube el comprobante de pago",
+      icon: <Upload className="h-5 w-5" />,
+      color: "bg-green-500",
+    },
+    {
+      id: "credit",
+      title: "Pago con Crédito",
+      description: "Usar crédito disponible",
+      icon: <Banknote className="h-5 w-5" />,
+      color: "bg-yellow-500",
     },
   ];
 
