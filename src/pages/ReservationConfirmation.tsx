@@ -586,13 +586,22 @@ const ReservationConfirmation = () => {
                         </div>
                       )}
 
-                      <div className="text-3xl font-bold text-green-600">
+                      <div
+                        className={`text-3xl font-bold ${paymentStatus === "pending" ? "text-yellow-600" : "text-green-600"}`}
+                      >
                         {formatPrice(totalPrice)}
                       </div>
-                      <Badge className="bg-green-100 text-green-800 mt-2">
-                        <Check className="h-3 w-3 mr-1" />
-                        Pagado
-                      </Badge>
+                      {paymentStatus === "pending" ? (
+                        <Badge className="bg-yellow-100 text-yellow-800 mt-2">
+                          <Clock className="h-3 w-3 mr-1" />
+                          Pendiente
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-green-100 text-green-800 mt-2">
+                          <Check className="h-3 w-3 mr-1" />
+                          Pagado
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </CardContent>
