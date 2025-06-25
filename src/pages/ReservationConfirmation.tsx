@@ -306,15 +306,24 @@ const ReservationConfirmation = () => {
         {/* Success Header */}
         <div className="text-center mb-8 print:mb-4">
           <div className="mb-6">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 print:hidden">
-              <CheckCircle className="h-12 w-12 text-green-600" />
-            </div>
+            {paymentStatus === "pending" ? (
+              <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 print:hidden">
+                <Clock className="h-12 w-12 text-yellow-600" />
+              </div>
+            ) : (
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 print:hidden">
+                <CheckCircle className="h-12 w-12 text-green-600" />
+              </div>
+            )}
             <h1 className="text-3xl font-bold text-slate-900 mb-2 print:text-2xl">
-              ¡Reserva Confirmada!
+              {paymentStatus === "pending"
+                ? "¡Reserva En Espera!"
+                : "¡Reserva Confirmada!"}
             </h1>
             <p className="text-lg text-slate-600 print:text-base">
-              Tu pago se procesó exitosamente. Hemos enviado los detalles a tu
-              correo electrónico.
+              {paymentStatus === "pending"
+                ? `Tu reserva se encuentra en espera del pago. ${paymentDeadline ? `Tienes ${paymentDeadline} horas para completar el pago.` : "Completa el pago para confirmar tu reserva."} Hemos enviado los detalles a tu correo electrónico.`
+                : "Tu pago se procesó exitosamente. Hemos enviado los detalles a tu correo electrónico."}
             </p>
           </div>
 
