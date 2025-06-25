@@ -755,6 +755,22 @@ const Reservations = () => {
           </div>
         </div>
       </footer>
+
+      {/* Payment Options Modal */}
+      <PaymentOptionsModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        reservationData={{
+          code: reservationCode,
+          checkIn: selectedDates.checkIn,
+          checkOut: selectedDates.checkOut,
+          accommodation: accommodationType,
+          accommodationId,
+          accommodationName,
+          guests,
+          totalPrice: priceCalculation?.totalPrice || 0,
+        }}
+      />
     </div>
   );
 };
