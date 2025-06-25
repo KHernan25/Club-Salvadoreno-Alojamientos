@@ -136,39 +136,7 @@ export const PaymentOptionsModal = ({
     } = reservationData;
 
     try {
-      if (selectedPaymentMethod === "immediate") {
-        // Redirect to immediate payment (existing flow)
-        navigate(
-          `/pago?code=${code}&checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}`,
-        );
-      } else if (selectedPaymentMethod === "payment_link") {
-        // Simulate payment link generation
-        toast({
-          title: "Link de pago generado",
-          description: "Se ha enviado un link de pago a tu correo electrónico",
-        });
-        navigate(
-          `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=payment_link&status=pending`,
-        );
-      } else if (selectedPaymentMethod === "transfer") {
-        // Handle transfer with voucher
-        toast({
-          title: "Transferencia registrada",
-          description: "Tu comprobante ha sido enviado para verificación",
-        });
-        navigate(
-          `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=transfer&status=pending`,
-        );
-      } else if (selectedPaymentMethod === "credit") {
-        // Handle credit payment
-        toast({
-          title: "Pago con crédito registrado",
-          description: "Tu reserva ha sido registrada para pago con crédito",
-        });
-        navigate(
-          `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=credit&status=confirmed`,
-        );
-      } else if (selectedPaymentMethod === "pay_later") {
+      if (selectedMainOption === "pay_later") {
         // Handle pay later (72 hours)
         toast({
           title: "Reserva confirmada - Pago pendiente",
@@ -177,6 +145,42 @@ export const PaymentOptionsModal = ({
         navigate(
           `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=pay_later&status=pending&deadline=72`,
         );
+      } else if (selectedMainOption === "immediate") {
+        // Handle immediate payment options
+        if (selectedPaymentMethod === "card") {
+          // Redirect to card payment (existing flow)
+          navigate(
+            `/pago?code=${code}&checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}`,
+          );
+        } else if (selectedPaymentMethod === "payment_link") {
+          // Simulate payment link generation
+          toast({
+            title: "Link de pago generado",
+            description:
+              "Se ha enviado un link de pago a tu correo electrónico",
+          });
+          navigate(
+            `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=payment_link&status=pending`,
+          );
+        } else if (selectedPaymentMethod === "transfer") {
+          // Handle transfer with voucher
+          toast({
+            title: "Transferencia registrada",
+            description: "Tu comprobante ha sido enviado para verificación",
+          });
+          navigate(
+            `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=transfer&status=pending`,
+          );
+        } else if (selectedPaymentMethod === "credit") {
+          // Handle credit payment
+          toast({
+            title: "Pago con crédito registrado",
+            description: "Tu reserva ha sido registrada para pago con crédito",
+          });
+          navigate(
+            `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=credit&status=confirmed`,
+          );
+        }
       }
 
       onClose();
