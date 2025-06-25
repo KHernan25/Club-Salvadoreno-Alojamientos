@@ -502,23 +502,44 @@ const ReservationConfirmation = () => {
                             Método de pago:
                           </span>
                           <span className="font-medium">
-                            Tarjeta de Crédito
+                            {paymentMethod === "pay_later"
+                              ? "Pendiente de pago"
+                              : paymentMethod === "payment_link"
+                                ? "Link de pago"
+                                : paymentMethod === "transfer"
+                                  ? "Transferencia bancaria"
+                                  : paymentMethod === "credit"
+                                    ? "Pago con crédito"
+                                    : "Tarjeta de crédito"}
                           </span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-600">Fecha de pago:</span>
-                          <span className="font-medium">
-                            {new Date().toLocaleDateString("es-ES")}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-600">
-                            ID de transacción:
-                          </span>
-                          <span className="font-mono text-sm">
-                            TXN{Date.now().toString().slice(-8)}
-                          </span>
-                        </div>
+                        {paymentStatus === "confirmed" ? (
+                          <>
+                            <div className="flex justify-between">
+                              <span className="text-slate-600">
+                                Fecha de pago:
+                              </span>
+                              <span className="font-medium">
+                                {new Date().toLocaleDateString("es-ES")}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-600">
+                                ID de transacción:
+                              </span>
+                              <span className="font-mono text-sm">
+                                TXN{Date.now().toString().slice(-8)}
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="flex justify-between">
+                            <span className="text-slate-600">Estado:</span>
+                            <span className="font-medium text-yellow-600">
+                              Pendiente de pago
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="text-right">
