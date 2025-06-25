@@ -60,6 +60,9 @@ const ReservationConfirmation = () => {
   );
   const guests = parseInt(searchParams.get("guests") || "2");
   const totalPrice = parseFloat(searchParams.get("price") || "0");
+  const paymentStatus = searchParams.get("status") || "confirmed";
+  const paymentMethod = searchParams.get("paymentMethod") || "credit";
+  const paymentDeadline = searchParams.get("deadline") || null;
 
   // Get authenticated user
   const currentUser = getCurrentUser();
