@@ -672,7 +672,7 @@ const Reservations = () => {
                                 )
                               }
                             >
-                              PAGAR RESERVA
+                              RESERVAR
                             </Button>
                           </div>
                         </div>
