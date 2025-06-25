@@ -373,47 +373,48 @@ export const PaymentOptionsModal = ({
           )}
 
           {/* Transfer File Upload */}
-          {selectedPaymentMethod === "transfer" && (
-            <div className="space-y-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <h4 className="font-semibold text-green-800">
-                Datos para Transferencia
-              </h4>
-              <div className="text-sm space-y-2 text-green-700">
-                <div>
-                  <strong>Banco:</strong> Banco Agrícola
-                </div>
-                <div>
-                  <strong>Cuenta:</strong> 1234-5678-9012-3456
-                </div>
-                <div>
-                  <strong>Titular:</strong> Club Salvadoreño S.A. de C.V.
-                </div>
-                <div>
-                  <strong>Monto:</strong>{" "}
-                  {formatPrice(reservationData.totalPrice)}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="voucher-upload">
-                  Subir Comprobante de Transferencia
-                </Label>
-                <Input
-                  id="voucher-upload"
-                  type="file"
-                  accept="image/*,.pdf"
-                  onChange={handleFileUpload}
-                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
-                />
-                {transferFile && (
-                  <div className="flex items-center gap-2 text-sm text-green-600">
-                    <CheckCircle className="h-4 w-4" />
-                    <span>{transferFile.name} cargado exitosamente</span>
+          {selectedMainOption === "immediate" &&
+            selectedPaymentMethod === "transfer" && (
+              <div className="space-y-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <h4 className="font-semibold text-green-800">
+                  Datos para Transferencia
+                </h4>
+                <div className="text-sm space-y-2 text-green-700">
+                  <div>
+                    <strong>Banco:</strong> Banco Agrícola
                   </div>
-                )}
+                  <div>
+                    <strong>Cuenta:</strong> 1234-5678-9012-3456
+                  </div>
+                  <div>
+                    <strong>Titular:</strong> Club Salvadoreño S.A. de C.V.
+                  </div>
+                  <div>
+                    <strong>Monto:</strong>{" "}
+                    {formatPrice(reservationData.totalPrice)}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="voucher-upload">
+                    Subir Comprobante de Transferencia
+                  </Label>
+                  <Input
+                    id="voucher-upload"
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={handleFileUpload}
+                    className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                  />
+                  {transferFile && (
+                    <div className="flex items-center gap-2 text-sm text-green-600">
+                      <CheckCircle className="h-4 w-4" />
+                      <span>{transferFile.name} cargado exitosamente</span>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {/* Pay Later Warning */}
           {selectedPaymentMethod === "pay_later" && (
