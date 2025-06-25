@@ -417,7 +417,7 @@ export const PaymentOptionsModal = ({
             )}
 
           {/* Pay Later Warning */}
-          {selectedPaymentMethod === "pay_later" && (
+          {selectedMainOption === "pay_later" && (
             <div className="bg-orange-50 border border-orange-200 p-4 rounded-lg">
               <div className="flex gap-3">
                 <AlertCircle className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
