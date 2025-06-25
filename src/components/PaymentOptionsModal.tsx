@@ -47,6 +47,9 @@ export const PaymentOptionsModal = ({
 }: PaymentOptionsModalProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [selectedMainOption, setSelectedMainOption] = useState<string | null>(
+    null,
+  );
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     string | null
   >(null);
