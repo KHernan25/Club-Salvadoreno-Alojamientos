@@ -118,7 +118,7 @@ const ApartmentDetail = () => {
   const apartmentData = {
     "1A": {
       name: "Apartamento 1A",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5346.jpg", "/DSC_5212.jpg", "/DSC_5214.jpg"],
       description:
         "El apartamento 1A está diseñado para brindarle una experiencia de descanso y comodidad en un entorno natural privilegiado, ubicado en la primera planta con fácil acceso.",
       fullDescription:
@@ -172,7 +172,7 @@ const ApartmentDetail = () => {
     },
     "1B": {
       name: "Apartamento 1B",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5238.jpg", "/DSC_5244.jpg", "/DSC_5363.jpg"],
       description:
         "El apartamento 1B ofrece una experiencia renovada en primera planta, con acabados modernos y una terraza ampliada que maximiza las vistas al jardín tropical.",
       fullDescription:
@@ -226,7 +226,7 @@ const ApartmentDetail = () => {
     },
     "2A": {
       name: "Apartamento 2A",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5244.jpg", "/DSC_5212.jpg", "/DSC_5214.jpg"],
       description:
         "El apartamento 2A en segunda planta ofrece vistas elevadas al océano Pacífico, combinando altura perfecta con panorámicas espectaculares del atardecer.",
       fullDescription:
@@ -284,7 +284,7 @@ const ApartmentDetail = () => {
     },
     "2B": {
       name: "Apartamento 2B",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5363.jpg", "/DSC_5346.jpg", "/DSC_5238.jpg"],
       description:
         "El apartamento 2B combina las ventajas de la segunda planta con una distribución espaciosa, ideal para familias que buscan comodidad y vistas panorámicas.",
       fullDescription:
@@ -342,7 +342,7 @@ const ApartmentDetail = () => {
     },
     "3A": {
       name: "Apartamento 3A",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5212.jpg", "/DSC_5214.jpg", "/DSC_5244.jpg"],
       description:
         "El apartamento 3A en la planta más alta ofrece vistas sin obstáculos del océano Pacífico, siendo el refugio perfecto para quienes buscan panorámicas espectaculares.",
       fullDescription:
@@ -404,7 +404,7 @@ const ApartmentDetail = () => {
     },
     "3B": {
       name: "Apartamento 3B",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5214.jpg", "/DSC_5363.jpg", "/DSC_5212.jpg"],
       description:
         "El apartamento 3B en la planta superior combina vistas espectaculares con espacio adicional, ofreciendo una experiencia de penthouse familiar.",
       fullDescription:

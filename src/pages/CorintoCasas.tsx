@@ -35,7 +35,7 @@ const CorintoCasas = () => {
     {
       id: "corinto-casa-1",
       name: "Casa del Lago",
-      image: "/placeholder.svg",
+      image: "/DSC_5508.jpg",
       description:
         "Casa ideal para familias que buscan comodidad y tranquilidad junto al agua. Ubicada en una posición estratégica con vista directa al lago, ofrece espacios amplios y un jardín privado perfecto para relajarse mientras disfrutan de la brisa lacustre.",
       features: [
@@ -55,7 +55,7 @@ const CorintoCasas = () => {
     {
       id: "corinto-casa-2",
       name: "Casa Familiar Vista Lago",
-      image: "/placeholder.svg",
+      image: "/DSC_5515.jpg",
       description:
         "Diseñada especialmente para familias numerosas, esta casa combina amplitud y confort con vistas panorámicas al Lago de Ilopango. Con capacidad para 8 personas, incluye muelle privado y espacios de entretenimiento ideales para reuniones familiares memorables.",
       features: [
@@ -75,7 +75,7 @@ const CorintoCasas = () => {
     {
       id: "corinto-casa-3",
       name: "Casa Tranquilidad",
-      image: "/placeholder.svg",
+      image: "/DSC_5525.jpg",
       description:
         "Refugio perfecto para parejas o familias pequeñas que buscan paz absoluta. Esta casa íntima cuenta con un jardín zen único, espacios de meditación y un ambiente sereno que invita al descanso y la contemplación junto al lago.",
       features: [
@@ -90,7 +90,7 @@ const CorintoCasas = () => {
     {
       id: "corinto-casa-4",
       name: "Casa Pescador",
-      image: "/placeholder.svg",
+      image: "/DSC_5529.jpg",
       description:
         "Casa temática diseñada para los amantes de la pesca deportiva y actividades acuáticas. Incluye equipo especializado, acceso directo al lago, y facilidades para limpiar y preparar las capturas del día en un ambiente auténticamente lacustre.",
       features: [
@@ -110,7 +110,7 @@ const CorintoCasas = () => {
     {
       id: "corinto-casa-5",
       name: "Casa Reuniones",
-      image: "/placeholder.svg",
+      image: "/DSC_5517.jpg",
       description:
         "Casa especialmente equipada para eventos familiares, reuniones corporativas o celebraciones especiales. Con capacidad para 10 personas, incluye cocina industrial, sistema de sonido y espacios amplios diseñados para grupos que buscan compartir experiencias únicas.",
       features: [
@@ -125,7 +125,7 @@ const CorintoCasas = () => {
     {
       id: "corinto-casa-6",
       name: "Casa Premium Lago",
-      image: "/placeholder.svg",
+      image: "/DSC_5542.jpg",
       description:
         "La experiencia más exclusiva en Corinto. Casa de lujo con capacidad para 12 huéspedes que incluye jacuzzi, lancha privada y servicios premium. Perfecta para ocasiones especiales, luna de miel o grupos que buscan el máximo nivel de comodidad y exclusividad.",
       features: [
@@ -149,37 +149,20 @@ const CorintoCasas = () => {
       {/* Navigation */}
       <Navbar />
 
-      {/* Breadcrumb */}
-      <div className="bg-slate-50 py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-2 text-sm text-slate-600">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="hover:text-blue-600"
-            >
-              Inicio
-            </button>
-            <span>›</span>
-            <button
-              onClick={() => navigate("/corinto")}
-              className="hover:text-blue-600"
-            >
-              Corinto
-            </button>
-            <span>›</span>
-            <span className="text-slate-900 font-medium">Casas</span>
-          </div>
-        </div>
-      </div>
-
       {/* Header */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">
+      <section className="relative h-96 bg-gradient-to-b from-blue-900 to-blue-800">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `linear-gradient(rgba(2, 22, 71, 0.69), rgba(2, 21, 71, 0.85)), url('/DSC_5508.jpg')`,
+          }}
+        />
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
+          <div className="text-white max-w-2xl">
+            <h1 className="text-7xl font-bold mb-4">
               Casas en Corinto
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-xl">
               Descubre nuestras 6 hermosas casas junto al lago, perfectas para
               una experiencia familiar inolvidable
             </p>
@@ -298,25 +281,26 @@ const CorintoCasas = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-blue-900 text-white">
+      <section className="py-16 text-blue-900">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">
             ¿Listo para tu escapada al lago?
           </h2>
-          <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-blue-900 mb-8 max-w-2xl mx-auto">
             Reserva ahora tu casa ideal en Corinto y disfruta de la tranquilidad
             del lago
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
+              variant="outline"
               onClick={() => navigate("/reservas")}
-              className="bg-white text-blue-900 hover:bg-slate-100"
+              className="bg-blue-900 text-white hover:bg-white/10"
             >
               Hacer Reserva
             </Button>
             <Button
               variant="outline"
-              className="border-white text-white hover:bg-white/10"
+              className="bg-blue-900 text-white hover:bg-white/10"
               onClick={() => navigate("/corinto")}
             >
               Volver a Corinto
@@ -326,12 +310,16 @@ const CorintoCasas = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-8">
+      <footer className="bg-blue-900 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-slate-900 font-bold text-sm">CS</span>
+                <img
+                    src="/logo_azul.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>

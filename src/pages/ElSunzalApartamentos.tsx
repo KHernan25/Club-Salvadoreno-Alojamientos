@@ -21,6 +21,7 @@ const ElSunzalApartamentos = () => {
     {
       id: "sunzal-apt-1A",
       name: "Apartamento 1A",
+      image: "/DSC_5212.jpg",
       description: "Moderno apartamento con vista al mar",
       beds: 2,
       baths: 1,
@@ -30,6 +31,7 @@ const ElSunzalApartamentos = () => {
     {
       id: "sunzal-apt-1B",
       name: "Apartamento 1B",
+      image: "/DSC_5214.jpg",
       description: "Cómodo apartamento con balcón privado",
       beds: 1,
       baths: 1,
@@ -39,6 +41,7 @@ const ElSunzalApartamentos = () => {
     {
       id: "sunzal-apt-2A",
       name: "Apartamento 2A",
+      image: "/DSC_5238.jpg",
       description: "Espacioso apartamento en segundo piso",
       beds: 2,
       baths: 2,
@@ -48,6 +51,7 @@ const ElSunzalApartamentos = () => {
     {
       id: "sunzal-apt-2B",
       name: "Apartamento 2B",
+      image: "/DSC_5244.jpg",
       description: "Apartamento familiar con terraza",
       beds: 3,
       baths: 2,
@@ -57,6 +61,7 @@ const ElSunzalApartamentos = () => {
     {
       id: "sunzal-apt-3A",
       name: "Apartamento 3A",
+      image: "/DSC_5346.jpg",
       description: "Penthouse con vista panorámica",
       beds: 2,
       baths: 2,
@@ -66,6 +71,7 @@ const ElSunzalApartamentos = () => {
     {
       id: "sunzal-apt-3B",
       name: "Apartamento 3B",
+      image: "/DSC_5363.jpg",
       description: "Apartamento premium con amenidades",
       beds: 3,
       baths: 2,
@@ -79,37 +85,20 @@ const ElSunzalApartamentos = () => {
       {/* Navigation */}
       <Navbar />
 
-      {/* Breadcrumb */}
-      <div className="bg-slate-50 py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-2 text-sm text-slate-600">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="hover:text-blue-600"
-            >
-              Inicio
-            </button>
-            <span>›</span>
-            <button
-              onClick={() => navigate("/el-sunzal")}
-              className="hover:text-blue-600"
-            >
-              El Sunzal
-            </button>
-            <span>›</span>
-            <span className="text-slate-900 font-medium">Apartamentos</span>
-          </div>
-        </div>
-      </div>
-
       {/* Header */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">
+      <section className="relative h-96 bg-gradient-to-b from-blue-900 to-blue-800">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `linear-gradient(rgba(2, 22, 71, 0.69), rgba(2, 21, 71, 0.85)), url('/apartamentos.gif')`,
+          }}
+        />
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
+          <div className="text-white max-w-2xl">
+            <h1 className="text-6xl font-bold mb-4">
               Apartamentos en El Sunzal
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-xl">
               Descubre nuestros 6 modernos apartamentos con vista al mar,
               perfectos para una estadía cómoda
             </p>
@@ -128,7 +117,7 @@ const ElSunzalApartamentos = () => {
               >
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <img
-                    src="/placeholder.svg"
+                    src={apt.image}
                     alt={apt.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -210,24 +199,25 @@ const ElSunzalApartamentos = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-blue-900 text-white">
+      <section className="py-16 text-blue-900">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">
             ¿Listo para tu estadía perfecta?
           </h2>
-          <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-blue-900 mb-8 max-w-2xl mx-auto">
             Reserva ahora tu apartamento ideal en El Sunzal
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
+              variant="outline"
               onClick={() => navigate("/reservas")}
-              className="bg-white text-blue-900 hover:bg-slate-100"
+              className="bg-blue-900 text-white hover:bg-white/10"
             >
               Hacer Reserva
             </Button>
             <Button
               variant="outline"
-              className="border-white text-white hover:bg-white/10"
+              className="bg-blue-900 text-white hover:bg-white/10"
               onClick={() => navigate("/el-sunzal")}
             >
               Volver a El Sunzal
@@ -237,12 +227,16 @@ const ElSunzalApartamentos = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-8">
+      <footer className="bg-blue-900 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-slate-900 font-bold text-sm">CS</span>
+                <img
+                    src="/logo_azul.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>

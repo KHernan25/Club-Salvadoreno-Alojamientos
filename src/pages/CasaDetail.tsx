@@ -63,7 +63,7 @@ const CasaDetail = () => {
     // Corinto Houses
     "corinto-casa-1": {
       name: "Casa del Lago",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5508.jpg", "/DSC_5515.jpg", "/DSC_5525.jpg"],
       description:
         "Casa ideal para familias que buscan comodidad y tranquilidad junto al agua. Ubicada en una posición estratégica con vista directa al lago, ofrece espacios amplios y un jardín privado perfecto para relajarse mientras disfrutan de la brisa lacustre.",
       fullDescription:
@@ -122,7 +122,7 @@ const CasaDetail = () => {
     },
     "corinto-casa-2": {
       name: "Casa Familiar Vista Lago",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5545.jpg", "/DSC_5515.jpg", "/DSC_5525.jpg"],
       description:
         "Diseñada especialmente para familias numerosas, esta casa combina amplitud y confort con vistas panorámicas al Lago de Ilopango. Con capacidad para 8 personas, incluye muelle privado y espacios de entretenimiento ideales para reuniones familiares memorables.",
       fullDescription:
@@ -189,7 +189,7 @@ const CasaDetail = () => {
     },
     "corinto-casa-3": {
       name: "Casa Tranquilidad",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5529.jpg", "/DSC_5535.jpg", "/DSC_5517.jpg"],
       description:
         "Refugio perfecto para parejas o familias pequeñas que buscan paz absoluta. Esta casa íntima cuenta con un jardín zen único, espacios de meditación y un ambiente sereno que invita al descanso y la contemplación junto al lago.",
       fullDescription:
@@ -264,7 +264,7 @@ const CasaDetail = () => {
     },
     "corinto-casa-4": {
       name: "Casa Pescador",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5513.jpg", "/DSC_5510.jpg", "/DSC_5515.jpg"],
       description:
         "Casa temática diseñada para los amantes de la pesca deportiva y actividades acuáticas. Incluye equipo especializado, acceso directo al lago, y facilidades para limpiar y preparar las capturas del día en un ambiente auténticamente lacustre.",
       fullDescription:
@@ -339,7 +339,7 @@ const CasaDetail = () => {
     },
     "corinto-casa-5": {
       name: "Casa Reuniones",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5508.jpg", "/DSC_5517.jpg", "/DSC_5525.jpg"],
       description:
         "Casa especialmente equipada para eventos familiares, reuniones corporativas o celebraciones especiales. Con capacidad para 10 personas, incluye cocina industrial, sistema de sonido y espacios amplios diseñados para grupos que buscan compartir experiencias únicas.",
       fullDescription:
@@ -422,7 +422,7 @@ const CasaDetail = () => {
     },
     "corinto-casa-6": {
       name: "Casa Premium Lago",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5535.jpg", "/DSC_5529.jpg", "/DSC_5545.jpg"],
       description:
         "La experiencia más exclusiva en Corinto. Casa de lujo con capacidad para 12 huéspedes que incluye jacuzzi, lancha privada y servicios premium. Perfecta para ocasiones especiales, luna de miel o grupos que buscan el máximo nivel de comodidad y exclusividad.",
       fullDescription:
@@ -506,7 +506,7 @@ const CasaDetail = () => {
     // El Sunzal Houses (existing)
     casa1: {
       name: "Casa Familiar Premium",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
+      images: ["/DSC_5189.jpg", "/DSC_5193.jpg", "/DSC_5191.jpg"],
       description:
         "Amplia casa familiar diseñada para grupos grandes y familias que buscan privacidad, amplitud y comodidad en un entorno natural privilegiado frente al mar.",
       fullDescription:
@@ -753,56 +753,6 @@ const CasaDetail = () => {
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <Navbar />
-
-      {/* Breadcrumb */}
-      <div className="bg-slate-50 py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-2 text-sm text-slate-600">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="hover:text-blue-600"
-            >
-              Inicio
-            </button>
-            <span>›</span>
-            {isCorintoHouse ? (
-              <>
-                <button
-                  onClick={() => navigate("/corinto")}
-                  className="hover:text-blue-600"
-                >
-                  Corinto
-                </button>
-                <span>›</span>
-                <button
-                  onClick={() => navigate("/corinto/casas")}
-                  className="hover:text-blue-600"
-                >
-                  Casas
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={() => navigate("/sunzal")}
-                  className="hover:text-blue-600"
-                >
-                  El Sunzal
-                </button>
-                <span>›</span>
-                <button
-                  onClick={() => navigate("/alojamientos")}
-                  className="hover:text-blue-600"
-                >
-                  Casas
-                </button>
-              </>
-            )}
-            <span>›</span>
-            <span className="text-slate-900 font-medium">{casa.name}</span>
-          </div>
-        </div>
-      </div>
 
       {/* Casa Tabs */}
       <div className="bg-slate-50 border-b border-slate-200">

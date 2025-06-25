@@ -36,7 +36,7 @@ const ElSunzalCasas = () => {
     {
       id: "sunzal-casa-1",
       name: "Casa Surf Paradise",
-      image: "/placeholder.svg",
+      image: "/DSC_5197.jpg",
       description:
         "Casa frente al mar diseñada específicamente para surfistas, con almacenamiento especializado para tablas y ducha exterior para después de las sesiones. Ubicada en primera línea de playa con acceso directo al break más famoso de El Sunzal.",
       features: [
@@ -56,7 +56,7 @@ const ElSunzalCasas = () => {
     {
       id: "sunzal-casa-2",
       name: "Casa Tropical Family",
-      image: "/placeholder.svg",
+      image: "/DSC_5191.jpg",
       description:
         "Amplia casa familiar con jardín tropical exuberante y área de juegos diseñada especialmente para niños. Perfecta para familias que buscan espacios seguros y cómodos sin renunciar al lujo tropical. Incluye piscina infantil privada y zona de parrilla para reuniones familiares.",
       features: [
@@ -71,7 +71,7 @@ const ElSunzalCasas = () => {
     {
       id: "sunzal-casa-3",
       name: "Casa Vista Océano",
-      image: "/placeholder.svg",
+      image: "/DSC_5201.jpg",
       description:
         "Casa estratégicamente construida en una elevación privilegiada que ofrece vistas panorámicas de 360° al océano Pacífico desde todas las habitaciones. Ideal para quienes buscan una conexión total con el mar y disfrutar de amaneceres y atardeceres espectaculares desde la comodidad de su hogar temporal.",
       features: [
@@ -91,7 +91,7 @@ const ElSunzalCasas = () => {
     {
       id: "sunzal-casa-4",
       name: "Casa Beach Club",
-      image: "/placeholder.svg",
+      image: "/DSC_5199.jpg",
       description:
         "Casa premium con acceso directo a la playa privada y área de entretenimiento completa. Diseñada para grupos que buscan la experiencia de un beach club privado con todas las comodidades. Incluye equipo completo de deportes acuáticos y área de bar exterior para fiestas junto al mar.",
       features: [
@@ -111,7 +111,7 @@ const ElSunzalCasas = () => {
     {
       id: "sunzal-casa-5",
       name: "Casa Bohemia",
-      image: "/placeholder.svg",
+      image: "/DSC_5252.jpg",
       description:
         "Casa de estilo bohemio con decoración artística única y ambiente completamente relajado. Inspirada en la cultura artística local, cuenta con obras de arte originales, biblioteca curada y espacios zen para meditación. Perfecta para retiros creativos y estancias de desconexión digital.",
       features: [
@@ -126,7 +126,7 @@ const ElSunzalCasas = () => {
     {
       id: "sunzal-casa-6",
       name: "Casa Premium Oceanfront",
-      image: "/placeholder.svg",
+      image: "/DSC_5189.jpg",
       description:
         "La casa más exclusiva y lujosa de El Sunzal, ubicada en primera línea de playa con todas las comodidades de un resort cinco estrellas. Cuenta con servicios de lujo incluyendo chef privado, mayordomo personal y spa privado. Diseñada para huéspedes VIP que buscan la máxima exclusividad y confort.",
       features: [
@@ -150,40 +150,23 @@ const ElSunzalCasas = () => {
       {/* Navigation */}
       <Navbar />
 
-      {/* Breadcrumb */}
-      <div className="bg-slate-50 py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-2 text-sm text-slate-600">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="hover:text-blue-600"
-            >
-              Inicio
-            </button>
-            <span>›</span>
-            <button
-              onClick={() => navigate("/el-sunzal")}
-              className="hover:text-blue-600"
-            >
-              El Sunzal
-            </button>
-            <span>›</span>
-            <span className="text-slate-900 font-medium">Casas</span>
-          </div>
-        </div>
-      </div>
-
       {/* Header */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">
+      <section className="relative h-96 bg-gradient-to-b from-blue-900 to-blue-800">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `linear-gradient(rgba(2, 22, 71, 0.69), rgba(2, 21, 71, 0.85)), url('/DSC_5201.jpg')`,
+          }}
+        />
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
+          <div className="text-white max-w-2xl">
+            <h1 className="text-7xl font-bold mb-4">
               Casas en El Sunzal
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Descubre nuestras 6 exclusivas casas frente al mar, perfectas para
-              una experiencia tropical inolvidable
-            </p>
+              <p className="text-xl">
+                Descubre nuestras 6 exclusivas casas frente al mar, perfectas para
+                una experiencia tropical inolvidable
+              </p>
           </div>
         </div>
       </section>
@@ -302,25 +285,26 @@ const ElSunzalCasas = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-blue-900 text-white">
+      <section className="py-16 text-blue-900">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">
             ¿Listo para tu aventura en el mar?
           </h2>
-          <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-blue-900 mb-8 max-w-2xl mx-auto">
             Reserva ahora tu casa ideal en El Sunzal y disfruta del mejor surf y
             playas de El Salvador
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
+              variant="outline"
               onClick={() => navigate("/reservas")}
-              className="bg-white text-blue-900 hover:bg-slate-100"
+              className="bg-blue-900 text-white hover:bg-white/10"
             >
               Hacer Reserva
             </Button>
             <Button
               variant="outline"
-              className="border-white text-white hover:bg-white/10"
+              className="bg-blue-900 text-white hover:bg-white/10"
               onClick={() => navigate("/el-sunzal")}
             >
               Volver a El Sunzal
@@ -330,12 +314,16 @@ const ElSunzalCasas = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-8">
+      <footer className="bg-blue-900 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-slate-900 font-bold text-sm">CS</span>
+                <img
+                    src="/logo_azul.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>

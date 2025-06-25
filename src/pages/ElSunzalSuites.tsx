@@ -20,6 +20,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-1",
       name: "Suite Ejecutiva Presidencial",
+      image: "/DSC_5308.jpg",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 650, weekend: 850, daily: 750 },
@@ -29,6 +30,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-2",
       name: "Suite Presidencial Ocean View",
+      image: "/DSC_5332.jpg",
       level: "Presidencial",
       guests: 2,
       pricing: { weekday: 750, weekend: 950, daily: 850 },
@@ -38,6 +40,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-3",
       name: "Suite Royal Penthouse",
+      image: "/DSC_5323.jpg",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 850, weekend: 1150, daily: 950 },
@@ -47,6 +50,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-4",
       name: "Suite Oceanfront Deluxe",
+      image: "/DSC_5311.jpg",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 680, weekend: 880, daily: 780 },
@@ -56,6 +60,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-5",
       name: "Suite Paradise Tropical",
+      image: "/DSC_5308.jpg",
       level: "Presidencial",
       guests: 3,
       pricing: { weekday: 780, weekend: 980, daily: 880 },
@@ -65,6 +70,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-6",
       name: "Suite Imperial Elite",
+      image: "/DSC_5332.jpg",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 900, weekend: 1200, daily: 1000 },
@@ -74,6 +80,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-7",
       name: "Suite Tropical Sunset",
+      image: "/DSC_5323.jpg",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 670, weekend: 870, daily: 770 },
@@ -83,6 +90,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-8",
       name: "Suite Deluxe Infinity",
+      image: "/DSC_5311.jpg",
       level: "Presidencial",
       guests: 3,
       pricing: { weekday: 800, weekend: 1000, daily: 900 },
@@ -92,6 +100,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-9",
       name: "Suite Supreme Royale",
+      image: "/DSC_5308.jpg",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 920, weekend: 1250, daily: 1020 },
@@ -101,6 +110,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-10",
       name: "Suite Premium Surf",
+      image: "/DSC_5332.jpg",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 690, weekend: 890, daily: 790 },
@@ -110,6 +120,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-11",
       name: "Suite Elite Diamond",
+      image: "/DSC_5323.jpg",
       level: "Presidencial",
       guests: 3,
       pricing: { weekday: 820, weekend: 1020, daily: 920 },
@@ -119,6 +130,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-12",
       name: "Suite Majestic Palace",
+      image: "/DSC_5311.jpg",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 950, weekend: 1300, daily: 1050 },
@@ -128,6 +140,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-13",
       name: "Suite Exclusive Artist",
+      image: "/DSC_5308.jpg",
       level: "Ejecutiva",
       guests: 2,
       pricing: { weekday: 700, weekend: 900, daily: 800 },
@@ -137,6 +150,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-14",
       name: "Suite Platinum Sky",
+      image: "/DSC_5332.jpg",
       level: "Presidencial",
       guests: 3,
       pricing: { weekday: 840, weekend: 1040, daily: 940 },
@@ -146,6 +160,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-15",
       name: "Suite Diamond Eternal",
+      image: "/DSC_5323.jpg",
       level: "Royal",
       guests: 4,
       pricing: { weekday: 980, weekend: 1350, daily: 1080 },
@@ -155,6 +170,7 @@ const ElSunzalSuites = () => {
     {
       id: "suite-16",
       name: "Suite Ultimate Paradise",
+      image: "/DSC_5311.jpg",
       level: "Royal",
       guests: 6,
       pricing: { weekday: 1200, weekend: 1600, daily: 1300 },
@@ -181,38 +197,20 @@ const ElSunzalSuites = () => {
       {/* Navigation */}
       <Navbar />
 
-      {/* Breadcrumb */}
-      <div className="bg-slate-50 py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-2 text-sm text-slate-600">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="hover:text-blue-600"
-            >
-              Inicio
-            </button>
-            <span>›</span>
-            <button
-              onClick={() => navigate("/el-sunzal")}
-              className="hover:text-blue-600"
-            >
-              El Sunzal
-            </button>
-            <span>›</span>
-            <span className="text-slate-900 font-medium">Suites</span>
-          </div>
-        </div>
-      </div>
-
       {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-purple-900 to-blue-900 text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <Crown className="h-10 w-10" />
+      <section className="relative h-96 bg-gradient-to-b from-blue-900 to-blue-800">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `linear-gradient(rgba(2, 22, 71, 0.69), rgba(2, 21, 71, 0.85)), url('/DSC_5438.jpg')`,
+          }}
+        />
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
+          <div className="text-white max-w-2xl">
+            <h1 className="text-6xl font-bold mb-4">
               Suites VIP en El Sunzal
             </h1>
-            <p className="text-xl text-purple-100 max-w-2xl mx-auto">
+            <p className="text-xl">
               Descubre nuestras 16 exclusivas suites de lujo, cada una diseñada
               para una experiencia inolvidable
             </p>
@@ -231,7 +229,7 @@ const ElSunzalSuites = () => {
               >
                 <div className="relative h-40 overflow-hidden rounded-t-lg">
                   <img
-                    src="/placeholder.svg"
+                    src={suite.image}
                     alt={suite.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -308,26 +306,26 @@ const ElSunzalSuites = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-purple-900 to-blue-900 text-white">
+      <section className="py-16 text-blue-900">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
-            <Sparkles className="h-8 w-8" />
+          <h2 className="text-3xl font-bold mb-4">
             Experiencia VIP Inolvidable
           </h2>
-          <p className="text-purple-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-blue-900 mb-8 max-w-2xl mx-auto">
             Reserva ahora tu suite de lujo en El Sunzal y disfruta del servicio
             más exclusivo
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
+              variant="outline"
               onClick={() => navigate("/reservas")}
-              className="bg-white text-purple-900 hover:bg-slate-100"
+              className="bg-blue-900 text-white hover:bg-white/10"
             >
               Reservar Suite VIP
             </Button>
             <Button
               variant="outline"
-              className="border-white text-white hover:bg-white/10"
+              className="bg-blue-900 text-white hover:bg-white/10"
               onClick={() => navigate("/el-sunzal")}
             >
               Volver a El Sunzal
@@ -337,12 +335,16 @@ const ElSunzalSuites = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-8">
+      <footer className="bg-blue-900 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-slate-900 font-bold text-sm">CS</span>
+                <img
+                    src="/logo_azul.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>
