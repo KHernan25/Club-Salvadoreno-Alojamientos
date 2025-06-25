@@ -56,6 +56,11 @@ export const PaymentOptionsModal = ({
   const [transferFile, setTransferFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const handleMainOptionSelect = (option: string) => {
+    setSelectedMainOption(option);
+    setSelectedPaymentMethod(null); // Reset payment method when changing main option
+  };
+
   const handlePaymentMethodSelect = (method: string) => {
     setSelectedPaymentMethod(method);
   };
