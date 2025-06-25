@@ -737,7 +737,7 @@ const ReservationConfirmation = () => {
         </div>
       </footer>
 
-      <style jsx>{`
+      <style>{`
         @media print {
           body {
             margin: 0;
