@@ -607,6 +607,52 @@ const ReservationConfirmation = () => {
                 </CardContent>
               </Card>
 
+              {/* Pending Payment Warning */}
+              {paymentStatus === "pending" && (
+                <Card className="border-yellow-200 bg-yellow-50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-yellow-800">
+                      <Clock className="h-5 w-5" />
+                      Acción Requerida - Pago Pendiente
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3 text-yellow-800">
+                      <p className="font-medium">
+                        Tu reserva está en espera del pago. Para confirmarla
+                        completamente:
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        {paymentDeadline && (
+                          <li>
+                            • Tienes {paymentDeadline} horas para completar el
+                            pago
+                          </li>
+                        )}
+                        <li>
+                          • Las fechas quedarán bloqueadas durante este tiempo
+                        </li>
+                        <li>
+                          • Recibirás recordatorios por correo electrónico
+                        </li>
+                        <li>
+                          • Si no completas el pago a tiempo, la reserva se
+                          cancelará automáticamente
+                        </li>
+                      </ul>
+                      {(paymentMethod === "pay_later" ||
+                        paymentMethod === "payment_link") && (
+                        <div className="mt-4">
+                          <Button className="bg-yellow-600 hover:bg-yellow-700 text-white">
+                            Completar Pago Ahora
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Amenities */}
               <Card>
                 <CardHeader>
