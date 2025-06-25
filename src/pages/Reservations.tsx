@@ -37,6 +37,7 @@ import {
   Users,
   Clock,
 } from "lucide-react";
+import { PaymentOptionsModal } from "@/components/PaymentOptionsModal";
 
 const Reservations = () => {
   const navigate = useNavigate();
