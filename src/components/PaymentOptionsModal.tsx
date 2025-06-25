@@ -92,10 +92,19 @@ export const PaymentOptionsModal = ({
   };
 
   const handleConfirmPayment = async () => {
-    if (!selectedPaymentMethod) {
+    if (!selectedMainOption) {
+      toast({
+        title: "Selecciona una opción",
+        description: "Por favor elige si deseas pagar inmediatamente o después",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (selectedMainOption === "immediate" && !selectedPaymentMethod) {
       toast({
         title: "Selecciona un método de pago",
-        description: "Por favor elige cómo deseas realizar el pago",
+        description: "Por favor elige cómo deseas realizar el pago inmediato",
         variant: "destructive",
       });
       return;
