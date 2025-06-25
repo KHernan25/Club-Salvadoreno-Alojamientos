@@ -85,6 +85,9 @@ const Reservations = () => {
     generateReservationCode(),
   );
 
+  // Payment modal state
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
   // Set minimum date to today
   const today = new Date().toISOString().split("T")[0];
 
