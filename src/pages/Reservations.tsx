@@ -666,11 +666,7 @@ const Reservations = () => {
                             </span>
                             <Button
                               className="bg-blue-900 hover:bg-blue-800"
-                              onClick={() =>
-                                navigate(
-                                  `/pago?code=${reservationCode}&checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${currentPrice}`,
-                                )
-                              }
+                              onClick={() => setIsPaymentModalOpen(true)}
                             >
                               RESERVAR
                             </Button>
