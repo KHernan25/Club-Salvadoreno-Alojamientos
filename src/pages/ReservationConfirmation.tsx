@@ -362,9 +362,15 @@ const ReservationConfirmation = () => {
                     <CardTitle className="text-2xl font-bold text-slate-900">
                       Detalles de tu Reserva
                     </CardTitle>
-                    <Badge className="bg-green-100 text-green-800 text-lg px-4 py-2">
-                      Confirmada
-                    </Badge>
+                    {paymentStatus === "pending" ? (
+                      <Badge className="bg-yellow-100 text-yellow-800 text-lg px-4 py-2">
+                        En Espera
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-green-100 text-green-800 text-lg px-4 py-2">
+                        Confirmada
+                      </Badge>
+                    )}
                   </div>
                   <CardDescription>
                     Código de confirmación:{" "}
