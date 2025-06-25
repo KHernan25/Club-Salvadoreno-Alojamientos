@@ -454,15 +454,24 @@ export const PaymentOptionsModal = ({
             <Button
               onClick={handleConfirmPayment}
               className="flex-1 bg-blue-600 hover:bg-blue-700"
-              disabled={isProcessing || !selectedPaymentMethod}
+              disabled={
+                isProcessing ||
+                !selectedMainOption ||
+                (selectedMainOption === "immediate" && !selectedPaymentMethod)
+              }
             >
               {isProcessing ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Procesando...
                 </>
-              ) : (
+              ) : selectedMainOption === "pay_later" ? (
+                "Confirmar Reserva - Pagar Después"
+              ) : selectedMainOption === "immediate" &&
+                selectedPaymentMethod ? (
                 "Confirmar Método de Pago"
+              ) : (
+                "Seleccionar Opción"
               )}
             </Button>
           </div>
