@@ -60,6 +60,9 @@ const ReservationConfirmation = () => {
   );
   const guests = parseInt(searchParams.get("guests") || "2");
   const totalPrice = parseFloat(searchParams.get("price") || "0");
+  const paymentStatus = searchParams.get("status") || "confirmed";
+  const paymentMethod = searchParams.get("paymentMethod") || "credit";
+  const paymentDeadline = searchParams.get("deadline") || null;
 
   // Get authenticated user
   const currentUser = getCurrentUser();
@@ -303,15 +306,24 @@ const ReservationConfirmation = () => {
         {/* Success Header */}
         <div className="text-center mb-8 print:mb-4">
           <div className="mb-6">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 print:hidden">
-              <CheckCircle className="h-12 w-12 text-green-600" />
-            </div>
+            {paymentStatus === "pending" ? (
+              <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 print:hidden">
+                <Clock className="h-12 w-12 text-yellow-600" />
+              </div>
+            ) : (
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 print:hidden">
+                <CheckCircle className="h-12 w-12 text-green-600" />
+              </div>
+            )}
             <h1 className="text-3xl font-bold text-slate-900 mb-2 print:text-2xl">
-              ¡Reserva Confirmada!
+              {paymentStatus === "pending"
+                ? "¡Reserva En Espera!"
+                : "¡Reserva Confirmada!"}
             </h1>
             <p className="text-lg text-slate-600 print:text-base">
-              Tu pago se procesó exitosamente. Hemos enviado los detalles a tu
-              correo electrónico.
+              {paymentStatus === "pending"
+                ? `Tu reserva se encuentra en espera del pago. ${paymentDeadline ? `Tienes ${paymentDeadline} horas para completar el pago.` : "Completa el pago para confirmar tu reserva."} Hemos enviado los detalles a tu correo electrónico.`
+                : "Tu pago se procesó exitosamente. Hemos enviado los detalles a tu correo electrónico."}
             </p>
           </div>
 
@@ -350,9 +362,15 @@ const ReservationConfirmation = () => {
                     <CardTitle className="text-2xl font-bold text-slate-900">
                       Detalles de tu Reserva
                     </CardTitle>
-                    <Badge className="bg-green-100 text-green-800 text-lg px-4 py-2">
-                      Confirmada
-                    </Badge>
+                    {paymentStatus === "pending" ? (
+                      <Badge className="bg-yellow-100 text-yellow-800 text-lg px-4 py-2">
+                        En Espera
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-green-100 text-green-800 text-lg px-4 py-2">
+                        Confirmada
+                      </Badge>
+                    )}
                   </div>
                   <CardDescription>
                     Código de confirmación:{" "}
@@ -484,23 +502,44 @@ const ReservationConfirmation = () => {
                             Método de pago:
                           </span>
                           <span className="font-medium">
-                            Tarjeta de Crédito
+                            {paymentMethod === "pay_later"
+                              ? "Pendiente de pago"
+                              : paymentMethod === "payment_link"
+                                ? "Link de pago"
+                                : paymentMethod === "transfer"
+                                  ? "Transferencia bancaria"
+                                  : paymentMethod === "credit"
+                                    ? "Pago con crédito"
+                                    : "Tarjeta de crédito"}
                           </span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-600">Fecha de pago:</span>
-                          <span className="font-medium">
-                            {new Date().toLocaleDateString("es-ES")}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-600">
-                            ID de transacción:
-                          </span>
-                          <span className="font-mono text-sm">
-                            TXN{Date.now().toString().slice(-8)}
-                          </span>
-                        </div>
+                        {paymentStatus === "confirmed" ? (
+                          <>
+                            <div className="flex justify-between">
+                              <span className="text-slate-600">
+                                Fecha de pago:
+                              </span>
+                              <span className="font-medium">
+                                {new Date().toLocaleDateString("es-ES")}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-600">
+                                ID de transacción:
+                              </span>
+                              <span className="font-mono text-sm">
+                                TXN{Date.now().toString().slice(-8)}
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="flex justify-between">
+                            <span className="text-slate-600">Estado:</span>
+                            <span className="font-medium text-yellow-600">
+                              Pendiente de pago
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="text-right">
@@ -547,17 +586,72 @@ const ReservationConfirmation = () => {
                         </div>
                       )}
 
-                      <div className="text-3xl font-bold text-green-600">
+                      <div
+                        className={`text-3xl font-bold ${paymentStatus === "pending" ? "text-yellow-600" : "text-green-600"}`}
+                      >
                         {formatPrice(totalPrice)}
                       </div>
-                      <Badge className="bg-green-100 text-green-800 mt-2">
-                        <Check className="h-3 w-3 mr-1" />
-                        Pagado
-                      </Badge>
+                      {paymentStatus === "pending" ? (
+                        <Badge className="bg-yellow-100 text-yellow-800 mt-2">
+                          <Clock className="h-3 w-3 mr-1" />
+                          Pendiente
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-green-100 text-green-800 mt-2">
+                          <Check className="h-3 w-3 mr-1" />
+                          Pagado
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Pending Payment Warning */}
+              {paymentStatus === "pending" && (
+                <Card className="border-yellow-200 bg-yellow-50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-yellow-800">
+                      <Clock className="h-5 w-5" />
+                      Acción Requerida - Pago Pendiente
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3 text-yellow-800">
+                      <p className="font-medium">
+                        Tu reserva está en espera del pago. Para confirmarla
+                        completamente:
+                      </p>
+                      <ul className="space-y-2 text-sm">
+                        {paymentDeadline && (
+                          <li>
+                            • Tienes {paymentDeadline} horas para completar el
+                            pago
+                          </li>
+                        )}
+                        <li>
+                          • Las fechas quedarán bloqueadas durante este tiempo
+                        </li>
+                        <li>
+                          • Recibirás recordatorios por correo electrónico
+                        </li>
+                        <li>
+                          • Si no completas el pago a tiempo, la reserva se
+                          cancelará automáticamente
+                        </li>
+                      </ul>
+                      {(paymentMethod === "pay_later" ||
+                        paymentMethod === "payment_link") && (
+                        <div className="mt-4">
+                          <Button className="bg-yellow-600 hover:bg-yellow-700 text-white">
+                            Completar Pago Ahora
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Amenities */}
               <Card>
