@@ -218,13 +218,13 @@ const Login = () => {
                 htmlFor="username"
                 className="text-white font-medium mb-2 block"
               >
-                Correo
+                Correo Electrónico
               </Label>
               <div className="relative">
                 <Input
                   id="username"
-                  type="text"
-                  placeholder="Correo o Usuario"
+                  type="email"
+                  placeholder="tu@correo.com"
                   value={formData.username}
                   onChange={(e) =>
                     handleInputChange("username", e.target.value)

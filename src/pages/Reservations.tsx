@@ -37,6 +37,7 @@ import {
   Users,
   Clock,
 } from "lucide-react";
+import { PaymentOptionsModal } from "@/components/PaymentOptionsModal";
 
 const Reservations = () => {
   const navigate = useNavigate();
@@ -83,6 +84,9 @@ const Reservations = () => {
   const [reservationCode, setReservationCode] = useState(() =>
     generateReservationCode(),
   );
+
+  // Payment modal state
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   // Set minimum date to today
   const today = new Date().toISOString().split("T")[0];
@@ -637,13 +641,9 @@ const Reservations = () => {
                             </span>
                             <Button
                               className="bg-blue-900 hover:bg-blue-800"
-                              onClick={() =>
-                                navigate(
-                                  `/pago?code=${reservationCode}&checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${priceCalculation.totalPrice}`,
-                                )
-                              }
+                              onClick={() => setIsPaymentModalOpen(true)}
                             >
-                              PAGAR RESERVA
+                              RESERVAR
                             </Button>
                           </div>
                         </div>
@@ -666,13 +666,9 @@ const Reservations = () => {
                             </span>
                             <Button
                               className="bg-blue-900 hover:bg-blue-800"
-                              onClick={() =>
-                                navigate(
-                                  `/pago?code=${reservationCode}&checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&accommodation=${accommodationType}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${currentPrice}`,
-                                )
-                              }
+                              onClick={() => setIsPaymentModalOpen(true)}
                             >
-                              PAGAR RESERVA
+                              RESERVAR
                             </Button>
                           </div>
                         </div>
@@ -759,6 +755,22 @@ const Reservations = () => {
           </div>
         </div>
       </footer>
+
+      {/* Payment Options Modal */}
+      <PaymentOptionsModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        reservationData={{
+          code: reservationCode,
+          checkIn: selectedDates.checkIn,
+          checkOut: selectedDates.checkOut,
+          accommodation: accommodationType,
+          accommodationId,
+          accommodationName,
+          guests,
+          totalPrice: priceCalculation?.totalPrice || 0,
+        }}
+      />
     </div>
   );
 };
