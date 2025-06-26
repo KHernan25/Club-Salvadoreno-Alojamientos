@@ -188,6 +188,12 @@ const Login = () => {
               src="/logo.png"
               alt="Logo Club Salvadoreño"
               className="max-w-[300px] mx-auto object-contain mb-6"
+              onError={(e) => {
+                console.error("Logo failed to load");
+                // Fallback - hide broken image
+                e.currentTarget.style.display = "none";
+              }}
+              style={{ display: "block" }}
             />
             <h1 className="text-white text-3xl tracking-wider ">
               Reservas de Alojamientos
