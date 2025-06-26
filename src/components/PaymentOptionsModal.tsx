@@ -153,15 +153,23 @@ export const PaymentOptionsModal = ({
             `/pago?code=${code}&checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}`,
           );
         } else if (selectedPaymentMethod === "payment_link") {
-          // Simulate payment link generation
+          // Handle payment link with voucher upload requirement
+          if (!transferFile) {
+            toast({
+              title: "Comprobante requerido",
+              description: "Por favor sube el comprobante de pago del link enviado",
+              variant: "destructive",
+            });
+            return;
+          }
           toast({
-            title: "Link de pago generado",
-            description:
-              "Se ha enviado un link de pago a tu correo electrónico",
+            title: "Pago con link registrado",
+            description: "Tu comprobante ha sido enviado para verificación",
           });
           navigate(
             `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=payment_link&status=pending`,
           );
+        }
         } else if (selectedPaymentMethod === "transfer") {
           // Handle transfer with voucher
           toast({
