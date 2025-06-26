@@ -157,7 +157,8 @@ export const PaymentOptionsModal = ({
           if (!transferFile) {
             toast({
               title: "Comprobante requerido",
-              description: "Por favor sube el comprobante de pago del link enviado",
+              description:
+                "Por favor sube el comprobante de pago del link enviado",
               variant: "destructive",
             });
             return;
@@ -169,7 +170,6 @@ export const PaymentOptionsModal = ({
           navigate(
             `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=payment_link&status=pending`,
           );
-        }
         } else if (selectedPaymentMethod === "transfer") {
           // Handle transfer with voucher
           toast({
@@ -180,13 +180,14 @@ export const PaymentOptionsModal = ({
             `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=transfer&status=pending`,
           );
         } else if (selectedPaymentMethod === "credit") {
-          // Handle credit payment
+          // Handle credit payment - now pending status
           toast({
             title: "Pago con crédito registrado",
-            description: "Tu reserva ha sido registrada para pago con crédito",
+            description:
+              "Se efectuará el cobro en el siguiente ciclo de facturación junto con tu membresía",
           });
           navigate(
-            `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=credit&status=confirmed`,
+            `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=credit&status=pending`,
           );
         }
       }
