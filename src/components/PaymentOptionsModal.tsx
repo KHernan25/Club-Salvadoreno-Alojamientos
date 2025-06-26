@@ -110,10 +110,17 @@ export const PaymentOptionsModal = ({
       return;
     }
 
-    if (selectedPaymentMethod === "transfer" && !transferFile) {
+    if (
+      (selectedPaymentMethod === "transfer" ||
+        selectedPaymentMethod === "payment_link") &&
+      !transferFile
+    ) {
       toast({
-        title: "Voucher requerido",
-        description: "Por favor sube el comprobante de transferencia",
+        title: "Comprobante requerido",
+        description:
+          selectedPaymentMethod === "transfer"
+            ? "Por favor sube el comprobante de transferencia"
+            : "Por favor sube el comprobante de pago del link enviado",
         variant: "destructive",
       });
       return;
@@ -153,11 +160,19 @@ export const PaymentOptionsModal = ({
             `/pago?code=${code}&checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}`,
           );
         } else if (selectedPaymentMethod === "payment_link") {
-          // Simulate payment link generation
+          // Handle payment link with voucher upload requirement
+          if (!transferFile) {
+            toast({
+              title: "Comprobante requerido",
+              description:
+                "Por favor sube el comprobante de pago del link enviado",
+              variant: "destructive",
+            });
+            return;
+          }
           toast({
-            title: "Link de pago generado",
-            description:
-              "Se ha enviado un link de pago a tu correo electrónico",
+            title: "Pago con link registrado",
+            description: "Tu comprobante ha sido enviado para verificación",
           });
           navigate(
             `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=payment_link&status=pending`,
@@ -172,13 +187,14 @@ export const PaymentOptionsModal = ({
             `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=transfer&status=pending`,
           );
         } else if (selectedPaymentMethod === "credit") {
-          // Handle credit payment
+          // Handle credit payment - now pending status
           toast({
             title: "Pago con crédito registrado",
-            description: "Tu reserva ha sido registrada para pago con crédito",
+            description:
+              "Se efectuará el cobro en el siguiente ciclo de facturación junto con tu membresía",
           });
           navigate(
-            `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=credit&status=confirmed`,
+            `/confirmacion/${code}?checkIn=${checkIn}&checkOut=${checkOut}&accommodation=${accommodation}&id=${accommodationId}&name=${encodeURIComponent(accommodationName)}&guests=${guests}&price=${totalPrice}&paymentMethod=credit&status=pending`,
           );
         }
       }
@@ -241,7 +257,7 @@ export const PaymentOptionsModal = ({
     {
       id: "credit",
       title: "Pago con Crédito",
-      description: "Usar crédito disponible",
+      description: "Cobro en siguiente facturación con membresía",
       icon: <Banknote className="h-5 w-5" />,
       color: "bg-yellow-500",
     },
@@ -372,6 +388,52 @@ export const PaymentOptionsModal = ({
             </div>
           )}
 
+          {/* Payment Link File Upload */}
+          {selectedMainOption === "immediate" &&
+            selectedPaymentMethod === "payment_link" && (
+              <div className="space-y-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                <h4 className="font-semibold text-purple-800">
+                  Información de Pago por Link
+                </h4>
+                <div className="text-sm space-y-2 text-purple-700">
+                  <div>
+                    <strong>Paso 1:</strong> Se enviará un link de pago seguro a
+                    tu correo electrónico
+                  </div>
+                  <div>
+                    <strong>Paso 2:</strong> Realiza el pago usando el link
+                    enviado
+                  </div>
+                  <div>
+                    <strong>Paso 3:</strong> Sube el comprobante de pago aquí
+                  </div>
+                  <div>
+                    <strong>Monto:</strong>{" "}
+                    {formatPrice(reservationData.totalPrice)}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="payment-link-upload">
+                    Subir Comprobante de Pago del Link
+                  </Label>
+                  <Input
+                    id="payment-link-upload"
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={handleFileUpload}
+                    className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                  />
+                  {transferFile && (
+                    <div className="flex items-center gap-2 text-sm text-purple-600">
+                      <CheckCircle className="h-4 w-4" />
+                      <span>{transferFile.name} cargado exitosamente</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
           {/* Transfer File Upload */}
           {selectedMainOption === "immediate" &&
             selectedPaymentMethod === "transfer" && (
@@ -412,6 +474,45 @@ export const PaymentOptionsModal = ({
                       <span>{transferFile.name} cargado exitosamente</span>
                     </div>
                   )}
+                </div>
+              </div>
+            )}
+
+          {/* Credit Payment Information */}
+          {selectedMainOption === "immediate" &&
+            selectedPaymentMethod === "credit" && (
+              <div className="space-y-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <h4 className="font-semibold text-yellow-800">
+                  Información de Pago con Crédito
+                </h4>
+                <div className="text-sm space-y-2 text-yellow-700">
+                  <div>
+                    <strong>Cobro automático:</strong> Se efectuará el cobro en
+                    el siguiente ciclo de facturación
+                  </div>
+                  <div>
+                    <strong>Incluirá:</strong> Esta reserva + pago de membresía
+                    + otros pagos pendientes
+                  </div>
+                  <div>
+                    <strong>Estado:</strong> La reserva quedará como pendiente
+                    hasta la confirmación del cobro
+                  </div>
+                  <div>
+                    <strong>Monto de esta reserva:</strong>{" "}
+                    {formatPrice(reservationData.totalPrice)}
+                  </div>
+                </div>
+                <div className="bg-yellow-100 p-3 rounded-lg border border-yellow-300">
+                  <div className="flex gap-2">
+                    <AlertCircle className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                    <div className="text-xs text-yellow-800">
+                      <strong>Nota:</strong> La reserva se confirmará
+                      automáticamente una vez procesado el cobro en tu siguiente
+                      facturación. Recibirás notificaciones sobre el estado del
+                      pago.
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
