@@ -110,10 +110,17 @@ export const PaymentOptionsModal = ({
       return;
     }
 
-    if (selectedPaymentMethod === "transfer" && !transferFile) {
+    if (
+      (selectedPaymentMethod === "transfer" ||
+        selectedPaymentMethod === "payment_link") &&
+      !transferFile
+    ) {
       toast({
-        title: "Voucher requerido",
-        description: "Por favor sube el comprobante de transferencia",
+        title: "Comprobante requerido",
+        description:
+          selectedPaymentMethod === "transfer"
+            ? "Por favor sube el comprobante de transferencia"
+            : "Por favor sube el comprobante de pago del link enviado",
         variant: "destructive",
       });
       return;
