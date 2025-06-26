@@ -189,9 +189,17 @@ const Login = () => {
               alt="Logo Club Salvadoreño"
               className="max-w-[300px] mx-auto object-contain mb-6"
               onError={(e) => {
-                console.error("Logo failed to load");
-                // Fallback - hide broken image
-                e.currentTarget.style.display = "none";
+                console.error("Primary logo failed to load, trying fallback");
+                // Try fallback logo
+                const target = e.currentTarget as HTMLImageElement;
+                if (target.src.includes("logo.png")) {
+                  target.src = "/logo_azul.png";
+                } else if (target.src.includes("logo_azul.png")) {
+                  target.src = "/logo_menu.png";
+                } else {
+                  // All logos failed, hide the image
+                  target.style.display = "none";
+                }
               }}
               style={{ display: "block" }}
             />
