@@ -250,7 +250,7 @@ export const PaymentOptionsModal = ({
     {
       id: "credit",
       title: "Pago con Crédito",
-      description: "Usar crédito disponible",
+      description: "Cobro en siguiente facturación con membresía",
       icon: <Banknote className="h-5 w-5" />,
       color: "bg-yellow-500",
     },
