@@ -388,6 +388,52 @@ export const PaymentOptionsModal = ({
             </div>
           )}
 
+          {/* Payment Link File Upload */}
+          {selectedMainOption === "immediate" &&
+            selectedPaymentMethod === "payment_link" && (
+              <div className="space-y-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                <h4 className="font-semibold text-purple-800">
+                  Información de Pago por Link
+                </h4>
+                <div className="text-sm space-y-2 text-purple-700">
+                  <div>
+                    <strong>Paso 1:</strong> Se enviará un link de pago seguro a
+                    tu correo electrónico
+                  </div>
+                  <div>
+                    <strong>Paso 2:</strong> Realiza el pago usando el link
+                    enviado
+                  </div>
+                  <div>
+                    <strong>Paso 3:</strong> Sube el comprobante de pago aquí
+                  </div>
+                  <div>
+                    <strong>Monto:</strong>{" "}
+                    {formatPrice(reservationData.totalPrice)}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="payment-link-upload">
+                    Subir Comprobante de Pago del Link
+                  </Label>
+                  <Input
+                    id="payment-link-upload"
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={handleFileUpload}
+                    className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                  />
+                  {transferFile && (
+                    <div className="flex items-center gap-2 text-sm text-purple-600">
+                      <CheckCircle className="h-4 w-4" />
+                      <span>{transferFile.name} cargado exitosamente</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
           {/* Transfer File Upload */}
           {selectedMainOption === "immediate" &&
             selectedPaymentMethod === "transfer" && (
@@ -450,7 +496,7 @@ export const PaymentOptionsModal = ({
                       • Si no pagas en el plazo, la reserva se cancelará
                       automáticamente
                     </li>
-                    <li>• Recibirás recordatorios por correo electrónico</li>
+                    <li>• Recibirás recordatorios por correo electr��nico</li>
                   </ul>
                 </div>
               </div>
