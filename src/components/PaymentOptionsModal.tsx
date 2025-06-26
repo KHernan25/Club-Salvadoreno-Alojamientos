@@ -478,6 +478,45 @@ export const PaymentOptionsModal = ({
               </div>
             )}
 
+          {/* Credit Payment Information */}
+          {selectedMainOption === "immediate" &&
+            selectedPaymentMethod === "credit" && (
+              <div className="space-y-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <h4 className="font-semibold text-yellow-800">
+                  Información de Pago con Crédito
+                </h4>
+                <div className="text-sm space-y-2 text-yellow-700">
+                  <div>
+                    <strong>Cobro automático:</strong> Se efectuará el cobro en
+                    el siguiente ciclo de facturación
+                  </div>
+                  <div>
+                    <strong>Incluirá:</strong> Esta reserva + pago de membresía
+                    + otros pagos pendientes
+                  </div>
+                  <div>
+                    <strong>Estado:</strong> La reserva quedará como pendiente
+                    hasta la confirmación del cobro
+                  </div>
+                  <div>
+                    <strong>Monto de esta reserva:</strong>{" "}
+                    {formatPrice(reservationData.totalPrice)}
+                  </div>
+                </div>
+                <div className="bg-yellow-100 p-3 rounded-lg border border-yellow-300">
+                  <div className="flex gap-2">
+                    <AlertCircle className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                    <div className="text-xs text-yellow-800">
+                      <strong>Nota:</strong> La reserva se confirmará
+                      automáticamente una vez procesado el cobro en tu siguiente
+                      facturación. Recibirás notificaciones sobre el estado del
+                      pago.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           {/* Pay Later Warning */}
           {selectedMainOption === "pay_later" && (
             <div className="bg-orange-50 border border-orange-200 p-4 rounded-lg">
@@ -496,7 +535,7 @@ export const PaymentOptionsModal = ({
                       • Si no pagas en el plazo, la reserva se cancelará
                       automáticamente
                     </li>
-                    <li>• Recibirás recordatorios por correo electr��nico</li>
+                    <li>• Recibirás recordatorios por correo electrónico</li>
                   </ul>
                 </div>
               </div>
