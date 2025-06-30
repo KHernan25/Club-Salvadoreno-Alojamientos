@@ -38,6 +38,7 @@ import {
   Clock,
 } from "lucide-react";
 import { PaymentOptionsModal } from "@/components/PaymentOptionsModal";
+import Navbar from "@/components/Navbar";
 
 const Reservations = () => {
   const navigate = useNavigate();
@@ -296,71 +297,33 @@ const Reservations = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-900 to-blue-800">
       {/* Navigation */}
-      <nav className="bg-white/10 backdrop-blur-sm border-b border-white/20">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div
-                className="flex items-center gap-3 cursor-pointer"
-                onClick={() => navigate("/dashboard")}
-              >
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-blue-900 font-bold text-sm">CS</span>
-                </div>
-                <span className="text-xl font-semibold text-white">
-                  Club Salvadoreño
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6">
-              <Button
-                variant="ghost"
-                className="gap-2 text-white hover:bg-white/10"
-              >
-                <Globe className="h-4 w-4" />
-                ES
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="gap-2 text-white hover:bg-white/10"
-              >
-                <User className="h-4 w-4" />
-                EN
-              </Button>
-              <Button variant="ghost" className="text-white hover:bg-white/10">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold text-white mb-4">Reservas</h1>
-          <p className="text-xl text-blue-100 mb-2">
-            Explora nuestras opciones de alojamiento, elige tu sede favorita y
-            asegura tu lugar con solo unos clics.
-          </p>
-          <p className="text-lg text-blue-200">Tu descanso comienza aquí.</p>
-          <Button
-            className="mt-8 bg-blue-700 hover:bg-blue-600 text-white px-8 py-3"
-            onClick={() => navigate("/mis-reservas")}
-          >
-            Ver tus reservas
-          </Button>
+      <section className="relative h-96 bg-gradient-to-b from-blue-900 to-blue-800">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `linear-gradient(rgba(2, 22, 71, 0.69), rgba(2, 21, 71, 0.85)), url('/DSC_5266.jpg')`,
+          }}
+        />
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
+          <div className="text-white">
+            <h1 className="text-7xl font-bold mb-4">Reservas</h1>
+            <p className="text-xl">
+              Explora nuestras opciones de alojamiento, elige tu sede favorita y
+              asegura tu lugar con solo unos clics.
+            </p>
+            <p className="text-xl">Tu descanso comienza aquí.</p>
+            <Button
+              className="mt-8 bg-blue-700 hover:bg-blue-600 text-white px-8 py-3"
+              onClick={() => navigate("/mis-reservas")}
+            >
+              Ver tus reservas
+            </Button>
+          </div>
         </div>
       </section>
-
-      {/* Desktop indicator */}
-      <div className="bg-white/10 py-2 px-4">
-        <div className="container mx-auto px-4">
-          <span className="text-sm text-blue-100">Desktop - 13</span>
-        </div>
-      </div>
 
       {/* Main Content */}
       <div className="bg-white">
@@ -745,7 +708,11 @@ const Reservations = () => {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-blue-900 font-bold text-sm">CS</span>
+                <img
+                    src="/logo_azul.png"
+                    alt="Logo Club Salvadoreño"
+                    className="max-w-[30px] mx-auto object-contain"
+                />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
             </div>
