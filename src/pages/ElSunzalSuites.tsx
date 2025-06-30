@@ -320,7 +320,9 @@ const ElSunzalSuites = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="outline"
-              onClick={() => navigate("/reservas")}
+              onClick={() =>
+                navigate("/reservas?accommodation=suite&location=el-sunzal")
+              }
               className="bg-blue-900 text-white hover:bg-white/10"
             >
               Reservar Suite VIP
