@@ -34,7 +34,7 @@ const ElSunzalCasas = () => {
   // Complete 6 houses data for El Sunzal with personalized descriptions
   const casas = [
     {
-      id: "sunzal-casa-1",
+      id: "casa1",
       name: "Casa Surf Paradise",
       image: "/DSC_5197.jpg",
       description:
@@ -54,7 +54,7 @@ const ElSunzalCasas = () => {
       ],
     },
     {
-      id: "sunzal-casa-2",
+      id: "casa2",
       name: "Casa Tropical Family",
       image: "/DSC_5191.jpg",
       description:
@@ -160,13 +160,11 @@ const ElSunzalCasas = () => {
         />
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
           <div className="text-white max-w-2xl">
-            <h1 className="text-7xl font-bold mb-4">
-              Casas en El Sunzal
-            </h1>
-              <p className="text-xl">
-                Descubre nuestras 6 exclusivas casas frente al mar, perfectas para
-                una experiencia tropical inolvidable
-              </p>
+            <h1 className="text-7xl font-bold mb-4">Casas en El Sunzal</h1>
+            <p className="text-xl">
+              Descubre nuestras 6 exclusivas casas frente al mar, perfectas para
+              una experiencia tropical inolvidable
+            </p>
           </div>
         </div>
       </section>
@@ -320,9 +318,9 @@ const ElSunzalCasas = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                 <img
-                    src="/logo_azul.png"
-                    alt="Logo Club Salvadoreño"
-                    className="max-w-[30px] mx-auto object-contain"
+                  src="/logo_azul.png"
+                  alt="Logo Club Salvadoreño"
+                  className="max-w-[30px] mx-auto object-contain"
                 />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
