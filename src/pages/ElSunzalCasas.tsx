@@ -69,7 +69,7 @@ const ElSunzalCasas = () => {
       amenities: ["Área de juegos", "Piscina infantil", "Parrilla", "Hamacas"],
     },
     {
-      id: "sunzal-casa-3",
+      id: "casa3",
       name: "Casa Vista Océano",
       image: "/DSC_5201.jpg",
       description:
