@@ -110,7 +110,9 @@ export const PaymentOptionsModal = ({
       return;
     }
 
+    // CRITICAL: Enforce file upload requirement for payment_link and transfer methods
     if (
+      selectedMainOption === "immediate" &&
       (selectedPaymentMethod === "transfer" ||
         selectedPaymentMethod === "payment_link") &&
       !transferFile
@@ -119,8 +121,8 @@ export const PaymentOptionsModal = ({
         title: "Comprobante requerido",
         description:
           selectedPaymentMethod === "transfer"
-            ? "Por favor sube el comprobante de transferencia"
-            : "Por favor sube el comprobante de pago del link enviado",
+            ? "Debes subir el comprobante de transferencia antes de continuar"
+            : "Debes subir el comprobante de pago del link antes de continuar",
         variant: "destructive",
       });
       return;
@@ -558,7 +560,12 @@ export const PaymentOptionsModal = ({
               disabled={
                 isProcessing ||
                 !selectedMainOption ||
-                (selectedMainOption === "immediate" && !selectedPaymentMethod)
+                (selectedMainOption === "immediate" &&
+                  !selectedPaymentMethod) ||
+                (selectedMainOption === "immediate" &&
+                  (selectedPaymentMethod === "transfer" ||
+                    selectedPaymentMethod === "payment_link") &&
+                  !transferFile)
               }
             >
               {isProcessing ? (
