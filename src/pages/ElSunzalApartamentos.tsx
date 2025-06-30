@@ -19,7 +19,7 @@ const ElSunzalApartamentos = () => {
 
   const apartamentos = [
     {
-      id: "sunzal-apt-1A",
+      id: "1A",
       name: "Apartamento 1A",
       image: "/DSC_5212.jpg",
       description: "Moderno apartamento con vista al mar",
@@ -29,7 +29,7 @@ const ElSunzalApartamentos = () => {
       pricing: { weekday: 110, weekend: 230, daily: 140 },
     },
     {
-      id: "sunzal-apt-1B",
+      id: "1B",
       name: "Apartamento 1B",
       image: "/DSC_5214.jpg",
       description: "Cómodo apartamento con balcón privado",
@@ -39,7 +39,7 @@ const ElSunzalApartamentos = () => {
       pricing: { weekday: 95, weekend: 210, daily: 125 },
     },
     {
-      id: "sunzal-apt-2A",
+      id: "2A",
       name: "Apartamento 2A",
       image: "/DSC_5238.jpg",
       description: "Espacioso apartamento en segundo piso",
@@ -49,7 +49,7 @@ const ElSunzalApartamentos = () => {
       pricing: { weekday: 120, weekend: 250, daily: 150 },
     },
     {
-      id: "sunzal-apt-2B",
+      id: "2B",
       name: "Apartamento 2B",
       image: "/DSC_5244.jpg",
       description: "Apartamento familiar con terraza",
@@ -59,7 +59,7 @@ const ElSunzalApartamentos = () => {
       pricing: { weekday: 130, weekend: 280, daily: 165 },
     },
     {
-      id: "sunzal-apt-3A",
+      id: "3A",
       name: "Apartamento 3A",
       image: "/DSC_5346.jpg",
       description: "Penthouse con vista panorámica",
@@ -69,7 +69,7 @@ const ElSunzalApartamentos = () => {
       pricing: { weekday: 150, weekend: 320, daily: 185 },
     },
     {
-      id: "sunzal-apt-3B",
+      id: "3B",
       name: "Apartamento 3B",
       image: "/DSC_5363.jpg",
       description: "Apartamento premium con amenidades",
@@ -233,9 +233,9 @@ const ElSunzalApartamentos = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                 <img
-                    src="/logo_azul.png"
-                    alt="Logo Club Salvadoreño"
-                    className="max-w-[30px] mx-auto object-contain"
+                  src="/logo_azul.png"
+                  alt="Logo Club Salvadoreño"
+                  className="max-w-[30px] mx-auto object-contain"
                 />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>
