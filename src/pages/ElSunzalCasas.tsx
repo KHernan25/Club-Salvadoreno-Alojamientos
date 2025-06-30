@@ -88,13 +88,6 @@ const ElSunzalCasas = () => {
         "Sunset deck",
       ],
     },
-
-        "Jacuzzi exterior",
-        "Chef privado",
-        "Mayordomo",
-        "Spa privado",
-      ],
-    },
   ];
 
   return (
