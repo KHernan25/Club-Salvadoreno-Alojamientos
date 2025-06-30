@@ -70,7 +70,7 @@ const ElSunzalCasas = () => {
     },
     {
       id: "casa3",
-      name: "Casa Vista Océano",
+      name: "Casa Vista Panorámica",
       image: "/DSC_5201.jpg",
       description:
         "Casa estratégicamente construida en una elevación privilegiada que ofrece vistas panorámicas de 360° al océano Pacífico desde todas las habitaciones. Ideal para quienes buscan una conexión total con el mar y disfrutar de amaneceres y atardeceres espectaculares desde la comodidad de su hogar temporal.",
