@@ -89,7 +89,7 @@ const ElSunzalCasas = () => {
       ],
     },
     {
-      id: "sunzal-casa-4",
+      id: "casa3",
       name: "Casa Beach Club",
       image: "/DSC_5199.jpg",
       description:
