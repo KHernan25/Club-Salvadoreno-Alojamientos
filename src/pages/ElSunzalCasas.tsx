@@ -88,55 +88,7 @@ const ElSunzalCasas = () => {
         "Sunset deck",
       ],
     },
-    {
-      id: "casa3",
-      name: "Casa Beach Club",
-      image: "/DSC_5199.jpg",
-      description:
-        "Casa premium con acceso directo a la playa privada y área de entretenimiento completa. Diseñada para grupos que buscan la experiencia de un beach club privado con todas las comodidades. Incluye equipo completo de deportes acuáticos y área de bar exterior para fiestas junto al mar.",
-      features: [
-        { icon: Bed, text: "4 habitaciones" },
-        { icon: Bath, text: "3 baños" },
-        { icon: Users, text: "10 huéspedes" },
-        { icon: Waves, text: "Acceso playa" },
-      ],
-      pricing: { weekday: 450, weekend: 600, daily: 525 },
-      amenities: [
-        "Bar exterior",
-        "Mesa de ping pong",
-        "Equipo snorkel",
-        "Kayaks",
-      ],
-    },
-    {
-      id: "sunzal-casa-5",
-      name: "Casa Bohemia",
-      image: "/DSC_5252.jpg",
-      description:
-        "Casa de estilo bohemio con decoración artística única y ambiente completamente relajado. Inspirada en la cultura artística local, cuenta con obras de arte originales, biblioteca curada y espacios zen para meditación. Perfecta para retiros creativos y estancias de desconexión digital.",
-      features: [
-        { icon: Bed, text: "2 habitaciones" },
-        { icon: Bath, text: "2 baños" },
-        { icon: Users, text: "4 huéspedes" },
-        { icon: Trees, text: "Jardín zen" },
-      ],
-      pricing: { weekday: 280, weekend: 380, daily: 330 },
-      amenities: ["Área arte", "Biblioteca", "Yoga mat", "Música ambiente"],
-    },
-    {
-      id: "sunzal-casa-6",
-      name: "Casa Premium Oceanfront",
-      image: "/DSC_5189.jpg",
-      description:
-        "La casa más exclusiva y lujosa de El Sunzal, ubicada en primera línea de playa con todas las comodidades de un resort cinco estrellas. Cuenta con servicios de lujo incluyendo chef privado, mayordomo personal y spa privado. Diseñada para huéspedes VIP que buscan la máxima exclusividad y confort.",
-      features: [
-        { icon: Bed, text: "5 habitaciones" },
-        { icon: Bath, text: "4 baños" },
-        { icon: Users, text: "12 huéspedes" },
-        { icon: Car, text: "3 autos" },
-      ],
-      pricing: { weekday: 550, weekend: 750, daily: 650 },
-      amenities: [
+
         "Jacuzzi exterior",
         "Chef privado",
         "Mayordomo",
