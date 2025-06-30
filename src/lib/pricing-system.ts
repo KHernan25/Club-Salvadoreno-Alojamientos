@@ -287,5 +287,22 @@ export const accommodationRates: Record<string, PricingRates> = {
 export const getAccommodationRates = (
   accommodationId: string,
 ): PricingRates | null => {
-  return accommodationRates[accommodationId] || null;
+  const rates = accommodationRates[accommodationId];
+
+  // Debug logging para El Sunzal
+  if (accommodationId && accommodationId.toLowerCase().includes("sunzal")) {
+    console.log(
+      `🏖️ El Sunzal pricing lookup - ID: ${accommodationId}, Found: ${!!rates}`,
+    );
+  }
+
+  if (!rates) {
+    console.warn(`⚠️ No pricing found for accommodation: ${accommodationId}`);
+    console.log(
+      "Available accommodation IDs:",
+      Object.keys(accommodationRates),
+    );
+  }
+
+  return rates;
 };

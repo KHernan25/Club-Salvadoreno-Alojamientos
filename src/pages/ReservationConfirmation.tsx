@@ -152,6 +152,64 @@ const ReservationConfirmation = () => {
     return formatDateSpanish(date);
   };
 
+  // Get accommodation image based on type and ID
+  const getAccommodationImage = (
+    accommodationId: string,
+    accommodationType: string,
+  ) => {
+    // Real accommodation images mapping
+    const accommodationImages: Record<string, string> = {
+      // El Sunzal Apartments
+      "1A": "/images/accommodations/el-sunzal-apt-1a.jpg",
+      "1B": "/images/accommodations/el-sunzal-apt-1b.jpg",
+      "2A": "/images/accommodations/el-sunzal-apt-2a.jpg",
+      "2B": "/images/accommodations/el-sunzal-apt-2b.jpg",
+      "3A": "/images/accommodations/el-sunzal-apt-3a.jpg",
+      "3B": "/images/accommodations/el-sunzal-apt-3b.jpg",
+
+      // El Sunzal Houses
+      casa1: "/images/accommodations/el-sunzal-casa-1.jpg",
+      casa2: "/images/accommodations/el-sunzal-casa-2.jpg",
+      casa3: "/images/accommodations/el-sunzal-casa-3.jpg",
+
+      // El Sunzal Suites
+      suite1: "/images/accommodations/el-sunzal-suite-1.jpg",
+      suite2: "/images/accommodations/el-sunzal-suite-2.jpg",
+      suite3: "/images/accommodations/el-sunzal-suite-3.jpg",
+
+      // Corinto Apartments
+      corinto1A: "/images/accommodations/corinto-apt-1a.jpg",
+      corinto1B: "/images/accommodations/corinto-apt-1b.jpg",
+      corinto2A: "/images/accommodations/corinto-apt-2a.jpg",
+      corinto2B: "/images/accommodations/corinto-apt-2b.jpg",
+      corinto3A: "/images/accommodations/corinto-apt-3a.jpg",
+      corinto3B: "/images/accommodations/corinto-apt-3b.jpg",
+
+      // Corinto Houses
+      "corinto-casa-1": "/images/accommodations/corinto-casa-1.jpg",
+      "corinto-casa-2": "/images/accommodations/corinto-casa-2.jpg",
+      "corinto-casa-3": "/images/accommodations/corinto-casa-3.jpg",
+      "corinto-casa-4": "/images/accommodations/corinto-casa-4.jpg",
+      "corinto-casa-5": "/images/accommodations/corinto-casa-5.jpg",
+      "corinto-casa-6": "/images/accommodations/corinto-casa-6.jpg",
+    };
+
+    // Return specific image if available, otherwise fallback to type-based image
+    if (accommodationImages[accommodationId]) {
+      return accommodationImages[accommodationId];
+    }
+
+    // Fallback images by type
+    switch (accommodationType) {
+      case "casa":
+        return "/images/accommodations/default-casa.jpg";
+      case "suite":
+        return "/images/accommodations/default-suite.jpg";
+      default:
+        return "/images/accommodations/default-apartment.jpg";
+    }
+  };
+
   // Get amenities based on accommodation type
   const getAmenities = () => {
     const baseAmenities = [
@@ -383,9 +441,15 @@ const ReservationConfirmation = () => {
                   {/* Apartment Info */}
                   <div className="flex gap-4">
                     <img
-                      src="/placeholder.svg"
+                      src={getAccommodationImage(
+                        accommodationId,
+                        accommodation,
+                      )}
                       alt={accommodationName}
                       className="w-24 h-24 object-cover rounded-lg"
+                      onError={(e) => {
+                        e.currentTarget.src = "/placeholder.svg";
+                      }}
                     />
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-slate-900 mb-1">

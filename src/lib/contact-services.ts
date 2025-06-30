@@ -16,6 +16,14 @@ interface SMSParams {
   code: string;
 }
 
+export interface BackofficeNotification {
+  type: string;
+  userId?: string;
+  userData?: any;
+  timestamp: string;
+  message: string;
+}
+
 // Email service
 export const sendPasswordResetEmail = async (
   params: EmailParams,
@@ -111,6 +119,65 @@ export const generateSMSCode = (): string => {
 export const generateResetUrl = (token: string): string => {
   const baseUrl = window.location.origin;
   return `${baseUrl}/reset-password?token=${token}`;
+};
+
+// Función para enviar notificaciones al backoffice
+export const sendBackofficeNotification = async (
+  notification: BackofficeNotification,
+): Promise<boolean> => {
+  try {
+    console.log("📧 Sending backoffice notification:", notification);
+
+    // Aquí se integraría con el sistema real de notificaciones
+    // Puede ser email, webhook, base de datos, etc.
+
+    // Guardar la notificación en el sistema (simulado)
+    const backofficeNotifications = getBackofficeNotifications();
+    backofficeNotifications.unshift({
+      id: Date.now().toString(),
+      ...notification,
+      read: false,
+      priority:
+        notification.type === "new_user_registration" ? "high" : "medium",
+    });
+
+    // En implementación real, aquí se enviaría email al administrador
+    /*
+    await sendEmail({
+      to: process.env.ADMIN_EMAIL || "admin@clubsalvadoreno.com",
+      subject: `Nueva notificación: ${notification.type}`,
+      html: `
+        <h2>Nueva Notificación del Sistema</h2>
+        <p><strong>Tipo:</strong> ${notification.type}</p>
+        <p><strong>Mensaje:</strong> ${notification.message}</p>
+        <p><strong>Fecha:</strong> ${notification.timestamp}</p>
+        ${notification.userData ? `<p><strong>Datos:</strong> ${JSON.stringify(notification.userData, null, 2)}</p>` : ""}
+      `,
+    });
+    */
+
+    console.log("✅ Backoffice notification sent successfully");
+    return true;
+  } catch (error) {
+    console.error("❌ Error sending backoffice notification:", error);
+    return false;
+  }
+};
+
+// Función para obtener notificaciones del backoffice (mock)
+let backofficeNotifications: any[] = [];
+
+export const getBackofficeNotifications = () => {
+  return backofficeNotifications;
+};
+
+export const markNotificationAsRead = (notificationId: string) => {
+  const notification = backofficeNotifications.find(
+    (n) => n.id === notificationId,
+  );
+  if (notification) {
+    notification.read = true;
+  }
 };
 
 export const validateEmail = (email: string): boolean => {

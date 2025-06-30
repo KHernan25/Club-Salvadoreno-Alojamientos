@@ -13,6 +13,7 @@ import {
   sendPasswordResetEmail,
   generateResetToken,
   generateResetUrl,
+  sendBackofficeNotification,
 } from "../../lib/contact-services";
 import {
   validateLogin,
@@ -110,6 +111,29 @@ router.post(
 
     if (!result.success) {
       throw createError(result.error || "Error en el registro", 400);
+    }
+
+    // Enviar notificación al backoffice para nueva solicitud de registro
+    try {
+      await sendBackofficeNotification({
+        type: "new_user_registration",
+        userId: result.user!.id,
+        userData: {
+          name: `${result.user!.firstName} ${result.user!.lastName}`,
+          email: result.user!.email,
+          phone: result.user!.phone,
+          memberCode: registrationData.memberCode,
+          documentNumber: registrationData.documentNumber,
+        },
+        timestamp: new Date().toISOString(),
+        message: `Nuevo usuario registrado: ${result.user!.firstName} ${result.user!.lastName} (${result.user!.email}) - Requiere aprobación`,
+      });
+    } catch (notificationError) {
+      console.error(
+        "❌ Error sending backoffice notification:",
+        notificationError,
+      );
+      // No fallar el registro si falla la notificación
     }
 
     res.status(201).json({

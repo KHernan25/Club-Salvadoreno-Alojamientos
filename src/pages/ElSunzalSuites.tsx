@@ -18,7 +18,7 @@ const ElSunzalSuites = () => {
 
   const suites = [
     {
-      id: "suite-1",
+      id: "suite1",
       name: "Suite Ejecutiva Presidencial",
       image: "/DSC_5308.jpg",
       level: "Ejecutiva",
@@ -28,7 +28,7 @@ const ElSunzalSuites = () => {
         "Elegante suite ejecutiva con vista al océano, perfecta para escapadas románticas y viajes de negocios. Incluye jacuzzi privado y terraza exclusiva.",
     },
     {
-      id: "suite-2",
+      id: "suite2",
       name: "Suite Presidencial Ocean View",
       image: "/DSC_5332.jpg",
       level: "Presidencial",
@@ -38,7 +38,7 @@ const ElSunzalSuites = () => {
         "Suite presidencial con vistas panorámicas al Pacífico. Cuenta con sala de estar separada, bar privado y servicios de mayordomo personalizado.",
     },
     {
-      id: "suite-3",
+      id: "suite3",
       name: "Suite Royal Penthouse",
       image: "/DSC_5323.jpg",
       level: "Royal",
@@ -207,9 +207,7 @@ const ElSunzalSuites = () => {
         />
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
           <div className="text-white max-w-2xl">
-            <h1 className="text-6xl font-bold mb-4">
-              Suites VIP en El Sunzal
-            </h1>
+            <h1 className="text-6xl font-bold mb-4">Suites VIP en El Sunzal</h1>
             <p className="text-xl">
               Descubre nuestras 16 exclusivas suites de lujo, cada una diseñada
               para una experiencia inolvidable
@@ -293,7 +291,11 @@ const ElSunzalSuites = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate("/reservas")}
+                      onClick={() =>
+                        navigate(
+                          `/reservas?accommodation=suite&id=${suite.id}&name=${encodeURIComponent(suite.name)}`,
+                        )
+                      }
                     >
                       Reservar
                     </Button>
@@ -318,7 +320,9 @@ const ElSunzalSuites = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="outline"
-              onClick={() => navigate("/reservas")}
+              onClick={() =>
+                navigate("/reservas?accommodation=suite&location=el-sunzal")
+              }
               className="bg-blue-900 text-white hover:bg-white/10"
             >
               Reservar Suite VIP
@@ -341,9 +345,9 @@ const ElSunzalSuites = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                 <img
-                    src="/logo_azul.png"
-                    alt="Logo Club Salvadoreño"
-                    className="max-w-[30px] mx-auto object-contain"
+                  src="/logo_azul.png"
+                  alt="Logo Club Salvadoreño"
+                  className="max-w-[30px] mx-auto object-contain"
                 />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>

@@ -34,7 +34,7 @@ const ElSunzalCasas = () => {
   // Complete 6 houses data for El Sunzal with personalized descriptions
   const casas = [
     {
-      id: "sunzal-casa-1",
+      id: "casa1",
       name: "Casa Surf Paradise",
       image: "/DSC_5197.jpg",
       description:
@@ -54,7 +54,7 @@ const ElSunzalCasas = () => {
       ],
     },
     {
-      id: "sunzal-casa-2",
+      id: "casa2",
       name: "Casa Tropical Family",
       image: "/DSC_5191.jpg",
       description:
@@ -69,8 +69,8 @@ const ElSunzalCasas = () => {
       amenities: ["Área de juegos", "Piscina infantil", "Parrilla", "Hamacas"],
     },
     {
-      id: "sunzal-casa-3",
-      name: "Casa Vista Océano",
+      id: "casa3",
+      name: "Casa Vista Panorámica",
       image: "/DSC_5201.jpg",
       description:
         "Casa estratégicamente construida en una elevación privilegiada que ofrece vistas panorámicas de 360° al océano Pacífico desde todas las habitaciones. Ideal para quienes buscan una conexión total con el mar y disfrutar de amaneceres y atardeceres espectaculares desde la comodidad de su hogar temporal.",
@@ -86,61 +86,6 @@ const ElSunzalCasas = () => {
         "Telescopio",
         "Área yoga",
         "Sunset deck",
-      ],
-    },
-    {
-      id: "sunzal-casa-4",
-      name: "Casa Beach Club",
-      image: "/DSC_5199.jpg",
-      description:
-        "Casa premium con acceso directo a la playa privada y área de entretenimiento completa. Diseñada para grupos que buscan la experiencia de un beach club privado con todas las comodidades. Incluye equipo completo de deportes acuáticos y área de bar exterior para fiestas junto al mar.",
-      features: [
-        { icon: Bed, text: "4 habitaciones" },
-        { icon: Bath, text: "3 baños" },
-        { icon: Users, text: "10 huéspedes" },
-        { icon: Waves, text: "Acceso playa" },
-      ],
-      pricing: { weekday: 450, weekend: 600, daily: 525 },
-      amenities: [
-        "Bar exterior",
-        "Mesa de ping pong",
-        "Equipo snorkel",
-        "Kayaks",
-      ],
-    },
-    {
-      id: "sunzal-casa-5",
-      name: "Casa Bohemia",
-      image: "/DSC_5252.jpg",
-      description:
-        "Casa de estilo bohemio con decoración artística única y ambiente completamente relajado. Inspirada en la cultura artística local, cuenta con obras de arte originales, biblioteca curada y espacios zen para meditación. Perfecta para retiros creativos y estancias de desconexión digital.",
-      features: [
-        { icon: Bed, text: "2 habitaciones" },
-        { icon: Bath, text: "2 baños" },
-        { icon: Users, text: "4 huéspedes" },
-        { icon: Trees, text: "Jardín zen" },
-      ],
-      pricing: { weekday: 280, weekend: 380, daily: 330 },
-      amenities: ["Área arte", "Biblioteca", "Yoga mat", "Música ambiente"],
-    },
-    {
-      id: "sunzal-casa-6",
-      name: "Casa Premium Oceanfront",
-      image: "/DSC_5189.jpg",
-      description:
-        "La casa más exclusiva y lujosa de El Sunzal, ubicada en primera línea de playa con todas las comodidades de un resort cinco estrellas. Cuenta con servicios de lujo incluyendo chef privado, mayordomo personal y spa privado. Diseñada para huéspedes VIP que buscan la máxima exclusividad y confort.",
-      features: [
-        { icon: Bed, text: "5 habitaciones" },
-        { icon: Bath, text: "4 baños" },
-        { icon: Users, text: "12 huéspedes" },
-        { icon: Car, text: "3 autos" },
-      ],
-      pricing: { weekday: 550, weekend: 750, daily: 650 },
-      amenities: [
-        "Jacuzzi exterior",
-        "Chef privado",
-        "Mayordomo",
-        "Spa privado",
       ],
     },
   ];
@@ -160,13 +105,11 @@ const ElSunzalCasas = () => {
         />
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center text-center">
           <div className="text-white max-w-2xl">
-            <h1 className="text-7xl font-bold mb-4">
-              Casas en El Sunzal
-            </h1>
-              <p className="text-xl">
-                Descubre nuestras 6 exclusivas casas frente al mar, perfectas para
-                una experiencia tropical inolvidable
-              </p>
+            <h1 className="text-7xl font-bold mb-4">Casas en El Sunzal</h1>
+            <p className="text-xl">
+              Descubre nuestras 6 exclusivas casas frente al mar, perfectas para
+              una experiencia tropical inolvidable
+            </p>
           </div>
         </div>
       </section>
@@ -272,7 +215,11 @@ const ElSunzalCasas = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate("/reservas")}
+                      onClick={() =>
+                        navigate(
+                          `/reservas?accommodation=casa&id=${casa.id}&name=${encodeURIComponent(casa.name)}`,
+                        )
+                      }
                     >
                       Reservar
                     </Button>
@@ -297,7 +244,9 @@ const ElSunzalCasas = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="outline"
-              onClick={() => navigate("/reservas")}
+              onClick={() =>
+                navigate("/reservas?accommodation=casa&location=el-sunzal")
+              }
               className="bg-blue-900 text-white hover:bg-white/10"
             >
               Hacer Reserva
@@ -320,9 +269,9 @@ const ElSunzalCasas = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                 <img
-                    src="/logo_azul.png"
-                    alt="Logo Club Salvadoreño"
-                    className="max-w-[30px] mx-auto object-contain"
+                  src="/logo_azul.png"
+                  alt="Logo Club Salvadoreño"
+                  className="max-w-[30px] mx-auto object-contain"
                 />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>

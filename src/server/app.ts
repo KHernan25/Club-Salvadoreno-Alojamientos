@@ -9,6 +9,7 @@ import { accommodationRoutes } from "./routes/accommodations";
 import { reservationRoutes } from "./routes/reservations";
 import { pricingRoutes } from "./routes/pricing";
 import { contactRoutes } from "./routes/contact";
+import { notificationRoutes } from "./routes/notifications";
 import { errorHandler } from "./middleware/errorHandler";
 
 // Crear aplicación Express
@@ -141,6 +142,16 @@ app.get("/api", (req: Request, res: Response) => {
         description: "Formulario de contacto",
         endpoints: ["POST /api/contact - Enviar mensaje de contacto"],
       },
+      notifications: {
+        path: "/api/notifications",
+        methods: ["GET", "PATCH", "POST"],
+        description: "Notificaciones del backoffice",
+        endpoints: [
+          "GET /api/notifications - Obtener notificaciones",
+          "PATCH /api/notifications/:id/read - Marcar como leída",
+          "POST /api/notifications/mark-all-read - Marcar todas como leídas",
+        ],
+      },
     },
     rateLimit: {
       general: "100 requests por 15 minutos",
@@ -161,6 +172,7 @@ app.use("/api/accommodations", accommodationRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // 404 handler
 app.use("*", (req: Request, res: Response) => {
