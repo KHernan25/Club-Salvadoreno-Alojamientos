@@ -215,7 +215,11 @@ const ElSunzalCasas = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate("/reservas")}
+                      onClick={() =>
+                        navigate(
+                          `/reservas?accommodation=casa&id=${casa.id}&name=${encodeURIComponent(casa.name)}`,
+                        )
+                      }
                     >
                       Reservar
                     </Button>
@@ -240,7 +244,9 @@ const ElSunzalCasas = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               variant="outline"
-              onClick={() => navigate("/reservas")}
+              onClick={() =>
+                navigate("/reservas?accommodation=casa&location=el-sunzal")
+              }
               className="bg-blue-900 text-white hover:bg-white/10"
             >
               Hacer Reserva
