@@ -291,7 +291,11 @@ const ElSunzalSuites = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate("/reservas")}
+                      onClick={() =>
+                        navigate(
+                          `/reservas?accommodation=suite&id=${suite.id}&name=${encodeURIComponent(suite.name)}`,
+                        )
+                      }
                     >
                       Reservar
                     </Button>
