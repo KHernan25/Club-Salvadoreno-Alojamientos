@@ -197,24 +197,36 @@ export const logout = async (): Promise<void> => {
   localStorage.removeItem(REMEMBER_KEY);
   sessionStorage.clear();
 
+  // Disparar evento personalizado para notificar el logout INMEDIATAMENTE
+  // Esto permite que los guards reaccionen rápido
+  window.dispatchEvent(new CustomEvent("userLoggedOut"));
+
+  // Realizar limpieza de API en segundo plano sin bloquear
+  // No usar await para que sea no bloqueante
   try {
-    // Intentar cerrar sesión con API real (si hay token válido)
+    // Intentar cerrar sesión con API real en segundo plano
     const apiConnected = await isApiAvailable();
     if (apiConnected) {
-      console.log("🔗 Cerrando sesión con API real");
-      // Solo intentar logout de API si realmente hay una sesión válida
-      await apiLogout();
+      console.log("🔗 Cerrando sesión con API real (en segundo plano)");
+      // Timeout rápido para evitar demoras
+      Promise.race([
+        apiLogout(),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Timeout")), 2000),
+        ),
+      ]).catch((error) => {
+        console.warn(
+          "⚠️ API logout falló, pero sesión local ya está limpia:",
+          error,
+        );
+      });
     }
   } catch (error) {
-    // No hacer nada, ya limpiamos los datos locales
     console.warn(
       "⚠️ API logout falló, pero sesión local ya está limpia:",
       error,
     );
   }
-
-  // Disparar evento personalizado para notificar el logout
-  window.dispatchEvent(new CustomEvent("userLoggedOut"));
 
   // Limpiar historial para prevenir navegación hacia atrás
   if (window.history.replaceState) {

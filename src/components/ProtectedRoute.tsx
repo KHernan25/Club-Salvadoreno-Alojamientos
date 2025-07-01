@@ -83,6 +83,7 @@ const ProtectedRoute = ({
     const handleLogout = () => {
       console.log("ProtectedRoute: Logout detected, redirecting");
       setIsAuthorized(false);
+      setIsChecking(false); // Evitar pantalla de loading
       navigate(redirectTo, { replace: true });
     };
 
@@ -100,8 +101,8 @@ const ProtectedRoute = ({
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-600">Verificando permisos...</p>
+          <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+          <p className="text-slate-600 text-sm">Cargando...</p>
         </div>
       </div>
     );
