@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:3002",
+        target: "http://127.0.0.1:3001",
         changeOrigin: true,
         secure: false,
         ws: true,
@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => ({
         },
       },
       "/health": {
-        target: "http://127.0.0.1:3002",
+        target: "http://127.0.0.1:3001",
         changeOrigin: true,
         secure: false,
       },
