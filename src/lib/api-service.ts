@@ -127,22 +127,15 @@ const apiRequest = async <T>(
 
 // Check if API is available
 export const isApiAvailable = async (): Promise<boolean> => {
-  // Temporalmente devolver false para usar solo datos mock
-  // TODO: Restaurar una vez que el proxy esté funcionando
-  return false;
-
-  /*
   try {
     const response = await fetch("/health", {
       method: "GET",
-      timeout: 5000,
-    } as RequestInit);
+    });
     return response.ok;
   } catch (error) {
     console.log("API not available:", error);
     return false;
   }
-  */
 };
 
 // Authentication functions
@@ -173,14 +166,17 @@ export const apiLogout = async (): Promise<void> => {
 
 // User management functions
 export const apiGetUsers = async (): Promise<User[]> => {
-  // Devolver datos mock temporalmente - importar usuarios reales
-  const { registeredUsers } = await import("./user-database");
-  return registeredUsers;
-
-  /* API call - restaurar cuando el proxy funcione
-  const result = await apiRequest<User[]>("/users");
-  return result.data || [];
-  */
+  try {
+    const result = await apiRequest<User[]>("/users");
+    if (result.success && result.data) {
+      return result.data;
+    }
+    throw new Error(result.error || "Failed to fetch users");
+  } catch (error) {
+    console.warn("API call failed, falling back to mock data:", error);
+    const { registeredUsers } = await import("./user-database");
+    return registeredUsers;
+  }
 };
 
 export const apiActivateUser = async (userId: string): Promise<boolean> => {
@@ -209,70 +205,69 @@ export const apiUpdateUser = async (
 };
 
 export const apiGetUserStats = async (): Promise<UserStats> => {
-  // Devolver datos mock temporalmente
-  return {
-    total: 156,
-    active: 142,
-    pending: 3,
-    newThisMonth: 12,
-  };
-
-  /* API call - restaurar cuando el proxy funcione
-  const result = await apiRequest<UserStats>("/users/stats");
-  return (
-    result.data || {
-      total: 0,
-      active: 0,
-      pending: 0,
-      newThisMonth: 0,
+  try {
+    const result = await apiRequest<UserStats>("/users/stats");
+    if (result.success && result.data) {
+      return result.data;
     }
-  );
-  */
+    throw new Error(result.error || "Failed to fetch user stats");
+  } catch (error) {
+    console.warn("API call failed, falling back to mock data:", error);
+    return {
+      total: 156,
+      active: 142,
+      pending: 3,
+      newThisMonth: 12,
+    };
+  }
 };
 
 // Accommodation management functions
 export const apiGetAccommodations = async (): Promise<Accommodation[]> => {
-  // Devolver datos mock temporalmente
-  return [
-    {
-      id: "el-sunzal-apt-1",
-      name: "Apartamento El Sunzal 1",
-      type: "apartment",
-      location: "El Sunzal",
-      capacity: 4,
-      price: 120,
-      status: "available",
-      amenities: ["wifi", "ac", "parking", "kitchen"],
-      description: "Apartamento frente al mar con vista panorámica",
-    },
-    {
-      id: "el-sunzal-casa-1",
-      name: "Casa El Sunzal 1",
-      type: "house",
-      location: "El Sunzal",
-      capacity: 8,
-      price: 250,
-      status: "available",
-      amenities: ["wifi", "ac", "parking", "kitchen", "pool"],
-      description: "Casa familiar con piscina privada",
-    },
-    {
-      id: "corinto-casa-1",
-      name: "Casa Corinto 1",
-      type: "house",
-      location: "Corinto",
-      capacity: 6,
-      price: 180,
-      status: "available",
-      amenities: ["wifi", "ac", "parking", "kitchen"],
-      description: "Casa acogedora en zona tranquila",
-    },
-  ];
-
-  /* API call - restaurar cuando el proxy funcione
-  const result = await apiRequest<Accommodation[]>("/accommodations");
-  return result.data || [];
-  */
+  try {
+    const result = await apiRequest<Accommodation[]>("/accommodations");
+    if (result.success && result.data) {
+      return result.data;
+    }
+    throw new Error(result.error || "Failed to fetch accommodations");
+  } catch (error) {
+    console.warn("API call failed, falling back to mock data:", error);
+    return [
+      {
+        id: "el-sunzal-apt-1",
+        name: "Apartamento El Sunzal 1",
+        type: "apartment",
+        location: "El Sunzal",
+        capacity: 4,
+        price: 120,
+        status: "available",
+        amenities: ["wifi", "ac", "parking", "kitchen"],
+        description: "Apartamento frente al mar con vista panorámica",
+      },
+      {
+        id: "el-sunzal-casa-1",
+        name: "Casa El Sunzal 1",
+        type: "house",
+        location: "El Sunzal",
+        capacity: 8,
+        price: 250,
+        status: "available",
+        amenities: ["wifi", "ac", "parking", "kitchen", "pool"],
+        description: "Casa familiar con piscina privada",
+      },
+      {
+        id: "corinto-casa-1",
+        name: "Casa Corinto 1",
+        type: "house",
+        location: "Corinto",
+        capacity: 6,
+        price: 180,
+        status: "available",
+        amenities: ["wifi", "ac", "parking", "kitchen"],
+        description: "Casa acogedora en zona tranquila",
+      },
+    ];
+  }
 };
 
 export const apiUpdateAccommodation = async (
@@ -288,40 +283,43 @@ export const apiUpdateAccommodation = async (
 
 // Reservation management functions
 export const apiGetReservations = async (): Promise<Reservation[]> => {
-  // Devolver datos mock temporalmente
-  return [
-    {
-      id: "res-001",
-      userId: "6",
-      accommodationId: "el-sunzal-apt-1",
-      checkIn: "2024-07-01",
-      checkOut: "2024-07-03",
-      guests: 2,
-      totalPrice: 240,
-      status: "confirmed",
-      createdAt: "2024-06-20T10:00:00Z",
-      guestName: "María José González",
-      accommodationName: "Apartamento El Sunzal 1",
-    },
-    {
-      id: "res-002",
-      userId: "7",
-      accommodationId: "corinto-casa-1",
-      checkIn: "2024-07-05",
-      checkOut: "2024-07-07",
-      guests: 4,
-      totalPrice: 360,
-      status: "pending",
-      createdAt: "2024-06-21T14:30:00Z",
-      guestName: "Carlos Rivera",
-      accommodationName: "Casa Corinto 1",
-    },
-  ];
-
-  /* API call - restaurar cuando el proxy funcione
-  const result = await apiRequest<Reservation[]>("/reservations");
-  return result.data || [];
-  */
+  try {
+    const result = await apiRequest<Reservation[]>("/reservations");
+    if (result.success && result.data) {
+      return result.data;
+    }
+    throw new Error(result.error || "Failed to fetch reservations");
+  } catch (error) {
+    console.warn("API call failed, falling back to mock data:", error);
+    return [
+      {
+        id: "res-001",
+        userId: "6",
+        accommodationId: "el-sunzal-apt-1",
+        checkIn: "2024-07-01",
+        checkOut: "2024-07-03",
+        guests: 2,
+        totalPrice: 240,
+        status: "confirmed",
+        createdAt: "2024-06-20T10:00:00Z",
+        guestName: "María José González",
+        accommodationName: "Apartamento El Sunzal 1",
+      },
+      {
+        id: "res-002",
+        userId: "7",
+        accommodationId: "corinto-casa-1",
+        checkIn: "2024-07-05",
+        checkOut: "2024-07-07",
+        guests: 4,
+        totalPrice: 360,
+        status: "pending",
+        createdAt: "2024-06-21T14:30:00Z",
+        guestName: "Carlos Rivera",
+        accommodationName: "Casa Corinto 1",
+      },
+    ];
+  }
 };
 
 export const apiCreateReservation = async (
@@ -355,27 +353,22 @@ export const apiCancelReservation = async (
 };
 
 export const apiGetReservationStats = async (): Promise<ReservationStats> => {
-  // Devolver datos mock temporalmente
-  return {
-    total: 89,
-    confirmed: 67,
-    pending: 5,
-    cancelled: 17,
-    revenueThisMonth: 12450,
-  };
-
-  /* API call - restaurar cuando el proxy funcione
-  const result = await apiRequest<ReservationStats>("/reservations/stats");
-  return (
-    result.data || {
-      total: 0,
-      confirmed: 0,
-      pending: 0,
-      cancelled: 0,
-      revenueThisMonth: 0,
+  try {
+    const result = await apiRequest<ReservationStats>("/reservations/stats");
+    if (result.success && result.data) {
+      return result.data;
     }
-  );
-  */
+    throw new Error(result.error || "Failed to fetch reservation stats");
+  } catch (error) {
+    console.warn("API call failed, falling back to mock data:", error);
+    return {
+      total: 89,
+      confirmed: 67,
+      pending: 5,
+      cancelled: 17,
+      revenueThisMonth: 12450,
+    };
+  }
 };
 
 // Pricing functions
