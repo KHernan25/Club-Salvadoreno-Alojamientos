@@ -44,9 +44,8 @@ export const authenticateUser = async (
     };
   }
 
-  // Temporalmente usar solo autenticación local para evitar problemas de proxy
-  // TODO: Restaurar API una vez que el proxy esté funcionando
-  const USE_API = false;
+  // Usar API real cuando esté disponible
+  const USE_API = true;
 
   if (USE_API) {
     try {
