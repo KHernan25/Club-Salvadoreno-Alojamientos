@@ -128,9 +128,15 @@ const apiRequest = async <T>(
 // Check if API is available
 export const isApiAvailable = async (): Promise<boolean> => {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1000); // 1 second timeout
+
     const response = await fetch("/health", {
       method: "GET",
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
     return response.ok;
   } catch (error) {
     console.log("API not available:", error);

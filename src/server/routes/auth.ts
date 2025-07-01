@@ -185,8 +185,8 @@ router.get(
 // POST /api/auth/logout
 router.post(
   "/logout",
-  authenticateToken,
-  asyncHandler(async (req: AuthenticatedRequest, res) => {
+  asyncHandler(async (req, res) => {
+    // No requerir autenticación para logout para evitar demoras
     // En una implementación real, aquí invalidarías el token en una blacklist
     // Por ahora, simplemente enviamos confirmación
 

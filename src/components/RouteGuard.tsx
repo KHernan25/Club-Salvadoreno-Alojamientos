@@ -80,7 +80,9 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
   useEffect(() => {
     const handleLogout = () => {
       console.log("Logout event detected, redirecting to login");
-      setAuthChecked(false);
+      // Marcar inmediatamente como no autorizado para evitar pantallas de carga
+      setIsAuthorized(false);
+      setAuthChecked(true);
       navigate("/login", { replace: true });
     };
 
@@ -113,8 +115,8 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-600">Verificando autenticación...</p>
+          <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+          <p className="text-slate-600 text-sm">Cargando...</p>
         </div>
       </div>
     );

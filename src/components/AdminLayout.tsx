@@ -48,9 +48,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    // Navegar inmediatamente
     navigate("/login");
+    // Limpiar sesión en segundo plano
+    await logout();
   };
 
   const userPermissions = currentUser
