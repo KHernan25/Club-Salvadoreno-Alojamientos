@@ -33,6 +33,23 @@ interface UserStats {
   newThisMonth: number;
 }
 
+interface RegistrationRequest {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  documentType: string;
+  documentNumber: string;
+  memberCode: string;
+  status: "pending" | "approved" | "rejected";
+  requestedAt: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+  rejectionReason?: string;
+  notes?: string;
+}
+
 interface ReservationStats {
   total: number;
   confirmed: number;
