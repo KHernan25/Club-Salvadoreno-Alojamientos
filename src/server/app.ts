@@ -16,8 +16,10 @@ import { errorHandler } from "./middleware/errorHandler";
 // Crear aplicación Express
 const app: Application = express();
 
-// Configure trust proxy for cloud environments
-app.set("trust proxy", true);
+// Configure trust proxy securely
+// Only trust first proxy (common for cloud deployments like Heroku, Railway, etc.)
+// This prevents IP spoofing while allowing proper rate limiting
+app.set("trust proxy", 1);
 
 // Middleware de seguridad
 app.use(helmet());
