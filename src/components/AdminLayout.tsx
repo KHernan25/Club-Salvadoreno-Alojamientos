@@ -72,7 +72,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       href: "/admin/users",
       icon: Users,
       permission: "canManageUsers",
-      badge: "3", // Pending approvals
+    },
+    {
+      label: "Solicitudes de Registro",
+      href: "/admin/registration-requests",
+      icon: UserCheck,
+      permission: "canManageUsers",
+      badge: "4", // Pending registrations
     },
     {
       label: "Alojamientos",
