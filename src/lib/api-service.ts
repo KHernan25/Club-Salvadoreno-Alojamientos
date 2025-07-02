@@ -496,6 +496,14 @@ export const apiService = {
 
   // Contact
   sendContactMessage: apiSendContactMessage,
+
+  // Registration Requests
+  getRegistrationRequests: apiGetRegistrationRequests,
+  approveRegistrationRequest: apiApproveRegistrationRequest,
+  rejectRegistrationRequest: apiRejectRegistrationRequest,
 };
+
+// Export interfaces
+export type { RegistrationRequest };
 
 export default apiService;
