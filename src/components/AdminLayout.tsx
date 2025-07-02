@@ -29,6 +29,7 @@ import {
   UserPlus,
   MapPin,
   Globe,
+  UserCheck,
 } from "lucide-react";
 import {
   getCurrentUser,
