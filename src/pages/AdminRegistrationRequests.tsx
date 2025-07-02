@@ -63,23 +63,12 @@ import {
   RefreshCw,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
-
-interface RegistrationRequest {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  documentType: string;
-  documentNumber: string;
-  memberCode: string;
-  status: "pending" | "approved" | "rejected";
-  requestedAt: string;
-  reviewedAt?: string;
-  reviewedBy?: string;
-  rejectionReason?: string;
-  notes?: string;
-}
+import {
+  apiGetRegistrationRequests,
+  apiApproveRegistrationRequest,
+  apiRejectRegistrationRequest,
+  type RegistrationRequest,
+} from "@/lib/api-service";
 
 const AdminRegistrationRequests = () => {
   const [requests, setRequests] = useState<RegistrationRequest[]>([]);
