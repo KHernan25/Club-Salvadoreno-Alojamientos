@@ -43,6 +43,7 @@ import AdminMessages from "./pages/AdminMessages";
 import AdminSettings from "./pages/AdminSettings";
 import AdminProfile from "./pages/AdminProfile";
 import AdminSiteContent from "./pages/AdminSiteContent";
+import AdminRegistrationRequests from "./pages/AdminRegistrationRequests";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
