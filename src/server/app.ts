@@ -10,6 +10,7 @@ import { reservationRoutes } from "./routes/reservations";
 import { pricingRoutes } from "./routes/pricing";
 import { contactRoutes } from "./routes/contact";
 import { notificationRoutes } from "./routes/notifications";
+import registrationRequestsRouter from "./routes/registration-requests";
 import { errorHandler } from "./middleware/errorHandler";
 
 // Crear aplicación Express
@@ -152,6 +153,17 @@ app.get("/api", (req: Request, res: Response) => {
           "POST /api/notifications/mark-all-read - Marcar todas como leídas",
         ],
       },
+      registrationRequests: {
+        path: "/api/registration-requests",
+        methods: ["GET", "POST"],
+        description: "Gestión de solicitudes de registro",
+        endpoints: [
+          "GET /api/registration-requests - Listar solicitudes",
+          "GET /api/registration-requests/:id - Obtener solicitud",
+          "POST /api/registration-requests/:id/approve - Aprobar solicitud",
+          "POST /api/registration-requests/:id/reject - Rechazar solicitud",
+        ],
+      },
     },
     rateLimit: {
       general: "100 requests por 15 minutos",
@@ -173,6 +185,7 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/registration-requests", registrationRequestsRouter);
 
 // 404 handler
 app.use("*", (req: Request, res: Response) => {

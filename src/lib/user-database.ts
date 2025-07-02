@@ -483,7 +483,7 @@ export const registerNewUser = (userData: NewUserData): RegistrationResult => {
     phone: formatPhone(phone),
     fullName: `${firstName} ${lastName}`,
     role: "user", // Nuevos usuarios son "user" por defecto
-    isActive: true,
+    isActive: false, // Los nuevos usuarios están inactivos hasta ser aprobados
     createdAt: new Date(),
   };
 

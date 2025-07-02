@@ -29,6 +29,7 @@ import {
   UserPlus,
   MapPin,
   Globe,
+  UserCheck,
 } from "lucide-react";
 import {
   getCurrentUser,
@@ -71,7 +72,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       href: "/admin/users",
       icon: Users,
       permission: "canManageUsers",
-      badge: "3", // Pending approvals
+    },
+    {
+      label: "Solicitudes de Registro",
+      href: "/admin/registration-requests",
+      icon: UserCheck,
+      permission: "canManageUsers",
+      badge: "4", // Pending registrations
     },
     {
       label: "Alojamientos",
@@ -291,6 +298,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   {location.pathname === "/admin/dashboard" && "Dashboard"}
                   {location.pathname === "/admin/users" &&
                     "Gestión de Usuarios"}
+                  {location.pathname === "/admin/registration-requests" &&
+                    "Solicitudes de Registro"}
                   {location.pathname === "/admin/accommodations" &&
                     "Gestión de Alojamientos"}
                   {location.pathname === "/admin/reservations" &&
