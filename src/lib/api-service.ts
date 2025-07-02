@@ -420,6 +420,52 @@ export const apiSendContactMessage = async (
   return result.success;
 };
 
+// Registration Requests functions
+export const apiGetRegistrationRequests = async (): Promise<{
+  success: boolean;
+  requests: RegistrationRequest[];
+}> => {
+  try {
+    const result = await apiRequest("/registration-requests");
+    return {
+      success: result.success,
+      requests: result.data || [],
+    };
+  } catch (error) {
+    console.error("Error fetching registration requests:", error);
+    throw error;
+  }
+};
+
+export const apiApproveRegistrationRequest = async (
+  requestId: string,
+  notes?: string,
+): Promise<boolean> => {
+  const result = await apiRequest(
+    `/registration-requests/${requestId}/approve`,
+    {
+      method: "POST",
+      body: JSON.stringify({ notes }),
+    },
+  );
+  return result.success;
+};
+
+export const apiRejectRegistrationRequest = async (
+  requestId: string,
+  rejectionReason: string,
+  notes?: string,
+): Promise<boolean> => {
+  const result = await apiRequest(
+    `/registration-requests/${requestId}/reject`,
+    {
+      method: "POST",
+      body: JSON.stringify({ rejectionReason, notes }),
+    },
+  );
+  return result.success;
+};
+
 // Export all API functions for easy import
 export const apiService = {
   // Auth
