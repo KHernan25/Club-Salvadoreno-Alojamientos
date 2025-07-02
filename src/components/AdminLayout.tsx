@@ -298,6 +298,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   {location.pathname === "/admin/dashboard" && "Dashboard"}
                   {location.pathname === "/admin/users" &&
                     "Gestión de Usuarios"}
+                  {location.pathname === "/admin/registration-requests" &&
+                    "Solicitudes de Registro"}
                   {location.pathname === "/admin/accommodations" &&
                     "Gestión de Alojamientos"}
                   {location.pathname === "/admin/reservations" &&
