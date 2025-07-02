@@ -131,6 +131,14 @@ const App = () => (
                 }
               />
               <Route
+                path="/admin/registration-requests"
+                element={
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
+                    <AdminRegistrationRequests />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
                 path="/admin/accommodations"
                 element={
                   <AdminProtectedRoute requiredRole="anfitrion">
