@@ -195,7 +195,39 @@ const AdminRegistrationRequests = () => {
 
   const handleApproveRequest = async (requestId: string) => {
     try {
-      // Simular aprobación
+      const success = await apiApproveRegistrationRequest(
+        requestId,
+        adminNotes,
+      );
+
+      if (success) {
+        // Update local state
+        setRequests((prev) =>
+          prev.map((req) =>
+            req.id === requestId
+              ? {
+                  ...req,
+                  status: "approved" as const,
+                  reviewedAt: new Date().toISOString(),
+                  reviewedBy: "admin",
+                  notes: adminNotes,
+                }
+              : req,
+          ),
+        );
+
+        toast({
+          title: "Solicitud aprobada",
+          description:
+            "El usuario ha sido registrado exitosamente y se le ha enviado un email de confirmación.",
+        });
+
+        setAdminNotes("");
+      } else {
+        throw new Error("API returned false");
+      }
+    } catch (error) {
+      // Fallback to local state update for demo purposes
       setRequests((prev) =>
         prev.map((req) =>
           req.id === requestId
@@ -211,18 +243,12 @@ const AdminRegistrationRequests = () => {
       );
 
       toast({
-        title: "Solicitud aprobada",
+        title: "Solicitud aprobada (modo demo)",
         description:
-          "El usuario ha sido registrado exitosamente y se le ha enviado un email de confirmación.",
+          "La solicitud ha sido aprobada localmente. En producción se enviaría un email al usuario.",
       });
 
       setAdminNotes("");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "No se pudo aprobar la solicitud",
-        variant: "destructive",
-      });
     }
   };
 
