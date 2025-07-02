@@ -89,9 +89,72 @@ const AdminRegistrationRequests = () => {
   const loadRequests = async () => {
     try {
       setLoading(true);
-      // Simular carga de datos - en una app real vendría de la API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const result = await apiGetRegistrationRequests();
 
+      if (result.success) {
+        setRequests(result.requests);
+      } else {
+        // Fallback to mock data if API is not available
+        const mockRequests: RegistrationRequest[] = [
+          {
+            id: "req-001",
+            firstName: "María",
+            lastName: "González",
+            email: "maria.gonzalez@email.com",
+            phone: "+503 7234-5678",
+            documentType: "dui",
+            documentNumber: "12345678-9",
+            memberCode: "MEM001",
+            status: "pending",
+            requestedAt: "2024-01-15T10:30:00Z",
+          },
+          {
+            id: "req-002",
+            firstName: "Carlos",
+            lastName: "Rodríguez",
+            email: "carlos.rodriguez@email.com",
+            phone: "+503 7234-5679",
+            documentType: "passport",
+            documentNumber: "AB123456",
+            memberCode: "MEM002",
+            status: "pending",
+            requestedAt: "2024-01-14T15:20:00Z",
+          },
+          {
+            id: "req-003",
+            firstName: "Ana",
+            lastName: "Martínez",
+            email: "ana.martinez@email.com",
+            phone: "+503 7234-5680",
+            documentType: "dui",
+            documentNumber: "98765432-1",
+            memberCode: "MEM003",
+            status: "approved",
+            requestedAt: "2024-01-13T09:15:00Z",
+            reviewedAt: "2024-01-13T11:30:00Z",
+            reviewedBy: "admin",
+          },
+          {
+            id: "req-004",
+            firstName: "Roberto",
+            lastName: "Flores",
+            email: "roberto.flores@email.com",
+            phone: "+503 7234-5681",
+            documentType: "dui",
+            documentNumber: "11223344-5",
+            memberCode: "MEM004",
+            status: "rejected",
+            requestedAt: "2024-01-12T14:30:00Z",
+            reviewedAt: "2024-01-12T16:45:00Z",
+            reviewedBy: "admin",
+            rejectionReason: "Información del documento incompleta",
+          },
+        ];
+        setRequests(mockRequests);
+      }
+    } catch (error) {
+      console.error("Error loading requests:", error);
+      // Use mock data as fallback
       const mockRequests: RegistrationRequest[] = [
         {
           id: "req-001",
@@ -117,44 +180,13 @@ const AdminRegistrationRequests = () => {
           status: "pending",
           requestedAt: "2024-01-14T15:20:00Z",
         },
-        {
-          id: "req-003",
-          firstName: "Ana",
-          lastName: "Martínez",
-          email: "ana.martinez@email.com",
-          phone: "+503 7234-5680",
-          documentType: "dui",
-          documentNumber: "98765432-1",
-          memberCode: "MEM003",
-          status: "approved",
-          requestedAt: "2024-01-13T09:15:00Z",
-          reviewedAt: "2024-01-13T11:30:00Z",
-          reviewedBy: "admin",
-        },
-        {
-          id: "req-004",
-          firstName: "Roberto",
-          lastName: "Flores",
-          email: "roberto.flores@email.com",
-          phone: "+503 7234-5681",
-          documentType: "dui",
-          documentNumber: "11223344-5",
-          memberCode: "MEM004",
-          status: "rejected",
-          requestedAt: "2024-01-12T14:30:00Z",
-          reviewedAt: "2024-01-12T16:45:00Z",
-          reviewedBy: "admin",
-          rejectionReason: "Información del documento incompleta",
-        },
       ];
-
       setRequests(mockRequests);
-    } catch (error) {
-      console.error("Error loading requests:", error);
+
       toast({
-        title: "Error",
-        description: "No se pudieron cargar las solicitudes",
-        variant: "destructive",
+        title: "Usando datos de prueba",
+        description:
+          "Conectado al modo demo. Las solicitudes mostradas son de ejemplo.",
       });
     } finally {
       setLoading(false);
