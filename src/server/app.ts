@@ -10,6 +10,7 @@ import { reservationRoutes } from "./routes/reservations";
 import { pricingRoutes } from "./routes/pricing";
 import { contactRoutes } from "./routes/contact";
 import { notificationRoutes } from "./routes/notifications";
+import registrationRequestsRouter from "./routes/registration-requests";
 import { errorHandler } from "./middleware/errorHandler";
 
 // Crear aplicación Express
