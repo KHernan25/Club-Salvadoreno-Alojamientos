@@ -153,6 +153,17 @@ app.get("/api", (req: Request, res: Response) => {
           "POST /api/notifications/mark-all-read - Marcar todas como leídas",
         ],
       },
+      registrationRequests: {
+        path: "/api/registration-requests",
+        methods: ["GET", "POST"],
+        description: "Gestión de solicitudes de registro",
+        endpoints: [
+          "GET /api/registration-requests - Listar solicitudes",
+          "GET /api/registration-requests/:id - Obtener solicitud",
+          "POST /api/registration-requests/:id/approve - Aprobar solicitud",
+          "POST /api/registration-requests/:id/reject - Rechazar solicitud",
+        ],
+      },
     },
     rateLimit: {
       general: "100 requests por 15 minutos",
