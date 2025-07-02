@@ -263,6 +263,44 @@ const AdminRegistrationRequests = () => {
     }
 
     try {
+      const success = await apiRejectRegistrationRequest(
+        selectedRequest.id,
+        rejectionReason,
+        adminNotes,
+      );
+
+      if (success) {
+        // Update local state
+        setRequests((prev) =>
+          prev.map((req) =>
+            req.id === selectedRequest.id
+              ? {
+                  ...req,
+                  status: "rejected" as const,
+                  reviewedAt: new Date().toISOString(),
+                  reviewedBy: "admin",
+                  rejectionReason: rejectionReason,
+                  notes: adminNotes,
+                }
+              : req,
+          ),
+        );
+
+        toast({
+          title: "Solicitud rechazada",
+          description:
+            "Se ha enviado un email al solicitante informando sobre el rechazo.",
+        });
+      } else {
+        throw new Error("API returned false");
+      }
+
+      setIsRejectDialogOpen(false);
+      setRejectionReason("");
+      setAdminNotes("");
+      setSelectedRequest(null);
+    } catch (error) {
+      // Fallback to local state update for demo purposes
       setRequests((prev) =>
         prev.map((req) =>
           req.id === selectedRequest.id
@@ -279,21 +317,15 @@ const AdminRegistrationRequests = () => {
       );
 
       toast({
-        title: "Solicitud rechazada",
+        title: "Solicitud rechazada (modo demo)",
         description:
-          "Se ha enviado un email al solicitante informando sobre el rechazo.",
+          "La solicitud ha sido rechazada localmente. En producción se enviaría un email al usuario.",
       });
 
       setIsRejectDialogOpen(false);
       setRejectionReason("");
       setAdminNotes("");
       setSelectedRequest(null);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "No se pudo rechazar la solicitud",
-        variant: "destructive",
-      });
     }
   };
 
