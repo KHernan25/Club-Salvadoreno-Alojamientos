@@ -185,6 +185,7 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/registration-requests", registrationRequestsRouter);
 
 // 404 handler
 app.use("*", (req: Request, res: Response) => {
