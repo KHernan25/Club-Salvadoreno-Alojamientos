@@ -456,19 +456,23 @@ const AdminReservations = () => {
   };
 
   const getUserName = (userId: string) => {
-    const user = users.find((u) => u.id === userId);
+    const user = (users || []).find((u) => u.id === userId);
     return user
       ? user.fullName || `${user.firstName} ${user.lastName}`
       : "Usuario no encontrado";
   };
 
   const getAccommodationName = (accommodationId: string) => {
-    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    const accommodation = (accommodations || []).find(
+      (a) => a.id === accommodationId,
+    );
     return accommodation ? accommodation.name : "Alojamiento no encontrado";
   };
 
   const getAccommodationLocation = (accommodationId: string) => {
-    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    const accommodation = (accommodations || []).find(
+      (a) => a.id === accommodationId,
+    );
     return accommodation?.location === "el-sunzal" ? "El Sunzal" : "Corinto";
   };
 
