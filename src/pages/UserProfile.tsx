@@ -56,6 +56,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const UserProfile = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     firstName: "",
@@ -751,7 +752,7 @@ const UserProfile = () => {
                       </div>
                       <div>
                         <div className="font-medium">
-                          •••• •••• •••• {method.lastFour}
+                          •••• •••• •���•• {method.lastFour}
                         </div>
                         <div className="text-sm text-slate-600">
                           Expira {method.expiryMonth}/{method.expiryYear}
