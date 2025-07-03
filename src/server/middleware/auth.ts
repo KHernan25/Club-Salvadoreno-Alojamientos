@@ -56,11 +56,17 @@ export const requireRole = (roles: string | string[]) => {
     const userRole = req.user.role;
     const allowedRoles = Array.isArray(roles) ? roles : [roles];
 
-    // Jerarquía de roles: admin > staff > user
+    // Jerarquía de roles actualizada
     const roleHierarchy: { [key: string]: number } = {
-      admin: 3,
-      staff: 2,
+      super_admin: 5,
+      atencion_miembro: 4,
+      anfitrion: 3,
+      monitor: 2,
+      mercadeo: 2,
       user: 1,
+      // Alias para compatibilidad
+      admin: 5,
+      staff: 4,
     };
 
     const userLevel = roleHierarchy[userRole] || 0;
