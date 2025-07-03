@@ -396,7 +396,9 @@ const AdminReservations = () => {
     }
   };
 
-  const filteredReservations = (reservations || []).filter((reservation) => {
+  const filteredReservations = (
+    Array.isArray(reservations) ? reservations : []
+  ).filter((reservation) => {
     const user = (users || []).find((u) => u.id === reservation.userId);
     const accommodationsList = Array.isArray(accommodations)
       ? accommodations
