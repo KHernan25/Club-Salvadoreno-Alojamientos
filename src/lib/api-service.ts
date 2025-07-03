@@ -215,6 +215,8 @@ export const apiLogout = async (): Promise<void> => {
   await apiRequest("/auth/logout", {
     method: "POST",
   });
+  // Clear stored token
+  clearAuthToken();
 };
 
 // User management functions
