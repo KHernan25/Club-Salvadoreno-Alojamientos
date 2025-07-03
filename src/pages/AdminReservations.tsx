@@ -398,7 +398,10 @@ const AdminReservations = () => {
 
   const filteredReservations = (reservations || []).filter((reservation) => {
     const user = (users || []).find((u) => u.id === reservation.userId);
-    const accommodation = (accommodations || []).find(
+    const accommodationsList = Array.isArray(accommodations)
+      ? accommodations
+      : accommodations?.accommodations || [];
+    const accommodation = accommodationsList.find(
       (a) => a.id === reservation.accommodationId,
     );
 
@@ -834,7 +837,10 @@ const AdminReservations = () => {
                     <SelectValue placeholder="Seleccionar alojamiento" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(accommodations || []).map((accommodation) => (
+                    {(Array.isArray(accommodations)
+                      ? accommodations
+                      : accommodations?.accommodations || []
+                    ).map((accommodation) => (
                       <SelectItem
                         key={accommodation.id}
                         value={accommodation.id}
