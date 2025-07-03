@@ -126,37 +126,26 @@ const apiRequest = async <T>(
     });
 
     console.log("📊 Response status:", response.status);
-    console.log(
-      "📋 Response headers:",
-      Object.fromEntries(response.headers.entries()),
-    );
 
-    let data: any;
+    let data: any = {};
 
-    // Handle empty responses
-    if (
-      response.status === 204 ||
-      response.headers.get("content-length") === "0"
-    ) {
-      data = {};
-    } else {
-      try {
-        const text = await response.text();
-        console.log("📥 Raw response text:", text);
+    // Only parse JSON for successful responses with content
+    if (response.status !== 204) {
+      const contentType = response.headers.get("content-type") || "";
 
-        if (text.trim()) {
-          data = JSON.parse(text);
+      if (contentType.includes("application/json")) {
+        try {
+          data = await response.json();
           console.log("✅ Parsed JSON successfully:", data);
-        } else {
-          data = {};
-          console.log("📄 Empty response body");
+        } catch (jsonError) {
+          console.error("❌ JSON parse error:", jsonError);
+          return {
+            success: false,
+            error: `Invalid JSON response: ${response.status}`,
+          };
         }
-      } catch (parseError) {
-        console.error("❌ Failed to parse response:", parseError);
-        return {
-          success: false,
-          error: `Invalid response format: ${response.status}`,
-        };
+      } else {
+        console.log("📄 Non-JSON response, using empty data");
       }
     }
 
