@@ -765,16 +765,34 @@ const AdminReservations = () => {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar usuario" />
+                    <SelectValue
+                      placeholder={
+                        users.length === 0
+                          ? "No hay usuarios disponibles..."
+                          : "Seleccionar usuario"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
-                    {(users || []).map((user) => (
-                      <SelectItem key={user.id} value={user.id}>
-                        {user.firstName} {user.lastName} - {user.email}
+                    {users.length === 0 ? (
+                      <SelectItem value="" disabled>
+                        No hay usuarios disponibles
                       </SelectItem>
-                    ))}
+                    ) : (
+                      users.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.firstName} {user.lastName} - {user.email}
+                        </SelectItem>
+                      ))
+                    )}
                   </SelectContent>
                 </Select>
+                {users.length === 0 && (
+                  <p className="text-sm text-orange-600 mt-1">
+                    ⚠️ No se encontraron usuarios. Verifica la conexión con el
+                    servidor.
+                  </p>
+                )}
               </div>
               <div>
                 <Label htmlFor="accommodation-select">Alojamiento</Label>
