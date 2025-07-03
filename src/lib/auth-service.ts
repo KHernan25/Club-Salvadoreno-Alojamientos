@@ -219,6 +219,7 @@ export const logout = async (): Promise<void> => {
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(REMEMBER_KEY);
   sessionStorage.clear();
+  clearAuthToken(); // Limpiar token de API
 
   // Disparar evento personalizado para notificar el logout INMEDIATAMENTE
   // Esto permite que los guards reaccionen rápido
