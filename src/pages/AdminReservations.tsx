@@ -144,9 +144,11 @@ const AdminReservations = () => {
         accommodations: accommodationsData?.length || 0,
       });
 
-      setReservations(reservationsData);
-      setUsers(usersData);
-      setAccommodations(accommodationsData);
+      setReservations(Array.isArray(reservationsData) ? reservationsData : []);
+      setUsers(Array.isArray(usersData) ? usersData : []);
+      setAccommodations(
+        Array.isArray(accommodationsData) ? accommodationsData : [],
+      );
     } catch (error) {
       console.error("❌ Error loading data:", error);
       // Cargar datos mock si la API no está disponible
