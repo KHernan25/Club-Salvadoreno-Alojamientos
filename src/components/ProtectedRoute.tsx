@@ -1,7 +1,7 @@
 // Componente de alto nivel para proteger páginas que requieren autenticación
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   isAuthenticated,
   requireAuth,
@@ -18,6 +18,7 @@ const ProtectedRoute = ({
   redirectTo = "/login",
 }: ProtectedRouteProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
 
@@ -84,7 +85,18 @@ const ProtectedRoute = ({
       console.log("ProtectedRoute: Logout detected, redirecting");
       setIsAuthorized(false);
       setIsChecking(false); // Evitar pantalla de loading
-      navigate(redirectTo, { replace: true });
+
+      // Detectar si estamos en contexto de backoffice
+      const isBackofficeContext =
+        location.pathname.startsWith("/admin") ||
+        location.pathname.startsWith("/backoffice");
+
+      const loginPath = isBackofficeContext ? "/backoffice/login" : redirectTo;
+      console.log(
+        `ProtectedRoute: Redirecting to ${loginPath} (context: ${isBackofficeContext ? "backoffice" : "main"})`,
+      );
+
+      navigate(loginPath, { replace: true });
     };
 
     window.addEventListener("focus", handleFocus);

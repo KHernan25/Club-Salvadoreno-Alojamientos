@@ -133,7 +133,7 @@ const AdminReservations = () => {
 
       const [reservationsData, usersData, accommodationsData] =
         await Promise.all([
-          apiGetReservations(),
+          apiGetReservations(true), // Pass true for admin to get all reservations
           apiGetUsers(),
           apiGetAccommodations(),
         ]);
@@ -144,9 +144,11 @@ const AdminReservations = () => {
         accommodations: accommodationsData?.length || 0,
       });
 
-      setReservations(reservationsData);
-      setUsers(usersData);
-      setAccommodations(accommodationsData);
+      setReservations(Array.isArray(reservationsData) ? reservationsData : []);
+      setUsers(Array.isArray(usersData) ? usersData : []);
+      setAccommodations(
+        Array.isArray(accommodationsData) ? accommodationsData : [],
+      );
     } catch (error) {
       console.error("❌ Error loading data:", error);
       // Cargar datos mock si la API no está disponible
@@ -160,9 +162,11 @@ const AdminReservations = () => {
         accommodations: mockAccommodations.length,
       });
 
-      setReservations(mockReservations);
-      setUsers(mockUsers);
-      setAccommodations(mockAccommodations);
+      setReservations(Array.isArray(mockReservations) ? mockReservations : []);
+      setUsers(Array.isArray(mockUsers) ? mockUsers : []);
+      setAccommodations(
+        Array.isArray(mockAccommodations) ? mockAccommodations : [],
+      );
     } finally {
       setLoading(false);
     }
@@ -396,7 +400,9 @@ const AdminReservations = () => {
     }
   };
 
-  const filteredReservations = (reservations || []).filter((reservation) => {
+  const filteredReservations = (
+    Array.isArray(reservations) ? reservations : []
+  ).filter((reservation) => {
     const user = (users || []).find((u) => u.id === reservation.userId);
     const accommodationsList = Array.isArray(accommodations)
       ? accommodations
