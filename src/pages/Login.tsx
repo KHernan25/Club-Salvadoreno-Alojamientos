@@ -62,18 +62,18 @@ const Login = () => {
     }
   }, [navigate]);
 
-  // Handle registration success message and prefill username
+  // Handle registration success message and prefill email
   useEffect(() => {
     if (location.state?.message && location.state?.newUser) {
       setSuccessMessage(location.state.message);
       setFormData((prev) => ({
         ...prev,
-        username: location.state.newUser.username,
+        username: location.state.newUser.email,
       }));
 
       toast({
         title: "¡Bienvenido!",
-        description: `${location.state.newUser.fullName}, tu cuenta fue creada exitosamente. Inicia sesión con tu nuevo usuario: ${location.state.newUser.username}`,
+        description: `${location.state.newUser.fullName}, tu cuenta fue creada exitosamente. Inicia sesión con tu correo: ${location.state.newUser.email}`,
       });
 
       // Clear the state to prevent showing the message again
@@ -105,7 +105,7 @@ const Login = () => {
       if (result.success && result.user) {
         toast({
           title: "Bienvenido",
-          description: `Hola ${result.user.fullName}, has iniciado sesión exitosamente`,
+          description: `Hola ${result.user.fullName}, has iniciado sesi��n exitosamente`,
         });
 
         // Redirect based on user role

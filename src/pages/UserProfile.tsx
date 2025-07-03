@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -51,23 +51,47 @@ import {
   Plus,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { getCurrentUser } from "@/lib/auth-service";
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
-    firstName: "María",
-    lastName: "González",
-    email: "maria.gonzalez@email.com",
-    phone: "+503 7888-9999",
-    address: "San Salvador, El Salvador",
-    birthDate: "1992-03-15",
-    nationality: "Salvadoreña",
-    document: "12345678-9",
-    memberSince: "2023-01-15",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    birthDate: "",
+    nationality: "",
+    document: "",
+    memberSince: "",
     preferredLanguage: "es",
     currency: "USD",
   });
+
+  // Load user data from session
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      setProfileData({
+        firstName: currentUser.firstName || "",
+        lastName: currentUser.lastName || "",
+        email: currentUser.email || "",
+        phone: currentUser.phone || "",
+        address: currentUser.address || "San Salvador, El Salvador",
+        birthDate: currentUser.birthDate || "",
+        nationality: currentUser.nationality || "Salvadoreña",
+        document: currentUser.documentNumber || "",
+        memberSince: currentUser.createdAt || "2023-01-15",
+        preferredLanguage: currentUser.preferredLanguage || "es",
+        currency: "USD",
+      });
+    } else {
+      // Redirect to login if no user session
+      navigate("/login", { replace: true });
+    }
+  }, [navigate]);
 
   const [notifications, setNotifications] = useState({
     email: true,

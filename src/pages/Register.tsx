@@ -113,7 +113,7 @@ const Register = () => {
                 result.message ||
                 "Registro exitoso. Tu cuenta está pendiente de aprobación.",
               newUser: {
-                username: result.user.username,
+                email: result.user.email,
                 fullName: result.user.fullName,
               },
             },
