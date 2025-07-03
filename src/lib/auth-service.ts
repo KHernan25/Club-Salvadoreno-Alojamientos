@@ -6,7 +6,12 @@ import {
   updateLastLogin,
   getRolePermissions,
 } from "./user-database";
-import { apiLogin, apiLogout, isApiAvailable } from "./api-service";
+import {
+  apiLogin,
+  apiLogout,
+  isApiAvailable,
+  clearAuthToken,
+} from "./api-service";
 
 export interface LoginCredentials {
   username: string;
