@@ -478,6 +478,12 @@ const AdminReservations = () => {
             <p className="text-gray-600">
               Crea, modifica y administra las reservas del sistema
             </p>
+            {/* Debug info */}
+            <div className="text-xs text-gray-500 mt-1">
+              👤 {getCurrentUser()?.firstName || "No autenticado"} | 🔑{" "}
+              {getAuthToken() ? "Token OK" : "Sin token"} | 👥 {users.length}{" "}
+              usuarios cargados
+            </div>
           </div>
           <Button onClick={() => setIsNewReservationDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
