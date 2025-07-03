@@ -5,6 +5,21 @@ import { User } from "./user-database";
 
 const API_BASE_URL = "/api";
 
+// Token management
+const TOKEN_KEY = "auth_token";
+
+export const setAuthToken = (token: string): void => {
+  localStorage.setItem(TOKEN_KEY, token);
+};
+
+export const getAuthToken = (): string | null => {
+  return localStorage.getItem(TOKEN_KEY);
+};
+
+export const clearAuthToken = (): void => {
+  localStorage.removeItem(TOKEN_KEY);
+};
+
 // Response interfaces
 interface ApiResponse<T = any> {
   success: boolean;
