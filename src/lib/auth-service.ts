@@ -97,6 +97,7 @@ export const authenticateUser = async (
           };
         }
 
+        console.log("❌ API Login failed:", result.error);
         return {
           success: false,
           error: result.error || "Credenciales incorrectas",
