@@ -183,16 +183,31 @@ const AdminReservations = () => {
 
   const getMockUsers = () => [
     {
+      id: "1",
+      firstName: "Juan",
+      lastName: "Pérez",
+      email: "juan.perez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Juan Pérez",
+    },
+    {
       id: "2",
       firstName: "María",
       lastName: "González",
-      email: "maria@email.com",
+      email: "maria.gonzalez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "María González",
     },
     {
       id: "3",
       firstName: "Carlos",
-      lastName: "Méndez",
-      email: "carlos@email.com",
+      lastName: "Rodríguez",
+      email: "carlos.rodriguez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Carlos Rodríguez",
     },
     {
       id: "4",
