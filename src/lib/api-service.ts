@@ -125,15 +125,25 @@ const apiRequest = async <T>(
       ...options,
     });
 
-    // Try to parse JSON, but handle malformed responses
+    // Read response body only once
     let data: any;
-    const text = await response.text();
-    console.log("📥 Raw response text:", text);
-    console.log("📊 Response status:", response.status);
-    console.log(
-      "📋 Response headers:",
-      Object.fromEntries(response.headers.entries()),
-    );
+    let text: string;
+
+    try {
+      text = await response.text();
+      console.log("📥 Raw response text:", text);
+      console.log("📊 Response status:", response.status);
+      console.log(
+        "📋 Response headers:",
+        Object.fromEntries(response.headers.entries()),
+      );
+    } catch (readError) {
+      console.error("❌ Failed to read response body:", readError);
+      return {
+        success: false,
+        error: `Failed to read response: ${response.status}`,
+      };
+    }
 
     try {
       data = text ? JSON.parse(text) : {};
