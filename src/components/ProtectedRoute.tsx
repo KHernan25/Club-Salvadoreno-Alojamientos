@@ -18,6 +18,7 @@ const ProtectedRoute = ({
   redirectTo = "/login",
 }: ProtectedRouteProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
 
