@@ -72,8 +72,10 @@ import {
   apiCancelReservation,
   apiGetUsers,
   apiGetAccommodations,
+  getAuthToken,
   Reservation,
 } from "@/lib/api-service";
+import { getCurrentUser } from "@/lib/auth-service";
 
 const AdminReservations = () => {
   const location = useLocation();
