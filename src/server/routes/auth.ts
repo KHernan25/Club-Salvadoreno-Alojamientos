@@ -175,6 +175,7 @@ router.get(
           fullName: user.fullName,
           role: user.role,
           phone: user.phone,
+          isActive: user.isActive,
           lastLogin: user.lastLogin,
           createdAt: user.createdAt,
         },
