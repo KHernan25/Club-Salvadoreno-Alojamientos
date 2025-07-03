@@ -232,7 +232,15 @@ const UserProfile = () => {
       // In a real app, you would update the session storage here
       const currentUser = getCurrentUser();
       if (currentUser) {
-        const updatedUser = { ...currentUser, ...profileData };
+        // Only update properties that exist in the User type
+        const updatedUser = {
+          ...currentUser,
+          firstName: profileData.firstName,
+          lastName: profileData.lastName,
+          email: profileData.email,
+          phone: profileData.phone,
+          fullName: `${profileData.firstName} ${profileData.lastName}`,
+        };
         sessionStorage.setItem(
           "club_salvadoreno_session",
           JSON.stringify({
