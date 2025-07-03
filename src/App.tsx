@@ -45,6 +45,7 @@ import AdminProfile from "./pages/AdminProfile";
 import AdminSiteContent from "./pages/AdminSiteContent";
 import AdminRegistrationRequests from "./pages/AdminRegistrationRequests";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import UserActivationDebug from "./pages/UserActivationDebug";
 
 const queryClient = new QueryClient();
 
@@ -104,6 +105,9 @@ const App = () => (
               <Route path="/navigation-demo" element={<NavigationDemo />} />
               <Route path="/translation-test" element={<TranslationTest />} />
               <Route path="/country-club" element={<CountryClub />} />
+
+              {/* Debug Tools - Development only */}
+              <Route path="/debug/users" element={<UserActivationDebug />} />
 
               {/* Admin Routes - Protected for backoffice roles only */}
               <Route
