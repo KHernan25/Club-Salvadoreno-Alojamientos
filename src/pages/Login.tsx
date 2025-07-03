@@ -105,7 +105,7 @@ const Login = () => {
       if (result.success && result.user) {
         toast({
           title: "Bienvenido",
-          description: `Hola ${result.user.fullName}, has iniciado sesi��n exitosamente`,
+          description: `Hola ${result.user.fullName}, has iniciado sesión exitosamente`,
         });
 
         // Redirect based on user role

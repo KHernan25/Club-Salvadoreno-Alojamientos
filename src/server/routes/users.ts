@@ -205,10 +205,10 @@ router.delete(
       throw createError("Usuario no encontrado", 404);
     }
 
-    // No permitir desactivar el último admin
-    if (user.role === "admin") {
+    // No permitir desactivar el último super_admin
+    if (user.role === "super_admin") {
       const activeAdmins = registeredUsers.filter(
-        (u) => u.role === "admin" && u.isActive,
+        (u) => u.role === "super_admin" && u.isActive,
       );
       if (activeAdmins.length <= 1) {
         throw createError(
@@ -275,8 +275,8 @@ router.get(
     const inactive = total - active;
 
     const byRole = {
-      admin: registeredUsers.filter((u) => u.role === "admin").length,
-      staff: registeredUsers.filter((u) => u.role === "staff").length,
+      admin: registeredUsers.filter((u) => u.role === "super_admin").length,
+      atencion_miembro: registeredUsers.filter((u) => u.role === "atencion_miembro").length,
       user: registeredUsers.filter((u) => u.role === "user").length,
     };
 

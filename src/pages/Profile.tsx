@@ -476,20 +476,6 @@ const Profile = () => {
                   <Switch defaultChecked />
                 </div>
 
-                <Separator />
-
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Mostrar estadísticas</Label>
-                    <p className="text-sm text-slate-600">
-                      Comparte tus logros y estadísticas públicamente
-                    </p>
-                  </div>
-                  <Switch />
-                </div>
-
-                <Separator />
-
                 <div className="space-y-4">
                   <Label>Acciones de Cuenta</Label>
                   <div className="flex gap-2">
