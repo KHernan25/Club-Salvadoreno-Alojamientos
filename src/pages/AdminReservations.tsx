@@ -120,9 +120,9 @@ const AdminReservations = () => {
           apiGetAccommodations(),
         ]);
 
-      setReservations(reservationsData.reservations);
-      setUsers(usersData.users);
-      setAccommodations(accommodationsData.accommodations);
+      setReservations(reservationsData);
+      setUsers(usersData);
+      setAccommodations(accommodationsData);
     } catch (error) {
       console.error("Error loading data:", error);
       // Cargar datos mock si la API no está disponible
