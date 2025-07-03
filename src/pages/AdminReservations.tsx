@@ -122,6 +122,15 @@ const AdminReservations = () => {
       setLoading(true);
       console.log("🔄 Iniciando carga de datos...");
 
+      // Verificar autenticación antes de hacer llamadas a la API
+      const currentUser = getCurrentUser();
+      const token = getAuthToken();
+      console.log("🔐 Estado de autenticación:", {
+        user: currentUser?.firstName || "No autenticado",
+        hasToken: !!token,
+        token: token ? `${token.substring(0, 10)}...` : "No token",
+      });
+
       const [reservationsData, usersData, accommodationsData] =
         await Promise.all([
           apiGetReservations(),
