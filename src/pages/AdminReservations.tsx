@@ -72,8 +72,10 @@ import {
   apiCancelReservation,
   apiGetUsers,
   apiGetAccommodations,
+  getAuthToken,
   Reservation,
 } from "@/lib/api-service";
+import { getCurrentUser } from "@/lib/auth-service";
 
 const AdminReservations = () => {
   const location = useLocation();
@@ -118,6 +120,17 @@ const AdminReservations = () => {
   const loadData = async () => {
     try {
       setLoading(true);
+      console.log("🔄 Iniciando carga de datos...");
+
+      // Verificar autenticación antes de hacer llamadas a la API
+      const currentUser = getCurrentUser();
+      const token = getAuthToken();
+      console.log("🔐 Estado de autenticación:", {
+        user: currentUser?.firstName || "No autenticado",
+        hasToken: !!token,
+        token: token ? `${token.substring(0, 10)}...` : "No token",
+      });
+
       const [reservationsData, usersData, accommodationsData] =
         await Promise.all([
           apiGetReservations(),
@@ -125,17 +138,23 @@ const AdminReservations = () => {
           apiGetAccommodations(),
         ]);
 
+      console.log("✅ Datos cargados desde API:", {
+        reservations: reservationsData?.length || 0,
+        users: usersData?.length || 0,
+        accommodations: accommodationsData?.length || 0,
+      });
+
       setReservations(reservationsData);
       setUsers(usersData);
       setAccommodations(accommodationsData);
     } catch (error) {
-      console.error("Error loading data:", error);
+      console.error("❌ Error loading data:", error);
       // Cargar datos mock si la API no está disponible
       const mockReservations = getMockReservations();
       const mockUsers = getMockUsers();
       const mockAccommodations = getMockAccommodations();
 
-      console.log("Loading mock data:", {
+      console.log("📋 Loading mock data:", {
         reservations: mockReservations.length,
         users: mockUsers.length,
         accommodations: mockAccommodations.length,
@@ -378,18 +397,22 @@ const AdminReservations = () => {
   };
 
   const filteredReservations = (reservations || []).filter((reservation) => {
-    const user = users.find((u) => u.id === reservation.userId);
-    const accommodation = accommodations.find(
+    const user = (users || []).find((u) => u.id === reservation.userId);
+    const accommodation = (accommodations || []).find(
       (a) => a.id === reservation.accommodationId,
     );
 
     const matchesSearch =
-      reservation.confirmationCode
+      (reservation.confirmationCode || "")
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      user?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      accommodation?.name.toLowerCase().includes(searchTerm.toLowerCase());
+      (user?.firstName || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      (user?.lastName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (accommodation?.name || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" || reservation.status === statusFilter;
@@ -433,19 +456,23 @@ const AdminReservations = () => {
   };
 
   const getUserName = (userId: string) => {
-    const user = users.find((u) => u.id === userId);
+    const user = (users || []).find((u) => u.id === userId);
     return user
       ? user.fullName || `${user.firstName} ${user.lastName}`
       : "Usuario no encontrado";
   };
 
   const getAccommodationName = (accommodationId: string) => {
-    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    const accommodation = (accommodations || []).find(
+      (a) => a.id === accommodationId,
+    );
     return accommodation ? accommodation.name : "Alojamiento no encontrado";
   };
 
   const getAccommodationLocation = (accommodationId: string) => {
-    const accommodation = accommodations.find((a) => a.id === accommodationId);
+    const accommodation = (accommodations || []).find(
+      (a) => a.id === accommodationId,
+    );
     return accommodation?.location === "el-sunzal" ? "El Sunzal" : "Corinto";
   };
 
@@ -459,6 +486,12 @@ const AdminReservations = () => {
             <p className="text-gray-600">
               Crea, modifica y administra las reservas del sistema
             </p>
+            {/* Debug info */}
+            <div className="text-xs text-gray-500 mt-1">
+              👤 {getCurrentUser()?.firstName || "No autenticado"} | 🔑{" "}
+              {getAuthToken() ? "Token OK" : "Sin token"} | 👥 {users.length}{" "}
+              usuarios cargados
+            </div>
           </div>
           <Button onClick={() => setIsNewReservationDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
@@ -757,16 +790,34 @@ const AdminReservations = () => {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar usuario" />
+                    <SelectValue
+                      placeholder={
+                        users.length === 0
+                          ? "No hay usuarios disponibles..."
+                          : "Seleccionar usuario"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
-                    {(users || []).map((user) => (
-                      <SelectItem key={user.id} value={user.id}>
-                        {user.firstName} {user.lastName} - {user.email}
+                    {users.length === 0 ? (
+                      <SelectItem value="" disabled>
+                        No hay usuarios disponibles
                       </SelectItem>
-                    ))}
+                    ) : (
+                      users.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.firstName} {user.lastName} - {user.email}
+                        </SelectItem>
+                      ))
+                    )}
                   </SelectContent>
                 </Select>
+                {users.length === 0 && (
+                  <p className="text-sm text-orange-600 mt-1">
+                    ⚠️ No se encontraron usuarios. Verifica la conexión con el
+                    servidor.
+                  </p>
+                )}
               </div>
               <div>
                 <Label htmlFor="accommodation-select">Alojamiento</Label>

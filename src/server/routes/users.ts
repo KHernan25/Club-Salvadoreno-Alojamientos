@@ -21,7 +21,7 @@ const router = Router();
 router.get(
   "/",
   authenticateToken,
-  requireRole(["admin", "staff"]),
+  requireRole(["super_admin", "atencion_miembro", "admin", "staff"]),
   validatePaginationQuery,
   asyncHandler(async (req: AuthenticatedRequest, res) => {
     const page = parseInt(req.query.page as string) || 1;
@@ -276,7 +276,9 @@ router.get(
 
     const byRole = {
       admin: registeredUsers.filter((u) => u.role === "super_admin").length,
-      atencion_miembro: registeredUsers.filter((u) => u.role === "atencion_miembro").length,
+      atencion_miembro: registeredUsers.filter(
+        (u) => u.role === "atencion_miembro",
+      ).length,
       user: registeredUsers.filter((u) => u.role === "user").length,
     };
 

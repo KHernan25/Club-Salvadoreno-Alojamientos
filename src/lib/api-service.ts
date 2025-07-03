@@ -5,6 +5,21 @@ import { User } from "./user-database";
 
 const API_BASE_URL = "/api";
 
+// Token management
+const TOKEN_KEY = "auth_token";
+
+export const setAuthToken = (token: string): void => {
+  localStorage.setItem(TOKEN_KEY, token);
+};
+
+export const getAuthToken = (): string | null => {
+  return localStorage.getItem(TOKEN_KEY);
+};
+
+export const clearAuthToken = (): void => {
+  localStorage.removeItem(TOKEN_KEY);
+};
+
 // Response interfaces
 interface ApiResponse<T = any> {
   success: boolean;
@@ -92,34 +107,46 @@ const apiRequest = async <T>(
 ): Promise<ApiResponse<T>> => {
   try {
     const url = `${API_BASE_URL}${endpoint}`;
+
+    // Prepare headers with authentication
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...options.headers,
+    };
+
+    // Add authorization header if token exists
+    const token = getAuthToken();
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
+      headers,
       ...options,
     });
 
-    // Try to parse JSON, but handle malformed responses
-    let data: any;
-    const text = await response.text();
-    console.log("📥 Raw response text:", text);
     console.log("📊 Response status:", response.status);
-    console.log(
-      "📋 Response headers:",
-      Object.fromEntries(response.headers.entries()),
-    );
 
-    try {
-      data = text ? JSON.parse(text) : {};
-      console.log("✅ Parsed JSON successfully:", data);
-    } catch (parseError) {
-      console.error("❌ Failed to parse response as JSON:", parseError);
-      console.log("📄 Raw text that failed to parse:", text);
-      return {
-        success: false,
-        error: `Invalid response format: ${response.status}`,
-      };
+    let data: any = {};
+
+    // Only parse JSON for successful responses with content
+    if (response.status !== 204) {
+      const contentType = response.headers.get("content-type") || "";
+
+      if (contentType.includes("application/json")) {
+        try {
+          data = await response.json();
+          console.log("✅ Parsed JSON successfully:", data);
+        } catch (jsonError) {
+          console.error("❌ JSON parse error:", jsonError);
+          return {
+            success: false,
+            error: `Invalid JSON response: ${response.status}`,
+          };
+        }
+      } else {
+        console.log("📄 Non-JSON response, using empty data");
+      }
     }
 
     if (!response.ok) {
@@ -173,6 +200,11 @@ export const apiLogin = async (
     },
   );
 
+  // Save token if login successful
+  if (result.success && result.data?.token) {
+    setAuthToken(result.data.token);
+  }
+
   return {
     success: result.success,
     user: result.data?.user,
@@ -185,14 +217,16 @@ export const apiLogout = async (): Promise<void> => {
   await apiRequest("/auth/logout", {
     method: "POST",
   });
+  // Clear stored token
+  clearAuthToken();
 };
 
 // User management functions
 export const apiGetUsers = async (): Promise<User[]> => {
   try {
-    const result = await apiRequest<User[]>("/users");
-    if (result.success && result.data) {
-      return result.data;
+    const result = await apiRequest<{ users: User[] }>("/users?limit=1000");
+    if (result.success && result.data?.users) {
+      return result.data.users;
     }
     throw new Error(result.error || "Failed to fetch users");
   } catch (error) {

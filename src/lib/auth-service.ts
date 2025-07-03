@@ -6,7 +6,12 @@ import {
   updateLastLogin,
   getRolePermissions,
 } from "./user-database";
-import { apiLogin, apiLogout, isApiAvailable } from "./api-service";
+import {
+  apiLogin,
+  apiLogout,
+  isApiAvailable,
+  clearAuthToken,
+} from "./api-service";
 
 export interface LoginCredentials {
   username: string;
@@ -90,6 +95,8 @@ export const authenticateUser = async (
             localStorage.setItem(REMEMBER_KEY, JSON.stringify(sessionData));
           }
           sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+
+          // El token ya se guarda en api-service
 
           return {
             success: true,
@@ -212,6 +219,7 @@ export const logout = async (): Promise<void> => {
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(REMEMBER_KEY);
   sessionStorage.clear();
+  clearAuthToken(); // Limpiar token de API
 
   // Disparar evento personalizado para notificar el logout INMEDIATAMENTE
   // Esto permite que los guards reaccionen rápido
