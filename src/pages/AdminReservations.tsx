@@ -125,7 +125,7 @@ const AdminReservations = () => {
       // Verificar autenticación antes de hacer llamadas a la API
       const currentUser = getCurrentUser();
       const token = getAuthToken();
-      console.log("🔐 Estado de autenticación:", {
+      console.log("��� Estado de autenticación:", {
         user: currentUser?.firstName || "No autenticado",
         hasToken: !!token,
         token: token ? `${token.substring(0, 10)}...` : "No token",
@@ -403,12 +403,16 @@ const AdminReservations = () => {
     );
 
     const matchesSearch =
-      reservation.confirmationCode
+      (reservation.confirmationCode || "")
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      user?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      accommodation?.name.toLowerCase().includes(searchTerm.toLowerCase());
+      (user?.firstName || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      (user?.lastName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (accommodation?.name || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" || reservation.status === statusFilter;
