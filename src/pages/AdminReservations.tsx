@@ -212,8 +212,29 @@ const AdminReservations = () => {
     {
       id: "4",
       firstName: "Ana",
-      lastName: "Rodríguez",
-      email: "ana@email.com",
+      lastName: "Martínez",
+      email: "ana.martinez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Ana Martínez",
+    },
+    {
+      id: "5",
+      firstName: "Luis",
+      lastName: "García",
+      email: "luis.garcia@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Luis García",
+    },
+    {
+      id: "6",
+      firstName: "Carmen",
+      lastName: "López",
+      email: "carmen.lopez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Carmen López",
     },
   ];
 
