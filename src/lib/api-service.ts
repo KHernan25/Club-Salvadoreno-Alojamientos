@@ -125,36 +125,35 @@ const apiRequest = async <T>(
       ...options,
     });
 
-    // Read response body only once
+    // Clone response for logging to avoid "body stream already read" error
+    console.log("📊 Response status:", response.status);
+    console.log(
+      "📋 Response headers:",
+      Object.fromEntries(response.headers.entries()),
+    );
+
     let data: any;
-    let text: string;
-
     try {
-      text = await response.text();
-      console.log("📥 Raw response text:", text);
-      console.log("📊 Response status:", response.status);
-      console.log(
-        "📋 Response headers:",
-        Object.fromEntries(response.headers.entries()),
-      );
-    } catch (readError) {
-      console.error("❌ Failed to read response body:", readError);
-      return {
-        success: false,
-        error: `Failed to read response: ${response.status}`,
-      };
-    }
-
-    try {
-      data = text ? JSON.parse(text) : {};
+      // Use response.json() instead of text() then JSON.parse()
+      data = await response.json();
       console.log("✅ Parsed JSON successfully:", data);
     } catch (parseError) {
       console.error("❌ Failed to parse response as JSON:", parseError);
-      console.log("📄 Raw text that failed to parse:", text);
-      return {
-        success: false,
-        error: `Invalid response format: ${response.status}`,
-      };
+      // Try to read as text if JSON parsing fails
+      try {
+        const text = await response.text();
+        console.log("📄 Raw text response:", text);
+        return {
+          success: false,
+          error: `Invalid JSON response: ${response.status}`,
+        };
+      } catch (textError) {
+        console.error("❌ Failed to read response as text:", textError);
+        return {
+          success: false,
+          error: `Failed to read response: ${response.status}`,
+        };
+      }
     }
 
     if (!response.ok) {
