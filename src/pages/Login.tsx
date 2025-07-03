@@ -223,7 +223,26 @@ const Login = () => {
             {error && (
               <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
                 <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
-                <p className="text-red-100 text-sm">{error}</p>
+                <div className="text-red-100 text-sm flex-1">
+                  <p>{error}</p>
+                  {error.includes("desactivada") && (
+                    <div className="mt-3 space-y-2">
+                      <p className="text-red-200 text-xs">
+                        💡 <strong>Solución temporal (desarrollo):</strong>
+                      </p>
+                      <p className="text-red-200 text-xs">
+                        Visita{" "}
+                        <button
+                          onClick={() => window.open("/debug/users", "_blank")}
+                          className="underline hover:text-white"
+                        >
+                          /debug/users
+                        </button>{" "}
+                        para activar tu cuenta
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
             {/* Correo */}
@@ -338,8 +357,6 @@ const Login = () => {
               </button>
             </p>
           </div>
-
-          
         </div>
       </div>
     </div>
