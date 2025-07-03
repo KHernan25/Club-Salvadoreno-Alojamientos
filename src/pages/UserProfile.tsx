@@ -82,12 +82,15 @@ const UserProfile = () => {
         lastName: currentUser.lastName || "",
         email: currentUser.email || "",
         phone: currentUser.phone || "",
-        address: currentUser.address || "San Salvador, El Salvador",
-        birthDate: currentUser.birthDate || "",
-        nationality: currentUser.nationality || "Salvadoreña",
-        document: currentUser.documentNumber || "",
-        memberSince: currentUser.createdAt || "2023-01-15",
-        preferredLanguage: currentUser.preferredLanguage || "es",
+        address: "San Salvador, El Salvador", // Default value since property doesn't exist in User type
+        birthDate: "", // Default value since property doesn't exist in User type
+        nationality: "Salvadoreña", // Default value since property doesn't exist in User type
+        document: "", // Default value since property doesn't exist in User type
+        memberSince:
+          currentUser.createdAt instanceof Date
+            ? currentUser.createdAt.toISOString().split("T")[0]
+            : "2023-01-15",
+        preferredLanguage: "es", // Default value since property doesn't exist in User type
         currency: "USD",
       });
     } else {
