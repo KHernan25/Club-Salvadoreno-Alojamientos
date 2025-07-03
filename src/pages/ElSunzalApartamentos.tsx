@@ -186,13 +186,9 @@ const ElSunzalApartamentos = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() =>
-                        navigate(
-                          `/reservas?accommodation=apartamento&id=${apt.id}&name=${encodeURIComponent(apt.name)}`,
-                        )
-                      }
+                      onClick={() => navigate(`/apartamento/${apt.id}#precios`)}
                     >
-                      Reservar
+                      Ver Precios
                     </Button>
                   </div>
                 </CardContent>
