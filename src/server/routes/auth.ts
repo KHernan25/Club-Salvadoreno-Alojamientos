@@ -150,6 +150,7 @@ router.post(
           fullName: result.user!.fullName,
           role: result.user!.role,
           phone: result.user!.phone,
+          isActive: result.user!.isActive,
         },
       },
     });
