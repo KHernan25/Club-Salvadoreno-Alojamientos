@@ -70,7 +70,18 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
     const handleLogout = () => {
       console.log("RouteGuard: Logout detected, redirecting to login");
       setAuthChecked(false);
-      navigate("/login", { replace: true });
+
+      // Detectar si estamos en contexto de backoffice
+      const isBackofficeContext =
+        location.pathname.startsWith("/admin") ||
+        location.pathname.startsWith("/backoffice");
+
+      const loginPath = isBackofficeContext ? "/backoffice/login" : "/login";
+      console.log(
+        `RouteGuard: Redirecting to ${loginPath} (context: ${isBackofficeContext ? "backoffice" : "main"})`,
+      );
+
+      navigate(loginPath, { replace: true });
     };
 
     window.addEventListener("userLoggedOut", handleLogout);
@@ -78,7 +89,7 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
     return () => {
       window.removeEventListener("userLoggedOut", handleLogout);
     };
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   // Mostrar loading solo para rutas protegidas mientras se valida
   if (!authChecked && !isPublicRoute(location.pathname)) {
