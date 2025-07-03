@@ -1,7 +1,7 @@
 // Componente de alto nivel para proteger páginas que requieren autenticación
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   isAuthenticated,
   requireAuth,
