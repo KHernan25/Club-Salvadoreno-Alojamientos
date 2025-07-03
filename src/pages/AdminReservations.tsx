@@ -110,6 +110,11 @@ const AdminReservations = () => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    // Load initial data when component mounts
+    loadData();
+  }, []);
+
   const loadData = async () => {
     try {
       setLoading(true);
@@ -120,15 +125,25 @@ const AdminReservations = () => {
           apiGetAccommodations(),
         ]);
 
-      setReservations(reservationsData.reservations);
-      setUsers(usersData.users);
-      setAccommodations(accommodationsData.accommodations);
+      setReservations(reservationsData);
+      setUsers(usersData);
+      setAccommodations(accommodationsData);
     } catch (error) {
       console.error("Error loading data:", error);
       // Cargar datos mock si la API no está disponible
-      setReservations(getMockReservations());
-      setUsers(getMockUsers());
-      setAccommodations(getMockAccommodations());
+      const mockReservations = getMockReservations();
+      const mockUsers = getMockUsers();
+      const mockAccommodations = getMockAccommodations();
+
+      console.log("Loading mock data:", {
+        reservations: mockReservations.length,
+        users: mockUsers.length,
+        accommodations: mockAccommodations.length,
+      });
+
+      setReservations(mockReservations);
+      setUsers(mockUsers);
+      setAccommodations(mockAccommodations);
     } finally {
       setLoading(false);
     }
@@ -689,7 +704,7 @@ const AdminReservations = () => {
                                   <AlertDialogDescription>
                                     ¿Estás seguro de que deseas cancelar la
                                     reserva {reservation.confirmationCode}? Esta
-                                    acción no se puede deshacer.
+                                    acci��n no se puede deshacer.
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
