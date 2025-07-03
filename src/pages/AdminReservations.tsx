@@ -420,7 +420,7 @@ const AdminReservations = () => {
   const getUserName = (userId: string) => {
     const user = users.find((u) => u.id === userId);
     return user
-      ? `${user.firstName} ${user.lastName}`
+      ? user.fullName || `${user.firstName} ${user.lastName}`
       : "Usuario no encontrado";
   };
 
