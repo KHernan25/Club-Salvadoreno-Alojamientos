@@ -84,7 +84,18 @@ const ProtectedRoute = ({
       console.log("ProtectedRoute: Logout detected, redirecting");
       setIsAuthorized(false);
       setIsChecking(false); // Evitar pantalla de loading
-      navigate(redirectTo, { replace: true });
+
+      // Detectar si estamos en contexto de backoffice
+      const isBackofficeContext =
+        location.pathname.startsWith("/admin") ||
+        location.pathname.startsWith("/backoffice");
+
+      const loginPath = isBackofficeContext ? "/backoffice/login" : redirectTo;
+      console.log(
+        `ProtectedRoute: Redirecting to ${loginPath} (context: ${isBackofficeContext ? "backoffice" : "main"})`,
+      );
+
+      navigate(loginPath, { replace: true });
     };
 
     window.addEventListener("focus", handleFocus);
