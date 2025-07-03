@@ -107,11 +107,21 @@ const apiRequest = async <T>(
 ): Promise<ApiResponse<T>> => {
   try {
     const url = `${API_BASE_URL}${endpoint}`;
+
+    // Prepare headers with authentication
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...options.headers,
+    };
+
+    // Add authorization header if token exists
+    const token = getAuthToken();
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
+      headers,
       ...options,
     });
 
