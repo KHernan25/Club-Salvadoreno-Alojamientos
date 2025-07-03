@@ -50,8 +50,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const currentUser = getCurrentUser();
 
   const handleLogout = async () => {
-    // Navegar inmediatamente
-    navigate("/login");
+    // Navegar inmediatamente al backoffice login
+    navigate("/backoffice/login");
     // Limpiar sesión en segundo plano
     await logout();
   };

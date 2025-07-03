@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -44,86 +44,102 @@ const MyReservations = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("todas");
+  const [reservations, setReservations] = useState<any[]>([]);
 
-  // Simulated reservations data
-  const reservations = [
-    {
-      id: "8STM347L8",
-      apartment: "Apartamento 1A",
-      image: "/placeholder.svg",
-      status: "confirmada",
-      dates: {
-        checkIn: "2025-06-07",
-        checkOut: "2025-06-08",
-        checkInTime: "3:00 PM",
-        checkOutTime: "12:00 MD",
+  // Load reservations from localStorage and default data
+  useEffect(() => {
+    const savedReservations = JSON.parse(
+      localStorage.getItem("user_reservations") || "[]",
+    );
+    const defaultReservations = [
+      {
+        id: "8STM347L8",
+        apartment: "Apartamento 1A",
+        image: "/placeholder.svg",
+        status: "confirmada",
+        dates: {
+          checkIn: "2025-06-07",
+          checkOut: "2025-06-08",
+          checkInTime: "3:00 PM",
+          checkOutTime: "12:00 MD",
+        },
+        guests: 2,
+        nights: 1,
+        total: 230,
+        bookingDate: "2025-01-15",
+        isPast: false,
+        isCurrent: false,
+        isFuture: true,
       },
-      guests: 2,
-      nights: 1,
-      total: 230,
-      bookingDate: "2025-01-15",
-      isPast: false,
-      isCurrent: false,
-      isFuture: true,
-    },
-    {
-      id: "9ABC123X4",
-      apartment: "Suite Ejecutiva",
-      image: "/placeholder.svg",
-      status: "completada",
-      dates: {
-        checkIn: "2025-01-10",
-        checkOut: "2025-01-12",
-        checkInTime: "3:00 PM",
-        checkOutTime: "12:00 MD",
+      {
+        id: "9ABC123X4",
+        apartment: "Suite Ejecutiva",
+        image: "/placeholder.svg",
+        status: "completada",
+        dates: {
+          checkIn: "2025-01-10",
+          checkOut: "2025-01-12",
+          checkInTime: "3:00 PM",
+          checkOutTime: "12:00 MD",
+        },
+        guests: 2,
+        nights: 2,
+        total: 760,
+        bookingDate: "2024-12-20",
+        isPast: true,
+        isCurrent: false,
+        isFuture: false,
       },
-      guests: 2,
-      nights: 2,
-      total: 760,
-      bookingDate: "2024-12-20",
-      isPast: true,
-      isCurrent: false,
-      isFuture: false,
-    },
-    {
-      id: "7DEF456Y7",
-      apartment: "Casa Familiar",
-      image: "/placeholder.svg",
-      status: "cancelada",
-      dates: {
-        checkIn: "2024-12-25",
-        checkOut: "2024-12-27",
-        checkInTime: "3:00 PM",
-        checkOutTime: "12:00 MD",
+      {
+        id: "7DEF456Y7",
+        apartment: "Casa Familiar",
+        image: "/placeholder.svg",
+        status: "cancelada",
+        dates: {
+          checkIn: "2024-12-25",
+          checkOut: "2024-12-27",
+          checkInTime: "3:00 PM",
+          checkOutTime: "12:00 MD",
+        },
+        guests: 4,
+        nights: 2,
+        total: 500,
+        bookingDate: "2024-11-15",
+        isPast: true,
+        isCurrent: false,
+        isFuture: false,
       },
-      guests: 4,
-      nights: 2,
-      total: 500,
-      bookingDate: "2024-11-15",
-      isPast: true,
-      isCurrent: false,
-      isFuture: false,
-    },
-    {
-      id: "5GHI789Z2",
-      apartment: "Apartamento 2A",
-      image: "/placeholder.svg",
-      status: "confirmada",
-      dates: {
-        checkIn: "2025-03-15",
-        checkOut: "2025-03-17",
-        checkInTime: "3:00 PM",
-        checkOutTime: "12:00 MD",
+      {
+        id: "5GHI789Z2",
+        apartment: "Apartamento 2A",
+        image: "/placeholder.svg",
+        status: "confirmada",
+        dates: {
+          checkIn: "2025-03-15",
+          checkOut: "2025-03-17",
+          checkInTime: "3:00 PM",
+          checkOutTime: "12:00 MD",
+        },
+        guests: 3,
+        nights: 2,
+        total: 480,
+        bookingDate: "2025-01-20",
+        isPast: false,
+        isCurrent: false,
+        isFuture: true,
       },
-      guests: 3,
-      nights: 2,
-      total: 480,
-      bookingDate: "2025-01-20",
-      isPast: false,
-      isCurrent: false,
-      isFuture: true,
-    },
-  ];
+    ];
+
+    // Combine saved reservations with default ones, avoiding duplicates
+    const allReservations = [...defaultReservations];
+    savedReservations.forEach((saved: any) => {
+      if (!allReservations.find((existing) => existing.id === saved.id)) {
+        allReservations.push(saved);
+      }
+    });
+
+    setReservations(allReservations);
+  }, []);
 
   const getStatusBadge = (status: string) => {
     switch (status) {

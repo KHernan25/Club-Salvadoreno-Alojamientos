@@ -183,22 +183,58 @@ const AdminReservations = () => {
 
   const getMockUsers = () => [
     {
+      id: "1",
+      firstName: "Juan",
+      lastName: "Pérez",
+      email: "juan.perez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Juan Pérez",
+    },
+    {
       id: "2",
       firstName: "María",
       lastName: "González",
-      email: "maria@email.com",
+      email: "maria.gonzalez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "María González",
     },
     {
       id: "3",
       firstName: "Carlos",
-      lastName: "Méndez",
-      email: "carlos@email.com",
+      lastName: "Rodríguez",
+      email: "carlos.rodriguez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Carlos Rodríguez",
     },
     {
       id: "4",
       firstName: "Ana",
-      lastName: "Rodríguez",
-      email: "ana@email.com",
+      lastName: "Martínez",
+      email: "ana.martinez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Ana Martínez",
+    },
+    {
+      id: "5",
+      firstName: "Luis",
+      lastName: "García",
+      email: "luis.garcia@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Luis García",
+    },
+    {
+      id: "6",
+      firstName: "Carmen",
+      lastName: "López",
+      email: "carmen.lopez@email.com",
+      role: "user",
+      isActive: true,
+      fullName: "Carmen López",
     },
   ];
 
@@ -384,7 +420,7 @@ const AdminReservations = () => {
   const getUserName = (userId: string) => {
     const user = users.find((u) => u.id === userId);
     return user
-      ? `${user.firstName} ${user.lastName}`
+      ? user.fullName || `${user.firstName} ${user.lastName}`
       : "Usuario no encontrado";
   };
 
