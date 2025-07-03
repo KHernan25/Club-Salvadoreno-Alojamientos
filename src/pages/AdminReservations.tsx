@@ -162,9 +162,11 @@ const AdminReservations = () => {
         accommodations: mockAccommodations.length,
       });
 
-      setReservations(mockReservations);
-      setUsers(mockUsers);
-      setAccommodations(mockAccommodations);
+      setReservations(Array.isArray(mockReservations) ? mockReservations : []);
+      setUsers(Array.isArray(mockUsers) ? mockUsers : []);
+      setAccommodations(
+        Array.isArray(mockAccommodations) ? mockAccommodations : [],
+      );
     } finally {
       setLoading(false);
     }
