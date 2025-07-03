@@ -91,6 +91,8 @@ export const authenticateUser = async (
           }
           sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
 
+          // El token ya se guarda en api-service
+
           return {
             success: true,
             user: result.user,
