@@ -133,7 +133,7 @@ const AdminReservations = () => {
 
       const [reservationsData, usersData, accommodationsData] =
         await Promise.all([
-          apiGetReservations(),
+          apiGetReservations(true), // Pass true for admin to get all reservations
           apiGetUsers(),
           apiGetAccommodations(),
         ]);
