@@ -60,6 +60,8 @@ export const authenticateUser = async (
         });
 
         if (result.success && result.user) {
+          console.log("✅ API Login successful:", result.user);
+
           // Verificar estado de aprobación
           if (result.user.status === "pending") {
             return {
@@ -75,6 +77,19 @@ export const authenticateUser = async (
               error: "Tu cuenta está desactivada. Contacta al administrador.",
             };
           }
+
+          // Crear sesión local para mantener consistencia
+          const sessionData: SessionData = {
+            user: result.user,
+            loginTime: new Date(),
+            rememberMe,
+          };
+
+          // Guardar en localStorage
+          if (rememberMe) {
+            localStorage.setItem(REMEMBER_KEY, JSON.stringify(sessionData));
+          }
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
 
           return {
             success: true,
