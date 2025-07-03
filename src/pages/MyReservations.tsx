@@ -44,9 +44,12 @@ const MyReservations = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("todas");
+  const [reservations, setReservations] = useState<any[]>([]);
 
-  // Simulated reservations data
-  const reservations = [
+  // Load reservations from localStorage and default data
+  useEffect(() => {
+    const savedReservations = JSON.parse(localStorage.getItem('user_reservations') || '[]');
+    const defaultReservations = [
     {
       id: "8STM347L8",
       apartment: "Apartamento 1A",

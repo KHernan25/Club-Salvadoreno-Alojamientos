@@ -48,6 +48,40 @@ const Reservations = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
   const [guests, setGuests] = useState(2);
 
+  // Helper function to get accommodation image based on type and ID
+  const getAccommodationImage = (type: string, id: string) => {
+    if (type === "casa") {
+      const casaImages: { [key: string]: string } = {
+        casa1: "/DSC_5197.jpg",
+        "casa-1": "/DSC_5197.jpg",
+        casa2: "/DSC_5191.jpg",
+        "casa-2": "/DSC_5191.jpg",
+        casa3: "/DSC_5201.jpg",
+        "casa-3": "/DSC_5201.jpg",
+        "corinto-casa-1": "/DSC_5508.jpg",
+        "corinto-casa-2": "/DSC_5515.jpg",
+        "corinto-casa-3": "/DSC_5525.jpg",
+        "corinto-casa-4": "/DSC_5529.jpg",
+        "corinto-casa-5": "/DSC_5517.jpg",
+        "corinto-casa-6": "/DSC_5542.jpg",
+      };
+      return casaImages[id] || "/DSC_5197.jpg";
+    }
+    if (type === "suite") {
+      return "/DSC_5346.jpg"; // Use suite image
+    }
+    // Default to apartment images
+    const apartmentImages: { [key: string]: string } = {
+      "1A": "/DSC_5212.jpg",
+      "1B": "/DSC_5214.jpg",
+      "2A": "/DSC_5238.jpg",
+      "2B": "/DSC_5244.jpg",
+      "3A": "/DSC_5346.jpg",
+      "3B": "/DSC_5363.jpg",
+    };
+    return apartmentImages[id] || "/DSC_5212.jpg";
+  };
+
   // Get dates from URL parameters or use defaults (minimum tomorrow)
   const minDate = getMinimumDate();
   const [selectedDates, setSelectedDates] = useState({
@@ -520,9 +554,16 @@ const Reservations = () => {
                     </div>
                     <div className="bg-slate-100 rounded-lg p-3">
                       <img
-                        src="/placeholder.svg"
+                        src={getAccommodationImage(
+                          accommodation,
+                          accommodationId,
+                        )}
                         alt={accommodationName}
                         className="w-full h-24 object-cover rounded mb-2"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            "/placeholder.svg";
+                        }}
                       />
                       <div className="font-medium">
                         {decodeURIComponent(accommodationName)}
@@ -709,9 +750,9 @@ const Reservations = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                 <img
-                    src="/logo_azul.png"
-                    alt="Logo Club Salvadoreño"
-                    className="max-w-[30px] mx-auto object-contain"
+                  src="/logo_azul.png"
+                  alt="Logo Club Salvadoreño"
+                  className="max-w-[30px] mx-auto object-contain"
                 />
               </div>
               <span className="text-xl font-semibold">Club Salvadoreño</span>

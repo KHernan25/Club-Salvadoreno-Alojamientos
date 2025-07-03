@@ -56,6 +56,39 @@ export const PaymentOptionsModal = ({
   const [transferFile, setTransferFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Helper function to get accommodation image
+  const getAccommodationImage = (type: string, id: string) => {
+    if (type === "casa") {
+      const casaImages: { [key: string]: string } = {
+        casa1: "/DSC_5197.jpg",
+        "casa-1": "/DSC_5197.jpg",
+        casa2: "/DSC_5191.jpg",
+        "casa-2": "/DSC_5191.jpg",
+        casa3: "/DSC_5201.jpg",
+        "casa-3": "/DSC_5201.jpg",
+        "corinto-casa-1": "/DSC_5508.jpg",
+        "corinto-casa-2": "/DSC_5515.jpg",
+        "corinto-casa-3": "/DSC_5525.jpg",
+        "corinto-casa-4": "/DSC_5529.jpg",
+        "corinto-casa-5": "/DSC_5517.jpg",
+        "corinto-casa-6": "/DSC_5542.jpg",
+      };
+      return casaImages[id] || "/DSC_5197.jpg";
+    }
+    if (type === "suite") {
+      return "/DSC_5346.jpg";
+    }
+    const apartmentImages: { [key: string]: string } = {
+      "1A": "/DSC_5212.jpg",
+      "1B": "/DSC_5214.jpg",
+      "2A": "/DSC_5238.jpg",
+      "2B": "/DSC_5244.jpg",
+      "3A": "/DSC_5346.jpg",
+      "3B": "/DSC_5363.jpg",
+    };
+    return apartmentImages[id] || "/DSC_5212.jpg";
+  };
+
   const handleMainOptionSelect = (option: string) => {
     setSelectedMainOption(option);
     setSelectedPaymentMethod(null); // Reset payment method when changing main option
@@ -145,6 +178,40 @@ export const PaymentOptionsModal = ({
     } = reservationData;
 
     try {
+      // Save reservation to user's history regardless of payment method
+      const newReservation = {
+        id: code,
+        apartment: accommodationName,
+        image: getAccommodationImage(accommodation, accommodationId),
+        status: selectedMainOption === "pay_later" ? "pendiente" : "confirmada",
+        dates: {
+          checkIn,
+          checkOut,
+          checkInTime: accommodation === "suite" ? "2:00 PM" : "3:00 PM",
+          checkOutTime: accommodation === "suite" ? "1:00 PM" : "12:00 MD",
+        },
+        guests,
+        nights: Math.ceil(
+          (new Date(checkOut).getTime() - new Date(checkIn).getTime()) /
+            (1000 * 60 * 60 * 24),
+        ),
+        total: totalPrice,
+        bookingDate: new Date().toISOString().split("T")[0],
+        isPast: false,
+        isCurrent: false,
+        isFuture: true,
+      };
+
+      // Get existing reservations from localStorage
+      const existingReservations = JSON.parse(
+        localStorage.getItem("user_reservations") || "[]",
+      );
+      existingReservations.push(newReservation);
+      localStorage.setItem(
+        "user_reservations",
+        JSON.stringify(existingReservations),
+      );
+
       if (selectedMainOption === "pay_later") {
         // Handle pay later (72 hours)
         toast({

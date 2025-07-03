@@ -108,6 +108,49 @@ const UserProfile = () => {
     allowReviews: true,
   });
 
+  // Modal states for security functions
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [showSetup2FAModal, setShowSetup2FAModal] = useState(false);
+  const [showActiveSessionsModal, setShowActiveSessionsModal] = useState(false);
+  const [showAddCardModal, setShowAddCardModal] = useState(false);
+
+  // Change password handler
+  const handleChangePassword = () => {
+    setShowChangePasswordModal(true);
+    toast({
+      title: "Cambio de contraseña",
+      description: "Se ha abierto el formulario para cambiar tu contraseña",
+    });
+  };
+
+  // Setup 2FA handler
+  const handleSetup2FA = () => {
+    setShowSetup2FAModal(true);
+    toast({
+      title: "Configurar 2FA",
+      description:
+        "Se ha abierto la configuración de verificación en dos pasos",
+    });
+  };
+
+  // View sessions handler
+  const handleViewSessions = () => {
+    setShowActiveSessionsModal(true);
+    toast({
+      title: "Sesiones activas",
+      description: "Mostrando dispositivos conectados a tu cuenta",
+    });
+  };
+
+  // Add card handler
+  const handleAddCard = () => {
+    setShowAddCardModal(true);
+    toast({
+      title: "Agregar tarjeta",
+      description: "Se ha abierto el formulario para agregar una nueva tarjeta",
+    });
+  };
+
   // Simulated user stats
   const userStats = {
     totalReservations: 12,
@@ -169,9 +212,37 @@ const UserProfile = () => {
     },
   ];
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // Here would be API call to save data
+  const handleSave = async () => {
+    try {
+      // Here would be API call to save data - simulating for now
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      setIsEditing(false);
+      toast({
+        title: "Perfil actualizado",
+        description: "Tus cambios han sido guardados exitosamente",
+      });
+
+      // In a real app, you would update the session storage here
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        const updatedUser = { ...currentUser, ...profileData };
+        sessionStorage.setItem(
+          "club_salvadoreno_session",
+          JSON.stringify({
+            user: updatedUser,
+            loginTime: new Date(),
+            rememberMe: false,
+          }),
+        );
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudieron guardar los cambios. Intenta nuevamente.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleCancel = () => {
@@ -653,7 +724,7 @@ const UserProfile = () => {
                       Gestiona tus tarjetas guardadas
                     </CardDescription>
                   </div>
-                  <Button className="gap-2">
+                  <Button className="gap-2" onClick={handleAddCard}>
                     <Plus className="h-4 w-4" />
                     Agregar Tarjeta
                   </Button>
@@ -815,7 +886,9 @@ const UserProfile = () => {
                     <p className="text-sm text-slate-600 mb-2">
                       Última actualización: Hace 3 meses
                     </p>
-                    <Button variant="outline">Cambiar Contraseña</Button>
+                    <Button variant="outline" onClick={handleChangePassword}>
+                      Cambiar Contraseña
+                    </Button>
                   </div>
 
                   <Separator />
@@ -827,7 +900,9 @@ const UserProfile = () => {
                     <p className="text-sm text-slate-600 mb-2">
                       Agrega una capa extra de seguridad a tu cuenta
                     </p>
-                    <Button variant="outline">Configurar 2FA</Button>
+                    <Button variant="outline" onClick={handleSetup2FA}>
+                      Configurar 2FA
+                    </Button>
                   </div>
 
                   <Separator />
@@ -837,7 +912,9 @@ const UserProfile = () => {
                     <p className="text-sm text-slate-600 mb-2">
                       Gestiona los dispositivos conectados a tu cuenta
                     </p>
-                    <Button variant="outline">Ver Sesiones</Button>
+                    <Button variant="outline" onClick={handleViewSessions}>
+                      Ver Sesiones
+                    </Button>
                   </div>
                 </div>
               </CardContent>
