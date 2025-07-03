@@ -89,6 +89,7 @@ router.post(
           fullName: user.fullName,
           role: user.role,
           phone: user.phone,
+          isActive: user.isActive,
         },
         token: token,
       },
