@@ -282,9 +282,14 @@ export const apiGetUserStats = async (): Promise<UserStats> => {
 // Accommodation management functions
 export const apiGetAccommodations = async (): Promise<Accommodation[]> => {
   try {
-    const result = await apiRequest<Accommodation[]>("/accommodations");
+    const result = await apiRequest<{ accommodations: Accommodation[] }>(
+      "/accommodations",
+    );
     if (result.success && result.data) {
-      return result.data;
+      // Extract accommodations array from the response data structure
+      return Array.isArray(result.data)
+        ? result.data
+        : result.data.accommodations || [];
     }
     throw new Error(result.error || "Failed to fetch accommodations");
   } catch (error) {
