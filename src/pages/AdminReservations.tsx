@@ -837,7 +837,10 @@ const AdminReservations = () => {
                     <SelectValue placeholder="Seleccionar alojamiento" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(accommodations || []).map((accommodation) => (
+                    {(Array.isArray(accommodations)
+                      ? accommodations
+                      : accommodations?.accommodations || []
+                    ).map((accommodation) => (
                       <SelectItem
                         key={accommodation.id}
                         value={accommodation.id}
