@@ -49,6 +49,7 @@ import {
   CheckCircle,
   AlertCircle,
   Plus,
+  QrCode,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { getCurrentUser } from "@/lib/auth-service";
