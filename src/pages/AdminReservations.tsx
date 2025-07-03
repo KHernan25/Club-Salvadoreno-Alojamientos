@@ -126,9 +126,19 @@ const AdminReservations = () => {
     } catch (error) {
       console.error("Error loading data:", error);
       // Cargar datos mock si la API no está disponible
-      setReservations(getMockReservations());
-      setUsers(getMockUsers());
-      setAccommodations(getMockAccommodations());
+      const mockReservations = getMockReservations();
+      const mockUsers = getMockUsers();
+      const mockAccommodations = getMockAccommodations();
+
+      console.log("Loading mock data:", {
+        reservations: mockReservations.length,
+        users: mockUsers.length,
+        accommodations: mockAccommodations.length,
+      });
+
+      setReservations(mockReservations);
+      setUsers(mockUsers);
+      setAccommodations(mockAccommodations);
     } finally {
       setLoading(false);
     }
