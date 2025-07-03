@@ -110,6 +110,11 @@ const AdminReservations = () => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    // Load initial data when component mounts
+    loadData();
+  }, []);
+
   const loadData = async () => {
     try {
       setLoading(true);
@@ -699,7 +704,7 @@ const AdminReservations = () => {
                                   <AlertDialogDescription>
                                     ¿Estás seguro de que deseas cancelar la
                                     reserva {reservation.confirmationCode}? Esta
-                                    acción no se puede deshacer.
+                                    acci��n no se puede deshacer.
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
