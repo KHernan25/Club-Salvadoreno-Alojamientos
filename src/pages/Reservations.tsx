@@ -555,7 +555,7 @@ const Reservations = () => {
                     <div className="bg-slate-100 rounded-lg p-3">
                       <img
                         src={getAccommodationImage(
-                          accommodation,
+                          accommodationType,
                           accommodationId,
                         )}
                         alt={accommodationName}
