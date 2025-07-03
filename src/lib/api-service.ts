@@ -198,6 +198,11 @@ export const apiLogin = async (
     },
   );
 
+  // Save token if login successful
+  if (result.success && result.data?.token) {
+    setAuthToken(result.data.token);
+  }
+
   return {
     success: result.success,
     user: result.data?.user,
