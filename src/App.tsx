@@ -106,6 +106,9 @@ const App = () => (
               <Route path="/translation-test" element={<TranslationTest />} />
               <Route path="/country-club" element={<CountryClub />} />
 
+              {/* Debug Tools - Development only */}
+              <Route path="/debug/users" element={<UserActivationDebug />} />
+
               {/* Admin Routes - Protected for backoffice roles only */}
               <Route
                 path="/admin/dashboard"
