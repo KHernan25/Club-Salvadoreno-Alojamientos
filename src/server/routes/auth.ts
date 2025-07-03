@@ -89,6 +89,7 @@ router.post(
           fullName: user.fullName,
           role: user.role,
           phone: user.phone,
+          isActive: user.isActive,
         },
         token: token,
       },
@@ -149,6 +150,7 @@ router.post(
           fullName: result.user!.fullName,
           role: result.user!.role,
           phone: result.user!.phone,
+          isActive: result.user!.isActive,
         },
       },
     });
@@ -174,6 +176,7 @@ router.get(
           fullName: user.fullName,
           role: user.role,
           phone: user.phone,
+          isActive: user.isActive,
           lastLogin: user.lastLogin,
           createdAt: user.createdAt,
         },
