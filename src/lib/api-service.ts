@@ -344,11 +344,28 @@ export const apiUpdateAccommodation = async (
 };
 
 // Reservation management functions
-export const apiGetReservations = async (): Promise<Reservation[]> => {
+export const apiGetReservations = async (
+  isAdmin: boolean = false,
+): Promise<Reservation[]> => {
   try {
-    const result = await apiRequest<Reservation[]>("/reservations");
+    const endpoint = isAdmin ? "/reservations/all" : "/reservations";
+    const result = await apiRequest<any>(endpoint);
+
     if (result.success && result.data) {
-      return result.data;
+      // Handle different response formats
+      if (isAdmin && result.data.reservations) {
+        // Admin endpoint returns { data: { reservations: [...], pagination: {...} } }
+        return result.data.reservations;
+      } else if (Array.isArray(result.data)) {
+        // Regular endpoint returns array directly
+        return result.data;
+      } else if (
+        result.data.reservations &&
+        Array.isArray(result.data.reservations)
+      ) {
+        // Fallback for wrapped array format
+        return result.data.reservations;
+      }
     }
     throw new Error(result.error || "Failed to fetch reservations");
   } catch (error) {
