@@ -52,6 +52,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { getCurrentUser } from "@/lib/auth-service";
+import { useToast } from "@/hooks/use-toast";
 
 const UserProfile = () => {
   const navigate = useNavigate();
