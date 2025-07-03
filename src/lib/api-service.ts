@@ -132,29 +132,32 @@ const apiRequest = async <T>(
     );
 
     let data: any;
-    try {
-      // Clone the response to safely read the body for logging
-      const responseClone = response.clone();
 
-      // Read as JSON first
-      data = await response.json();
-      console.log("✅ Parsed JSON successfully:", data);
-    } catch (parseError) {
-      console.error("❌ Failed to parse response as JSON:", parseError);
-
-      // If JSON parsing fails, try to read the cloned response as text for debugging
+    // Handle empty responses
+    if (
+      response.status === 204 ||
+      response.headers.get("content-length") === "0"
+    ) {
+      data = {};
+    } else {
       try {
-        const responseForText = response.clone();
-        const text = await responseForText.text();
-        console.log("📄 Raw text response:", text);
-      } catch (textError) {
-        console.error("❌ Also failed to read as text:", textError);
-      }
+        const text = await response.text();
+        console.log("📥 Raw response text:", text);
 
-      return {
-        success: false,
-        error: `Invalid JSON response: ${response.status}`,
-      };
+        if (text.trim()) {
+          data = JSON.parse(text);
+          console.log("✅ Parsed JSON successfully:", data);
+        } else {
+          data = {};
+          console.log("📄 Empty response body");
+        }
+      } catch (parseError) {
+        console.error("❌ Failed to parse response:", parseError);
+        return {
+          success: false,
+          error: `Invalid response format: ${response.status}`,
+        };
+      }
     }
 
     if (!response.ok) {
