@@ -118,6 +118,8 @@ const AdminReservations = () => {
   const loadData = async () => {
     try {
       setLoading(true);
+      console.log("🔄 Iniciando carga de datos...");
+
       const [reservationsData, usersData, accommodationsData] =
         await Promise.all([
           apiGetReservations(),
@@ -125,17 +127,23 @@ const AdminReservations = () => {
           apiGetAccommodations(),
         ]);
 
+      console.log("✅ Datos cargados desde API:", {
+        reservations: reservationsData?.length || 0,
+        users: usersData?.length || 0,
+        accommodations: accommodationsData?.length || 0,
+      });
+
       setReservations(reservationsData);
       setUsers(usersData);
       setAccommodations(accommodationsData);
     } catch (error) {
-      console.error("Error loading data:", error);
+      console.error("❌ Error loading data:", error);
       // Cargar datos mock si la API no está disponible
       const mockReservations = getMockReservations();
       const mockUsers = getMockUsers();
       const mockAccommodations = getMockAccommodations();
 
-      console.log("Loading mock data:", {
+      console.log("📋 Loading mock data:", {
         reservations: mockReservations.length,
         users: mockUsers.length,
         accommodations: mockAccommodations.length,
