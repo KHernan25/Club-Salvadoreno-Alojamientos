@@ -1,4 +1,9 @@
-import { userDatabase, type User } from "@/lib/user-database";
+import {
+  registeredUsers,
+  findUserByEmail,
+  findUserByUsername,
+  type User,
+} from "@/lib/user-database";
 
 // Interface for status report
 interface UserStatusReport {
@@ -22,7 +27,7 @@ interface ActivationResult {
  * Get a status report of all users in the system
  */
 export function getUserStatusReport(): UserStatusReport {
-  const allUsers = userDatabase.getAllUsers();
+  const allUsers = registeredUsers;
 
   const activeUsers = allUsers.filter((user) => user.isActive);
   const inactiveUsers = allUsers.filter((user) => !user.isActive);
@@ -42,7 +47,11 @@ export function getUserStatusReport(): UserStatusReport {
  * Activate a user by email or username
  */
 export function activateUserByIdentifier(identifier: string): ActivationResult {
-  const user = userDatabase.getUserByEmailOrUsername(identifier);
+  let user = findUserByUsername(identifier);
+
+  if (!user) {
+    user = findUserByEmail(identifier);
+  }
 
   if (!user) {
     return {
@@ -58,27 +67,20 @@ export function activateUserByIdentifier(identifier: string): ActivationResult {
     };
   }
 
-  // Activate the user
-  const success = userDatabase.updateUser(user.id, { isActive: true });
+  // Activate the user (directly modify the object since it's in-memory)
+  user.isActive = true;
 
-  if (success) {
-    return {
-      success: true,
-      message: `Usuario ${user.fullName} ha sido activado exitosamente`,
-    };
-  } else {
-    return {
-      success: false,
-      message: `Error al activar usuario ${user.fullName}`,
-    };
-  }
+  return {
+    success: true,
+    message: `Usuario ${user.fullName} ha sido activado exitosamente`,
+  };
 }
 
 /**
  * Activate all inactive users in the system
  */
 export function activateAllInactiveUsers(): ActivationResult {
-  const allUsers = userDatabase.getAllUsers();
+  const allUsers = registeredUsers;
   const inactiveUsers = allUsers.filter((user) => !user.isActive);
 
   if (inactiveUsers.length === 0) {
@@ -91,10 +93,8 @@ export function activateAllInactiveUsers(): ActivationResult {
   let activatedCount = 0;
 
   for (const user of inactiveUsers) {
-    const success = userDatabase.updateUser(user.id, { isActive: true });
-    if (success) {
-      activatedCount++;
-    }
+    user.isActive = true;
+    activatedCount++;
   }
 
   return {
