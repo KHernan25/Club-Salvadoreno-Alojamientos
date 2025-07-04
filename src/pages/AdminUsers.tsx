@@ -71,8 +71,13 @@ import {
   apiActivateUser,
   apiDeactivateUser,
   apiUpdateUser,
-  User as ApiUser,
+  User,
 } from "@/lib/api-service";
+
+// Extended User type for admin UI to handle additional fields
+interface ApiUser extends User {
+  registeredAt?: string;
+}
 import {
   getCurrentUser,
   isSuperAdmin,
@@ -137,12 +142,15 @@ const AdminUsers = () => {
       lastName: "Sistema",
       email: "admin@clubsalvadoreno.com",
       username: "admin",
-      role: "admin",
+      password: "admin123",
+      fullName: "Administrador Sistema",
+      role: "super_admin",
       isActive: true,
       phone: "+503 2345-6789",
+      createdAt: new Date("2024-01-01T00:00:00Z"),
       registeredAt: "2024-01-01T00:00:00Z",
-      lastLogin: "2024-01-15T10:30:00Z",
-      status: "active",
+      lastLogin: new Date("2024-01-15T10:30:00Z"),
+      status: "approved",
     },
     {
       id: "2",
@@ -150,9 +158,12 @@ const AdminUsers = () => {
       lastName: "González",
       email: "maria.gonzalez@email.com",
       username: "maria_gonzalez",
+      password: "maria123",
+      fullName: "María González",
       role: "user",
       isActive: false,
       phone: "+503 7890-1234",
+      createdAt: new Date("2024-01-14T15:20:00Z"),
       registeredAt: "2024-01-14T15:20:00Z",
       status: "pending",
     },
@@ -162,12 +173,15 @@ const AdminUsers = () => {
       lastName: "Méndez",
       email: "carlos.mendez@email.com",
       username: "carlos_mendez",
+      password: "carlos123",
+      fullName: "Carlos Méndez",
       role: "user",
       isActive: true,
       phone: "+503 6789-0123",
+      createdAt: new Date("2024-01-13T09:15:00Z"),
       registeredAt: "2024-01-13T09:15:00Z",
-      lastLogin: "2024-01-15T08:45:00Z",
-      status: "active",
+      lastLogin: new Date("2024-01-15T08:45:00Z"),
+      status: "approved",
     },
     {
       id: "4",
@@ -175,9 +189,12 @@ const AdminUsers = () => {
       lastName: "Rodríguez",
       email: "ana.rodriguez@email.com",
       username: "ana_rodriguez",
+      password: "ana123",
+      fullName: "Ana Rodríguez",
       role: "user",
       isActive: false,
       phone: "+503 5678-9012",
+      createdAt: new Date("2024-01-12T14:30:00Z"),
       registeredAt: "2024-01-12T14:30:00Z",
       status: "pending",
     },
@@ -187,12 +204,15 @@ const AdminUsers = () => {
       lastName: "Recepción",
       email: "recepcion@clubsalvadoreno.com",
       username: "recepcion",
-      role: "staff",
+      password: "recepcion123",
+      fullName: "Personal Recepción",
+      role: "atencion_miembro",
       isActive: true,
       phone: "+503 2345-6789",
+      createdAt: new Date("2024-01-01T00:00:00Z"),
       registeredAt: "2024-01-01T00:00:00Z",
-      lastLogin: "2024-01-15T07:00:00Z",
-      status: "active",
+      lastLogin: new Date("2024-01-15T07:00:00Z"),
+      status: "approved",
     },
   ];
 
@@ -258,9 +278,11 @@ const AdminUsers = () => {
       const newUser: ApiUser = {
         id: ((users?.length || 0) + 1).toString(),
         ...newUserForm,
+        fullName: `${newUserForm.firstName} ${newUserForm.lastName}`,
         isActive: true,
+        createdAt: new Date(),
         registeredAt: new Date().toISOString(),
-        status: "active",
+        status: "approved",
       };
 
       setUsers([...(users || []), newUser]);
@@ -325,9 +347,11 @@ const AdminUsers = () => {
   const pendingUsers = (users || []).filter(
     (user) => user.status === "pending",
   );
-  const activeUsers = (users || []).filter((user) => user.status === "active");
+  const activeUsers = (users || []).filter(
+    (user) => user.status === "approved",
+  );
   const inactiveUsers = (users || []).filter(
-    (user) => user.status === "inactive",
+    (user) => user.status === "rejected",
   );
 
   const UserRow = ({ user }: { user: ApiUser }) => (
@@ -379,27 +403,29 @@ const AdminUsers = () => {
       <TableCell>
         <Badge
           variant={
-            user.status === "active"
+            user.status === "approved"
               ? "default"
               : user.status === "pending"
                 ? "outline"
                 : "destructive"
           }
         >
-          {user.status === "active"
-            ? "Activo"
+          {user.status === "approved"
+            ? "Aprobado"
             : user.status === "pending"
               ? "Pendiente"
-              : "Inactivo"}
+              : "Rechazado"}
         </Badge>
       </TableCell>
       <TableCell>
         <p className="text-sm">
-          {new Date(user.registeredAt).toLocaleDateString()}
+          {user.registeredAt
+            ? new Date(user.registeredAt).toLocaleDateString()
+            : new Date(user.createdAt).toLocaleDateString()}
         </p>
         {user.lastLogin && (
           <p className="text-xs text-gray-500">
-            Último acceso: {new Date(user.lastLogin).toLocaleDateString()}
+            Último acceso: {user.lastLogin.toLocaleDateString()}
           </p>
         )}
       </TableCell>
@@ -609,8 +635,8 @@ const AdminUsers = () => {
                   <SelectContent>
                     <SelectItem value="all">Todos los estados</SelectItem>
                     <SelectItem value="pending">Pendiente</SelectItem>
-                    <SelectItem value="active">Activo</SelectItem>
-                    <SelectItem value="inactive">Inactivo</SelectItem>
+                    <SelectItem value="approved">Aprobado</SelectItem>
+                    <SelectItem value="rejected">Rechazado</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
