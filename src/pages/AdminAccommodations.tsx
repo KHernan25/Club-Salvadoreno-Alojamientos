@@ -112,6 +112,8 @@ const AdminAccommodations = () => {
       type: "apartamento",
       location: "el-sunzal",
       capacity: 2,
+      price: 230,
+      status: "available",
       description:
         "Cómodo apartamento con vista directa al mar, perfecto para parejas. Ubicado en el primer piso con fácil acceso y todas las comodidades necesarias.",
       amenities: ["Wi-Fi", "Aire acondicionado", "TV", "Kitchenette"],
@@ -129,6 +131,8 @@ const AdminAccommodations = () => {
       type: "apartamento",
       location: "el-sunzal",
       capacity: 2,
+      price: 210,
+      status: "available",
       description:
         "Apartamento acogedor con vista parcial al mar. Ideal para una estancia romántica con todas las comodidades modernas.",
       amenities: ["Wi-Fi", "Aire acondicionado", "TV", "Kitchenette"],
@@ -146,6 +150,8 @@ const AdminAccommodations = () => {
       type: "apartamento",
       location: "el-sunzal",
       capacity: 4,
+      price: 250,
+      status: "available",
       description:
         "Espacioso apartamento para familias con vista premium al mar. Segundo piso con balcón privado y cocina completa.",
       amenities: [
@@ -169,6 +175,8 @@ const AdminAccommodations = () => {
       type: "apartamento",
       location: "el-sunzal",
       capacity: 4,
+      price: 225,
+      status: "available",
       description:
         "Apartamento familiar con vista al jardín tropical. Perfecto para familias que buscan tranquilidad y confort.",
       amenities: ["Wi-Fi", "Aire acondicionado", "TV", "Cocina completa"],
@@ -186,6 +194,8 @@ const AdminAccommodations = () => {
       type: "apartamento",
       location: "el-sunzal",
       capacity: 6,
+      price: 350,
+      status: "available",
       description:
         "Penthouse de lujo con todas las comodidades para grupos grandes. Vista panorámica espectacular y terraza privada con jacuzzi.",
       amenities: [
@@ -210,6 +220,8 @@ const AdminAccommodations = () => {
       type: "apartamento",
       location: "el-sunzal",
       capacity: 6,
+      price: 320,
+      status: "available",
       description:
         "Amplio apartamento con vista lateral al mar. Excelente para grupos grandes con terraza amplia y múltiples comodidades.",
       amenities: [
@@ -235,6 +247,8 @@ const AdminAccommodations = () => {
       type: "casa",
       location: "el-sunzal",
       capacity: 6,
+      price: 450,
+      status: "available",
       description:
         "Casa diseñada especialmente para surfistas con acceso directo al break. Incluye almacenamiento para tablas y ducha exterior.",
       amenities: [
@@ -256,6 +270,8 @@ const AdminAccommodations = () => {
       type: "casa",
       location: "el-sunzal",
       capacity: 8,
+      price: 550,
+      status: "available",
       description:
         "Casa amplia y familiar con todas las comodidades para grupos grandes. Jardín privado, BBQ y sala de juegos incluidos.",
       amenities: [
@@ -277,6 +293,8 @@ const AdminAccommodations = () => {
       type: "casa",
       location: "el-sunzal",
       capacity: 6,
+      price: 500,
+      status: "available",
       description:
         "Casa elevada con vista panorámica espectacular del océano. Jacuzzi exterior, terraza multinivel y hamacas.",
       amenities: [
@@ -300,6 +318,8 @@ const AdminAccommodations = () => {
       type: "suite" as const,
       location: "el-sunzal" as const,
       capacity: 2 + Math.floor(i / 4),
+      price: 320 + i * 15,
+      status: "available" as const,
       description: `Suite de lujo número ${i + 1} con servicios premium incluidos. Diseño elegante con vista panorámica al océano Pacífico.`,
       amenities: [
         "Wi-Fi",
@@ -331,6 +351,8 @@ const AdminAccommodations = () => {
       type: "casa" as const,
       location: "corinto" as const,
       capacity: 4 + Math.floor(i / 2),
+      price: 280 + i * 25,
+      status: (i !== 3 ? "available" : "maintenance") as const,
       description: `Casa moderna ${i + 1} en Corinto con vista al lago. Ambiente tranquilo y relajante perfecto para desconectarse de la rutina.`,
       amenities: [
         "Wi-Fi",
