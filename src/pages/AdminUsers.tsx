@@ -242,7 +242,7 @@ const AdminUsers = () => {
     }
   };
 
-  const handleUpdateUser = async (userData: Partial<ApiUser>) => {
+  const handleUpdateUser = async (userData: Partial<User>) => {
     if (!selectedUser) return;
 
     try {
