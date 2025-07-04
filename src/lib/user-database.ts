@@ -21,6 +21,7 @@ export interface User {
   status?: "pending" | "approved" | "rejected";
   lastLogin?: Date;
   createdAt: Date;
+  profileImage?: string;
 }
 
 // Definir permisos por rol
