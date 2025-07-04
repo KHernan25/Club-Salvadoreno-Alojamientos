@@ -137,7 +137,7 @@ const AdminUsers = () => {
       lastName: "Sistema",
       email: "admin@clubsalvadoreno.com",
       username: "admin",
-      role: "admin",
+      role: "super_admin",
       isActive: true,
       phone: "+503 2345-6789",
       registeredAt: "2024-01-01T00:00:00Z",
@@ -187,7 +187,7 @@ const AdminUsers = () => {
       lastName: "Recepción",
       email: "recepcion@clubsalvadoreno.com",
       username: "recepcion",
-      role: "staff",
+      role: "atencion_miembro",
       isActive: true,
       phone: "+503 2345-6789",
       registeredAt: "2024-01-01T00:00:00Z",
@@ -363,7 +363,7 @@ const AdminUsers = () => {
             variant={
               user.role === "super_admin"
                 ? "default"
-                : user.role === "admin"
+                : user.role === "atencion_miembro"
                   ? "default"
                   : "secondary"
             }
@@ -440,7 +440,7 @@ const AdminUsers = () => {
                 <Edit className="h-3 w-3 mr-1" />
                 Editar
               </Button>
-              {user.role !== "admin" && (
+              {user.role !== "super_admin" && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button size="sm" variant="outline">
