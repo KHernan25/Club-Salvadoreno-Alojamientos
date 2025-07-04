@@ -203,7 +203,7 @@ const Login = () => {
               }}
               style={{ display: "block" }}
             />
-            <h1 className="text-white text-3xl tracking-wider ">
+            <h1 className="text-white text-3xl tracking-wider">
               Reservas de Alojamientos
               <br />
             </h1>

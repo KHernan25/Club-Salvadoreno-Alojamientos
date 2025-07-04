@@ -115,21 +115,43 @@ const BackofficeLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+    <div className="min-h-screen relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center opacity-10"></div>
+      <div
+        className="absolute inset-0 bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(rgba(2, 21, 71, 0.85), rgba(2, 21, 71, 0.85)), url('/collage_club.png')`,
+          backgroundSize: '1920px 1000px',
+          backgroundPosition: 'center center',
+        }}
+      />
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
         <div className="w-full max-w-md">
-          {/* Logo y Título */}
+          {/* Logo */}
           <div className="text-center mb-8">
-            <div className="mx-auto w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-lg">
-              <Shield className="h-10 w-10 text-blue-900" />
-            </div>
-            <h1 className="text-white text-3xl font-bold mb-2">Backoffice</h1>
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-4"
+              onError={(e) => {
+                console.error("Primary logo failed to load, trying fallback");
+                // Try fallback logo
+                const target = e.currentTarget as HTMLImageElement;
+                if (target.src.includes("logo.png")) {
+                  target.src = "/logo_azul.png";
+                } else if (target.src.includes("logo_azul.png")) {
+                  target.src = "/logo_menu.png";
+                } else {
+                  // All logos failed, hide the image
+                  target.style.display = "none";
+                }
+              }}
+              style={{ display: "block" }}
+            />
+            <h1 className="text-white text-3xl tracking-wider mb-2">Backoffice</h1>
             <p className="text-blue-200 text-lg">Sistema de Administración</p>
-            <p className="text-blue-300 text-sm mt-2">Club Salvadoreño</p>
           </div>
 
           {/* Login Form */}
