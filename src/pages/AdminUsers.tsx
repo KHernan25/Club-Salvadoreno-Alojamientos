@@ -132,7 +132,7 @@ const AdminUsers = () => {
     }
   };
 
-  const getMockUsers = (): ApiUser[] => [
+  const getMockUsers = (): User[] => [
     {
       id: "1",
       firstName: "Administrador",
