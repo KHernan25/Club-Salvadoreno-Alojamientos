@@ -283,24 +283,26 @@ router.post(
 );
 
 // Get registration request by ID
-router.get("/:id", authenticateToken, (req, res) => {
+router.get("/:id", authenticateToken, (req: AuthenticatedRequest, res) => {
   try {
     const user = req.user;
     if (!user || !["super_admin", "atencion_miembro"].includes(user.role)) {
-      return res.status(403).json({
+      res.status(403).json({
         success: false,
         error: "No tienes permisos para ver las solicitudes de registro",
       });
+      return;
     }
 
     const requestId = req.params.id;
     const request = registrationRequests.find((r) => r.id === requestId);
 
     if (!request) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: "Solicitud de registro no encontrada",
       });
+      return;
     }
 
     res.json({
