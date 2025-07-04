@@ -160,7 +160,7 @@ const NavigationDemo = () => {
                   <p className="text-sm text-slate-600">Rol</p>
                   <Badge
                     variant={
-                      currentUser.role === "admin" ? "default" : "secondary"
+                      currentUser.role === "super_admin" ? "default" : "secondary"
                     }
                   >
                     {currentUser.role}

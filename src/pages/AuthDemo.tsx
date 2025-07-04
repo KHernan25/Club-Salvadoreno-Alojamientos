@@ -321,9 +321,9 @@ const RecentUsersDisplay = () => {
               </div>
               <Badge
                 variant={
-                  cred.role === "admin"
+                  cred.role === "super_admin"
                     ? "default"
-                    : cred.role === "staff"
+                    : cred.role === "atencion_miembro"
                       ? "secondary"
                       : "outline"
                 }
