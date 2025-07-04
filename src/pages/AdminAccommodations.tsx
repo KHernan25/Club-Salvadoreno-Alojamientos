@@ -352,7 +352,7 @@ const AdminAccommodations = () => {
       location: "corinto" as const,
       capacity: 4 + Math.floor(i / 2),
       price: 280 + i * 25,
-      status: (i !== 3 ? "available" : "maintenance") as const,
+      status: i !== 3 ? "available" : "maintenance",
       description: `Casa moderna ${i + 1} en Corinto con vista al lago. Ambiente tranquilo y relajante perfecto para desconectarse de la rutina.`,
       amenities: [
         "Wi-Fi",

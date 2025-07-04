@@ -101,8 +101,12 @@ interface Reservation {
   checkOut: string;
   guests: number;
   totalPrice: number;
-  status: string;
+  status: "pending" | "confirmed" | "cancelled" | "completed";
   createdAt: string;
+  updatedAt?: string;
+  paymentStatus: "pending" | "paid" | "refunded";
+  confirmationCode: string;
+  specialRequests?: string;
   guestName?: string;
   accommodationName?: string;
 }
