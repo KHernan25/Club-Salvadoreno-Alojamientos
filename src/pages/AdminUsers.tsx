@@ -278,9 +278,11 @@ const AdminUsers = () => {
       const newUser: ApiUser = {
         id: ((users?.length || 0) + 1).toString(),
         ...newUserForm,
+        fullName: `${newUserForm.firstName} ${newUserForm.lastName}`,
         isActive: true,
+        createdAt: new Date(),
         registeredAt: new Date().toISOString(),
-        status: "active",
+        status: "approved",
       };
 
       setUsers([...(users || []), newUser]);
