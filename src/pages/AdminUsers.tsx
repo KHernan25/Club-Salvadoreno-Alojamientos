@@ -635,8 +635,8 @@ const AdminUsers = () => {
                   <SelectContent>
                     <SelectItem value="all">Todos los estados</SelectItem>
                     <SelectItem value="pending">Pendiente</SelectItem>
-                    <SelectItem value="active">Activo</SelectItem>
-                    <SelectItem value="inactive">Inactivo</SelectItem>
+                    <SelectItem value="approved">Aprobado</SelectItem>
+                    <SelectItem value="rejected">Rechazado</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
