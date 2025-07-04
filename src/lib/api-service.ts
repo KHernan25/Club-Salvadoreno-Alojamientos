@@ -581,6 +581,6 @@ export const apiService = {
 };
 
 // Export interfaces
-export type { RegistrationRequest };
+export type { RegistrationRequest, Accommodation };
 
 export default apiService;
