@@ -86,12 +86,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 const AdminUsers = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [users, setUsers] = useState<ApiUser[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [selectedUser, setSelectedUser] = useState<ApiUser | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isNewUserDialogOpen, setIsNewUserDialogOpen] = useState(false);
   const [newUserForm, setNewUserForm] = useState({
@@ -100,7 +100,7 @@ const AdminUsers = () => {
     email: "",
     username: "",
     phone: "",
-    role: "user" as ApiUser["role"],
+    role: "user" as User["role"],
     password: "",
   });
 
