@@ -71,8 +71,13 @@ import {
   apiActivateUser,
   apiDeactivateUser,
   apiUpdateUser,
-  User as ApiUser,
+  User,
 } from "@/lib/api-service";
+
+// Extended User type for admin UI to handle additional fields
+interface ApiUser extends User {
+  registeredAt?: string;
+}
 import {
   getCurrentUser,
   isSuperAdmin,
