@@ -843,26 +843,25 @@ const AdminReservations = () => {
                     <SelectValue placeholder="Seleccionar alojamiento" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(Array.isArray(accommodations)
-                      ? accommodations
-                      : accommodations?.accommodations || []
-                    ).map((accommodation) => (
-                      <SelectItem
-                        key={accommodation.id}
-                        value={accommodation.id}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <MapPin className="h-3 w-3 text-blue-600" />
-                          <span>
-                            {accommodation.name} -{" "}
-                            {accommodation.location === "el-sunzal"
-                              ? "El Sunzal"
-                              : "Corinto"}
-                            (Cap: {accommodation.capacity})
-                          </span>
-                        </div>
-                      </SelectItem>
-                    ))}
+                    {(Array.isArray(accommodations) ? accommodations : []).map(
+                      (accommodation) => (
+                        <SelectItem
+                          key={accommodation.id}
+                          value={accommodation.id}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <MapPin className="h-3 w-3 text-blue-600" />
+                            <span>
+                              {accommodation.name} -{" "}
+                              {accommodation.location === "el-sunzal"
+                                ? "El Sunzal"
+                                : "Corinto"}
+                              (Cap: {accommodation.capacity})
+                            </span>
+                          </div>
+                        </SelectItem>
+                      ),
+                    )}
                   </SelectContent>
                 </Select>
               </div>
