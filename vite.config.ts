@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => ({
               req.method,
               req.url,
               "→",
-              options.target + req.url,
+              (options.target || "") + (req.url || ""),
             );
           });
           proxy.on("proxyRes", (proxyRes, req, res) => {
