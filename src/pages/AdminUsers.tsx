@@ -160,7 +160,6 @@ const AdminUsers = () => {
       isActive: false,
       phone: "+503 7890-1234",
       createdAt: new Date("2024-01-14T15:20:00Z"),
-      registeredAt: "2024-01-14T15:20:00Z",
       status: "pending",
     },
     {
