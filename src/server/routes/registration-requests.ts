@@ -1,12 +1,30 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
-import { authenticateToken } from "../middleware/auth";
+import { authenticateToken, AuthenticatedRequest } from "../middleware/auth";
 
 const router = express.Router();
 
+// Type definitions for registration requests
+interface RegistrationRequest {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  documentType: string;
+  documentNumber: string;
+  memberCode: string;
+  status: "pending" | "approved" | "rejected";
+  requestedAt: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+  rejectionReason?: string;
+  notes?: string;
+}
+
 // Mock data for registration requests
 // In a real application, this would come from a database
-const registrationRequests = [
+const registrationRequests: RegistrationRequest[] = [
   {
     id: "req-001",
     firstName: "María",
@@ -63,15 +81,16 @@ const registrationRequests = [
 ];
 
 // Get all registration requests
-router.get("/", authenticateToken, (req, res) => {
+router.get("/", authenticateToken, (req: AuthenticatedRequest, res) => {
   try {
     // Check if user has permission to view registration requests
     const user = req.user;
     if (!user || !["super_admin", "atencion_miembro"].includes(user.role)) {
-      return res.status(403).json({
+      res.status(403).json({
         success: false,
         error: "No tienes permisos para ver las solicitudes de registro",
       });
+      return;
     }
 
     res.json({
@@ -92,23 +111,25 @@ router.post(
   "/:id/approve",
   authenticateToken,
   [body("notes").optional().isString().trim()],
-  (req, res) => {
+  (req: AuthenticatedRequest, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: "Datos de entrada inválidos",
           details: errors.array(),
         });
+        return;
       }
 
       const user = req.user;
       if (!user || !["super_admin", "atencion_miembro"].includes(user.role)) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: "No tienes permisos para aprobar solicitudes de registro",
         });
+        return;
       }
 
       const requestId = req.params.id;
@@ -120,19 +141,21 @@ router.post(
       );
 
       if (requestIndex === -1) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: "Solicitud de registro no encontrada",
         });
+        return;
       }
 
       const request = registrationRequests[requestIndex];
 
       if (request.status !== "pending") {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: "Esta solicitud ya ha sido procesada",
         });
+        return;
       }
 
       // Update the request status
@@ -178,23 +201,25 @@ router.post(
       .withMessage("La razón del rechazo es requerida"),
     body("notes").optional().isString().trim(),
   ],
-  (req, res) => {
+  (req: AuthenticatedRequest, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: "Datos de entrada inválidos",
           details: errors.array(),
         });
+        return;
       }
 
       const user = req.user;
       if (!user || !["super_admin", "atencion_miembro"].includes(user.role)) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: "No tienes permisos para rechazar solicitudes de registro",
         });
+        return;
       }
 
       const requestId = req.params.id;
@@ -206,19 +231,21 @@ router.post(
       );
 
       if (requestIndex === -1) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: "Solicitud de registro no encontrada",
         });
+        return;
       }
 
       const request = registrationRequests[requestIndex];
 
       if (request.status !== "pending") {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: "Esta solicitud ya ha sido procesada",
         });
+        return;
       }
 
       // Update the request status
@@ -256,24 +283,26 @@ router.post(
 );
 
 // Get registration request by ID
-router.get("/:id", authenticateToken, (req, res) => {
+router.get("/:id", authenticateToken, (req: AuthenticatedRequest, res) => {
   try {
     const user = req.user;
     if (!user || !["super_admin", "atencion_miembro"].includes(user.role)) {
-      return res.status(403).json({
+      res.status(403).json({
         success: false,
         error: "No tienes permisos para ver las solicitudes de registro",
       });
+      return;
     }
 
     const requestId = req.params.id;
     const request = registrationRequests.find((r) => r.id === requestId);
 
     if (!request) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: "Solicitud de registro no encontrada",
       });
+      return;
     }
 
     res.json({
