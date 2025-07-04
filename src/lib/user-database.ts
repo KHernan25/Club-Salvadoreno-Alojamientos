@@ -18,6 +18,7 @@ export interface User {
     | "mercadeo"
     | "user";
   isActive: boolean;
+  status?: "pending" | "approved" | "rejected";
   lastLogin?: Date;
   createdAt: Date;
 }
@@ -396,6 +397,7 @@ export interface RegistrationResult {
   success: boolean;
   user?: User;
   error?: string;
+  message?: string;
 }
 
 // Verificar si un email está disponible

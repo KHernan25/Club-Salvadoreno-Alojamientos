@@ -521,6 +521,3 @@ export const useUnifiedData = () => {
       unifiedDataService.getFilteredAccommodations(filters),
   };
 };
-
-// Exportar tipos
-export type { UnifiedAccommodation, UserProfile };
