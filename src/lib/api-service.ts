@@ -111,8 +111,16 @@ const apiRequest = async <T>(
     // Prepare headers with authentication
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      ...options.headers,
     };
+
+    // Add custom headers if provided
+    if (options.headers) {
+      Object.entries(options.headers).forEach(([key, value]) => {
+        if (typeof value === "string") {
+          headers[key] = value;
+        }
+      });
+    }
 
     // Add authorization header if token exists
     const token = getAuthToken();
