@@ -1,8 +1,26 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
-import { authenticateToken } from "../middleware/auth";
+import { authenticateToken, AuthenticatedRequest } from "../middleware/auth";
 
 const router = express.Router();
+
+// Type definitions for registration requests
+interface RegistrationRequest {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  documentType: string;
+  documentNumber: string;
+  memberCode: string;
+  status: "pending" | "approved" | "rejected";
+  requestedAt: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+  rejectionReason?: string;
+  notes?: string;
+}
 
 // Mock data for registration requests
 // In a real application, this would come from a database
