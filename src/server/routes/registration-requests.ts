@@ -201,23 +201,25 @@ router.post(
       .withMessage("La razón del rechazo es requerida"),
     body("notes").optional().isString().trim(),
   ],
-  (req, res) => {
+  (req: AuthenticatedRequest, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: "Datos de entrada inválidos",
           details: errors.array(),
         });
+        return;
       }
 
       const user = req.user;
       if (!user || !["super_admin", "atencion_miembro"].includes(user.role)) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           error: "No tienes permisos para rechazar solicitudes de registro",
         });
+        return;
       }
 
       const requestId = req.params.id;
@@ -229,19 +231,21 @@ router.post(
       );
 
       if (requestIndex === -1) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           error: "Solicitud de registro no encontrada",
         });
+        return;
       }
 
       const request = registrationRequests[requestIndex];
 
       if (request.status !== "pending") {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           error: "Esta solicitud ya ha sido procesada",
         });
+        return;
       }
 
       // Update the request status
