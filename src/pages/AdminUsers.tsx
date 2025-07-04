@@ -174,7 +174,6 @@ const AdminUsers = () => {
       isActive: true,
       phone: "+503 6789-0123",
       createdAt: new Date("2024-01-13T09:15:00Z"),
-      registeredAt: "2024-01-13T09:15:00Z",
       lastLogin: new Date("2024-01-15T08:45:00Z"),
       status: "approved",
     },
