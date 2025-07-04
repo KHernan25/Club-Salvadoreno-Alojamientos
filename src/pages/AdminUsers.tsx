@@ -403,18 +403,18 @@ const AdminUsers = () => {
       <TableCell>
         <Badge
           variant={
-            user.status === "active"
+            user.status === "approved"
               ? "default"
               : user.status === "pending"
                 ? "outline"
                 : "destructive"
           }
         >
-          {user.status === "active"
-            ? "Activo"
+          {user.status === "approved"
+            ? "Aprobado"
             : user.status === "pending"
               ? "Pendiente"
-              : "Inactivo"}
+              : "Rechazado"}
         </Badge>
       </TableCell>
       <TableCell>
