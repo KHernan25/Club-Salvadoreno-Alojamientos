@@ -410,9 +410,7 @@ const AdminUsers = () => {
       </TableCell>
       <TableCell>
         <p className="text-sm">
-          {user.registeredAt
-            ? new Date(user.registeredAt).toLocaleDateString()
-            : new Date(user.createdAt).toLocaleDateString()}
+          {new Date(user.createdAt).toLocaleDateString()}
         </p>
         {user.lastLogin && (
           <p className="text-xs text-gray-500">
