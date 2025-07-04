@@ -419,11 +419,13 @@ const AdminUsers = () => {
       </TableCell>
       <TableCell>
         <p className="text-sm">
-          {new Date(user.registeredAt).toLocaleDateString()}
+          {user.registeredAt
+            ? new Date(user.registeredAt).toLocaleDateString()
+            : new Date(user.createdAt).toLocaleDateString()}
         </p>
         {user.lastLogin && (
           <p className="text-xs text-gray-500">
-            Último acceso: {new Date(user.lastLogin).toLocaleDateString()}
+            Último acceso: {user.lastLogin.toLocaleDateString()}
           </p>
         )}
       </TableCell>
