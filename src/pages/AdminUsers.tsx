@@ -345,7 +345,7 @@ const AdminUsers = () => {
     (user) => user.status === "rejected",
   );
 
-  const UserRow = ({ user }: { user: ApiUser }) => (
+  const UserRow = ({ user }: { user: User }) => (
     <TableRow>
       <TableCell>
         <div className="flex items-center space-x-3">
