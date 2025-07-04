@@ -347,9 +347,11 @@ const AdminUsers = () => {
   const pendingUsers = (users || []).filter(
     (user) => user.status === "pending",
   );
-  const activeUsers = (users || []).filter((user) => user.status === "active");
+  const activeUsers = (users || []).filter(
+    (user) => user.status === "approved",
+  );
   const inactiveUsers = (users || []).filter(
-    (user) => user.status === "inactive",
+    (user) => user.status === "rejected",
   );
 
   const UserRow = ({ user }: { user: ApiUser }) => (
