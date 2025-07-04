@@ -30,11 +30,11 @@ const BackofficeLogin = () => {
     if (session) {
       // Si es admin/staff, va al dashboard admin, sino va al sitio principal
       if (
-        session.role === "super_admin" ||
-        session.role === "atencion_miembro" ||
-        session.role === "anfitrion" ||
-        session.role === "monitor" ||
-        session.role === "mercadeo"
+        session.user.role === "super_admin" ||
+        session.user.role === "atencion_miembro" ||
+        session.user.role === "anfitrion" ||
+        session.user.role === "monitor" ||
+        session.user.role === "mercadeo"
       ) {
         navigate("/admin/dashboard", { replace: true });
       } else {
