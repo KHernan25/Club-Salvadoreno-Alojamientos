@@ -184,9 +184,9 @@ const Navbar = ({ className }: NavbarProps) => {
                 <span className="text-sm font-medium text-slate-900 leading-tight">
                   {currentUser.fullName}
                 </span>
-                {currentUser.role === "admin" && (
+                {currentUser.role === "super_admin" && (
                   <Badge variant="secondary" className="text-xs w-fit">
-                    Admin
+                    Super Admin
                   </Badge>
                 )}
               </div>
@@ -289,9 +289,9 @@ const Navbar = ({ className }: NavbarProps) => {
                   <p className="text-sm text-slate-600">
                     @{currentUser.username}
                   </p>
-                  {currentUser.role === "admin" && (
+                  {currentUser.role === "super_admin" && (
                     <Badge variant="secondary" className="text-xs mt-1">
-                      Administrador
+                      Super Admin
                     </Badge>
                   )}
                 </div>
@@ -336,8 +336,11 @@ const Navbar = ({ className }: NavbarProps) => {
               </div>
 
               {/* Panel Administrativo - Solo para admin/staff */}
-              {(currentUser.role === "admin" ||
-                currentUser.role === "staff") && (
+              {(currentUser.role === "super_admin" ||
+                currentUser.role === "atencion_miembro" ||
+                currentUser.role === "anfitrion" ||
+                currentUser.role === "monitor" ||
+                currentUser.role === "mercadeo") && (
                 <button
                   onClick={() => {
                     navigate("/admin/dashboard");
@@ -348,7 +351,7 @@ const Navbar = ({ className }: NavbarProps) => {
                   <Shield className="h-5 w-5 text-slate-600" />
                   <span className="text-slate-900">Panel Administrativo</span>
                   <Badge variant="secondary" className="text-xs ml-auto">
-                    {currentUser.role === "admin" ? "Admin" : "Staff"}
+                    {currentUser.role === "super_admin" ? "Super Admin" : "atencion_miembro"}
                   </Badge>
                 </button>
               )}
