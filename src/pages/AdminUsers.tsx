@@ -120,7 +120,7 @@ const AdminUsers = () => {
       setLoading(true);
       // Intentar cargar desde API real
       const response = await apiGetUsers();
-      setUsers(response.users);
+      setUsers(response);
     } catch (error) {
       console.error("Error loading users:", error);
       // Cargar datos mock si la API no está disponible
