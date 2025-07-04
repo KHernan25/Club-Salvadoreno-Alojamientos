@@ -58,7 +58,7 @@ import {
   Trash2,
   MoreHorizontal,
   Shield,
-  User,
+  User as UserIcon,
   Clock,
   Mail,
   Phone,
@@ -71,13 +71,10 @@ import {
   apiActivateUser,
   apiDeactivateUser,
   apiUpdateUser,
-  User,
+  type User,
 } from "@/lib/api-service";
 
-// Extended User type for admin UI to handle additional fields
-interface ApiUser extends User {
-  registeredAt?: string;
-}
+// Use the User type directly from api-service
 import {
   getCurrentUser,
   isSuperAdmin,
@@ -89,12 +86,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 const AdminUsers = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [users, setUsers] = useState<ApiUser[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [selectedUser, setSelectedUser] = useState<ApiUser | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isNewUserDialogOpen, setIsNewUserDialogOpen] = useState(false);
   const [newUserForm, setNewUserForm] = useState({
@@ -103,7 +100,7 @@ const AdminUsers = () => {
     email: "",
     username: "",
     phone: "",
-    role: "user" as ApiUser["role"],
+    role: "user" as User["role"],
     password: "",
   });
 
@@ -135,18 +132,19 @@ const AdminUsers = () => {
     }
   };
 
-  const getMockUsers = (): ApiUser[] => [
+  const getMockUsers = (): User[] => [
     {
       id: "1",
       firstName: "Administrador",
       lastName: "Sistema",
       email: "admin@clubsalvadoreno.com",
       username: "admin",
+      password: "admin123",
+      fullName: "Administrador Sistema",
       role: "super_admin",
       isActive: true,
       phone: "+503 2345-6789",
       createdAt: new Date("2024-01-01T00:00:00Z"),
-      registeredAt: "2024-01-01T00:00:00Z",
       lastLogin: new Date("2024-01-15T10:30:00Z"),
       status: "approved",
     },
@@ -162,7 +160,6 @@ const AdminUsers = () => {
       isActive: false,
       phone: "+503 7890-1234",
       createdAt: new Date("2024-01-14T15:20:00Z"),
-      registeredAt: "2024-01-14T15:20:00Z",
       status: "pending",
     },
     {
@@ -177,7 +174,6 @@ const AdminUsers = () => {
       isActive: true,
       phone: "+503 6789-0123",
       createdAt: new Date("2024-01-13T09:15:00Z"),
-      registeredAt: "2024-01-13T09:15:00Z",
       lastLogin: new Date("2024-01-15T08:45:00Z"),
       status: "approved",
     },
@@ -193,7 +189,6 @@ const AdminUsers = () => {
       isActive: false,
       phone: "+503 5678-9012",
       createdAt: new Date("2024-01-12T14:30:00Z"),
-      registeredAt: "2024-01-12T14:30:00Z",
       status: "pending",
     },
     {
@@ -202,11 +197,12 @@ const AdminUsers = () => {
       lastName: "Recepción",
       email: "recepcion@clubsalvadoreno.com",
       username: "recepcion",
-      role: "staff",
+      password: "recepcion123",
+      fullName: "Personal Recepción",
+      role: "atencion_miembro",
       isActive: true,
       phone: "+503 2345-6789",
       createdAt: new Date("2024-01-01T00:00:00Z"),
-      registeredAt: "2024-01-01T00:00:00Z",
       lastLogin: new Date("2024-01-15T07:00:00Z"),
       status: "approved",
     },
@@ -246,7 +242,7 @@ const AdminUsers = () => {
     }
   };
 
-  const handleUpdateUser = async (userData: Partial<ApiUser>) => {
+  const handleUpdateUser = async (userData: Partial<User>) => {
     if (!selectedUser) return;
 
     try {
@@ -271,13 +267,12 @@ const AdminUsers = () => {
     // In a real app, this would call an API
     try {
       // Mock user creation
-      const newUser: ApiUser = {
+      const newUser: User = {
         id: ((users?.length || 0) + 1).toString(),
         ...newUserForm,
         fullName: `${newUserForm.firstName} ${newUserForm.lastName}`,
         isActive: true,
         createdAt: new Date(),
-        registeredAt: new Date().toISOString(),
         status: "approved",
       };
 
@@ -350,7 +345,7 @@ const AdminUsers = () => {
     (user) => user.status === "rejected",
   );
 
-  const UserRow = ({ user }: { user: ApiUser }) => (
+  const UserRow = ({ user }: { user: User }) => (
     <TableRow>
       <TableCell>
         <div className="flex items-center space-x-3">
@@ -415,9 +410,7 @@ const AdminUsers = () => {
       </TableCell>
       <TableCell>
         <p className="text-sm">
-          {user.registeredAt
-            ? new Date(user.registeredAt).toLocaleDateString()
-            : new Date(user.createdAt).toLocaleDateString()}
+          {new Date(user.createdAt).toLocaleDateString()}
         </p>
         {user.lastLogin && (
           <p className="text-xs text-gray-500">
@@ -769,7 +762,7 @@ const AdminUsers = () => {
                 <Label htmlFor="new-role">Rol del Usuario</Label>
                 <Select
                   value={newUserForm.role}
-                  onValueChange={(value: ApiUser["role"]) =>
+                  onValueChange={(value: User["role"]) =>
                     setNewUserForm({ ...newUserForm, role: value })
                   }
                 >
