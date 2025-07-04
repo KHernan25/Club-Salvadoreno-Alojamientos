@@ -81,15 +81,16 @@ const registrationRequests: RegistrationRequest[] = [
 ];
 
 // Get all registration requests
-router.get("/", authenticateToken, (req, res) => {
+router.get("/", authenticateToken, (req: AuthenticatedRequest, res) => {
   try {
     // Check if user has permission to view registration requests
     const user = req.user;
     if (!user || !["super_admin", "atencion_miembro"].includes(user.role)) {
-      return res.status(403).json({
+      res.status(403).json({
         success: false,
         error: "No tienes permisos para ver las solicitudes de registro",
       });
+      return;
     }
 
     res.json({
