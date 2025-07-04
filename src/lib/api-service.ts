@@ -84,6 +84,11 @@ interface Accommodation {
   amenities: string[];
   images?: string[];
   description?: string;
+  pricing?: {
+    weekday: number;
+    weekend: number;
+    holiday: number;
+  };
 }
 
 interface Reservation {

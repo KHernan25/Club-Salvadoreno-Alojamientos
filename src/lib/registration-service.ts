@@ -25,6 +25,7 @@ export interface RegistrationResult {
   success: boolean;
   user?: any;
   error?: string;
+  message?: string;
 }
 
 // Validaciones de campo
