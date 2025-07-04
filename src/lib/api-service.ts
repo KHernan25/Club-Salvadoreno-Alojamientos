@@ -89,6 +89,8 @@ interface Accommodation {
     weekend: number;
     holiday: number;
   };
+  available?: boolean;
+  view?: string;
 }
 
 interface Reservation {
@@ -586,6 +588,6 @@ export const apiService = {
 };
 
 // Export interfaces
-export type { RegistrationRequest, Accommodation };
+export type { RegistrationRequest, Accommodation, Reservation };
 
 export default apiService;
