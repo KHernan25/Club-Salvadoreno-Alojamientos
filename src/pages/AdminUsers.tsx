@@ -762,7 +762,7 @@ const AdminUsers = () => {
                 <Label htmlFor="new-role">Rol del Usuario</Label>
                 <Select
                   value={newUserForm.role}
-                  onValueChange={(value: ApiUser["role"]) =>
+                  onValueChange={(value: User["role"]) =>
                     setNewUserForm({ ...newUserForm, role: value })
                   }
                 >
