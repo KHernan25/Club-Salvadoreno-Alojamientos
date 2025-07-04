@@ -61,12 +61,19 @@ const AdminCalendar = () => {
   const [selectedAccommodation, setSelectedAccommodation] = useState("all");
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
-  const [blockForm, setBlockForm] = useState({
+  const [blockForm, setBlockForm] = useState<{
+    accommodationId: string;
+    startDate: string;
+    endDate: string;
+    reason: string;
+    type: "maintenance" | "personal" | "other";
+    notes: string;
+  }>({
     accommodationId: "",
     startDate: "",
     endDate: "",
     reason: "",
-    type: "maintenance" as const,
+    type: "maintenance",
     notes: "",
   });
   const [loading, setLoading] = useState(true);
@@ -79,7 +86,7 @@ const AdminCalendar = () => {
     try {
       setLoading(true);
       const accommodationsData = await apiGetAccommodations();
-      setAccommodations(accommodationsData.accommodations);
+      setAccommodations(accommodationsData);
 
       // Cargar fechas bloqueadas mock
       setBlockedDates(getMockBlockedDates());
