@@ -74,10 +74,7 @@ import {
   type User,
 } from "@/lib/api-service";
 
-// Extended User type for admin UI to handle additional fields
-interface ApiUser extends User {
-  registeredAt?: string;
-}
+// Use the User type directly from api-service
 import {
   getCurrentUser,
   isSuperAdmin,
