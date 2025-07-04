@@ -267,13 +267,12 @@ const AdminUsers = () => {
     // In a real app, this would call an API
     try {
       // Mock user creation
-      const newUser: ApiUser = {
+      const newUser: User = {
         id: ((users?.length || 0) + 1).toString(),
         ...newUserForm,
         fullName: `${newUserForm.firstName} ${newUserForm.lastName}`,
         isActive: true,
         createdAt: new Date(),
-        registeredAt: new Date().toISOString(),
         status: "approved",
       };
 
