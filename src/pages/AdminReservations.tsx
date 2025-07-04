@@ -74,6 +74,7 @@ import {
   apiGetAccommodations,
   getAuthToken,
   Reservation,
+  Accommodation,
 } from "@/lib/api-service";
 import { getCurrentUser } from "@/lib/auth-service";
 
@@ -82,7 +83,7 @@ const AdminReservations = () => {
   const navigate = useNavigate();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [users, setUsers] = useState<any[]>([]);
-  const [accommodations, setAccommodations] = useState<any[]>([]);
+  const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -406,7 +407,7 @@ const AdminReservations = () => {
     const user = (users || []).find((u) => u.id === reservation.userId);
     const accommodationsList = Array.isArray(accommodations)
       ? accommodations
-      : accommodations?.accommodations || [];
+      : [];
     const accommodation = accommodationsList.find(
       (a) => a.id === reservation.accommodationId,
     );
