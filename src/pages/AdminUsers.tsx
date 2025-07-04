@@ -58,7 +58,7 @@ import {
   Trash2,
   MoreHorizontal,
   Shield,
-  User,
+  User as UserIcon,
   Clock,
   Mail,
   Phone,
@@ -71,7 +71,7 @@ import {
   apiActivateUser,
   apiDeactivateUser,
   apiUpdateUser,
-  User,
+  type User,
 } from "@/lib/api-service";
 
 // Extended User type for admin UI to handle additional fields
