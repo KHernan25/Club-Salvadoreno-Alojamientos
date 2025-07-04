@@ -195,7 +195,7 @@ export const registeredUsers: User[] = [
     password: "Anfitrion123",
     email: "carlos.rodriguez@email.com",
     phone: "+503 2345-6791",
-    fullName: "Carlos Rodríguez - Anfitrión",
+    fullName: "Carlos Rodríguez",
     role: "user",
     isActive: true,
     createdAt: new Date("2024-01-15"),

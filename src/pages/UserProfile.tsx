@@ -579,59 +579,7 @@ const UserProfile = () => {
               </Card>
             </div>
 
-            {/* Membership Status */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="h-5 w-5" />
-                  Estado de Membresía
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-yellow-600 mb-2">
-                      {userStats.memberLevel}
-                    </div>
-                    <div className="text-sm text-slate-600">Nivel Actual</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-600 mb-2">
-                      {userStats.points}
-                    </div>
-                    <div className="text-sm text-slate-600">
-                      Puntos Acumulados
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-green-600 mb-2">
-                      {userStats.nextLevelPoints}
-                    </div>
-                    <div className="text-sm text-slate-600">
-                      Para Siguiente Nivel
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>Progreso a Platinum</span>
-                    <span>
-                      {userStats.points} /{" "}
-                      {userStats.points + userStats.nextLevelPoints}
-                    </span>
-                  </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full"
-                      style={{
-                        width: `${(userStats.points / (userStats.points + userStats.nextLevelPoints)) * 100}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            
           </TabsContent>
 
           {/* Preferences */}

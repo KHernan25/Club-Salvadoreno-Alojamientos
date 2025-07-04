@@ -230,43 +230,6 @@ const BackofficeLogin = () => {
                 ¿Eres huésped? Ir al sitio principal
               </button>
             </div>
-
-            {/* Development Credentials Helper */}
-            {process.env.NODE_ENV === "development" && (
-              <div className="mt-6 bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
-                <details className="text-white">
-                  <summary className="cursor-pointer text-yellow-200 font-medium mb-2">
-                    🔧 Credenciales de Desarrollo - Backoffice
-                  </summary>
-                  <div className="space-y-2 text-xs">
-                    <div>
-                      <p className="font-medium text-yellow-200">
-                        Super Administrador:
-                      </p>
-                      <p>
-                        Usuario:{" "}
-                        <code className="bg-black/20 px-1 rounded">admin</code>
-                      </p>
-                      <p>
-                        Contraseña:{" "}
-                        <code className="bg-black/20 px-1 rounded">
-                          Admin123
-                        </code>
-                      </p>
-                    </div>
-                    <div className="border-t border-yellow-500/30 pt-2">
-                      <p className="font-medium text-yellow-200">
-                        Roles disponibles:
-                      </p>
-                      <p>
-                        • super_admin, atencion_miembro, anfitrion, monitor,
-                        mercadeo
-                      </p>
-                    </div>
-                  </div>
-                </details>
-              </div>
-            )}
           </div>
         </div>
       </div>
