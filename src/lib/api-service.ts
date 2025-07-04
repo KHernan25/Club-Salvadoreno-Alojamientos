@@ -101,8 +101,12 @@ interface Reservation {
   checkOut: string;
   guests: number;
   totalPrice: number;
-  status: string;
+  status: "pending" | "confirmed" | "cancelled" | "completed";
   createdAt: string;
+  updatedAt?: string;
+  paymentStatus: "pending" | "paid" | "refunded";
+  confirmationCode: string;
+  specialRequests?: string;
   guestName?: string;
   accommodationName?: string;
 }
@@ -588,6 +592,6 @@ export const apiService = {
 };
 
 // Export interfaces
-export type { RegistrationRequest, Accommodation, Reservation };
+export type { RegistrationRequest, Accommodation, Reservation, User };
 
 export default apiService;
