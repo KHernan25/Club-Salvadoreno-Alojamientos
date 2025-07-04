@@ -24,7 +24,7 @@ interface RegistrationRequest {
 
 // Mock data for registration requests
 // In a real application, this would come from a database
-const registrationRequests = [
+const registrationRequests: RegistrationRequest[] = [
   {
     id: "req-001",
     firstName: "María",
