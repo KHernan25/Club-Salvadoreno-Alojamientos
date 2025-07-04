@@ -490,10 +490,23 @@ export const apiGetRegistrationRequests = async (): Promise<{
   requests: RegistrationRequest[];
 }> => {
   try {
-    const result = await apiRequest("/registration-requests");
+    const result = await apiRequest<
+      RegistrationRequest[] | { requests: RegistrationRequest[] }
+    >("/registration-requests");
+    let requests: RegistrationRequest[] = [];
+
+    if (result.success && result.data) {
+      // Handle different response formats
+      if (Array.isArray(result.data)) {
+        requests = result.data;
+      } else if (result.data.requests && Array.isArray(result.data.requests)) {
+        requests = result.data.requests;
+      }
+    }
+
     return {
       success: result.success,
-      requests: result.data || [],
+      requests,
     };
   } catch (error) {
     console.error("Error fetching registration requests:", error);
