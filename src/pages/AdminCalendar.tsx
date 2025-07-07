@@ -511,53 +511,125 @@ const AdminCalendar = () => {
           {/* Calendar View */}
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Calendario de Disponibilidad
-                <div className="flex items-center space-x-2">
-                  <Filter className="h-4 w-4" />
-                  <Select
-                    value={selectedAccommodation}
-                    onValueChange={setSelectedAccommodation}
-                  >
-                    <SelectTrigger className="w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">
-                        Todos los alojamientos
-                      </SelectItem>
-                      {(accommodations || []).map((accommodation) => (
-                        <SelectItem
-                          key={accommodation.id}
-                          value={accommodation.id}
-                        >
-                          {accommodation.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardTitle>
+              <CardTitle>Calendario de Reservas</CardTitle>
               <CardDescription>
-                Las fechas marcadas en rojo están bloqueadas
+                Vista de disponibilidad por ubicación y estado de reservas
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Calendar
-                mode="multiple"
-                selected={selectedDates}
-                onSelect={setSelectedDates}
-                disabled={getDisabledDates()}
-                className="rounded-md border"
-              />
-              <div className="mt-4 flex items-center space-x-4 text-sm">
+              <Tabs
+                value={selectedLocation}
+                onValueChange={setSelectedLocation}
+                className="w-full"
+              >
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="all">Todas las Ubicaciones</TabsTrigger>
+                  <TabsTrigger value="el-sunzal">
+                    <MapPin className="h-4 w-4 mr-1" />
+                    El Sunzal
+                  </TabsTrigger>
+                  <TabsTrigger value="corinto">
+                    <MapPin className="h-4 w-4 mr-1" />
+                    Corinto
+                  </TabsTrigger>
+                </TabsList>
+
+                <div className="mt-4">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <Filter className="h-4 w-4" />
+                    <Select
+                      value={selectedAccommodation}
+                      onValueChange={setSelectedAccommodation}
+                    >
+                      <SelectTrigger className="w-64">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">
+                          Todos los alojamientos
+                        </SelectItem>
+                        {(accommodations || [])
+                          .filter(
+                            (acc) =>
+                              selectedLocation === "all" ||
+                              acc.location === selectedLocation,
+                          )
+                          .map((accommodation) => (
+                            <SelectItem
+                              key={accommodation.id}
+                              value={accommodation.id}
+                            >
+                              {accommodation.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <TabsContent value="all" className="mt-0">
+                    <Calendar
+                      mode="multiple"
+                      selected={selectedDates}
+                      onSelect={setSelectedDates}
+                      disabled={getDisabledDates()}
+                      className="rounded-md border"
+                      modifiers={getDateStyles()}
+                      modifiersClassNames={getDateStyles()}
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="el-sunzal" className="mt-0">
+                    <div className="mb-2 text-sm text-blue-600 font-medium">
+                      Mostrando reservas para El Sunzal
+                    </div>
+                    <Calendar
+                      mode="multiple"
+                      selected={selectedDates}
+                      onSelect={setSelectedDates}
+                      disabled={getDisabledDates()}
+                      className="rounded-md border"
+                      modifiers={getDateStyles()}
+                      modifiersClassNames={getDateStyles()}
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="corinto" className="mt-0">
+                    <div className="mb-2 text-sm text-blue-600 font-medium">
+                      Mostrando reservas para Corinto
+                    </div>
+                    <Calendar
+                      mode="multiple"
+                      selected={selectedDates}
+                      onSelect={setSelectedDates}
+                      disabled={getDisabledDates()}
+                      className="rounded-md border"
+                      modifiers={getDateStyles()}
+                      modifiersClassNames={getDateStyles()}
+                    />
+                  </TabsContent>
+                </div>
+              </Tabs>
+
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-red-200 rounded"></div>
-                  <span>Fechas bloqueadas</span>
+                  <div className="w-3 h-3 bg-white border border-gray-300 rounded"></div>
+                  <span>Disponible</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-200 rounded"></div>
-                  <span>Fechas disponibles</span>
+                  <div className="w-3 h-3 bg-yellow-200 rounded"></div>
+                  <span>En espera</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-red-200 rounded"></div>
+                  <span>Reservado</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-gray-600 rounded"></div>
+                  <span>Cancelado</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-gray-300 rounded"></div>
+                  <span>Bloqueado</span>
                 </div>
               </div>
             </CardContent>
