@@ -114,7 +114,8 @@ const Login = () => {
           result.user.role === "atencion_miembro" ||
           result.user.role === "anfitrion" ||
           result.user.role === "monitor" ||
-          result.user.role === "mercadeo"
+          result.user.role === "mercadeo" ||
+          result.user.role === "recepcion"
         ) {
           navigate("/admin/dashboard", { replace: true });
         } else {

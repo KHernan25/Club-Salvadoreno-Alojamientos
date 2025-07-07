@@ -29,8 +29,8 @@ const AdminProtectedRoute = ({
     if (!hasRole(requiredRole)) {
       const currentUser = getCurrentUser();
 
-      // Si es usuario regular, redirigir al dashboard público
-      if (currentUser?.role === "user") {
+      // Si es miembro regular, redirigir al dashboard público
+      if (currentUser?.role === "miembro") {
         navigate("/dashboard");
         return;
       }

@@ -100,7 +100,7 @@ const AdminUsers = () => {
     email: "",
     username: "",
     phone: "",
-    role: "user" as User["role"],
+    role: "miembro" as User["role"],
     password: "",
   });
 
@@ -288,7 +288,7 @@ const AdminUsers = () => {
         email: "",
         username: "",
         phone: "",
-        role: "user",
+        role: "miembro",
         password: "",
       });
       // Navigate back to main users page if came from /new route
@@ -316,9 +316,25 @@ const AdminUsers = () => {
         return "Monitor";
       case "mercadeo":
         return "Mercadeo";
+      case "recepcion":
+        return "Recepción";
+      case "miembro":
+        return "Miembro";
       default:
         return "Usuario";
     }
+  };
+
+  // Helper function to check if user is BackOffice staff
+  const isBackOfficeUser = (role: string) => {
+    return [
+      "super_admin",
+      "atencion_miembro",
+      "anfitrion",
+      "monitor",
+      "mercadeo",
+      "recepcion",
+    ].includes(role);
   };
 
   const filteredUsers = (users || []).filter((user) => {
@@ -329,20 +345,48 @@ const AdminUsers = () => {
       user.username.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    const matchesStatus =
-      statusFilter === "all" || user.status === statusFilter;
+
+    // Handle status filtering for BackOffice vs Members
+    let matchesStatus = true;
+    if (statusFilter !== "all") {
+      if (isBackOfficeUser(user.role)) {
+        // BackOffice users: active/inactive filtering
+        if (statusFilter === "active") {
+          matchesStatus = user.isActive;
+        } else if (statusFilter === "inactive") {
+          matchesStatus = !user.isActive;
+        } else if (
+          statusFilter === "pending" ||
+          statusFilter === "approved" ||
+          statusFilter === "rejected"
+        ) {
+          // BackOffice users don't have these statuses, so exclude them
+          matchesStatus = false;
+        }
+      } else {
+        // Members: use approval status + active/inactive
+        if (statusFilter === "active") {
+          matchesStatus = user.isActive;
+        } else if (statusFilter === "inactive") {
+          matchesStatus = !user.isActive;
+        } else {
+          // pending, approved, rejected
+          matchesStatus = user.status === statusFilter;
+        }
+      }
+    }
 
     return matchesSearch && matchesRole && matchesStatus;
   });
 
   const pendingUsers = (users || []).filter(
-    (user) => user.status === "pending",
+    (user) => !isBackOfficeUser(user.role) && user.status === "pending",
   );
-  const activeUsers = (users || []).filter(
-    (user) => user.status === "approved",
+  const activeUsers = (users || []).filter((user) =>
+    isBackOfficeUser(user.role) ? user.isActive : user.status === "approved",
   );
-  const inactiveUsers = (users || []).filter(
-    (user) => user.status === "rejected",
+  const inactiveUsers = (users || []).filter((user) =>
+    isBackOfficeUser(user.role) ? !user.isActive : user.status === "rejected",
   );
 
   const UserRow = ({ user }: { user: User }) => (
@@ -392,21 +436,27 @@ const AdminUsers = () => {
         </div>
       </TableCell>
       <TableCell>
-        <Badge
-          variant={
-            user.status === "approved"
-              ? "default"
+        {isBackOfficeUser(user.role) ? (
+          <Badge variant={user.isActive ? "default" : "destructive"}>
+            {user.isActive ? "Activo" : "Inactivo"}
+          </Badge>
+        ) : (
+          <Badge
+            variant={
+              user.status === "approved"
+                ? "default"
+                : user.status === "pending"
+                  ? "outline"
+                  : "destructive"
+            }
+          >
+            {user.status === "approved"
+              ? "Aprobado"
               : user.status === "pending"
-                ? "outline"
-                : "destructive"
-          }
-        >
-          {user.status === "approved"
-            ? "Aprobado"
-            : user.status === "pending"
-              ? "Pendiente"
-              : "Rechazado"}
-        </Badge>
+                ? "Pendiente"
+                : "Rechazado"}
+          </Badge>
+        )}
       </TableCell>
       <TableCell>
         <p className="text-sm">
@@ -420,28 +470,8 @@ const AdminUsers = () => {
       </TableCell>
       <TableCell>
         <div className="flex items-center space-x-2">
-          {user.status === "pending" && (
-            <>
-              <Button
-                size="sm"
-                variant="default"
-                onClick={() => handleApproveUser(user.id)}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <Check className="h-3 w-3 mr-1" />
-                Aprobar
-              </Button>
-              <Button
-                size="sm"
-                variant="destructive"
-                onClick={() => handleRejectUser(user.id)}
-              >
-                <X className="h-3 w-3 mr-1" />
-                Rechazar
-              </Button>
-            </>
-          )}
-          {user.status !== "pending" && (
+          {isBackOfficeUser(user.role) ? (
+            // BackOffice users: Just edit and activate/deactivate
             <>
               <Button
                 size="sm"
@@ -490,6 +520,79 @@ const AdminUsers = () => {
                 </AlertDialog>
               )}
             </>
+          ) : (
+            // Members: Keep approval/rejection flow
+            <>
+              {user.status === "pending" && (
+                <>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    onClick={() => handleApproveUser(user.id)}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Check className="h-3 w-3 mr-1" />
+                    Aprobar
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleRejectUser(user.id)}
+                  >
+                    <X className="h-3 w-3 mr-1" />
+                    Rechazar
+                  </Button>
+                </>
+              )}
+              {user.status !== "pending" && (
+                <>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setIsEditDialogOpen(true);
+                    }}
+                    className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                  >
+                    <Edit className="h-3 w-3 mr-1" />
+                    Editar
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="outline">
+                        <Trash2 className="h-3 w-3 mr-1" />
+                        {user.isActive ? "Desactivar" : "Activar"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          {user.isActive ? "Desactivar" : "Activar"} usuario
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          ¿Estás seguro de que deseas{" "}
+                          {user.isActive ? "desactivar" : "activar"} a{" "}
+                          {user.firstName} {user.lastName}?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() =>
+                            user.isActive
+                              ? handleRejectUser(user.id)
+                              : handleApproveUser(user.id)
+                          }
+                        >
+                          Confirmar
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
+              )}
+            </>
           )}
         </div>
       </TableCell>
@@ -535,40 +638,38 @@ const AdminUsers = () => {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Pendientes</CardTitle>
+              <CardTitle className="text-sm font-medium">BackOffice</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">
-                {pendingUsers.length}
+              <div className="text-2xl font-bold text-blue-600">
+                {(users || []).filter((u) => isBackOfficeUser(u.role)).length}
               </div>
               <p className="text-xs text-muted-foreground">
-                Esperando aprobación
+                Personal administrativo
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Activos</CardTitle>
+              <CardTitle className="text-sm font-medium">Miembros</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {activeUsers.length}
+                {(users || []).filter((u) => u.role === "miembro").length}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Usuarios aprobados
-              </p>
+              <p className="text-xs text-muted-foreground">Usuarios miembros</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Inactivos</CardTitle>
+              <CardTitle className="text-sm font-medium">Pendientes</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">
-                {inactiveUsers.length}
+              <div className="text-2xl font-bold text-yellow-600">
+                {pendingUsers.length}
               </div>
               <p className="text-xs text-muted-foreground">
-                Usuarios desactivados
+                Miembros por aprobar
               </p>
             </CardContent>
           </Card>
@@ -611,7 +712,8 @@ const AdminUsers = () => {
                     <SelectItem value="anfitrion">Anfitrión</SelectItem>
                     <SelectItem value="monitor">Monitor</SelectItem>
                     <SelectItem value="mercadeo">Mercadeo</SelectItem>
-                    <SelectItem value="user">Usuario</SelectItem>
+                    <SelectItem value="recepcion">Recepción</SelectItem>
+                    <SelectItem value="miembro">Miembro</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -623,9 +725,17 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos los estados</SelectItem>
-                    <SelectItem value="pending">Pendiente</SelectItem>
-                    <SelectItem value="approved">Aprobado</SelectItem>
-                    <SelectItem value="rejected">Rechazado</SelectItem>
+                    <SelectItem value="active">Activo</SelectItem>
+                    <SelectItem value="inactive">Inactivo</SelectItem>
+                    <SelectItem value="pending">
+                      Pendiente (Miembros)
+                    </SelectItem>
+                    <SelectItem value="approved">
+                      Aprobado (Miembros)
+                    </SelectItem>
+                    <SelectItem value="rejected">
+                      Rechazado (Miembros)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -633,34 +743,98 @@ const AdminUsers = () => {
           </CardContent>
         </Card>
 
-        {/* Users Table */}
+        {/* Users Table with Tabs */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">
-              Lista de Usuarios ({filteredUsers.length})
-            </CardTitle>
+            <CardTitle className="text-lg">Gestión de Usuarios</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="text-center py-8">Cargando usuarios...</div>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Usuario</TableHead>
-                    <TableHead>Contacto</TableHead>
-                    <TableHead>Rol</TableHead>
-                    <TableHead>Estado</TableHead>
-                    <TableHead>Fechas</TableHead>
-                    <TableHead>Acciones</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredUsers.map((user) => (
-                    <UserRow key={user.id} user={user} />
-                  ))}
-                </TableBody>
-              </Table>
+              <Tabs defaultValue="all" className="w-full">
+                <TabsList className="grid grid-cols-3 mb-6">
+                  <TabsTrigger value="all">
+                    Todos ({filteredUsers.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="backoffice">
+                    BackOffice (
+                    {
+                      filteredUsers.filter((u) => isBackOfficeUser(u.role))
+                        .length
+                    }
+                    )
+                  </TabsTrigger>
+                  <TabsTrigger value="members">
+                    Miembros (
+                    {filteredUsers.filter((u) => u.role === "miembro").length})
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="all">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Usuario</TableHead>
+                        <TableHead>Contacto</TableHead>
+                        <TableHead>Rol</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Fechas</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredUsers.map((user) => (
+                        <UserRow key={user.id} user={user} />
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TabsContent>
+
+                <TabsContent value="backoffice">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Usuario</TableHead>
+                        <TableHead>Contacto</TableHead>
+                        <TableHead>Rol</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Fechas</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredUsers
+                        .filter((u) => isBackOfficeUser(u.role))
+                        .map((user) => (
+                          <UserRow key={user.id} user={user} />
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TabsContent>
+
+                <TabsContent value="members">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Usuario</TableHead>
+                        <TableHead>Contacto</TableHead>
+                        <TableHead>Rol</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Fechas</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredUsers
+                        .filter((u) => u.role === "miembro")
+                        .map((user) => (
+                          <UserRow key={user.id} user={user} />
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TabsContent>
+              </Tabs>
             )}
           </CardContent>
         </Card>
@@ -770,7 +944,8 @@ const AdminUsers = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="user">Usuario Regular</SelectItem>
+                    <SelectItem value="miembro">Miembro</SelectItem>
+                    <SelectItem value="recepcion">Recepción</SelectItem>
                     <SelectItem value="mercadeo">Mercadeo</SelectItem>
                     <SelectItem value="monitor">Monitor</SelectItem>
                     <SelectItem value="anfitrion">Anfitrión</SelectItem>
@@ -850,7 +1025,8 @@ const AdminUsers = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="user">Usuario Regular</SelectItem>
+                      <SelectItem value="miembro">Miembro</SelectItem>
+                      <SelectItem value="recepcion">Recepción</SelectItem>
                       <SelectItem value="mercadeo">Mercadeo</SelectItem>
                       <SelectItem value="monitor">Monitor</SelectItem>
                       <SelectItem value="anfitrion">Anfitrión</SelectItem>

@@ -34,7 +34,8 @@ const BackofficeLogin = () => {
         session.user.role === "atencion_miembro" ||
         session.user.role === "anfitrion" ||
         session.user.role === "monitor" ||
-        session.user.role === "mercadeo"
+        session.user.role === "mercadeo" ||
+        session.user.role === "recepcion"
       ) {
         navigate("/admin/dashboard", { replace: true });
       } else {
@@ -63,6 +64,7 @@ const BackofficeLogin = () => {
           "anfitrion",
           "monitor",
           "mercadeo",
+          "recepcion",
         ].includes(result.user.role);
 
         if (!isBackofficeUser) {
@@ -121,8 +123,8 @@ const BackofficeLogin = () => {
         className="absolute inset-0 bg-center bg-no-repeat"
         style={{
           backgroundImage: `linear-gradient(rgba(2, 21, 71, 0.85), rgba(2, 21, 71, 0.85)), url('/collage_club.png')`,
-          backgroundSize: '1920px 1000px',
-          backgroundPosition: 'center center',
+          backgroundSize: "1920px 1000px",
+          backgroundPosition: "center center",
         }}
       />
 
@@ -150,7 +152,9 @@ const BackofficeLogin = () => {
               }}
               style={{ display: "block" }}
             />
-            <h1 className="text-white text-3xl tracking-wider mb-2">Backoffice</h1>
+            <h1 className="text-white text-3xl tracking-wider mb-2">
+              Backoffice
+            </h1>
             <p className="text-blue-200 text-lg">Sistema de Administración</p>
           </div>
 
