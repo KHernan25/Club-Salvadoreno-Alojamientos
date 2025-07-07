@@ -377,6 +377,13 @@ export const apiGetReservations = async (
   isAdmin: boolean = false,
 ): Promise<Reservation[]> => {
   try {
+    // Check if we have a token before making the request
+    const token = getAuthToken();
+    if (!token) {
+      console.warn("No auth token available, using mock data");
+      return getMockReservations(isAdmin);
+    }
+
     const endpoint = isAdmin ? "/reservations/all" : "/reservations";
     const result = await apiRequest<any>(endpoint);
 
@@ -399,6 +406,61 @@ export const apiGetReservations = async (
     throw new Error(result.error || "Failed to fetch reservations");
   } catch (error) {
     console.warn("API call failed, falling back to mock data:", error);
+    return getMockReservations(isAdmin);
+  }
+};
+
+// Helper function to get mock reservations
+const getMockReservations = (isAdmin: boolean): Reservation[] => {
+  const mockReservations = [
+    {
+      id: "res-001",
+      userId: "6",
+      accommodationId: "el-sunzal-apt-1",
+      checkIn: "2024-07-01",
+      checkOut: "2024-07-03",
+      guests: 2,
+      totalPrice: 240,
+      status: "confirmed",
+      createdAt: "2024-06-20T10:00:00Z",
+      guestName: "María José González",
+      accommodationName: "Apartamento El Sunzal 1",
+    },
+    {
+      id: "res-002",
+      userId: "7",
+      accommodationId: "corinto-casa-1",
+      checkIn: "2024-07-05",
+      checkOut: "2024-07-07",
+      guests: 4,
+      totalPrice: 320,
+      status: "pending",
+      createdAt: "2024-06-21T14:30:00Z",
+      guestName: "Carlos Roberto Mejía",
+      accommodationName: "Casa Corinto 1",
+    },
+    {
+      id: "res-003",
+      userId: "8",
+      accommodationId: "costa-del-sol-villa-1",
+      checkIn: "2024-07-10",
+      checkOut: "2024-07-12",
+      guests: 6,
+      totalPrice: 480,
+      status: "confirmed",
+      createdAt: "2024-06-22T09:15:00Z",
+      guestName: "Ana Lucía Hernández",
+      accommodationName: "Villa Costa del Sol 1",
+    }
+  ];
+
+  // If not admin, filter to only show reservations for current user
+  if (!isAdmin) {
+    // In a real scenario, we'd filter by current user ID
+    return mockReservations.slice(0, 1); // Just return one for regular users
+  }
+
+  return mockReservations;
     return [
       {
         id: "res-001",
