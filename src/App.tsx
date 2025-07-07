@@ -169,6 +169,14 @@ const App = () => (
                 }
               />
               <Route
+                path="/admin/reservations/:id"
+                element={
+                  <AdminProtectedRoute requiredRole="monitor">
+                    <AdminReservations />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
                 path="/admin/calendar"
                 element={
                   <AdminProtectedRoute requiredRole="anfitrion">
