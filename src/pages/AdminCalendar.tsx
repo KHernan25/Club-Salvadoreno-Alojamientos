@@ -563,9 +563,9 @@ const AdminCalendar = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           {/* Calendar View */}
-          <Card className="lg:col-span-2">
+          <Card className="xl:col-span-3">
             <CardHeader>
               <CardTitle>Calendario de Reservas</CardTitle>
               <CardDescription>
