@@ -50,10 +50,22 @@ const BackofficeLogin = () => {
     setIsLoading(true);
 
     try {
+      console.log(
+        "🔐 Iniciando autenticación backoffice para:",
+        formData.username,
+      );
+
       const result = await authenticateUser({
         username: formData.username,
         password: formData.password,
         rememberMe: false,
+      });
+
+      console.log("🔐 Resultado de autenticación:", {
+        success: result.success,
+        hasUser: !!result.user,
+        userRole: result.user?.role,
+        error: result.error,
       });
 
       if (result.success && result.user) {
@@ -67,7 +79,13 @@ const BackofficeLogin = () => {
           "recepcion",
         ].includes(result.user.role);
 
+        console.log("🔐 Verificando permisos backoffice:", {
+          userRole: result.user.role,
+          isBackofficeUser,
+        });
+
         if (!isBackofficeUser) {
+          console.log("❌ Usuario sin permisos de backoffice");
           setError("Este usuario no tiene permisos para acceder al backoffice");
           toast({
             title: "Acceso denegado",
@@ -78,13 +96,20 @@ const BackofficeLogin = () => {
           return;
         }
 
+        console.log("✅ Login exitoso, redirigiendo a dashboard admin");
+
         toast({
           title: "Acceso autorizado",
           description: `Bienvenido al backoffice, ${result.user.fullName}`,
         });
 
-        navigate("/admin/dashboard", { replace: true });
+        // Forzar navegación con un pequeño delay para asegurar que el toast se muestre
+        setTimeout(() => {
+          console.log("🔄 Navegando a /admin/dashboard");
+          navigate("/admin/dashboard", { replace: true });
+        }, 100);
       } else {
+        console.log("❌ Login fallido:", result.error);
         setError(result.error || "Error desconocido al iniciar sesión");
         toast({
           title: "Error de autenticación",
@@ -93,7 +118,7 @@ const BackofficeLogin = () => {
         });
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("❌ Login error:", error);
       setError("Error de conexión. Por favor intenta nuevamente.");
       toast({
         title: "Error de conexión",
