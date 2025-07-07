@@ -55,6 +55,7 @@ import {
   Trash2,
   Eye,
   Users,
+  User,
   DollarSign,
   Clock,
   CheckCircle,
@@ -135,7 +136,7 @@ const AdminReservations = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      console.log("🔄 Iniciando carga de datos...");
+      console.log("��� Iniciando carga de datos...");
 
       // Verificar autenticación antes de hacer llamadas a la API
       const currentUser = getCurrentUser();
