@@ -64,6 +64,11 @@ interface CalendarReservation {
   checkOut: string;
   status: "confirmed" | "pending" | "cancelled" | "completed";
   guestName: string;
+  guestEmail?: string;
+  guestPhone?: string;
+  totalAmount?: number;
+  guests?: number;
+  notes?: string;
 }
 
 const AdminCalendar = () => {
