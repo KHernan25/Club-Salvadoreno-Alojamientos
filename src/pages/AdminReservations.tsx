@@ -867,72 +867,85 @@ const AdminReservations = () => {
           open={isNewReservationDialogOpen}
           onOpenChange={setIsNewReservationDialogOpen}
         >
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Nueva Reserva</DialogTitle>
               <DialogDescription>
-                Crea una nueva reserva en nombre de un usuario
+                Crea una nueva reserva en nombre de un usuario y configura las
+                opciones de pago
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="user-select">Usuario</Label>
-                <Select
-                  value={newReservationForm.userId}
-                  onValueChange={(value) =>
-                    setNewReservationForm({
-                      ...newReservationForm,
-                      userId: value,
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        users.length === 0
-                          ? "No hay usuarios disponibles..."
-                          : "Seleccionar usuario"
-                      }
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {users.length === 0 ? (
-                      <SelectItem value="" disabled>
-                        No hay usuarios disponibles
-                      </SelectItem>
-                    ) : (
-                      users.map((user) => (
-                        <SelectItem key={user.id} value={user.id}>
-                          {user.firstName} {user.lastName} - {user.email}
+            <div className="space-y-6">
+              {/* Guest Information */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Información del Huésped</h3>
+                <div>
+                  <Label htmlFor="user-select">Usuario</Label>
+                  <Select
+                    value={newReservationForm.userId}
+                    onValueChange={(value) =>
+                      setNewReservationForm({
+                        ...newReservationForm,
+                        userId: value,
+                      })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={
+                          users.length === 0
+                            ? "No hay usuarios disponibles..."
+                            : "Seleccionar usuario"
+                        }
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {users.length === 0 ? (
+                        <SelectItem value="" disabled>
+                          No hay usuarios disponibles
                         </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
-                {users.length === 0 && (
-                  <p className="text-sm text-orange-600 mt-1">
-                    ⚠️ No se encontraron usuarios. Verifica la conexión con el
-                    servidor.
-                  </p>
-                )}
+                      ) : (
+                        users.map((user) => (
+                          <SelectItem key={user.id} value={user.id}>
+                            {user.firstName} {user.lastName} - {user.email}
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                  {users.length === 0 && (
+                    <p className="text-sm text-orange-600 mt-1">
+                      ⚠️ No se encontraron usuarios. Verifica la conexión con el
+                      servidor.
+                    </p>
+                  )}
+                </div>
               </div>
-              <div>
-                <Label htmlFor="accommodation-select">Alojamiento</Label>
-                <Select
-                  value={newReservationForm.accommodationId}
-                  onValueChange={(value) =>
-                    setNewReservationForm({
-                      ...newReservationForm,
-                      accommodationId: value,
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar alojamiento" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(Array.isArray(accommodations) ? accommodations : []).map(
-                      (accommodation) => (
+
+              {/* Accommodation Information */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">
+                  Detalles del Alojamiento
+                </h3>
+                <div>
+                  <Label htmlFor="accommodation-select">Alojamiento</Label>
+                  <Select
+                    value={newReservationForm.accommodationId}
+                    onValueChange={(value) =>
+                      setNewReservationForm({
+                        ...newReservationForm,
+                        accommodationId: value,
+                      })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar alojamiento" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(Array.isArray(accommodations)
+                        ? accommodations
+                        : []
+                      ).map((accommodation) => (
                         <SelectItem
                           key={accommodation.id}
                           value={accommodation.id}
@@ -948,70 +961,196 @@ const AdminReservations = () => {
                             </span>
                           </div>
                         </SelectItem>
-                      ),
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="check-in">Fecha de Entrada</Label>
+                    <Input
+                      id="check-in"
+                      type="date"
+                      value={newReservationForm.checkIn}
+                      onChange={(e) =>
+                        setNewReservationForm({
+                          ...newReservationForm,
+                          checkIn: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="check-out">Fecha de Salida</Label>
+                    <Input
+                      id="check-out"
+                      type="date"
+                      value={newReservationForm.checkOut}
+                      onChange={(e) =>
+                        setNewReservationForm({
+                          ...newReservationForm,
+                          checkOut: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="guests">Número de Huéspedes</Label>
+                  <Input
+                    id="guests"
+                    type="number"
+                    min="1"
+                    max="10"
+                    value={newReservationForm.guests}
+                    onChange={(e) =>
+                      setNewReservationForm({
+                        ...newReservationForm,
+                        guests: parseInt(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Payment Options */}
+              <div className="space-y-4 border-t pt-4">
+                <h3 className="text-lg font-medium">Opciones de Pago</h3>
+                <div>
+                  <Label htmlFor="payment-handled-by">
+                    ¿Quién maneja el pago?
+                  </Label>
+                  <Select
+                    value={newReservationForm.paymentHandledBy}
+                    onValueChange={(value) =>
+                      setNewReservationForm({
+                        ...newReservationForm,
+                        paymentHandledBy: value,
+                      })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="guest">
+                        El huésped pagará directamente
+                      </SelectItem>
+                      <SelectItem value="staff">
+                        El personal procesará el pago
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {newReservationForm.paymentHandledBy === "staff" && (
+                  <div className="space-y-4 bg-blue-50 p-4 rounded-lg">
+                    <div>
+                      <Label htmlFor="payment-method">Método de Pago</Label>
+                      <Select
+                        value={newReservationForm.paymentMethod}
+                        onValueChange={(value) =>
+                          setNewReservationForm({
+                            ...newReservationForm,
+                            paymentMethod: value,
+                          })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar método de pago" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="credit_card">
+                            Tarjeta de Crédito
+                          </SelectItem>
+                          <SelectItem value="debit_card">
+                            Tarjeta de Débito
+                          </SelectItem>
+                          <SelectItem value="payment_link">
+                            Link de Pago
+                          </SelectItem>
+                          <SelectItem value="bank_transfer">
+                            Transferencia Bancaria
+                          </SelectItem>
+                          <SelectItem value="pay_later">
+                            Pagar en 72 horas
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {newReservationForm.paymentMethod === "pay_later" && (
+                      <div>
+                        <Label htmlFor="payment-deadline">
+                          Fecha límite de pago
+                        </Label>
+                        <Input
+                          id="payment-deadline"
+                          type="date"
+                          value={newReservationForm.paymentDeadline}
+                          onChange={(e) =>
+                            setNewReservationForm({
+                              ...newReservationForm,
+                              paymentDeadline: e.target.value,
+                            })
+                          }
+                          min={
+                            new Date(Date.now() + 24 * 60 * 60 * 1000)
+                              .toISOString()
+                              .split("T")[0]
+                          }
+                          max={
+                            new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+                              .toISOString()
+                              .split("T")[0]
+                          }
+                        />
+                        <p className="text-sm text-gray-600 mt-1">
+                          Máximo 72 horas a partir de hoy
+                        </p>
+                      </div>
                     )}
-                  </SelectContent>
-                </Select>
+
+                    <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
+                      <p className="text-sm text-yellow-800">
+                        <strong>Nota:</strong> El personal se encargará de
+                        procesar el pago con el método seleccionado.
+                        {newReservationForm.paymentMethod === "pay_later" &&
+                          " El huésped tiene hasta 72 horas para completar el pago."}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {newReservationForm.paymentHandledBy === "guest" && (
+                  <div className="bg-green-50 border border-green-200 rounded p-3">
+                    <p className="text-sm text-green-800">
+                      <strong>Nota:</strong> Se enviará al huésped un link de
+                      pago para que complete la transacción directamente.
+                    </p>
+                  </div>
+                )}
               </div>
-              <div className="grid grid-cols-2 gap-4">
+
+              {/* Special Requests */}
+              <div className="space-y-4">
                 <div>
-                  <Label htmlFor="check-in">Fecha de Entrada</Label>
-                  <Input
-                    id="check-in"
-                    type="date"
-                    value={newReservationForm.checkIn}
+                  <Label htmlFor="special-requests">
+                    Solicitudes Especiales
+                  </Label>
+                  <Textarea
+                    id="special-requests"
+                    rows={3}
+                    placeholder="Solicitudes especiales del huésped..."
+                    value={newReservationForm.specialRequests}
                     onChange={(e) =>
                       setNewReservationForm({
                         ...newReservationForm,
-                        checkIn: e.target.value,
+                        specialRequests: e.target.value,
                       })
                     }
                   />
                 </div>
-                <div>
-                  <Label htmlFor="check-out">Fecha de Salida</Label>
-                  <Input
-                    id="check-out"
-                    type="date"
-                    value={newReservationForm.checkOut}
-                    onChange={(e) =>
-                      setNewReservationForm({
-                        ...newReservationForm,
-                        checkOut: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="guests">Número de Huéspedes</Label>
-                <Input
-                  id="guests"
-                  type="number"
-                  min="1"
-                  max="10"
-                  value={newReservationForm.guests}
-                  onChange={(e) =>
-                    setNewReservationForm({
-                      ...newReservationForm,
-                      guests: parseInt(e.target.value),
-                    })
-                  }
-                />
-              </div>
-              <div>
-                <Label htmlFor="special-requests">Solicitudes Especiales</Label>
-                <Textarea
-                  id="special-requests"
-                  rows={3}
-                  value={newReservationForm.specialRequests}
-                  onChange={(e) =>
-                    setNewReservationForm({
-                      ...newReservationForm,
-                      specialRequests: e.target.value,
-                    })
-                  }
-                />
               </div>
             </div>
             <DialogFooter>
