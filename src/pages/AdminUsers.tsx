@@ -110,8 +110,10 @@ const AdminUsers = () => {
   useEffect(() => {
     // Verificar autenticación antes de cargar datos
     if (!requireAuth()) {
-      console.log("AdminUsers: Not authenticated, redirecting to login");
-      navigate("/login");
+      console.log(
+        "AdminUsers: Not authenticated, redirecting to backoffice login",
+      );
+      navigate("/backoffice/login");
       return;
     }
     loadUsers();

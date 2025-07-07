@@ -89,9 +89,9 @@ const AdminRegistrationRequests = () => {
     // Verificar autenticación antes de cargar datos
     if (!requireAuth()) {
       console.log(
-        "AdminRegistrationRequests: Not authenticated, redirecting to login",
+        "AdminRegistrationRequests: Not authenticated, redirecting to backoffice login",
       );
-      navigate("/login");
+      navigate("/backoffice/login");
       return;
     }
     loadRequests();

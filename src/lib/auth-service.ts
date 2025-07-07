@@ -276,7 +276,13 @@ export const logout = async (): Promise<void> => {
 
   // Limpiar historial para prevenir navegación hacia atrás
   if (window.history.replaceState) {
-    window.history.replaceState(null, "", "/login");
+    // Detectar si estamos en contexto de backoffice
+    const isBackofficeContext =
+      window.location.pathname.startsWith("/admin") ||
+      window.location.pathname.startsWith("/backoffice");
+
+    const loginPath = isBackofficeContext ? "/backoffice/login" : "/login";
+    window.history.replaceState(null, "", loginPath);
   }
 };
 
