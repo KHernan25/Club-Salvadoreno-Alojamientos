@@ -47,6 +47,7 @@ import AdminSiteContent from "./pages/AdminSiteContent";
 import AdminRegistrationRequests from "./pages/AdminRegistrationRequests";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import UserActivationDebug from "./pages/UserActivationDebug";
+import TestAuth from "./pages/TestAuth";
 
 const queryClient = new QueryClient();
 
