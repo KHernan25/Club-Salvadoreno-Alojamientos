@@ -286,6 +286,7 @@ export const registeredUsers: User[] = [
     fullName: "María José González",
     role: "miembro",
     isActive: true,
+    status: "approved",
     memberStatus: "activo",
     createdAt: new Date("2024-02-01"),
   },
