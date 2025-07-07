@@ -215,6 +215,22 @@ const AdminUsers = () => {
       lastLogin: new Date("2024-01-15T07:00:00Z"),
       status: "approved",
     },
+    {
+      id: "6",
+      firstName: "Pedro",
+      lastName: "Martínez",
+      email: "pedro.martinez@email.com",
+      username: "pedro_martinez",
+      password: "pedro123",
+      fullName: "Pedro Martínez",
+      role: "miembro",
+      isActive: true,
+      phone: "+503 4567-8901",
+      createdAt: new Date("2024-01-10T12:00:00Z"),
+      lastLogin: new Date("2024-01-11T16:20:00Z"),
+      status: "approved",
+      memberStatus: "inactivo",
+    },
   ];
 
   const handleApproveUser = async (userId: string) => {
