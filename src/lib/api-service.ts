@@ -452,16 +452,16 @@ export const apiGetReservations = async (
       // Handle different response formats
       if (isAdmin && result.data.reservations) {
         // Admin endpoint returns { data: { reservations: [...], pagination: {...} } }
-        return result.data.reservations;
+        return result.data.reservations as Reservation[];
       } else if (Array.isArray(result.data)) {
         // Regular endpoint returns array directly
-        return result.data;
+        return result.data as Reservation[];
       } else if (
         result.data.reservations &&
         Array.isArray(result.data.reservations)
       ) {
         // Fallback for wrapped array format
-        return result.data.reservations;
+        return result.data.reservations as Reservation[];
       }
     }
     throw new Error(result.error || "Failed to fetch reservations");
