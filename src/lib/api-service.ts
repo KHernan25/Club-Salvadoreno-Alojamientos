@@ -468,7 +468,7 @@ const getMockReservations = (isAdmin: boolean): Reservation[] => {
     {
       id: "res-003",
       userId: "10",
-      accommodationId: "suite-1",
+      accommodationId: "suite1",
       checkIn: "2024-07-10",
       checkOut: "2024-07-12",
       guests: 2,
@@ -483,7 +483,7 @@ const getMockReservations = (isAdmin: boolean): Reservation[] => {
     {
       id: "res-004",
       userId: "9",
-      accommodationId: "casa-1",
+      accommodationId: "casa1",
       checkIn: "2024-07-15",
       checkOut: "2024-07-18",
       guests: 6,
