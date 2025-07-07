@@ -110,7 +110,6 @@ const App = () => (
 
               {/* Debug Tools - Development only */}
               <Route path="/debug/users" element={<UserActivationDebug />} />
-              <Route path="/test-auth" element={<TestAuth />} />
 
               {/* Admin Routes - Protected for backoffice roles only */}
               <Route
