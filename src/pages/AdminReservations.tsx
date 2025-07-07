@@ -747,6 +747,17 @@ const AdminReservations = () => {
                             variant="outline"
                             onClick={() => {
                               setSelectedReservation(reservation);
+                              setIsDetailsDialogOpen(true);
+                            }}
+                          >
+                            <Eye className="h-3 w-3 mr-1" />
+                            Ver Detalles
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setSelectedReservation(reservation);
                               setIsEditDialogOpen(true);
                             }}
                           >
