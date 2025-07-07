@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { toast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   CalendarDays,
   Plus,
@@ -39,9 +40,10 @@ import {
   X,
   Filter,
   Building2,
+  MapPin,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
-import { apiGetAccommodations } from "@/lib/api-service";
+import { apiGetAccommodations, apiGetReservations } from "@/lib/api-service";
 
 interface BlockedDate {
   id: string;
