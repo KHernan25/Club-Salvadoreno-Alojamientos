@@ -50,10 +50,7 @@ const BackofficeLogin = () => {
     setIsLoading(true);
 
     try {
-      console.log(
-        "🔐 Iniciando autenticación backoffice para:",
-        formData.username,
-      );
+      console.log("🔐 Iniciando autenticación backoffice para:", formData.username);
 
       const result = await authenticateUser({
         username: formData.username,
@@ -65,7 +62,7 @@ const BackofficeLogin = () => {
         success: result.success,
         hasUser: !!result.user,
         userRole: result.user?.role,
-        error: result.error,
+        error: result.error
       });
 
       if (result.success && result.user) {
@@ -108,6 +105,7 @@ const BackofficeLogin = () => {
           console.log("🔄 Navegando a /admin/dashboard");
           navigate("/admin/dashboard", { replace: true });
         }, 100);
+
       } else {
         console.log("❌ Login fallido:", result.error);
         setError(result.error || "Error desconocido al iniciar sesión");
@@ -142,164 +140,160 @@ const BackofficeLogin = () => {
   };
 
   return (
-    <>
-      <AuthDebug />
-      <div className="min-h-screen relative overflow-hidden">
-        {/* Background Pattern */}
-        <div
-          className="absolute inset-0 bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `linear-gradient(rgba(2, 21, 71, 0.85), rgba(2, 21, 71, 0.85)), url('/collage_club.png')`,
-            backgroundSize: "1920px 1000px",
-            backgroundPosition: "center center",
-          }}
-        />
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Pattern */}
+      <div
+        className="absolute inset-0 bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(rgba(2, 21, 71, 0.85), rgba(2, 21, 71, 0.85)), url('/collage_club.png')`,
+          backgroundSize: "1920px 1000px",
+          backgroundPosition: "center center",
+        }}
+      />
 
-        {/* Content */}
-        <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
-          <div className="w-full max-w-md">
-            {/* Logo */}
-            <div className="text-center mb-8">
-              <img
-                src="/logo.png"
-                alt="Logo Club Salvadoreño"
-                className="max-w-[300px] mx-auto object-contain mb-4"
-                onError={(e) => {
-                  console.error("Primary logo failed to load, trying fallback");
-                  // Try fallback logo
-                  const target = e.currentTarget as HTMLImageElement;
-                  if (target.src.includes("logo.png")) {
-                    target.src = "/logo_azul.png";
-                  } else if (target.src.includes("logo_azul.png")) {
-                    target.src = "/logo_menu.png";
-                  } else {
-                    // All logos failed, hide the image
-                    target.style.display = "none";
-                  }
-                }}
-                style={{ display: "block" }}
-              />
-              <h1 className="text-white text-3xl tracking-wider mb-2">
-                Backoffice
-              </h1>
-              <p className="text-blue-200 text-lg">Sistema de Administración</p>
-            </div>
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+        <div className="w-full max-w-md">
+          {/* Logo */}
+          <div className="text-center mb-8">
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-4"
+              onError={(e) => {
+                console.error("Primary logo failed to load, trying fallback");
+                // Try fallback logo
+                const target = e.currentTarget as HTMLImageElement;
+                if (target.src.includes("logo.png")) {
+                  target.src = "/logo_azul.png";
+                } else if (target.src.includes("logo_azul.png")) {
+                  target.src = "/logo_menu.png";
+                } else {
+                  // All logos failed, hide the image
+                  target.style.display = "none";
+                }
+              }}
+              style={{ display: "block" }}
+            />
+            <h1 className="text-white text-3xl tracking-wider mb-2">
+              Backoffice
+            </h1>
+            <p className="text-blue-200 text-lg">Sistema de Administración</p>
+          </div>
 
-            {/* Login Form */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-8 shadow-2xl border border-white/20">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Error Message */}
-                {error && (
-                  <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
-                    <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
-                    <p className="text-red-100 text-sm">{error}</p>
-                  </div>
-                )}
-
-                {/* Usuario */}
-                <div>
-                  <Label
-                    htmlFor="username"
-                    className="text-white font-medium mb-2 block"
-                  >
-                    Usuario o Correo
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      id="username"
-                      type="text"
-                      placeholder="Ingrese su usuario o correo"
-                      value={formData.username}
-                      onChange={(e) =>
-                        handleInputChange("username", e.target.value)
-                      }
-                      className="bg-white/90 border-white/30 text-slate-900 placeholder:text-slate-500 pr-10"
-                      required
-                    />
-                    <User className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
-                  </div>
+          {/* Login Form */}
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-8 shadow-2xl border border-white/20">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Error Message */}
+              {error && (
+                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
+                  <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
+                  <p className="text-red-100 text-sm">{error}</p>
                 </div>
+              )}
 
-                {/* Contraseña */}
-                <div>
-                  <Label
-                    htmlFor="password"
-                    className="text-white font-medium mb-2 block"
-                  >
-                    Contraseña
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Ingrese su contraseña"
-                      value={formData.password}
-                      onChange={(e) =>
-                        handleInputChange("password", e.target.value)
-                      }
-                      className="bg-white/90 border-white/30 text-slate-900 placeholder:text-slate-500 pr-10"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-5 w-5" />
-                      ) : (
-                        <Eye className="h-5 w-5" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Login Button */}
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-3 text-lg font-medium"
+              {/* Usuario */}
+              <div>
+                <Label
+                  htmlFor="username"
+                  className="text-white font-medium mb-2 block"
                 >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Verificando acceso...
-                    </>
-                  ) : (
-                    "Acceder al Sistema"
-                  )}
-                </Button>
-              </form>
-
-              {/* Info */}
-              <div className="mt-6 text-center space-y-2">
-                <p className="text-blue-100 text-sm">
-                  Solo personal autorizado puede acceder
-                </p>
-
-                {/* Credenciales de desarrollo */}
-                <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-3 text-xs">
-                  <p className="text-blue-200 font-semibold mb-1">
-                    🔧 Desarrollo - Credenciales de prueba:
-                  </p>
-                  <div className="text-blue-100 space-y-1">
-                    <div>superadmin / SuperAdmin123</div>
-                    <div>atencion / Atencion123</div>
-                    <div>mercadeo / Mercadeo123</div>
-                  </div>
+                  Usuario o Correo
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Ingrese su usuario o correo"
+                    value={formData.username}
+                    onChange={(e) =>
+                      handleInputChange("username", e.target.value)
+                    }
+                    className="bg-white/90 border-white/30 text-slate-900 placeholder:text-slate-500 pr-10"
+                    required
+                  />
+                  <User className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
                 </div>
-
-                <button
-                  onClick={() => navigate("/login")}
-                  className="text-blue-200 hover:text-white text-sm underline mt-2"
-                >
-                  ¿Eres huésped? Ir al sitio principal
-                </button>
               </div>
+
+              {/* Contraseña */}
+              <div>
+                <Label
+                  htmlFor="password"
+                  className="text-white font-medium mb-2 block"
+                >
+                  Contraseña
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Ingrese su contraseña"
+                    value={formData.password}
+                    onChange={(e) =>
+                      handleInputChange("password", e.target.value)
+                    }
+                    className="bg-white/90 border-white/30 text-slate-900 placeholder:text-slate-500 pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Login Button */}
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-3 text-lg font-medium"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Verificando acceso...
+                  </>
+                ) : (
+                  "Acceder al Sistema"
+                )}
+              </Button>
+            </form>
+
+            {/* Info */}
+            <div className="mt-6 text-center space-y-2">
+              <p className="text-blue-100 text-sm">
+                Solo personal autorizado puede acceder
+              </p>
+
+              {/* Credenciales de desarrollo */}
+              <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-3 text-xs">
+                <p className="text-blue-200 font-semibold mb-1">🔧 Desarrollo - Credenciales de prueba:</p>
+                <div className="text-blue-100 space-y-1">
+                  <div>superadmin / SuperAdmin123</div>
+                  <div>atencion / Atencion123</div>
+                  <div>mercadeo / Mercadeo123</div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => navigate("/login")}
+                className="text-blue-200 hover:text-white text-sm underline mt-2"
+              >
+                ¿Eres huésped? Ir al sitio principal
+              </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </>
   );
 };
