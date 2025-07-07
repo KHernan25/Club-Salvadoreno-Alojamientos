@@ -100,6 +100,9 @@ const AdminReservations = () => {
     checkOut: "",
     guests: 1,
     specialRequests: "",
+    paymentMethod: "",
+    paymentHandledBy: "guest", // guest, staff
+    paymentDeadline: "",
   });
 
   useEffect(() => {
