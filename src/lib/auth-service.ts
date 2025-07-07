@@ -182,6 +182,12 @@ export const authenticateUser = async (
   }
 
   // Autenticación exitosa
+  console.log(
+    "✅ Local auth successful for:",
+    user.fullName,
+    "Role:",
+    user.role,
+  );
   updateLastLogin(user.id);
 
   // Crear sesión
@@ -196,6 +202,14 @@ export const authenticateUser = async (
     localStorage.setItem(REMEMBER_KEY, JSON.stringify(sessionData));
   }
   sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+
+  console.log("✅ Local session created:", {
+    userId: user.id,
+    role: user.role,
+    fullName: user.fullName,
+    rememberMe,
+    loginTime: sessionData.loginTime,
+  });
 
   return {
     success: true,
