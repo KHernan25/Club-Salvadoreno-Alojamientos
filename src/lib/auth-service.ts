@@ -54,7 +54,9 @@ export const authenticateUser = async (
 
   if (USE_API) {
     try {
+      console.log("🔍 Checking API availability...");
       const apiConnected = await isApiAvailable();
+      console.log("🔍 API available:", apiConnected);
 
       if (apiConnected) {
         console.log("🔗 Usando autenticación con API real");
@@ -64,8 +66,18 @@ export const authenticateUser = async (
           rememberMe,
         });
 
+        console.log("📤 API Login result:", {
+          success: result.success,
+          hasUser: !!result.user,
+          hasToken: !!result.token,
+        });
+
         if (result.success && result.user) {
-          console.log("✅ API Login successful:", result.user);
+          console.log(
+            "✅ API Login successful:",
+            result.user.email,
+            result.user.role,
+          );
 
           // Verificar estado de aprobación
           if (result.user.status === "pending") {
