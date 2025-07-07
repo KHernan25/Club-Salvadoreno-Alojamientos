@@ -165,22 +165,11 @@ const AdminReservations = () => {
       );
     } catch (error) {
       console.error("❌ Error loading data:", error);
-      // Cargar datos mock si la API no está disponible
-      const mockReservations = getMockReservations();
-      const mockUsers = getMockUsers();
-      const mockAccommodations = getMockAccommodations();
-
-      console.log("📋 Loading mock data:", {
-        reservations: mockReservations.length,
-        users: mockUsers.length,
-        accommodations: mockAccommodations.length,
-      });
-
-      setReservations(Array.isArray(mockReservations) ? mockReservations : []);
-      setUsers(Array.isArray(mockUsers) ? mockUsers : []);
-      setAccommodations(
-        Array.isArray(mockAccommodations) ? mockAccommodations : [],
-      );
+      // Use fallback mock data - api-service already handles mock data when API fails
+      // so we'll get the same mock data here automatically
+      setReservations([]);
+      setUsers(getMockUsers());
+      setAccommodations(getMockAccommodations());
     } finally {
       setLoading(false);
     }
