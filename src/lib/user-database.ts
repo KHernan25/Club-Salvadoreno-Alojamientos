@@ -338,7 +338,7 @@ export const registeredUsers: User[] = [
 
   // Usuario inactivo (para testing)
   {
-    id: "11",
+    id: "12",
     firstName: "Inactivo",
     lastName: "Usuario",
     username: "inactivo",
@@ -346,7 +346,7 @@ export const registeredUsers: User[] = [
     email: "inactivo@email.com",
     phone: "+503 7234-5683",
     fullName: "Usuario Inactivo",
-    role: "user",
+    role: "miembro",
     isActive: false,
     createdAt: new Date("2024-01-01"),
   },
