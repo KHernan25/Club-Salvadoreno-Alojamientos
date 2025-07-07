@@ -911,7 +911,7 @@ const AdminReservations = () => {
                     </SelectTrigger>
                     <SelectContent>
                       {users.length === 0 ? (
-                        <SelectItem value="" disabled>
+                        <SelectItem value="no-users-available" disabled>
                           No hay usuarios disponibles
                         </SelectItem>
                       ) : (
