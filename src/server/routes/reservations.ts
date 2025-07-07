@@ -369,7 +369,7 @@ router.delete(
     }
 
     // Solo el dueño de la reserva o admin/staff pueden cancelarla
-    if (user.role === "user" && reservation.userId !== user.id) {
+    if (user.role === "miembro" && reservation.userId !== user.id) {
       throw createError("No tienes permisos para cancelar esta reserva", 403);
     }
 
