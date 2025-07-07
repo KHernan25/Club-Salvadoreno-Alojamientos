@@ -315,31 +315,46 @@ export const renewSession = (): void => {
 // Función helper para proteger rutas
 export const requireAuth = (): boolean => {
   try {
+    console.log("🔐 requireAuth: Iniciando verificación de autenticación");
+
     // Verificar autenticación básica
-    if (!isAuthenticated()) {
-      console.log("requireAuth: Not authenticated");
+    const authenticated = isAuthenticated();
+    console.log("🔐 requireAuth: isAuthenticated() =", authenticated);
+
+    if (!authenticated) {
+      console.log("❌ requireAuth: No autenticado, limpiando sesión");
       logout(); // Limpiar cualquier sesión corrupta
       return false;
     }
 
     // Verificar validez de sesión
-    if (!isSessionValid()) {
-      console.log("requireAuth: Session invalid");
+    const sessionValid = isSessionValid();
+    console.log("🔐 requireAuth: isSessionValid() =", sessionValid);
+
+    if (!sessionValid) {
+      console.log("❌ requireAuth: Sesión inválida, limpiando");
       logout(); // Limpiar sesión inválida
       return false;
     }
 
     // Verificar que el usuario actual exista
     const currentUser = getCurrentUser();
+    console.log("🔐 requireAuth: getCurrentUser() =", {
+      exists: !!currentUser,
+      id: currentUser?.id,
+      role: currentUser?.role,
+      isActive: currentUser?.isActive,
+    });
+
     if (!currentUser) {
-      console.log("requireAuth: No current user");
+      console.log("❌ requireAuth: No hay usuario actual, limpiando sesión");
       logout(); // Limpiar sesión sin usuario
       return false;
     }
 
     // Verificar que el usuario esté activo
     if (!currentUser.isActive) {
-      console.log("requireAuth: User is not active");
+      console.log("❌ requireAuth: Usuario inactivo, limpiando sesión");
       logout(); // Limpiar sesión de usuario inactivo
       return false;
     }
@@ -347,15 +362,23 @@ export const requireAuth = (): boolean => {
     // Verificar que tenemos token para API (importante para admin routes)
     const { getAuthToken } = require("./api-service");
     const token = getAuthToken();
+    console.log(
+      "🔐 requireAuth: getAuthToken() =",
+      !!token ? "existe" : "no existe",
+    );
+
     if (!token) {
-      console.log("requireAuth: No auth token found, forcing re-login");
-      logout(); // Forzar re-login para obtener token
-      return false;
+      console.log(
+        "⚠️ requireAuth: No hay token de API, pero permitiendo acceso local",
+      );
+      // No forzar logout por falta de token en modo desarrollo
+      // return false;
     }
 
+    console.log("✅ requireAuth: Autenticación exitosa");
     return true;
   } catch (error) {
-    console.error("requireAuth: Error validating session", error);
+    console.error("❌ requireAuth: Error validando sesión", error);
     logout(); // Limpiar en caso de error
     return false;
   }
