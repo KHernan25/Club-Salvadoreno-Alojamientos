@@ -252,8 +252,8 @@ const AdminReservations = () => {
       pricing: { weekday: 180, weekend: 350, holiday: 450 },
     },
     {
-      id: "suite-1",
-      name: "Suite Premium 1",
+      id: "suite1",
+      name: "Suite 1",
       type: "suite",
       location: "el-sunzal",
       capacity: 2,
@@ -264,8 +264,8 @@ const AdminReservations = () => {
       pricing: { weekday: 180, weekend: 320, holiday: 420 },
     },
     {
-      id: "suite-2",
-      name: "Suite Premium 2",
+      id: "suite2",
+      name: "Suite 2",
       type: "suite",
       location: "el-sunzal",
       capacity: 2,
@@ -276,8 +276,8 @@ const AdminReservations = () => {
       pricing: { weekday: 190, weekend: 335, holiday: 435 },
     },
     {
-      id: "casa-1",
-      name: "Casa Familiar 1",
+      id: "casa1",
+      name: "Casa Surf Paradise",
       type: "casa",
       location: "el-sunzal",
       capacity: 6,
@@ -288,8 +288,8 @@ const AdminReservations = () => {
       pricing: { weekday: 250, weekend: 450, holiday: 550 },
     },
     {
-      id: "casa-2",
-      name: "Casa Familiar 2",
+      id: "casa2",
+      name: "Casa Familiar Deluxe",
       type: "casa",
       location: "el-sunzal",
       capacity: 6,
