@@ -79,6 +79,7 @@ import {
   getCurrentUser,
   isSuperAdmin,
   hasPermission,
+  requireAuth,
 } from "@/lib/auth-service";
 import { getRolePermissions } from "@/lib/user-database";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -107,8 +108,14 @@ const AdminUsers = () => {
   const currentUser = getCurrentUser();
 
   useEffect(() => {
+    // Verificar autenticación antes de cargar datos
+    if (!requireAuth()) {
+      console.log("AdminUsers: Not authenticated, redirecting to login");
+      navigate("/login");
+      return;
+    }
     loadUsers();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     // Auto-open new user dialog if URL is /admin/users/new
