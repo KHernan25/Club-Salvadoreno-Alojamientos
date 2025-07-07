@@ -119,6 +119,11 @@ export const authenticateUser = async (
 
           // El token ya se guarda en api-service
           console.log("✅ Token saved, user session created");
+          console.log("✅ Session data saved:", {
+            userId: result.user.id,
+            role: result.user.role,
+            loginTime: sessionData.loginTime,
+          });
 
           return {
             success: true,
