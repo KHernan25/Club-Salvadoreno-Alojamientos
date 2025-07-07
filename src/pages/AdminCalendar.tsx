@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { toast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   CalendarDays,
   Plus,
@@ -39,9 +40,10 @@ import {
   X,
   Filter,
   Building2,
+  MapPin,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
-import { apiGetAccommodations } from "@/lib/api-service";
+import { apiGetAccommodations, apiGetReservations } from "@/lib/api-service";
 
 interface BlockedDate {
   id: string;
@@ -55,10 +57,21 @@ interface BlockedDate {
   createdAt: string;
 }
 
+interface CalendarReservation {
+  id: string;
+  accommodationId: string;
+  checkIn: string;
+  checkOut: string;
+  status: "confirmed" | "pending" | "cancelled" | "completed";
+  guestName: string;
+}
+
 const AdminCalendar = () => {
   const [accommodations, setAccommodations] = useState<any[]>([]);
+  const [reservations, setReservations] = useState<CalendarReservation[]>([]);
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("all");
+  const [selectedLocation, setSelectedLocation] = useState<string>("all");
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
   const [blockForm, setBlockForm] = useState<{
@@ -85,14 +98,20 @@ const AdminCalendar = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const accommodationsData = await apiGetAccommodations();
+      const [accommodationsData, reservationsData] = await Promise.all([
+        apiGetAccommodations(),
+        apiGetReservations(true), // Admin view to get all reservations
+      ]);
+
       setAccommodations(accommodationsData);
+      setReservations(getMockReservations()); // Using mock for now
 
       // Cargar fechas bloqueadas mock
       setBlockedDates(getMockBlockedDates());
     } catch (error) {
       console.error("Error loading data:", error);
       setAccommodations(getMockAccommodations());
+      setReservations(getMockReservations());
       setBlockedDates(getMockBlockedDates());
     } finally {
       setLoading(false);
@@ -104,6 +123,59 @@ const AdminCalendar = () => {
     { id: "suite-1", name: "Suite Premium 1", location: "el-sunzal" },
     { id: "casa-1", name: "Casa Familiar 1", location: "el-sunzal" },
     { id: "corinto-casa-1", name: "Casa Corinto 1", location: "corinto" },
+    {
+      id: "corinto-apto-1",
+      name: "Apartamento Corinto 1",
+      location: "corinto",
+    },
+    {
+      id: "corinto-apto-2",
+      name: "Apartamento Corinto 2",
+      location: "corinto",
+    },
+  ];
+
+  const getMockReservations = (): CalendarReservation[] => [
+    {
+      id: "res-1",
+      accommodationId: "1A",
+      checkIn: "2024-01-15",
+      checkOut: "2024-01-17",
+      status: "confirmed",
+      guestName: "María González",
+    },
+    {
+      id: "res-2",
+      accommodationId: "suite-1",
+      checkIn: "2024-01-20",
+      checkOut: "2024-01-22",
+      status: "pending",
+      guestName: "Carlos Rodríguez",
+    },
+    {
+      id: "res-3",
+      accommodationId: "casa-1",
+      checkIn: "2024-01-25",
+      checkOut: "2024-01-28",
+      status: "cancelled",
+      guestName: "Ana Martínez",
+    },
+    {
+      id: "res-4",
+      accommodationId: "corinto-casa-1",
+      checkIn: "2024-01-18",
+      checkOut: "2024-01-21",
+      status: "confirmed",
+      guestName: "Luis García",
+    },
+    {
+      id: "res-5",
+      accommodationId: "corinto-apto-1",
+      checkIn: "2024-01-22",
+      checkOut: "2024-01-24",
+      status: "pending",
+      guestName: "Carmen López",
+    },
   ];
 
   const getMockBlockedDates = (): BlockedDate[] => [
@@ -195,12 +267,51 @@ const AdminCalendar = () => {
   };
 
   const getFilteredBlockedDates = () => {
-    if (selectedAccommodation === "all") {
-      return blockedDates;
+    let filtered = blockedDates || [];
+
+    if (selectedAccommodation !== "all") {
+      filtered = filtered.filter(
+        (block) => block.accommodationId === selectedAccommodation,
+      );
     }
-    return (blockedDates || []).filter(
-      (block) => block.accommodationId === selectedAccommodation,
-    );
+
+    if (selectedLocation !== "all") {
+      const locationAccommodations = accommodations.filter(
+        (acc) => acc.location === selectedLocation,
+      );
+      const locationAccommodationIds = locationAccommodations.map(
+        (acc) => acc.id,
+      );
+      filtered = filtered.filter((block) =>
+        locationAccommodationIds.includes(block.accommodationId),
+      );
+    }
+
+    return filtered;
+  };
+
+  const getFilteredReservations = () => {
+    let filtered = reservations || [];
+
+    if (selectedAccommodation !== "all") {
+      filtered = filtered.filter(
+        (res) => res.accommodationId === selectedAccommodation,
+      );
+    }
+
+    if (selectedLocation !== "all") {
+      const locationAccommodations = accommodations.filter(
+        (acc) => acc.location === selectedLocation,
+      );
+      const locationAccommodationIds = locationAccommodations.map(
+        (acc) => acc.id,
+      );
+      filtered = filtered.filter((res) =>
+        locationAccommodationIds.includes(res.accommodationId),
+      );
+    }
+
+    return filtered;
   };
 
   const getAccommodationName = (accommodationId: string) => {
@@ -232,12 +343,71 @@ const AdminCalendar = () => {
     }
   };
 
-  // Crear fechas deshabilitadas para el calendario
+  // Crear fechas con estilos según su estado
+  const getDateStyles = () => {
+    const dateStyles: { [key: string]: string } = {};
+    const filteredReservations = getFilteredReservations();
+    const filteredBlocked = getFilteredBlockedDates();
+
+    // Fechas reservadas (rojo)
+    filteredReservations.forEach((reservation) => {
+      const start = new Date(reservation.checkIn);
+      const end = new Date(reservation.checkOut);
+
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const dateKey = d.toISOString().split("T")[0];
+
+        switch (reservation.status) {
+          case "confirmed":
+            dateStyles[dateKey] = "bg-red-200 text-red-800 font-semibold"; // Rojo - reservado
+            break;
+          case "pending":
+            dateStyles[dateKey] = "bg-yellow-200 text-yellow-800 font-semibold"; // Amarillo - en espera
+            break;
+          case "cancelled":
+            dateStyles[dateKey] = "bg-gray-600 text-white"; // Gris oscuro - cancelado
+            break;
+          case "completed":
+            dateStyles[dateKey] = "bg-gray-300 text-gray-600"; // Gris claro - completado
+            break;
+        }
+      }
+    });
+
+    // Fechas bloqueadas (gris claro)
+    filteredBlocked.forEach((block) => {
+      const start = new Date(block.startDate);
+      const end = new Date(block.endDate);
+
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const dateKey = d.toISOString().split("T")[0];
+        dateStyles[dateKey] = "bg-gray-300 text-gray-600"; // Gris claro - bloqueado
+      }
+    });
+
+    return dateStyles;
+  };
+
+  // Fechas deshabilitadas (solo para interacción)
   const getDisabledDates = () => {
     const disabled: Date[] = [];
-    const filtered = getFilteredBlockedDates();
+    const filteredReservations = getFilteredReservations();
+    const filteredBlocked = getFilteredBlockedDates();
 
-    filtered.forEach((block) => {
+    // Agregar fechas de reservas confirmadas
+    filteredReservations
+      .filter((res) => res.status === "confirmed")
+      .forEach((reservation) => {
+        const start = new Date(reservation.checkIn);
+        const end = new Date(reservation.checkOut);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          disabled.push(new Date(d));
+        }
+      });
+
+    // Agregar fechas bloqueadas
+    filteredBlocked.forEach((block) => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
 
@@ -341,53 +511,125 @@ const AdminCalendar = () => {
           {/* Calendar View */}
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Calendario de Disponibilidad
-                <div className="flex items-center space-x-2">
-                  <Filter className="h-4 w-4" />
-                  <Select
-                    value={selectedAccommodation}
-                    onValueChange={setSelectedAccommodation}
-                  >
-                    <SelectTrigger className="w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">
-                        Todos los alojamientos
-                      </SelectItem>
-                      {(accommodations || []).map((accommodation) => (
-                        <SelectItem
-                          key={accommodation.id}
-                          value={accommodation.id}
-                        >
-                          {accommodation.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardTitle>
+              <CardTitle>Calendario de Reservas</CardTitle>
               <CardDescription>
-                Las fechas marcadas en rojo están bloqueadas
+                Vista de disponibilidad por ubicación y estado de reservas
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Calendar
-                mode="multiple"
-                selected={selectedDates}
-                onSelect={setSelectedDates}
-                disabled={getDisabledDates()}
-                className="rounded-md border"
-              />
-              <div className="mt-4 flex items-center space-x-4 text-sm">
+              <Tabs
+                value={selectedLocation}
+                onValueChange={setSelectedLocation}
+                className="w-full"
+              >
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="all">Todas las Ubicaciones</TabsTrigger>
+                  <TabsTrigger value="el-sunzal">
+                    <MapPin className="h-4 w-4 mr-1" />
+                    El Sunzal
+                  </TabsTrigger>
+                  <TabsTrigger value="corinto">
+                    <MapPin className="h-4 w-4 mr-1" />
+                    Corinto
+                  </TabsTrigger>
+                </TabsList>
+
+                <div className="mt-4">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <Filter className="h-4 w-4" />
+                    <Select
+                      value={selectedAccommodation}
+                      onValueChange={setSelectedAccommodation}
+                    >
+                      <SelectTrigger className="w-64">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">
+                          Todos los alojamientos
+                        </SelectItem>
+                        {(accommodations || [])
+                          .filter(
+                            (acc) =>
+                              selectedLocation === "all" ||
+                              acc.location === selectedLocation,
+                          )
+                          .map((accommodation) => (
+                            <SelectItem
+                              key={accommodation.id}
+                              value={accommodation.id}
+                            >
+                              {accommodation.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <TabsContent value="all" className="mt-0">
+                    <Calendar
+                      mode="multiple"
+                      selected={selectedDates}
+                      onSelect={setSelectedDates}
+                      disabled={getDisabledDates()}
+                      className="rounded-md border"
+                      modifiers={getDateStyles()}
+                      modifiersClassNames={getDateStyles()}
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="el-sunzal" className="mt-0">
+                    <div className="mb-2 text-sm text-blue-600 font-medium">
+                      Mostrando reservas para El Sunzal
+                    </div>
+                    <Calendar
+                      mode="multiple"
+                      selected={selectedDates}
+                      onSelect={setSelectedDates}
+                      disabled={getDisabledDates()}
+                      className="rounded-md border"
+                      modifiers={getDateStyles()}
+                      modifiersClassNames={getDateStyles()}
+                    />
+                  </TabsContent>
+
+                  <TabsContent value="corinto" className="mt-0">
+                    <div className="mb-2 text-sm text-blue-600 font-medium">
+                      Mostrando reservas para Corinto
+                    </div>
+                    <Calendar
+                      mode="multiple"
+                      selected={selectedDates}
+                      onSelect={setSelectedDates}
+                      disabled={getDisabledDates()}
+                      className="rounded-md border"
+                      modifiers={getDateStyles()}
+                      modifiersClassNames={getDateStyles()}
+                    />
+                  </TabsContent>
+                </div>
+              </Tabs>
+
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-red-200 rounded"></div>
-                  <span>Fechas bloqueadas</span>
+                  <div className="w-3 h-3 bg-white border border-gray-300 rounded"></div>
+                  <span>Disponible</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-200 rounded"></div>
-                  <span>Fechas disponibles</span>
+                  <div className="w-3 h-3 bg-yellow-200 rounded"></div>
+                  <span>En espera</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-red-200 rounded"></div>
+                  <span>Reservado</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-gray-600 rounded"></div>
+                  <span>Cancelado</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-gray-300 rounded"></div>
+                  <span>Bloqueado</span>
                 </div>
               </div>
             </CardContent>

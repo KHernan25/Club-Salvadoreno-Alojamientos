@@ -330,11 +330,15 @@ const AdminDashboard = () => {
               <CardDescription>Tareas comunes del sistema</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button asChild className="w-full" variant="default">
-                <Link to="/admin/reservations/new">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Nueva Reserva
-                </Link>
+              <Button
+                className="w-full"
+                variant="default"
+                onClick={() => {
+                  window.location.href = "/admin/reservations/new";
+                }}
+              >
+                <Calendar className="mr-2 h-4 w-4" />
+                Nueva Reserva
               </Button>
               <Button asChild className="w-full" variant="outline">
                 <Link to="/admin/users">
@@ -402,10 +406,15 @@ const AdminDashboard = () => {
                         : "Pendiente"}
                     </Badge>
                     <div>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to={`/admin/reservations/${reservation.id}`}>
-                          Ver Detalles
-                        </Link>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          // Navigate to reservations page and show reservation details
+                          window.location.href = `/admin/reservations#${reservation.id}`;
+                        }}
+                      >
+                        Ver Detalles
                       </Button>
                     </div>
                   </div>
