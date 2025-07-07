@@ -346,16 +346,33 @@ const AdminUsers = () => {
 
     const matchesRole = roleFilter === "all" || user.role === roleFilter;
 
-    // For BackOffice users, filter by active status instead of approval status
+    // Handle status filtering for BackOffice vs Members
     let matchesStatus = true;
     if (statusFilter !== "all") {
       if (isBackOfficeUser(user.role)) {
-        // BackOffice users: active/inactive instead of approved/rejected
-        matchesStatus =
-          statusFilter === "active" ? user.isActive : !user.isActive;
+        // BackOffice users: active/inactive filtering
+        if (statusFilter === "active") {
+          matchesStatus = user.isActive;
+        } else if (statusFilter === "inactive") {
+          matchesStatus = !user.isActive;
+        } else if (
+          statusFilter === "pending" ||
+          statusFilter === "approved" ||
+          statusFilter === "rejected"
+        ) {
+          // BackOffice users don't have these statuses, so exclude them
+          matchesStatus = false;
+        }
       } else {
-        // Members: keep using approval status
-        matchesStatus = user.status === statusFilter;
+        // Members: use approval status + active/inactive
+        if (statusFilter === "active") {
+          matchesStatus = user.isActive;
+        } else if (statusFilter === "inactive") {
+          matchesStatus = !user.isActive;
+        } else {
+          // pending, approved, rejected
+          matchesStatus = user.status === statusFilter;
+        }
       }
     }
 
