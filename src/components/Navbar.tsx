@@ -340,7 +340,8 @@ const Navbar = ({ className }: NavbarProps) => {
                 currentUser.role === "atencion_miembro" ||
                 currentUser.role === "anfitrion" ||
                 currentUser.role === "monitor" ||
-                currentUser.role === "mercadeo") && (
+                currentUser.role === "mercadeo" ||
+                currentUser.role === "recepcion") && (
                 <button
                   onClick={() => {
                     navigate("/admin/dashboard");
@@ -351,7 +352,9 @@ const Navbar = ({ className }: NavbarProps) => {
                   <Shield className="h-5 w-5 text-slate-600" />
                   <span className="text-slate-900">Panel Administrativo</span>
                   <Badge variant="secondary" className="text-xs ml-auto">
-                    {currentUser.role === "super_admin" ? "Super Admin" : "atencion_miembro"}
+                    {currentUser.role === "super_admin"
+                      ? "Super Admin"
+                      : "atencion_miembro"}
                   </Badge>
                 </button>
               )}

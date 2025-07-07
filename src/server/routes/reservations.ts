@@ -262,7 +262,7 @@ router.get(
     }
 
     // Solo el dueño de la reserva o staff/admin pueden verla
-    if (user.role === "user" && reservation.userId !== user.id) {
+    if (user.role === "miembro" && reservation.userId !== user.id) {
       throw createError("No tienes permisos para ver esta reserva", 403);
     }
 
@@ -291,7 +291,7 @@ router.put(
     }
 
     // Solo el dueño de la reserva puede modificarla (y solo si está pending)
-    if (user.role === "user") {
+    if (user.role === "miembro") {
       if (reservation.userId !== user.id) {
         throw createError(
           "No tienes permisos para modificar esta reserva",
@@ -369,7 +369,7 @@ router.delete(
     }
 
     // Solo el dueño de la reserva o admin/staff pueden cancelarla
-    if (user.role === "user" && reservation.userId !== user.id) {
+    if (user.role === "miembro" && reservation.userId !== user.id) {
       throw createError("No tienes permisos para cancelar esta reserva", 403);
     }
 
