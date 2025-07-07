@@ -21,7 +21,7 @@ const AdminProtectedRoute = ({
   useEffect(() => {
     // Verificar autenticación
     if (!requireAuth()) {
-      navigate("/login");
+      navigate("/backoffice/login");
       return;
     }
 
@@ -35,8 +35,24 @@ const AdminProtectedRoute = ({
         return;
       }
 
-      // Si no tiene permisos suficientes
-      navigate("/dashboard");
+      // Si no tiene permisos suficientes pero es staff, mantener en backoffice
+      if (
+        currentUser &&
+        [
+          "super_admin",
+          "atencion_miembro",
+          "anfitrion",
+          "monitor",
+          "mercadeo",
+          "recepcion",
+        ].includes(currentUser.role)
+      ) {
+        navigate("/admin/dashboard");
+        return;
+      }
+
+      // Si no es staff, redirigir al login del backoffice
+      navigate("/backoffice/login");
       return;
     }
   }, [navigate, requiredRole]);

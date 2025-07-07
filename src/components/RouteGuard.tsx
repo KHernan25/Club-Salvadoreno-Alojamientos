@@ -30,6 +30,7 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
     "/corinto",
     "/el-sunzal",
     "/backoffice",
+    "/backoffice/login",
   ];
 
   // Función para verificar si es ruta pública
@@ -54,10 +55,16 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
 
     // Si es ruta protegida, verificar autenticación
     if (!requireAuth()) {
+      // Detectar si estamos en contexto de backoffice
+      const isBackofficeContext =
+        currentPath.startsWith("/admin") ||
+        currentPath.startsWith("/backoffice");
+
+      const loginPath = isBackofficeContext ? "/backoffice/login" : "/login";
       console.log(
-        "RouteGuard: Protected route, auth failed, redirecting to login",
+        `RouteGuard: Protected route, auth failed, redirecting to ${loginPath} (context: ${isBackofficeContext ? "backoffice" : "main"})`,
       );
-      navigate("/login", { replace: true });
+      navigate(loginPath, { replace: true });
       return;
     }
 
