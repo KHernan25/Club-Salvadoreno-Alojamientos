@@ -331,7 +331,7 @@ export const registeredUsers: User[] = [
     email: "demo@clubsalvadoreno.com",
     phone: "+503 7234-5682",
     fullName: "Usuario de Demostración",
-    role: "user",
+    role: "miembro",
     isActive: true,
     createdAt: new Date("2024-01-01"),
   },
