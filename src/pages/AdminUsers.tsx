@@ -714,7 +714,6 @@ const AdminUsers = () => {
                     <SelectItem value="mercadeo">Mercadeo</SelectItem>
                     <SelectItem value="recepcion">Recepción</SelectItem>
                     <SelectItem value="miembro">Miembro</SelectItem>
-                    <SelectItem value="user">Usuario</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
