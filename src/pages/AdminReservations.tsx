@@ -114,7 +114,17 @@ const AdminReservations = () => {
     if (location.pathname === "/admin/reservations/new") {
       setIsNewReservationDialogOpen(true);
     }
-  }, [location.pathname]);
+
+    // Handle viewing specific reservation from URL hash
+    if (location.hash) {
+      const reservationId = location.hash.substring(1);
+      const reservation = reservations.find((r) => r.id === reservationId);
+      if (reservation) {
+        setSelectedReservation(reservation);
+        setIsEditDialogOpen(true);
+      }
+    }
+  }, [location.pathname, location.hash, reservations]);
 
   useEffect(() => {
     // Load initial data when component mounts
