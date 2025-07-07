@@ -253,6 +253,14 @@ export const apiLogout = async (): Promise<void> => {
 // User management functions
 export const apiGetUsers = async (): Promise<User[]> => {
   try {
+    // Check if we have a token before making the request
+    const token = getAuthToken();
+    if (!token) {
+      console.warn("No auth token available for users, using mock data");
+      const { registeredUsers } = await import("./user-database");
+      return registeredUsers;
+    }
+
     const result = await apiRequest<{ users: User[] }>("/users?limit=1000");
     if (result.success && result.data?.users) {
       return result.data.users;
@@ -311,6 +319,15 @@ export const apiGetUserStats = async (): Promise<UserStats> => {
 // Accommodation management functions
 export const apiGetAccommodations = async (): Promise<Accommodation[]> => {
   try {
+    // Check if we have a token before making the request
+    const token = getAuthToken();
+    if (!token) {
+      console.warn(
+        "No auth token available for accommodations, using mock data",
+      );
+      return getMockAccommodations();
+    }
+
     const result = await apiRequest<{ accommodations: Accommodation[] }>(
       "/accommodations",
     );
@@ -323,42 +340,47 @@ export const apiGetAccommodations = async (): Promise<Accommodation[]> => {
     throw new Error(result.error || "Failed to fetch accommodations");
   } catch (error) {
     console.warn("API call failed, falling back to mock data:", error);
-    return [
-      {
-        id: "el-sunzal-apt-1",
-        name: "Apartamento El Sunzal 1",
-        type: "apartment",
-        location: "El Sunzal",
-        capacity: 4,
-        price: 120,
-        status: "available",
-        amenities: ["wifi", "ac", "parking", "kitchen"],
-        description: "Apartamento frente al mar con vista panorámica",
-      },
-      {
-        id: "el-sunzal-casa-1",
-        name: "Casa El Sunzal 1",
-        type: "house",
-        location: "El Sunzal",
-        capacity: 8,
-        price: 250,
-        status: "available",
-        amenities: ["wifi", "ac", "parking", "kitchen", "pool"],
-        description: "Casa familiar con piscina privada",
-      },
-      {
-        id: "corinto-casa-1",
-        name: "Casa Corinto 1",
-        type: "house",
-        location: "Corinto",
-        capacity: 6,
-        price: 180,
-        status: "available",
-        amenities: ["wifi", "ac", "parking", "kitchen"],
-        description: "Casa acogedora en zona tranquila",
-      },
-    ];
+    return getMockAccommodations();
   }
+};
+
+// Helper function for mock accommodations
+const getMockAccommodations = (): Accommodation[] => {
+  return [
+    {
+      id: "el-sunzal-apt-1",
+      name: "Apartamento El Sunzal 1",
+      type: "apartment",
+      location: "El Sunzal",
+      capacity: 4,
+      price: 120,
+      status: "available",
+      amenities: ["wifi", "ac", "parking", "kitchen"],
+      description: "Apartamento frente al mar con vista panorámica",
+    },
+    {
+      id: "el-sunzal-casa-1",
+      name: "Casa El Sunzal 1",
+      type: "house",
+      location: "El Sunzal",
+      capacity: 8,
+      price: 250,
+      status: "available",
+      amenities: ["wifi", "ac", "parking", "kitchen", "pool"],
+      description: "Casa familiar con piscina privada",
+    },
+    {
+      id: "corinto-casa-1",
+      name: "Casa Corinto 1",
+      type: "house",
+      location: "Corinto",
+      capacity: 6,
+      price: 180,
+      status: "available",
+      amenities: ["wifi", "ac", "parking", "kitchen"],
+      description: "Casa acogedora en zona tranquila",
+    },
+  ];
 };
 
 export const apiUpdateAccommodation = async (
@@ -377,6 +399,13 @@ export const apiGetReservations = async (
   isAdmin: boolean = false,
 ): Promise<Reservation[]> => {
   try {
+    // Check if we have a token before making the request
+    const token = getAuthToken();
+    if (!token) {
+      console.warn("No auth token available, using mock data");
+      return getMockReservations(isAdmin);
+    }
+
     const endpoint = isAdmin ? "/reservations/all" : "/reservations";
     const result = await apiRequest<any>(endpoint);
 
@@ -399,35 +428,61 @@ export const apiGetReservations = async (
     throw new Error(result.error || "Failed to fetch reservations");
   } catch (error) {
     console.warn("API call failed, falling back to mock data:", error);
-    return [
-      {
-        id: "res-001",
-        userId: "6",
-        accommodationId: "el-sunzal-apt-1",
-        checkIn: "2024-07-01",
-        checkOut: "2024-07-03",
-        guests: 2,
-        totalPrice: 240,
-        status: "confirmed",
-        createdAt: "2024-06-20T10:00:00Z",
-        guestName: "María José González",
-        accommodationName: "Apartamento El Sunzal 1",
-      },
-      {
-        id: "res-002",
-        userId: "7",
-        accommodationId: "corinto-casa-1",
-        checkIn: "2024-07-05",
-        checkOut: "2024-07-07",
-        guests: 4,
-        totalPrice: 360,
-        status: "pending",
-        createdAt: "2024-06-21T14:30:00Z",
-        guestName: "Carlos Rivera",
-        accommodationName: "Casa Corinto 1",
-      },
-    ];
+    return getMockReservations(isAdmin);
   }
+};
+
+// Helper function to get mock reservations
+const getMockReservations = (isAdmin: boolean): Reservation[] => {
+  const mockReservations = [
+    {
+      id: "res-001",
+      userId: "6",
+      accommodationId: "el-sunzal-apt-1",
+      checkIn: "2024-07-01",
+      checkOut: "2024-07-03",
+      guests: 2,
+      totalPrice: 240,
+      status: "confirmed",
+      createdAt: "2024-06-20T10:00:00Z",
+      guestName: "María Jos�� González",
+      accommodationName: "Apartamento El Sunzal 1",
+    },
+    {
+      id: "res-002",
+      userId: "7",
+      accommodationId: "corinto-casa-1",
+      checkIn: "2024-07-05",
+      checkOut: "2024-07-07",
+      guests: 4,
+      totalPrice: 320,
+      status: "pending",
+      createdAt: "2024-06-21T14:30:00Z",
+      guestName: "Carlos Roberto Mejía",
+      accommodationName: "Casa Corinto 1",
+    },
+    {
+      id: "res-003",
+      userId: "8",
+      accommodationId: "costa-del-sol-villa-1",
+      checkIn: "2024-07-10",
+      checkOut: "2024-07-12",
+      guests: 6,
+      totalPrice: 480,
+      status: "confirmed",
+      createdAt: "2024-06-22T09:15:00Z",
+      guestName: "Ana Lucía Hernández",
+      accommodationName: "Villa Costa del Sol 1",
+    },
+  ];
+
+  // If not admin, filter to only show reservations for current user
+  if (!isAdmin) {
+    // In a real scenario, we'd filter by current user ID
+    return mockReservations.slice(0, 1); // Just return one for regular users
+  }
+
+  return mockReservations;
 };
 
 export const apiCreateReservation = async (
