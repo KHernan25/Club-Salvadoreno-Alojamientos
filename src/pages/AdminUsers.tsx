@@ -448,21 +448,47 @@ const AdminUsers = () => {
             {user.isActive ? "Activo" : "Inactivo"}
           </Badge>
         ) : (
-          <Badge
-            variant={
-              user.status === "approved"
-                ? "default"
+          <div className="flex flex-col gap-1">
+            <Badge
+              variant={
+                user.status === "approved"
+                  ? "default"
+                  : user.status === "pending"
+                    ? "outline"
+                    : "destructive"
+              }
+            >
+              {user.status === "approved"
+                ? "Aprobado"
                 : user.status === "pending"
-                  ? "outline"
-                  : "destructive"
-            }
-          >
-            {user.status === "approved"
-              ? "Aprobado"
-              : user.status === "pending"
-                ? "Pendiente"
-                : "Rechazado"}
-          </Badge>
+                  ? "Pendiente"
+                  : "Rechazado"}
+            </Badge>
+            {user.status === "approved" && user.memberStatus && (
+              <Badge
+                variant={
+                  user.memberStatus === "activo"
+                    ? "default"
+                    : user.memberStatus === "en_mora"
+                      ? "outline"
+                      : "destructive"
+                }
+                className={
+                  user.memberStatus === "activo"
+                    ? "bg-green-600 hover:bg-green-700"
+                    : user.memberStatus === "en_mora"
+                      ? "bg-yellow-600 hover:bg-yellow-700 text-white"
+                      : ""
+                }
+              >
+                {user.memberStatus === "activo"
+                  ? "Activo"
+                  : user.memberStatus === "en_mora"
+                    ? "En Mora"
+                    : "Inactivo"}
+              </Badge>
+            )}
+          </div>
         )}
       </TableCell>
       <TableCell>
@@ -716,7 +742,7 @@ const AdminUsers = () => {
                     <SelectItem value="atencion_miembro">
                       Atención al Miembro
                     </SelectItem>
-                    <SelectItem value="anfitrion">Anfitrión</SelectItem>
+                    <SelectItem value="anfitrion">Anfitri��n</SelectItem>
                     <SelectItem value="monitor">Monitor</SelectItem>
                     <SelectItem value="mercadeo">Mercadeo</SelectItem>
                     <SelectItem value="recepcion">Recepción</SelectItem>
