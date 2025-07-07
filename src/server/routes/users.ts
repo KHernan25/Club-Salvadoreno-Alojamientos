@@ -77,8 +77,8 @@ router.get(
     const { id } = req.params;
     const currentUser = req.user;
 
-    // Los usuarios solo pueden ver su propio perfil, staff/admin pueden ver cualquiera
-    if (currentUser.role === "user" && currentUser.id !== id) {
+    // Los miembros solo pueden ver su propio perfil, staff/admin pueden ver cualquiera
+    if (currentUser.role === "miembro" && currentUser.id !== id) {
       throw createError("No tienes permisos para ver este perfil", 403);
     }
 
@@ -118,8 +118,8 @@ router.put(
     const currentUser = req.user;
     const updates = req.body;
 
-    // Los usuarios solo pueden actualizar su propio perfil
-    if (currentUser.role === "user" && currentUser.id !== id) {
+    // Los miembros solo pueden actualizar su propio perfil
+    if (currentUser.role === "miembro" && currentUser.id !== id) {
       throw createError("No tienes permisos para actualizar este perfil", 403);
     }
 
@@ -279,7 +279,7 @@ router.get(
       atencion_miembro: registeredUsers.filter(
         (u) => u.role === "atencion_miembro",
       ).length,
-      user: registeredUsers.filter((u) => u.role === "user").length,
+      miembro: registeredUsers.filter((u) => u.role === "miembro").length,
     };
 
     const recentRegistrations = registeredUsers.filter((u) => {
