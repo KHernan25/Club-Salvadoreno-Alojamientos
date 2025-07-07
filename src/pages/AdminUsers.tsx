@@ -163,7 +163,7 @@ const AdminUsers = () => {
       username: "maria_gonzalez",
       password: "maria123",
       fullName: "María González",
-      role: "user",
+      role: "miembro",
       isActive: false,
       phone: "+503 7890-1234",
       createdAt: new Date("2024-01-14T15:20:00Z"),
@@ -742,7 +742,7 @@ const AdminUsers = () => {
                     <SelectItem value="atencion_miembro">
                       Atención al Miembro
                     </SelectItem>
-                    <SelectItem value="anfitrion">Anfitri��n</SelectItem>
+                    <SelectItem value="anfitrion">Anfitrión</SelectItem>
                     <SelectItem value="monitor">Monitor</SelectItem>
                     <SelectItem value="mercadeo">Mercadeo</SelectItem>
                     <SelectItem value="recepcion">Recepción</SelectItem>
