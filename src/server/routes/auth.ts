@@ -43,8 +43,16 @@ router.post(
       });
     }
 
-    // Validar credenciales usando la función del backend
-    const user = isValidUser(username.trim(), password);
+    // Validar credenciales - intentar tanto username como email
+    let user = isValidUser(username.trim(), password);
+
+    // Si no se encontró con username, intentar con email
+    if (!user) {
+      const userByEmail = findUserByEmail(username.trim());
+      if (userByEmail && isValidUser(userByEmail.username, password)) {
+        user = userByEmail;
+      }
+    }
 
     if (!user) {
       console.log("❌ Invalid credentials for:", username);
