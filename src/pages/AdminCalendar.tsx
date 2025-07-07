@@ -343,12 +343,71 @@ const AdminCalendar = () => {
     }
   };
 
-  // Crear fechas deshabilitadas para el calendario
+  // Crear fechas con estilos según su estado
+  const getDateStyles = () => {
+    const dateStyles: { [key: string]: string } = {};
+    const filteredReservations = getFilteredReservations();
+    const filteredBlocked = getFilteredBlockedDates();
+
+    // Fechas reservadas (rojo)
+    filteredReservations.forEach((reservation) => {
+      const start = new Date(reservation.checkIn);
+      const end = new Date(reservation.checkOut);
+
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const dateKey = d.toISOString().split("T")[0];
+
+        switch (reservation.status) {
+          case "confirmed":
+            dateStyles[dateKey] = "bg-red-200 text-red-800 font-semibold"; // Rojo - reservado
+            break;
+          case "pending":
+            dateStyles[dateKey] = "bg-yellow-200 text-yellow-800 font-semibold"; // Amarillo - en espera
+            break;
+          case "cancelled":
+            dateStyles[dateKey] = "bg-gray-600 text-white"; // Gris oscuro - cancelado
+            break;
+          case "completed":
+            dateStyles[dateKey] = "bg-gray-300 text-gray-600"; // Gris claro - completado
+            break;
+        }
+      }
+    });
+
+    // Fechas bloqueadas (gris claro)
+    filteredBlocked.forEach((block) => {
+      const start = new Date(block.startDate);
+      const end = new Date(block.endDate);
+
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const dateKey = d.toISOString().split("T")[0];
+        dateStyles[dateKey] = "bg-gray-300 text-gray-600"; // Gris claro - bloqueado
+      }
+    });
+
+    return dateStyles;
+  };
+
+  // Fechas deshabilitadas (solo para interacción)
   const getDisabledDates = () => {
     const disabled: Date[] = [];
-    const filtered = getFilteredBlockedDates();
+    const filteredReservations = getFilteredReservations();
+    const filteredBlocked = getFilteredBlockedDates();
 
-    filtered.forEach((block) => {
+    // Agregar fechas de reservas confirmadas
+    filteredReservations
+      .filter((res) => res.status === "confirmed")
+      .forEach((reservation) => {
+        const start = new Date(reservation.checkIn);
+        const end = new Date(reservation.checkOut);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          disabled.push(new Date(d));
+        }
+      });
+
+    // Agregar fechas bloqueadas
+    filteredBlocked.forEach((block) => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
 
