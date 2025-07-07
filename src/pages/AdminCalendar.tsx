@@ -41,6 +41,10 @@ import {
   Filter,
   Building2,
   MapPin,
+  User,
+  Mail,
+  Phone,
+  Users,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import { apiGetAccommodations, apiGetReservations } from "@/lib/api-service";
