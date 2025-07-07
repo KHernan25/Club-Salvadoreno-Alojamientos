@@ -267,12 +267,51 @@ const AdminCalendar = () => {
   };
 
   const getFilteredBlockedDates = () => {
-    if (selectedAccommodation === "all") {
-      return blockedDates;
+    let filtered = blockedDates || [];
+
+    if (selectedAccommodation !== "all") {
+      filtered = filtered.filter(
+        (block) => block.accommodationId === selectedAccommodation,
+      );
     }
-    return (blockedDates || []).filter(
-      (block) => block.accommodationId === selectedAccommodation,
-    );
+
+    if (selectedLocation !== "all") {
+      const locationAccommodations = accommodations.filter(
+        (acc) => acc.location === selectedLocation,
+      );
+      const locationAccommodationIds = locationAccommodations.map(
+        (acc) => acc.id,
+      );
+      filtered = filtered.filter((block) =>
+        locationAccommodationIds.includes(block.accommodationId),
+      );
+    }
+
+    return filtered;
+  };
+
+  const getFilteredReservations = () => {
+    let filtered = reservations || [];
+
+    if (selectedAccommodation !== "all") {
+      filtered = filtered.filter(
+        (res) => res.accommodationId === selectedAccommodation,
+      );
+    }
+
+    if (selectedLocation !== "all") {
+      const locationAccommodations = accommodations.filter(
+        (acc) => acc.location === selectedLocation,
+      );
+      const locationAccommodationIds = locationAccommodations.map(
+        (acc) => acc.id,
+      );
+      filtered = filtered.filter((res) =>
+        locationAccommodationIds.includes(res.accommodationId),
+      );
+    }
+
+    return filtered;
   };
 
   const getAccommodationName = (accommodationId: string) => {
