@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
-import AuthDebug from "@/components/AuthDebug";
 import {
   apiGetUserStats,
   apiGetReservationStats,
