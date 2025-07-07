@@ -498,10 +498,10 @@ const getMockReservations = (isAdmin: boolean): Reservation[] => {
     {
       id: "res-005",
       userId: "7",
-      accommodationId: "corinto-apto-1",
+      accommodationId: "corinto1A",
       checkIn: "2024-07-20",
       checkOut: "2024-07-22",
-      guests: 3,
+      guests: 2,
       totalPrice: 360,
       status: "pending",
       paymentStatus: "pending",
