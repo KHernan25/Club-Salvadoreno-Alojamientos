@@ -378,20 +378,30 @@ export const requireAuth = (): boolean => {
       return false;
     }
 
-    // Verificar que tenemos token para API (importante para admin routes)
-    const { getAuthToken } = require("./api-service");
-    const token = getAuthToken();
-    console.log(
-      "🔐 requireAuth: getAuthToken() =",
-      !!token ? "existe" : "no existe",
-    );
+    // En modo desarrollo, no requerir token de API para acceso básico
+    const isDevelopment =
+      process.env.NODE_ENV === "development" || !process.env.NODE_ENV;
 
-    if (!token) {
+    if (!isDevelopment) {
+      // Solo en producción verificar token de API estrictamente
+      const { getAuthToken } = require("./api-service");
+      const token = getAuthToken();
       console.log(
-        "⚠️ requireAuth: No hay token de API, pero permitiendo acceso local",
+        "🔐 requireAuth: getAuthToken() =",
+        !!token ? "existe" : "no existe",
       );
-      // No forzar logout por falta de token en modo desarrollo
-      // return false;
+
+      if (!token) {
+        console.log(
+          "❌ requireAuth: No hay token de API en producción, forzando re-login",
+        );
+        logout();
+        return false;
+      }
+    } else {
+      console.log(
+        "🔧 requireAuth: Modo desarrollo - saltando verificación de token API",
+      );
     }
 
     console.log("✅ requireAuth: Autenticación exitosa");
