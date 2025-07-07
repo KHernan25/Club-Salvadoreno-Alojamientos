@@ -93,6 +93,7 @@ const AdminReservations = () => {
   const [isNewReservationDialogOpen, setIsNewReservationDialogOpen] =
     useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [newReservationForm, setNewReservationForm] = useState({
     userId: "",
     accommodationId: "",
@@ -746,6 +747,17 @@ const AdminReservations = () => {
                             variant="outline"
                             onClick={() => {
                               setSelectedReservation(reservation);
+                              setIsDetailsDialogOpen(true);
+                            }}
+                          >
+                            <Eye className="h-3 w-3 mr-1" />
+                            Ver Detalles
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setSelectedReservation(reservation);
                               setIsEditDialogOpen(true);
                             }}
                           >
@@ -1168,6 +1180,272 @@ const AdminReservations = () => {
                 }
               >
                 Guardar Cambios
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Reservation Details Dialog */}
+        <Dialog
+          open={isDetailsDialogOpen}
+          onOpenChange={setIsDetailsDialogOpen}
+        >
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Detalles de la Reserva</DialogTitle>
+              <DialogDescription>
+                Información completa de la reserva seleccionada
+              </DialogDescription>
+            </DialogHeader>
+            {selectedReservation && (
+              <div className="space-y-6">
+                {/* Status Badge */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    {getStatusBadge(selectedReservation.status)}
+                    {getPaymentStatusBadge(selectedReservation.paymentStatus)}
+                  </div>
+                  <span className="text-sm text-gray-500 font-mono">
+                    {selectedReservation.confirmationCode}
+                  </span>
+                </div>
+
+                {/* Guest and Reservation Information */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium flex items-center">
+                        <User className="h-4 w-4 mr-2" />
+                        Información del Huésped
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div>
+                        <Label className="text-xs text-gray-500">Nombre</Label>
+                        <p className="font-medium">
+                          {getUserName(selectedReservation.userId)}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-gray-500">
+                          Número de Huéspedes
+                        </Label>
+                        <div className="flex items-center space-x-1">
+                          <Users className="h-3 w-3 text-gray-500" />
+                          <span className="text-sm">
+                            {selectedReservation.guests} persona
+                            {selectedReservation.guests > 1 ? "s" : ""}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium flex items-center">
+                        <Building2 className="h-4 w-4 mr-2" />
+                        Detalles del Alojamiento
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div>
+                        <Label className="text-xs text-gray-500">
+                          Alojamiento
+                        </Label>
+                        <p className="font-medium">
+                          {getAccommodationName(
+                            selectedReservation.accommodationId,
+                          )}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-gray-500">
+                          Ubicación
+                        </Label>
+                        <div className="flex items-center space-x-1">
+                          <MapPin className="h-3 w-3 text-blue-600" />
+                          <span className="text-sm">
+                            {getAccommodationLocation(
+                              selectedReservation.accommodationId,
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Dates and Pricing */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium flex items-center">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        Fechas de Estadía
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Check-in
+                          </Label>
+                          <p className="text-sm font-medium">
+                            {new Date(
+                              selectedReservation.checkIn,
+                            ).toLocaleDateString("es-ES", {
+                              weekday: "short",
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Check-out
+                          </Label>
+                          <p className="text-sm font-medium">
+                            {new Date(
+                              selectedReservation.checkOut,
+                            ).toLocaleDateString("es-ES", {
+                              weekday: "short",
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-gray-500">
+                          Duración
+                        </Label>
+                        <p className="text-sm">
+                          {Math.ceil(
+                            (new Date(selectedReservation.checkOut).getTime() -
+                              new Date(selectedReservation.checkIn).getTime()) /
+                              (1000 * 60 * 60 * 24),
+                          )}{" "}
+                          noche
+                          {Math.ceil(
+                            (new Date(selectedReservation.checkOut).getTime() -
+                              new Date(selectedReservation.checkIn).getTime()) /
+                              (1000 * 60 * 60 * 24),
+                          ) > 1
+                            ? "s"
+                            : ""}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium flex items-center">
+                        <DollarSign className="h-4 w-4 mr-2" />
+                        Información de Pago
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div>
+                        <Label className="text-xs text-gray-500">
+                          Total de la Reserva
+                        </Label>
+                        <p className="text-lg font-semibold text-emerald-600">
+                          ${selectedReservation.totalPrice.toLocaleString()}
+                        </p>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-gray-500">
+                          Estado del Pago
+                        </Label>
+                        <div className="mt-1">
+                          {getPaymentStatusBadge(
+                            selectedReservation.paymentStatus,
+                          )}
+                        </div>
+                      </div>
+                      {selectedReservation.paymentMethod && (
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Método de Pago
+                          </Label>
+                          <p className="text-sm capitalize">
+                            {selectedReservation.paymentMethod.replace(
+                              "_",
+                              " ",
+                            )}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Special Requests */}
+                {selectedReservation.specialRequests && (
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-2" />
+                        Solicitudes Especiales
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-700">
+                        {selectedReservation.specialRequests}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Timestamps */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <Label className="text-xs text-gray-500">
+                        Fecha de Creación
+                      </Label>
+                      <p>
+                        {selectedReservation.createdAt
+                          ? new Date(
+                              selectedReservation.createdAt,
+                            ).toLocaleString("es-ES")
+                          : "No disponible"}
+                      </p>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-gray-500">
+                        Última Actualización
+                      </Label>
+                      <p>
+                        {selectedReservation.updatedAt
+                          ? new Date(
+                              selectedReservation.updatedAt,
+                            ).toLocaleString("es-ES")
+                          : "No disponible"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsDetailsDialogOpen(false)}
+              >
+                Cerrar
+              </Button>
+              <Button
+                onClick={() => {
+                  setIsDetailsDialogOpen(false);
+                  setIsEditDialogOpen(true);
+                }}
+              >
+                Editar Reserva
               </Button>
             </DialogFooter>
           </DialogContent>
