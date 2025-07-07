@@ -155,7 +155,7 @@ const AdminCalendar = () => {
     },
     {
       id: "res-2",
-      accommodationId: "suite-1",
+      accommodationId: "suite1",
       checkIn: "2024-01-20",
       checkOut: "2024-01-22",
       status: "pending",
@@ -168,7 +168,7 @@ const AdminCalendar = () => {
     },
     {
       id: "res-3",
-      accommodationId: "casa-1",
+      accommodationId: "casa1",
       checkIn: "2024-01-25",
       checkOut: "2024-01-28",
       status: "cancelled",
@@ -194,7 +194,7 @@ const AdminCalendar = () => {
     },
     {
       id: "res-5",
-      accommodationId: "corinto-apto-1",
+      accommodationId: "corinto1A",
       checkIn: "2024-01-22",
       checkOut: "2024-01-24",
       status: "pending",
