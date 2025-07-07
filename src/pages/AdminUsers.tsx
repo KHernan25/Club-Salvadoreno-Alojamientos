@@ -100,7 +100,7 @@ const AdminUsers = () => {
     email: "",
     username: "",
     phone: "",
-    role: "user" as User["role"],
+    role: "miembro" as User["role"],
     password: "",
   });
 
