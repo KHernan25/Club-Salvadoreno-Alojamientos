@@ -175,53 +175,6 @@ const AdminReservations = () => {
     }
   };
 
-  const getMockReservations = (): Reservation[] => [
-    {
-      id: "res-1",
-      userId: "2",
-      accommodationId: "1A",
-      checkIn: "2024-01-15",
-      checkOut: "2024-01-17",
-      guests: 2,
-      status: "confirmed",
-      totalPrice: 460,
-      paymentStatus: "paid",
-      specialRequests: "Llegada tardía",
-      confirmationCode: "ABC123",
-      createdAt: "2024-01-10T10:00:00Z",
-      updatedAt: "2024-01-10T10:00:00Z",
-    },
-    {
-      id: "res-2",
-      userId: "3",
-      accommodationId: "suite-1",
-      checkIn: "2024-01-20",
-      checkOut: "2024-01-22",
-      guests: 2,
-      status: "pending",
-      totalPrice: 640,
-      paymentStatus: "pending",
-      confirmationCode: "DEF456",
-      createdAt: "2024-01-12T15:30:00Z",
-      updatedAt: "2024-01-12T15:30:00Z",
-    },
-    {
-      id: "res-3",
-      userId: "4",
-      accommodationId: "casa-1",
-      checkIn: "2024-01-25",
-      checkOut: "2024-01-28",
-      guests: 4,
-      status: "cancelled",
-      totalPrice: 1350,
-      paymentStatus: "refunded",
-      specialRequests: "Cancelación por motivos familiares",
-      confirmationCode: "GHI789",
-      createdAt: "2024-01-08T09:15:00Z",
-      updatedAt: "2024-01-14T11:20:00Z",
-    },
-  ];
-
   const getMockUsers = () => [
     {
       id: "1",
