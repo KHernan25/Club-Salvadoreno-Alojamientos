@@ -50,7 +50,10 @@ const BackofficeLogin = () => {
     setIsLoading(true);
 
     try {
-      console.log("🔐 Iniciando autenticación backoffice para:", formData.username);
+      console.log(
+        "🔐 Iniciando autenticación backoffice para:",
+        formData.username,
+      );
 
       const result = await authenticateUser({
         username: formData.username,
@@ -62,7 +65,7 @@ const BackofficeLogin = () => {
         success: result.success,
         hasUser: !!result.user,
         userRole: result.user?.role,
-        error: result.error
+        error: result.error,
       });
 
       if (result.success && result.user) {
@@ -105,7 +108,6 @@ const BackofficeLogin = () => {
           console.log("🔄 Navegando a /admin/dashboard");
           navigate("/admin/dashboard", { replace: true });
         }, 100);
-
       } else {
         console.log("❌ Login fallido:", result.error);
         setError(result.error || "Error desconocido al iniciar sesión");
@@ -275,7 +277,9 @@ const BackofficeLogin = () => {
 
               {/* Credenciales de desarrollo */}
               <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-3 text-xs">
-                <p className="text-blue-200 font-semibold mb-1">🔧 Desarrollo - Credenciales de prueba:</p>
+                <p className="text-blue-200 font-semibold mb-1">
+                  🔧 Desarrollo - Credenciales de prueba:
+                </p>
                 <div className="text-blue-100 space-y-1">
                   <div>superadmin / SuperAdmin123</div>
                   <div>atencion / Atencion123</div>
@@ -294,7 +298,6 @@ const BackofficeLogin = () => {
         </div>
       </div>
     </div>
-    </>
   );
 };
 
