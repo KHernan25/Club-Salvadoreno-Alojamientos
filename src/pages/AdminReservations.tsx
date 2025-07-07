@@ -431,6 +431,9 @@ const AdminReservations = () => {
         checkOut: "",
         guests: 1,
         specialRequests: "",
+        paymentMethod: "",
+        paymentHandledBy: "guest",
+        paymentDeadline: "",
       });
       // Navigate back to main reservations page if came from /new route
       if (location.pathname === "/admin/reservations/new") {
