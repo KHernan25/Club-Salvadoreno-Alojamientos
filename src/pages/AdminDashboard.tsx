@@ -416,7 +416,6 @@ const AdminDashboard = () => {
         </Card>
       </div>
     </AdminLayout>
-    </>
   );
 };
 
