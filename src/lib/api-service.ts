@@ -191,8 +191,9 @@ const apiRequest = async <T>(
 // Check if API is available
 export const isApiAvailable = async (): Promise<boolean> => {
   try {
+    console.log("🔍 Checking API health at /health...");
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1000); // 1 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
 
     const response = await fetch("/health", {
       method: "GET",
@@ -200,9 +201,18 @@ export const isApiAvailable = async (): Promise<boolean> => {
     });
 
     clearTimeout(timeoutId);
-    return response.ok;
+    console.log("🔍 Health check response:", response.status, response.ok);
+
+    if (response.ok) {
+      const healthData = await response.json();
+      console.log("✅ API is available:", healthData);
+      return true;
+    } else {
+      console.log("❌ API health check failed:", response.status);
+      return false;
+    }
   } catch (error) {
-    console.log("API not available:", error);
+    console.log("❌ API not available:", error);
     return false;
   }
 };
