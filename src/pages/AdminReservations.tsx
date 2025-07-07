@@ -63,6 +63,7 @@ import {
   AlertCircle,
   MapPin,
   Filter,
+  Building2,
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
