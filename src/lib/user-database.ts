@@ -16,7 +16,8 @@ export interface User {
     | "anfitrion"
     | "monitor"
     | "mercadeo"
-    | "user";
+    | "recepcion"
+    | "miembro";
   isActive: boolean;
   status?: "pending" | "approved" | "rejected";
   lastLogin?: Date;
@@ -135,6 +136,24 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canEditSiteContent: true, // Permiso específico para editar contenido del sitio
         canManageImages: true, // Permiso específico para gestionar imágenes
       };
+    case "recepcion":
+      return {
+        canViewDashboard: true,
+        canManageUsers: false,
+        canCreateUsers: false,
+        canUpdateUsers: false,
+        canDeleteUsers: false,
+        canManageAccommodations: false,
+        canManageReservations: true,
+        canManageCalendar: true,
+        canManagePricing: false,
+        canManageMessages: true,
+        canManageSettings: false,
+        canAccessAllLocations: true,
+        canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
+      };
     default:
       return {
         canViewDashboard: false,
@@ -198,7 +217,7 @@ export const registeredUsers: User[] = [
     email: "carlos.rodriguez@email.com",
     phone: "+503 2345-6791",
     fullName: "Carlos Rodríguez",
-    role: "user",
+    role: "anfitrion",
     isActive: true,
     createdAt: new Date("2024-01-15"),
   },
@@ -233,7 +252,22 @@ export const registeredUsers: User[] = [
     createdAt: new Date("2024-01-15"),
   },
 
-  // Usuarios Regulares
+  // Recepción
+  {
+    id: "11",
+    firstName: "Sofia",
+    lastName: "Herrera",
+    username: "recepcion",
+    password: "Recepcion123",
+    email: "recepcion@clubsalvadoreno.com",
+    phone: "+503 2345-6794",
+    fullName: "Sofia Herrera - Recepción",
+    role: "recepcion",
+    isActive: true,
+    createdAt: new Date("2024-01-15"),
+  },
+
+  // Miembros
   {
     id: "6",
     firstName: "María José",
@@ -243,7 +277,7 @@ export const registeredUsers: User[] = [
     email: "usuario1@email.com",
     phone: "+503 7234-5678",
     fullName: "María José González",
-    role: "user",
+    role: "miembro",
     isActive: true,
     createdAt: new Date("2024-02-01"),
   },
@@ -256,7 +290,7 @@ export const registeredUsers: User[] = [
     email: "carlos.rivera@email.com",
     phone: "+503 7234-5679",
     fullName: "Carlos Rivera",
-    role: "user",
+    role: "miembro",
     isActive: true,
     createdAt: new Date("2024-02-10"),
   },
@@ -269,7 +303,7 @@ export const registeredUsers: User[] = [
     email: "ana.martinez@email.com",
     phone: "+503 7234-5680",
     fullName: "Ana Martínez",
-    role: "user",
+    role: "miembro",
     isActive: true,
     createdAt: new Date("2024-02-15"),
   },
@@ -282,7 +316,7 @@ export const registeredUsers: User[] = [
     email: "juan.perez@email.com",
     phone: "+503 7234-5681",
     fullName: "Juan Pérez",
-    role: "user",
+    role: "miembro",
     isActive: true,
     createdAt: new Date("2024-03-01"),
   },
