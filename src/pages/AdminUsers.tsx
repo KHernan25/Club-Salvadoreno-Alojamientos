@@ -709,9 +709,17 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos los estados</SelectItem>
-                    <SelectItem value="pending">Pendiente</SelectItem>
-                    <SelectItem value="approved">Aprobado</SelectItem>
-                    <SelectItem value="rejected">Rechazado</SelectItem>
+                    <SelectItem value="active">Activo</SelectItem>
+                    <SelectItem value="inactive">Inactivo</SelectItem>
+                    <SelectItem value="pending">
+                      Pendiente (Miembros)
+                    </SelectItem>
+                    <SelectItem value="approved">
+                      Aprobado (Miembros)
+                    </SelectItem>
+                    <SelectItem value="rejected">
+                      Rechazado (Miembros)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
