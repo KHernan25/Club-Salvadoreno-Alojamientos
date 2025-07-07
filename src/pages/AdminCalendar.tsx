@@ -57,10 +57,21 @@ interface BlockedDate {
   createdAt: string;
 }
 
+interface CalendarReservation {
+  id: string;
+  accommodationId: string;
+  checkIn: string;
+  checkOut: string;
+  status: "confirmed" | "pending" | "cancelled" | "completed";
+  guestName: string;
+}
+
 const AdminCalendar = () => {
   const [accommodations, setAccommodations] = useState<any[]>([]);
+  const [reservations, setReservations] = useState<CalendarReservation[]>([]);
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("all");
+  const [selectedLocation, setSelectedLocation] = useState<string>("all");
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
   const [blockForm, setBlockForm] = useState<{
