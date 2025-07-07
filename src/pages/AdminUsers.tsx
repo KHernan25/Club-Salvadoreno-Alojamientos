@@ -743,34 +743,98 @@ const AdminUsers = () => {
           </CardContent>
         </Card>
 
-        {/* Users Table */}
+        {/* Users Table with Tabs */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">
-              Lista de Usuarios ({filteredUsers.length})
-            </CardTitle>
+            <CardTitle className="text-lg">Gestión de Usuarios</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="text-center py-8">Cargando usuarios...</div>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Usuario</TableHead>
-                    <TableHead>Contacto</TableHead>
-                    <TableHead>Rol</TableHead>
-                    <TableHead>Estado</TableHead>
-                    <TableHead>Fechas</TableHead>
-                    <TableHead>Acciones</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredUsers.map((user) => (
-                    <UserRow key={user.id} user={user} />
-                  ))}
-                </TableBody>
-              </Table>
+              <Tabs defaultValue="all" className="w-full">
+                <TabsList className="grid grid-cols-3 mb-6">
+                  <TabsTrigger value="all">
+                    Todos ({filteredUsers.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="backoffice">
+                    BackOffice (
+                    {
+                      filteredUsers.filter((u) => isBackOfficeUser(u.role))
+                        .length
+                    }
+                    )
+                  </TabsTrigger>
+                  <TabsTrigger value="members">
+                    Miembros (
+                    {filteredUsers.filter((u) => u.role === "miembro").length})
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="all">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Usuario</TableHead>
+                        <TableHead>Contacto</TableHead>
+                        <TableHead>Rol</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Fechas</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredUsers.map((user) => (
+                        <UserRow key={user.id} user={user} />
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TabsContent>
+
+                <TabsContent value="backoffice">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Usuario</TableHead>
+                        <TableHead>Contacto</TableHead>
+                        <TableHead>Rol</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Fechas</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredUsers
+                        .filter((u) => isBackOfficeUser(u.role))
+                        .map((user) => (
+                          <UserRow key={user.id} user={user} />
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TabsContent>
+
+                <TabsContent value="members">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Usuario</TableHead>
+                        <TableHead>Contacto</TableHead>
+                        <TableHead>Rol</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Fechas</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredUsers
+                        .filter((u) => u.role === "miembro")
+                        .map((user) => (
+                          <UserRow key={user.id} user={user} />
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TabsContent>
+              </Tabs>
             )}
           </CardContent>
         </Card>
