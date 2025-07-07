@@ -165,128 +165,52 @@ const AdminReservations = () => {
       );
     } catch (error) {
       console.error("❌ Error loading data:", error);
-      // Cargar datos mock si la API no está disponible
-      const mockReservations = getMockReservations();
-      const mockUsers = getMockUsers();
-      const mockAccommodations = getMockAccommodations();
-
-      console.log("📋 Loading mock data:", {
-        reservations: mockReservations.length,
-        users: mockUsers.length,
-        accommodations: mockAccommodations.length,
-      });
-
-      setReservations(Array.isArray(mockReservations) ? mockReservations : []);
-      setUsers(Array.isArray(mockUsers) ? mockUsers : []);
-      setAccommodations(
-        Array.isArray(mockAccommodations) ? mockAccommodations : [],
-      );
+      console.log("📋 Loading fallback mock data...");
+      // Use fallback mock data - api-service already handles mock data when API fails
+      setReservations([]);
+      setUsers(getMockUsers());
+      setAccommodations(getMockAccommodations());
     } finally {
       setLoading(false);
     }
   };
 
-  const getMockReservations = (): Reservation[] => [
-    {
-      id: "res-1",
-      userId: "2",
-      accommodationId: "1A",
-      checkIn: "2024-01-15",
-      checkOut: "2024-01-17",
-      guests: 2,
-      status: "confirmed",
-      totalPrice: 460,
-      paymentStatus: "paid",
-      specialRequests: "Llegada tardía",
-      confirmationCode: "ABC123",
-      createdAt: "2024-01-10T10:00:00Z",
-      updatedAt: "2024-01-10T10:00:00Z",
-    },
-    {
-      id: "res-2",
-      userId: "3",
-      accommodationId: "suite-1",
-      checkIn: "2024-01-20",
-      checkOut: "2024-01-22",
-      guests: 2,
-      status: "pending",
-      totalPrice: 640,
-      paymentStatus: "pending",
-      confirmationCode: "DEF456",
-      createdAt: "2024-01-12T15:30:00Z",
-      updatedAt: "2024-01-12T15:30:00Z",
-    },
-    {
-      id: "res-3",
-      userId: "4",
-      accommodationId: "casa-1",
-      checkIn: "2024-01-25",
-      checkOut: "2024-01-28",
-      guests: 4,
-      status: "cancelled",
-      totalPrice: 1350,
-      paymentStatus: "refunded",
-      specialRequests: "Cancelación por motivos familiares",
-      confirmationCode: "GHI789",
-      createdAt: "2024-01-08T09:15:00Z",
-      updatedAt: "2024-01-14T11:20:00Z",
-    },
-  ];
-
   const getMockUsers = () => [
     {
-      id: "1",
-      firstName: "Juan",
-      lastName: "Pérez",
-      email: "juan.perez@email.com",
-      role: "user",
-      isActive: true,
-      fullName: "Juan Pérez",
-    },
-    {
-      id: "2",
-      firstName: "María",
-      lastName: "González",
-      email: "maria.gonzalez@email.com",
-      role: "user",
-      isActive: true,
-      fullName: "María González",
-    },
-    {
-      id: "3",
+      id: "7",
       firstName: "Carlos",
-      lastName: "Rodríguez",
-      email: "carlos.rodriguez@email.com",
-      role: "user",
+      lastName: "Rivera",
+      email: "carlos.rivera@email.com",
+      role: "miembro",
       isActive: true,
-      fullName: "Carlos Rodríguez",
+      fullName: "Carlos Rivera",
     },
     {
-      id: "4",
+      id: "8",
       firstName: "Ana",
       lastName: "Martínez",
       email: "ana.martinez@email.com",
-      role: "user",
+      role: "miembro",
       isActive: true,
       fullName: "Ana Martínez",
     },
     {
-      id: "5",
-      firstName: "Luis",
-      lastName: "García",
-      email: "luis.garcia@email.com",
-      role: "user",
-      isActive: true,
-      fullName: "Luis García",
+      id: "9",
+      firstName: "Juan",
+      lastName: "Pérez",
+      email: "juan.perez@email.com",
+      role: "miembro",
+      isActive: false,
+      fullName: "Juan Pérez",
     },
     {
-      id: "6",
-      firstName: "Carmen",
-      lastName: "López",
-      email: "carmen.lopez@email.com",
-      role: "user",
+      id: "10",
+      firstName: "Demo",
+      lastName: "Usuario",
+      email: "demo@clubsalvadoreno.com",
+      role: "miembro",
       isActive: true,
-      fullName: "Carmen López",
+      fullName: "Usuario de Demostración",
     },
   ];
 
@@ -328,8 +252,8 @@ const AdminReservations = () => {
       pricing: { weekday: 180, weekend: 350, holiday: 450 },
     },
     {
-      id: "suite-1",
-      name: "Suite Premium 1",
+      id: "suite1",
+      name: "Suite 1",
       type: "suite",
       location: "el-sunzal",
       capacity: 2,
@@ -340,8 +264,8 @@ const AdminReservations = () => {
       pricing: { weekday: 180, weekend: 320, holiday: 420 },
     },
     {
-      id: "suite-2",
-      name: "Suite Premium 2",
+      id: "suite2",
+      name: "Suite 2",
       type: "suite",
       location: "el-sunzal",
       capacity: 2,
@@ -352,8 +276,8 @@ const AdminReservations = () => {
       pricing: { weekday: 190, weekend: 335, holiday: 435 },
     },
     {
-      id: "casa-1",
-      name: "Casa Familiar 1",
+      id: "casa1",
+      name: "Casa Surf Paradise",
       type: "casa",
       location: "el-sunzal",
       capacity: 6,
@@ -364,8 +288,8 @@ const AdminReservations = () => {
       pricing: { weekday: 250, weekend: 450, holiday: 550 },
     },
     {
-      id: "casa-2",
-      name: "Casa Familiar 2",
+      id: "casa2",
+      name: "Casa Familiar Deluxe",
       type: "casa",
       location: "el-sunzal",
       capacity: 6,
@@ -377,11 +301,11 @@ const AdminReservations = () => {
     },
     // Corinto accommodations
     {
-      id: "corinto-apto-1",
-      name: "Apartamento Corinto 1",
+      id: "corinto1A",
+      name: "Apartamento Corinto 1A",
       type: "apartamento",
       location: "corinto",
-      capacity: 4,
+      capacity: 2,
       price: 180,
       status: "available",
       description: "Apartamento con vista al lago",
@@ -389,8 +313,8 @@ const AdminReservations = () => {
       pricing: { weekday: 85, weekend: 180, holiday: 220 },
     },
     {
-      id: "corinto-apto-2",
-      name: "Apartamento Corinto 2",
+      id: "corinto2A",
+      name: "Apartamento Corinto 2A",
       type: "apartamento",
       location: "corinto",
       capacity: 4,
@@ -402,25 +326,25 @@ const AdminReservations = () => {
     },
     {
       id: "corinto-casa-1",
-      name: "Casa Corinto 1",
+      name: "Casa del Lago",
       type: "casa",
       location: "corinto",
-      capacity: 8,
+      capacity: 6,
       price: 280,
       status: "available",
-      description: "Casa moderna en Corinto",
+      description: "Casa con vista directa al lago",
       amenities: ["Wi-Fi", "Aire acondicionado", "Cocina equipada", "Jardín"],
       pricing: { weekday: 140, weekend: 280, holiday: 350 },
     },
     {
       id: "corinto-casa-2",
-      name: "Casa Corinto 2",
+      name: "Casa Ejecutiva Premium",
       type: "casa",
       location: "corinto",
       capacity: 8,
       price: 305,
       status: "available",
-      description: "Casa amplia con terraza",
+      description: "Casa estilo corporativo",
       amenities: ["Wi-Fi", "Aire acondicionado", "Cocina equipada", "Terraza"],
       pricing: { weekday: 155, weekend: 305, holiday: 380 },
     },
