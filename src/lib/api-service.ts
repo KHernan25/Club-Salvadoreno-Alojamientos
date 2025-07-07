@@ -451,7 +451,7 @@ const getMockReservations = (isAdmin: boolean): Reservation[] => {
       createdAt: "2024-06-22T09:15:00Z",
       guestName: "Ana Lucía Hernández",
       accommodationName: "Villa Costa del Sol 1",
-    }
+    },
   ];
 
   // If not admin, filter to only show reservations for current user
@@ -461,35 +461,6 @@ const getMockReservations = (isAdmin: boolean): Reservation[] => {
   }
 
   return mockReservations;
-    return [
-      {
-        id: "res-001",
-        userId: "6",
-        accommodationId: "el-sunzal-apt-1",
-        checkIn: "2024-07-01",
-        checkOut: "2024-07-03",
-        guests: 2,
-        totalPrice: 240,
-        status: "confirmed",
-        createdAt: "2024-06-20T10:00:00Z",
-        guestName: "María José González",
-        accommodationName: "Apartamento El Sunzal 1",
-      },
-      {
-        id: "res-002",
-        userId: "7",
-        accommodationId: "corinto-casa-1",
-        checkIn: "2024-07-05",
-        checkOut: "2024-07-07",
-        guests: 4,
-        totalPrice: 360,
-        status: "pending",
-        createdAt: "2024-06-21T14:30:00Z",
-        guestName: "Carlos Rivera",
-        accommodationName: "Casa Corinto 1",
-      },
-    ];
-  }
 };
 
 export const apiCreateReservation = async (
