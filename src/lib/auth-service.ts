@@ -54,7 +54,9 @@ export const authenticateUser = async (
 
   if (USE_API) {
     try {
+      console.log("🔍 Checking API availability...");
       const apiConnected = await isApiAvailable();
+      console.log("🔍 API available:", apiConnected);
 
       if (apiConnected) {
         console.log("🔗 Usando autenticación con API real");
@@ -64,8 +66,18 @@ export const authenticateUser = async (
           rememberMe,
         });
 
+        console.log("📤 API Login result:", {
+          success: result.success,
+          hasUser: !!result.user,
+          hasToken: !!result.token,
+        });
+
         if (result.success && result.user) {
-          console.log("✅ API Login successful:", result.user);
+          console.log(
+            "✅ API Login successful:",
+            result.user.email,
+            result.user.role,
+          );
 
           // Verificar estado de aprobación
           if (result.user.status === "pending") {
@@ -83,6 +95,15 @@ export const authenticateUser = async (
             };
           }
 
+          // Verificar que tenemos token antes de crear sesión
+          if (!result.token) {
+            console.error("❌ API Login success but no token received");
+            return {
+              success: false,
+              error: "Error de autenticación: token no recibido",
+            };
+          }
+
           // Crear sesión local para mantener consistencia
           const sessionData: SessionData = {
             user: result.user,
@@ -97,6 +118,7 @@ export const authenticateUser = async (
           sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
 
           // El token ya se guarda en api-service
+          console.log("✅ Token saved, user session created");
 
           return {
             success: true,
@@ -313,6 +335,15 @@ export const requireAuth = (): boolean => {
     if (!currentUser.isActive) {
       console.log("requireAuth: User is not active");
       logout(); // Limpiar sesión de usuario inactivo
+      return false;
+    }
+
+    // Verificar que tenemos token para API (importante para admin routes)
+    const { getAuthToken } = require("./api-service");
+    const token = getAuthToken();
+    if (!token) {
+      console.log("requireAuth: No auth token found, forcing re-login");
+      logout(); // Forzar re-login para obtener token
       return false;
     }
 

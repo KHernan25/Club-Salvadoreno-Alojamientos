@@ -79,6 +79,7 @@ import {
   getCurrentUser,
   isSuperAdmin,
   hasPermission,
+  requireAuth,
 } from "@/lib/auth-service";
 import { getRolePermissions } from "@/lib/user-database";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -107,8 +108,14 @@ const AdminUsers = () => {
   const currentUser = getCurrentUser();
 
   useEffect(() => {
+    // Verificar autenticación antes de cargar datos
+    if (!requireAuth()) {
+      console.log("AdminUsers: Not authenticated, redirecting to login");
+      navigate("/login");
+      return;
+    }
     loadUsers();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     // Auto-open new user dialog if URL is /admin/users/new
@@ -156,7 +163,7 @@ const AdminUsers = () => {
       username: "maria_gonzalez",
       password: "maria123",
       fullName: "María González",
-      role: "user",
+      role: "miembro",
       isActive: false,
       phone: "+503 7890-1234",
       createdAt: new Date("2024-01-14T15:20:00Z"),
@@ -170,12 +177,13 @@ const AdminUsers = () => {
       username: "carlos_mendez",
       password: "carlos123",
       fullName: "Carlos Méndez",
-      role: "user",
+      role: "miembro",
       isActive: true,
       phone: "+503 6789-0123",
       createdAt: new Date("2024-01-13T09:15:00Z"),
       lastLogin: new Date("2024-01-15T08:45:00Z"),
       status: "approved",
+      memberStatus: "activo",
     },
     {
       id: "4",
@@ -185,11 +193,12 @@ const AdminUsers = () => {
       username: "ana_rodriguez",
       password: "ana123",
       fullName: "Ana Rodríguez",
-      role: "user",
-      isActive: false,
+      role: "miembro",
+      isActive: true,
       phone: "+503 5678-9012",
       createdAt: new Date("2024-01-12T14:30:00Z"),
-      status: "pending",
+      status: "approved",
+      memberStatus: "en_mora",
     },
     {
       id: "5",
@@ -205,6 +214,22 @@ const AdminUsers = () => {
       createdAt: new Date("2024-01-01T00:00:00Z"),
       lastLogin: new Date("2024-01-15T07:00:00Z"),
       status: "approved",
+    },
+    {
+      id: "6",
+      firstName: "Pedro",
+      lastName: "Martínez",
+      email: "pedro.martinez@email.com",
+      username: "pedro_martinez",
+      password: "pedro123",
+      fullName: "Pedro Martínez",
+      role: "miembro",
+      isActive: true,
+      phone: "+503 4567-8901",
+      createdAt: new Date("2024-01-10T12:00:00Z"),
+      lastLogin: new Date("2024-01-11T16:20:00Z"),
+      status: "approved",
+      memberStatus: "inactivo",
     },
   ];
 
@@ -441,21 +466,47 @@ const AdminUsers = () => {
             {user.isActive ? "Activo" : "Inactivo"}
           </Badge>
         ) : (
-          <Badge
-            variant={
-              user.status === "approved"
-                ? "default"
+          <div className="flex flex-col gap-1">
+            <Badge
+              variant={
+                user.status === "approved"
+                  ? "default"
+                  : user.status === "pending"
+                    ? "outline"
+                    : "destructive"
+              }
+            >
+              {user.status === "approved"
+                ? "Aprobado"
                 : user.status === "pending"
-                  ? "outline"
-                  : "destructive"
-            }
-          >
-            {user.status === "approved"
-              ? "Aprobado"
-              : user.status === "pending"
-                ? "Pendiente"
-                : "Rechazado"}
-          </Badge>
+                  ? "Pendiente"
+                  : "Rechazado"}
+            </Badge>
+            {user.status === "approved" && user.memberStatus && (
+              <Badge
+                variant={
+                  user.memberStatus === "activo"
+                    ? "default"
+                    : user.memberStatus === "en_mora"
+                      ? "outline"
+                      : "destructive"
+                }
+                className={
+                  user.memberStatus === "activo"
+                    ? "bg-green-600 hover:bg-green-700"
+                    : user.memberStatus === "en_mora"
+                      ? "bg-yellow-600 hover:bg-yellow-700 text-white"
+                      : ""
+                }
+              >
+                {user.memberStatus === "activo"
+                  ? "Activo"
+                  : user.memberStatus === "en_mora"
+                    ? "En Mora"
+                    : "Inactivo"}
+              </Badge>
+            )}
+          </div>
         )}
       </TableCell>
       <TableCell>

@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 import { app } from "./app";
 
-// Cargar variables de entorno - Updated for port 3002
+// Cargar variables de entorno
 dotenv.config();
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3001;
 
 // Iniciar servidor
 app.listen(PORT, () => {

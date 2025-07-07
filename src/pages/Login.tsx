@@ -64,17 +64,28 @@ const Login = () => {
 
   // Handle registration success message and prefill email
   useEffect(() => {
-    if (location.state?.message && location.state?.newUser) {
+    if (location.state?.message) {
       setSuccessMessage(location.state.message);
-      setFormData((prev) => ({
-        ...prev,
-        username: location.state.newUser.email,
-      }));
 
-      toast({
-        title: "¡Bienvenido!",
-        description: `${location.state.newUser.fullName}, tu cuenta fue creada exitosamente. Inicia sesión con tu correo: ${location.state.newUser.email}`,
-      });
+      if (location.state.newUser) {
+        setFormData((prev) => ({
+          ...prev,
+          username: location.state.newUser.email,
+        }));
+
+        toast({
+          title: "¡Bienvenido!",
+          description: `${location.state.newUser.fullName}, tu cuenta fue creada exitosamente. Inicia sesión con tu correo: ${location.state.newUser.email}`,
+        });
+      }
+
+      if (location.state.showDocumentSuccess) {
+        toast({
+          title: "¡Documentos enviados!",
+          description:
+            "Tus documentos han sido enviados para revisión. Te notificaremos cuando tu cuenta sea aprobada.",
+        });
+      }
 
       // Clear the state to prevent showing the message again
       window.history.replaceState({}, document.title);

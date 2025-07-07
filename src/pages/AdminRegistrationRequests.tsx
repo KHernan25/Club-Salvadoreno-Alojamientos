@@ -69,8 +69,11 @@ import {
   apiRejectRegistrationRequest,
   type RegistrationRequest,
 } from "@/lib/api-service";
+import { requireAuth } from "@/lib/auth-service";
+import { useNavigate } from "react-router-dom";
 
 const AdminRegistrationRequests = () => {
+  const navigate = useNavigate();
   const [requests, setRequests] = useState<RegistrationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -83,8 +86,16 @@ const AdminRegistrationRequests = () => {
   const [adminNotes, setAdminNotes] = useState("");
 
   useEffect(() => {
+    // Verificar autenticación antes de cargar datos
+    if (!requireAuth()) {
+      console.log(
+        "AdminRegistrationRequests: Not authenticated, redirecting to login",
+      );
+      navigate("/login");
+      return;
+    }
     loadRequests();
-  }, []);
+  }, [navigate]);
 
   const loadRequests = async () => {
     try {
