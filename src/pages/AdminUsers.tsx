@@ -316,9 +316,25 @@ const AdminUsers = () => {
         return "Monitor";
       case "mercadeo":
         return "Mercadeo";
+      case "recepcion":
+        return "Recepción";
+      case "miembro":
+        return "Miembro";
       default:
         return "Usuario";
     }
+  };
+
+  // Helper function to check if user is BackOffice staff
+  const isBackOfficeUser = (role: string) => {
+    return [
+      "super_admin",
+      "atencion_miembro",
+      "anfitrion",
+      "monitor",
+      "mercadeo",
+      "recepcion",
+    ].includes(role);
   };
 
   const filteredUsers = (users || []).filter((user) => {
@@ -329,20 +345,31 @@ const AdminUsers = () => {
       user.username.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    const matchesStatus =
-      statusFilter === "all" || user.status === statusFilter;
+
+    // For BackOffice users, filter by active status instead of approval status
+    let matchesStatus = true;
+    if (statusFilter !== "all") {
+      if (isBackOfficeUser(user.role)) {
+        // BackOffice users: active/inactive instead of approved/rejected
+        matchesStatus =
+          statusFilter === "active" ? user.isActive : !user.isActive;
+      } else {
+        // Members: keep using approval status
+        matchesStatus = user.status === statusFilter;
+      }
+    }
 
     return matchesSearch && matchesRole && matchesStatus;
   });
 
   const pendingUsers = (users || []).filter(
-    (user) => user.status === "pending",
+    (user) => !isBackOfficeUser(user.role) && user.status === "pending",
   );
-  const activeUsers = (users || []).filter(
-    (user) => user.status === "approved",
+  const activeUsers = (users || []).filter((user) =>
+    isBackOfficeUser(user.role) ? user.isActive : user.status === "approved",
   );
-  const inactiveUsers = (users || []).filter(
-    (user) => user.status === "rejected",
+  const inactiveUsers = (users || []).filter((user) =>
+    isBackOfficeUser(user.role) ? !user.isActive : user.status === "rejected",
   );
 
   const UserRow = ({ user }: { user: User }) => (
