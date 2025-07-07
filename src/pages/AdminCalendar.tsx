@@ -98,14 +98,20 @@ const AdminCalendar = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const accommodationsData = await apiGetAccommodations();
+      const [accommodationsData, reservationsData] = await Promise.all([
+        apiGetAccommodations(),
+        apiGetReservations(true), // Admin view to get all reservations
+      ]);
+
       setAccommodations(accommodationsData);
+      setReservations(getMockReservations()); // Using mock for now
 
       // Cargar fechas bloqueadas mock
       setBlockedDates(getMockBlockedDates());
     } catch (error) {
       console.error("Error loading data:", error);
       setAccommodations(getMockAccommodations());
+      setReservations(getMockReservations());
       setBlockedDates(getMockBlockedDates());
     } finally {
       setLoading(false);
