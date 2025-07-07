@@ -242,7 +242,7 @@ export const logout = async (): Promise<void> => {
     const apiConnected = await isApiAvailable();
     if (apiConnected) {
       console.log("🔗 Cerrando sesión con API real (en segundo plano)");
-      // Timeout r��pido para evitar demoras
+      // Timeout rápido para evitar demoras
       Promise.race([
         apiLogout(),
         new Promise((_, reject) =>
@@ -323,6 +323,15 @@ export const requireAuth = (): boolean => {
     if (!currentUser.isActive) {
       console.log("requireAuth: User is not active");
       logout(); // Limpiar sesión de usuario inactivo
+      return false;
+    }
+
+    // Verificar que tenemos token para API (importante para admin routes)
+    const { getAuthToken } = require("./api-service");
+    const token = getAuthToken();
+    if (!token) {
+      console.log("requireAuth: No auth token found, forcing re-login");
+      logout(); // Forzar re-login para obtener token
       return false;
     }
 
