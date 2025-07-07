@@ -83,6 +83,15 @@ export const authenticateUser = async (
             };
           }
 
+          // Verificar que tenemos token antes de crear sesión
+          if (!result.token) {
+            console.error("❌ API Login success but no token received");
+            return {
+              success: false,
+              error: "Error de autenticación: token no recibido",
+            };
+          }
+
           // Crear sesión local para mantener consistencia
           const sessionData: SessionData = {
             user: result.user,
@@ -97,6 +106,7 @@ export const authenticateUser = async (
           sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
 
           // El token ya se guarda en api-service
+          console.log("✅ Token saved, user session created");
 
           return {
             success: true,
@@ -232,7 +242,7 @@ export const logout = async (): Promise<void> => {
     const apiConnected = await isApiAvailable();
     if (apiConnected) {
       console.log("🔗 Cerrando sesión con API real (en segundo plano)");
-      // Timeout rápido para evitar demoras
+      // Timeout r��pido para evitar demoras
       Promise.race([
         apiLogout(),
         new Promise((_, reject) =>
