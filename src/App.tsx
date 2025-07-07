@@ -33,7 +33,7 @@ import TranslationTest from "./pages/TranslationTest";
 import CountryClub from "./pages/CountryClub";
 import NotFound from "./pages/NotFound";
 import BackofficeLogin from "./pages/BackofficeLogin";
-import DocumentUpload from "./pages/DocumentUpload";
+import UploadDocuments from "./pages/UploadDocuments";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
 import AdminAccommodations from "./pages/AdminAccommodations";
