@@ -135,12 +135,17 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     <div className={`${mobile ? "p-4" : "p-6"} space-y-6`}>
       {/* Logo */}
       <div className="flex items-center space-x-2">
-        <Shield className="h-8 w-8 text-blue-600" />
-        <div>
-          <h2 className="text-lg font-bold text-gray-900">Club Admin</h2>
-          <p className="text-sm text-gray-500">
-            {isSuperAdmin() ? "Super Administrador" : "Sistema de Gestión"}
-          </p>
+        <div className="flex items-center gap-3 cursor-pointer">
+          <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
+              <img
+                src="/logo_menu.png"
+                alt="Logo Club Salvadoreño"
+                className="max-w-[35px] mx-auto object-contain"
+              />
+            </div>
+            <span className="text-xl font-semibold text-slate-900 hidden sm:block">
+              Club Salvadoreño
+            </span>
         </div>
       </div>
 
