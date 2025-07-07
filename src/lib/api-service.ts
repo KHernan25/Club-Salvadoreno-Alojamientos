@@ -253,6 +253,14 @@ export const apiLogout = async (): Promise<void> => {
 // User management functions
 export const apiGetUsers = async (): Promise<User[]> => {
   try {
+    // Check if we have a token before making the request
+    const token = getAuthToken();
+    if (!token) {
+      console.warn("No auth token available for users, using mock data");
+      const { registeredUsers } = await import("./user-database");
+      return registeredUsers;
+    }
+
     const result = await apiRequest<{ users: User[] }>("/users?limit=1000");
     if (result.success && result.data?.users) {
       return result.data.users;
