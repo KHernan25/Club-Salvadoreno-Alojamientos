@@ -322,7 +322,9 @@ export const apiGetAccommodations = async (): Promise<Accommodation[]> => {
     // Check if we have a token before making the request
     const token = getAuthToken();
     if (!token) {
-      console.warn("No auth token available for accommodations, using mock data");
+      console.warn(
+        "No auth token available for accommodations, using mock data",
+      );
       return getMockAccommodations();
     }
 
@@ -368,18 +370,17 @@ const getMockAccommodations = (): Accommodation[] => {
       description: "Casa familiar con piscina privada",
     },
     {
-        id: "corinto-casa-1",
-        name: "Casa Corinto 1",
-        type: "house",
-        location: "Corinto",
-        capacity: 6,
-        price: 180,
-        status: "available",
-        amenities: ["wifi", "ac", "parking", "kitchen"],
-        description: "Casa acogedora en zona tranquila",
-      },
-    ];
-  }
+      id: "corinto-casa-1",
+      name: "Casa Corinto 1",
+      type: "house",
+      location: "Corinto",
+      capacity: 6,
+      price: 180,
+      status: "available",
+      amenities: ["wifi", "ac", "parking", "kitchen"],
+      description: "Casa acogedora en zona tranquila",
+    },
+  ];
 };
 
 export const apiUpdateAccommodation = async (
@@ -444,7 +445,7 @@ const getMockReservations = (isAdmin: boolean): Reservation[] => {
       totalPrice: 240,
       status: "confirmed",
       createdAt: "2024-06-20T10:00:00Z",
-      guestName: "María José González",
+      guestName: "María Jos�� González",
       accommodationName: "Apartamento El Sunzal 1",
     },
     {
