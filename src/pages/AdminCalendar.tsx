@@ -41,6 +41,10 @@ import {
   Filter,
   Building2,
   MapPin,
+  User,
+  Mail,
+  Phone,
+  Users,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import { apiGetAccommodations, apiGetReservations } from "@/lib/api-service";
@@ -64,6 +68,11 @@ interface CalendarReservation {
   checkOut: string;
   status: "confirmed" | "pending" | "cancelled" | "completed";
   guestName: string;
+  guestEmail?: string;
+  guestPhone?: string;
+  totalAmount?: number;
+  guests?: number;
+  notes?: string;
 }
 
 const AdminCalendar = () => {
@@ -74,6 +83,9 @@ const AdminCalendar = () => {
   const [selectedLocation, setSelectedLocation] = useState<string>("all");
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
+  const [selectedReservation, setSelectedReservation] =
+    useState<CalendarReservation | null>(null);
+  const [isReservationDialogOpen, setIsReservationDialogOpen] = useState(false);
   const [blockForm, setBlockForm] = useState<{
     accommodationId: string;
     startDate: string;
@@ -143,6 +155,11 @@ const AdminCalendar = () => {
       checkOut: "2024-01-17",
       status: "confirmed",
       guestName: "María González",
+      guestEmail: "maria.gonzalez@email.com",
+      guestPhone: "+503 7777-8888",
+      totalAmount: 120.0,
+      guests: 2,
+      notes: "Llegada tardía confirmada",
     },
     {
       id: "res-2",
@@ -151,6 +168,11 @@ const AdminCalendar = () => {
       checkOut: "2024-01-22",
       status: "pending",
       guestName: "Carlos Rodríguez",
+      guestEmail: "carlos.rodriguez@email.com",
+      guestPhone: "+503 6666-7777",
+      totalAmount: 180.0,
+      guests: 3,
+      notes: "Esperando confirmación de pago",
     },
     {
       id: "res-3",
@@ -159,6 +181,11 @@ const AdminCalendar = () => {
       checkOut: "2024-01-28",
       status: "cancelled",
       guestName: "Ana Martínez",
+      guestEmail: "ana.martinez@email.com",
+      guestPhone: "+503 5555-6666",
+      totalAmount: 240.0,
+      guests: 4,
+      notes: "Cancelado por motivos personales",
     },
     {
       id: "res-4",
@@ -167,6 +194,11 @@ const AdminCalendar = () => {
       checkOut: "2024-01-21",
       status: "confirmed",
       guestName: "Luis García",
+      guestEmail: "luis.garcia@email.com",
+      guestPhone: "+503 4444-5555",
+      totalAmount: 210.0,
+      guests: 5,
+      notes: "Familia con niños pequeños",
     },
     {
       id: "res-5",
@@ -175,6 +207,11 @@ const AdminCalendar = () => {
       checkOut: "2024-01-24",
       status: "pending",
       guestName: "Carmen López",
+      guestEmail: "carmen.lopez@email.com",
+      guestPhone: "+503 3333-4444",
+      totalAmount: 140.0,
+      guests: 2,
+      notes: "Primera reserva",
     },
   ];
 
@@ -419,6 +456,25 @@ const AdminCalendar = () => {
     return disabled;
   };
 
+  const handleDateClick = (date: Date) => {
+    const clickedDateStr = date.toISOString().split("T")[0];
+    const filteredReservations = getFilteredReservations();
+
+    // Buscar reserva para esta fecha
+    const reservation = filteredReservations.find((res) => {
+      const startDate = new Date(res.checkIn);
+      const endDate = new Date(res.checkOut);
+      const clickedDate = new Date(clickedDateStr);
+
+      return clickedDate >= startDate && clickedDate <= endDate;
+    });
+
+    if (reservation) {
+      setSelectedReservation(reservation);
+      setIsReservationDialogOpen(true);
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -507,9 +563,9 @@ const AdminCalendar = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           {/* Calendar View */}
-          <Card className="lg:col-span-2">
+          <Card className="xl:col-span-3">
             <CardHeader>
               <CardTitle>Calendario de Reservas</CardTitle>
               <CardDescription>
@@ -571,8 +627,21 @@ const AdminCalendar = () => {
                       mode="multiple"
                       selected={selectedDates}
                       onSelect={setSelectedDates}
+                      onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
-                      className="rounded-md border"
+                      className="rounded-md border w-full"
+                      classNames={{
+                        months:
+                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
+                        month: "space-y-4 w-full",
+                        table: "w-full border-collapse space-y-1",
+                        head_row: "flex w-full",
+                        head_cell:
+                          "text-muted-foreground rounded-md w-16 h-12 font-normal text-sm flex items-center justify-center",
+                        row: "flex w-full mt-2",
+                        cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
+                      }}
                       modifiers={getDateStyles()}
                       modifiersClassNames={getDateStyles()}
                     />
@@ -586,8 +655,21 @@ const AdminCalendar = () => {
                       mode="multiple"
                       selected={selectedDates}
                       onSelect={setSelectedDates}
+                      onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
-                      className="rounded-md border"
+                      className="rounded-md border w-full"
+                      classNames={{
+                        months:
+                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
+                        month: "space-y-4 w-full",
+                        table: "w-full border-collapse space-y-1",
+                        head_row: "flex w-full",
+                        head_cell:
+                          "text-muted-foreground rounded-md w-16 h-12 font-normal text-sm flex items-center justify-center",
+                        row: "flex w-full mt-2",
+                        cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
+                      }}
                       modifiers={getDateStyles()}
                       modifiersClassNames={getDateStyles()}
                     />
@@ -601,8 +683,21 @@ const AdminCalendar = () => {
                       mode="multiple"
                       selected={selectedDates}
                       onSelect={setSelectedDates}
+                      onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
-                      className="rounded-md border"
+                      className="rounded-md border w-full"
+                      classNames={{
+                        months:
+                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
+                        month: "space-y-4 w-full",
+                        table: "w-full border-collapse space-y-1",
+                        head_row: "flex w-full",
+                        head_cell:
+                          "text-muted-foreground rounded-md w-16 h-12 font-normal text-sm flex items-center justify-center",
+                        row: "flex w-full mt-2",
+                        cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
+                      }}
                       modifiers={getDateStyles()}
                       modifiersClassNames={getDateStyles()}
                     />
@@ -792,6 +887,193 @@ const AdminCalendar = () => {
                 Cancelar
               </Button>
               <Button onClick={handleCreateBlock}>Bloquear Fechas</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Reservation Details Dialog */}
+        <Dialog
+          open={isReservationDialogOpen}
+          onOpenChange={setIsReservationDialogOpen}
+        >
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Detalles de la Reserva</DialogTitle>
+              <DialogDescription>
+                Información completa de la reserva seleccionada
+              </DialogDescription>
+            </DialogHeader>
+            {selectedReservation && (
+              <div className="space-y-6">
+                {/* Status Badge */}
+                <div className="flex items-center justify-between">
+                  <Badge
+                    className={`${
+                      selectedReservation.status === "confirmed"
+                        ? "bg-green-100 text-green-800"
+                        : selectedReservation.status === "pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : selectedReservation.status === "cancelled"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {selectedReservation.status === "confirmed" && "Confirmada"}
+                    {selectedReservation.status === "pending" && "Pendiente"}
+                    {selectedReservation.status === "cancelled" && "Cancelada"}
+                    {selectedReservation.status === "completed" && "Completada"}
+                  </Badge>
+                  <span className="text-sm text-gray-500">
+                    ID: {selectedReservation.id}
+                  </span>
+                </div>
+
+                {/* Guest Information */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium">
+                        Información del Huésped
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div>
+                        <Label className="text-xs text-gray-500">Nombre</Label>
+                        <p className="font-medium">
+                          {selectedReservation.guestName}
+                        </p>
+                      </div>
+                      {selectedReservation.guestEmail && (
+                        <div>
+                          <Label className="text-xs text-gray-500">Email</Label>
+                          <p className="text-sm">
+                            {selectedReservation.guestEmail}
+                          </p>
+                        </div>
+                      )}
+                      {selectedReservation.guestPhone && (
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Teléfono
+                          </Label>
+                          <p className="text-sm">
+                            {selectedReservation.guestPhone}
+                          </p>
+                        </div>
+                      )}
+                      {selectedReservation.guests && (
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Huéspedes
+                          </Label>
+                          <p className="text-sm">
+                            {selectedReservation.guests} persona
+                            {selectedReservation.guests > 1 ? "s" : ""}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium">
+                        Detalles de la Reserva
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div>
+                        <Label className="text-xs text-gray-500">
+                          Alojamiento
+                        </Label>
+                        <p className="font-medium">
+                          {getAccommodationName(
+                            selectedReservation.accommodationId,
+                          )}
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Check-in
+                          </Label>
+                          <p className="text-sm">
+                            {new Date(
+                              selectedReservation.checkIn,
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Check-out
+                          </Label>
+                          <p className="text-sm">
+                            {new Date(
+                              selectedReservation.checkOut,
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      {selectedReservation.totalAmount && (
+                        <div>
+                          <Label className="text-xs text-gray-500">Total</Label>
+                          <p className="font-semibold text-lg">
+                            ${selectedReservation.totalAmount.toFixed(2)}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Notes */}
+                {selectedReservation.notes && (
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium">
+                        Notas
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-700">
+                        {selectedReservation.notes}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Duration */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">
+                      Duración de la estadía:
+                    </span>
+                    <span className="font-medium">
+                      {Math.ceil(
+                        (new Date(selectedReservation.checkOut).getTime() -
+                          new Date(selectedReservation.checkIn).getTime()) /
+                          (1000 * 60 * 60 * 24),
+                      )}{" "}
+                      noche
+                      {Math.ceil(
+                        (new Date(selectedReservation.checkOut).getTime() -
+                          new Date(selectedReservation.checkIn).getTime()) /
+                          (1000 * 60 * 60 * 24),
+                      ) > 1
+                        ? "s"
+                        : ""}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsReservationDialogOpen(false)}
+              >
+                Cerrar
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
