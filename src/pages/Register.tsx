@@ -104,21 +104,18 @@ const Register = () => {
             `${result.user.fullName}, tu cuenta ha sido creada y está pendiente de aprobación por parte del administrador.`,
         });
 
-        // Pequeño delay para mostrar el mensaje de éxito antes de redirigir al login
+        // Redirect to document upload page after successful registration
         setTimeout(() => {
-          navigate("/login", {
+          navigate("/upload-documents", {
             replace: true,
             state: {
-              message:
-                result.message ||
-                "Registro exitoso. Tu cuenta está pendiente de aprobación.",
               newUser: {
                 email: result.user.email,
                 fullName: result.user.fullName,
               },
             },
           });
-        }, 3000);
+        }, 2000);
       } else {
         setError(result.error || "Error desconocido al registrar usuario");
         toast({

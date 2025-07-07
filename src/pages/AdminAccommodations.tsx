@@ -91,6 +91,8 @@ const AdminAccommodations = () => {
     useState<UnifiedAccommodation | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [isNewAccommodationDialogOpen, setIsNewAccommodationDialogOpen] =
+    useState(false);
   const [editForm, setEditForm] = useState<Partial<UnifiedAccommodation>>({});
 
   const currentUser = getCurrentUser();
@@ -499,7 +501,7 @@ const AdminAccommodations = () => {
             </p>
           </div>
           {canManageAccommodations && (
-            <Button>
+            <Button onClick={() => setIsNewAccommodationDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
               Nuevo Alojamiento
             </Button>
@@ -631,128 +633,309 @@ const AdminAccommodations = () => {
           </CardContent>
         </Card>
 
-        {/* Accommodations Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">
-              Lista de Alojamientos ({filteredAccommodations.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <div className="text-center py-8">Cargando alojamientos...</div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Alojamiento</TableHead>
-                    <TableHead>Ubicación/Tipo</TableHead>
-                    <TableHead>Capacidad</TableHead>
-                    <TableHead>Vista</TableHead>
-                    <TableHead>Precios</TableHead>
-                    <TableHead>Estado</TableHead>
-                    <TableHead>Acciones</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredAccommodations.map((accommodation) => {
-                    const TypeIcon = getTypeIcon(accommodation.type);
-                    return (
-                      <TableRow key={accommodation.id}>
-                        <TableCell>
-                          <div className="space-y-1">
-                            <div className="flex items-center space-x-2">
-                              <TypeIcon className="h-4 w-4 text-gray-500" />
-                              <p className="font-medium">
-                                {accommodation.name}
-                              </p>
-                            </div>
-                            <p className="text-sm text-gray-500 line-clamp-2">
-                              {accommodation.description}
-                            </p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-1">
-                            <div className="flex items-center space-x-1">
-                              <MapPin className="h-3 w-3 text-gray-500" />
-                              <p className="text-sm">
-                                {getLocationName(accommodation.location)}
-                              </p>
-                            </div>
-                            <Badge variant="outline">
-                              {getTypeName(accommodation.type)}
-                            </Badge>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center space-x-1">
-                            <Users className="h-4 w-4 text-gray-500" />
-                            <span>{accommodation.capacity}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center space-x-1">
-                            <Eye className="h-3 w-3 text-gray-500" />
-                            <span className="text-sm">
-                              {accommodation.view || "No especificada"}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-1 text-sm">
-                            <p>
-                              Sem: ${accommodation.pricing.weekday} • $
-                              {accommodation.pricing.weekend}
-                            </p>
-                            <p className="text-gray-500">
-                              Fest: ${accommodation.pricing.holiday}
-                            </p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              accommodation.available
-                                ? "default"
-                                : "destructive"
-                            }
-                          >
-                            {accommodation.available
-                              ? "Disponible"
-                              : "No disponible"}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center space-x-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => openViewDialog(accommodation)}
-                            >
-                              <Eye className="h-3 w-3 mr-1" />
-                              Ver
-                            </Button>
-                            {canManageAccommodations && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => openEditDialog(accommodation)}
-                              >
-                                <Edit className="h-3 w-3 mr-1" />
-                                Editar
-                              </Button>
-                            )}
-                          </div>
-                        </TableCell>
+        {/* Accommodations by Location - Tabs */}
+        <Tabs defaultValue="el-sunzal" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger
+              value="el-sunzal"
+              className="flex items-center space-x-2"
+            >
+              <span>🏄‍♂️</span>
+              <span>
+                El Sunzal (
+                {
+                  accommodations.filter((acc) => acc.location === "el-sunzal")
+                    .length
+                }
+                )
+              </span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="corinto"
+              className="flex items-center space-x-2"
+            >
+              <span>🏞️</span>
+              <span>
+                Corinto (
+                {
+                  accommodations.filter((acc) => acc.location === "corinto")
+                    .length
+                }
+                )
+              </span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="el-sunzal" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center space-x-2">
+                  <span>🏄‍♂️</span>
+                  <span>Alojamientos en El Sunzal</span>
+                  <Badge variant="secondary">
+                    {
+                      filteredAccommodations.filter(
+                        (acc) => acc.location === "el-sunzal",
+                      ).length
+                    }
+                  </Badge>
+                </CardTitle>
+                <CardDescription>
+                  Apartamentos, casas y suites frente al mar
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <div className="text-center py-8">
+                    Cargando alojamientos...
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Alojamiento</TableHead>
+                        <TableHead>Tipo</TableHead>
+                        <TableHead>Capacidad</TableHead>
+                        <TableHead>Vista</TableHead>
+                        <TableHead>Precios</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Acciones</TableHead>
                       </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            )}
-          </CardContent>
-        </Card>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredAccommodations
+                        .filter((acc) => acc.location === "el-sunzal")
+                        .map((accommodation) => {
+                          const TypeIcon = getTypeIcon(accommodation.type);
+                          return (
+                            <TableRow key={accommodation.id}>
+                              <TableCell>
+                                <div className="space-y-1">
+                                  <div className="flex items-center space-x-2">
+                                    <TypeIcon className="h-4 w-4 text-gray-500" />
+                                    <p className="font-medium">
+                                      {accommodation.name}
+                                    </p>
+                                  </div>
+                                  <p className="text-sm text-gray-500 line-clamp-1">
+                                    {accommodation.description}
+                                  </p>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant="outline">
+                                  {getTypeName(accommodation.type)}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center space-x-1">
+                                  <Users className="h-4 w-4 text-gray-500" />
+                                  <span>{accommodation.capacity}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center space-x-1">
+                                  <Eye className="h-3 w-3 text-gray-500" />
+                                  <span className="text-sm">
+                                    {accommodation.view || "No especificada"}
+                                  </span>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="space-y-1 text-sm">
+                                  <p>
+                                    Sem: ${accommodation.pricing.weekday} • $
+                                    {accommodation.pricing.weekend}
+                                  </p>
+                                  <p className="text-gray-500">
+                                    Fest: ${accommodation.pricing.holiday}
+                                  </p>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant={
+                                    accommodation.available
+                                      ? "default"
+                                      : "destructive"
+                                  }
+                                >
+                                  {accommodation.available
+                                    ? "Disponible"
+                                    : "No disponible"}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center space-x-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() =>
+                                      openViewDialog(accommodation)
+                                    }
+                                  >
+                                    <Eye className="h-3 w-3 mr-1" />
+                                    Ver
+                                  </Button>
+                                  {canManageAccommodations && (
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() =>
+                                        openEditDialog(accommodation)
+                                      }
+                                    >
+                                      <Edit className="h-3 w-3 mr-1" />
+                                      Editar
+                                    </Button>
+                                  )}
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="corinto" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center space-x-2">
+                  <span>🏞️</span>
+                  <span>Alojamientos en Corinto</span>
+                  <Badge variant="secondary">
+                    {
+                      filteredAccommodations.filter(
+                        (acc) => acc.location === "corinto",
+                      ).length
+                    }
+                  </Badge>
+                </CardTitle>
+                <CardDescription>
+                  Casas familiares junto al lago de Ilopango
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <div className="text-center py-8">
+                    Cargando alojamientos...
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Alojamiento</TableHead>
+                        <TableHead>Tipo</TableHead>
+                        <TableHead>Capacidad</TableHead>
+                        <TableHead>Vista</TableHead>
+                        <TableHead>Precios</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredAccommodations
+                        .filter((acc) => acc.location === "corinto")
+                        .map((accommodation) => {
+                          const TypeIcon = getTypeIcon(accommodation.type);
+                          return (
+                            <TableRow key={accommodation.id}>
+                              <TableCell>
+                                <div className="space-y-1">
+                                  <div className="flex items-center space-x-2">
+                                    <TypeIcon className="h-4 w-4 text-gray-500" />
+                                    <p className="font-medium">
+                                      {accommodation.name}
+                                    </p>
+                                  </div>
+                                  <p className="text-sm text-gray-500 line-clamp-1">
+                                    {accommodation.description}
+                                  </p>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant="outline">
+                                  {getTypeName(accommodation.type)}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center space-x-1">
+                                  <Users className="h-4 w-4 text-gray-500" />
+                                  <span>{accommodation.capacity}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center space-x-1">
+                                  <Eye className="h-3 w-3 text-gray-500" />
+                                  <span className="text-sm">
+                                    {accommodation.view || "No especificada"}
+                                  </span>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="space-y-1 text-sm">
+                                  <p>
+                                    Sem: ${accommodation.pricing.weekday} • $
+                                    {accommodation.pricing.weekend}
+                                  </p>
+                                  <p className="text-gray-500">
+                                    Fest: ${accommodation.pricing.holiday}
+                                  </p>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant={
+                                    accommodation.available
+                                      ? "default"
+                                      : "destructive"
+                                  }
+                                >
+                                  {accommodation.available
+                                    ? "Disponible"
+                                    : "No disponible"}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center space-x-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() =>
+                                      openViewDialog(accommodation)
+                                    }
+                                  >
+                                    <Eye className="h-3 w-3 mr-1" />
+                                    Ver
+                                  </Button>
+                                  {canManageAccommodations && (
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() =>
+                                        openEditDialog(accommodation)
+                                      }
+                                    >
+                                      <Edit className="h-3 w-3 mr-1" />
+                                      Editar
+                                    </Button>
+                                  )}
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
         {/* View Accommodation Dialog */}
         <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
@@ -1198,6 +1381,135 @@ const AdminAccommodations = () => {
                 <Button onClick={handleUpdateAccommodation}>
                   <Save className="w-4 h-4 mr-2" />
                   Guardar Cambios
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )}
+
+        {/* New Accommodation Dialog */}
+        {canManageAccommodations && (
+          <Dialog
+            open={isNewAccommodationDialogOpen}
+            onOpenChange={setIsNewAccommodationDialogOpen}
+          >
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Nuevo Alojamiento</DialogTitle>
+                <DialogDescription>
+                  Crear un nuevo alojamiento en el sistema
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="new-name">Nombre del Alojamiento</Label>
+                    <Input id="new-name" placeholder="Ej: Apartamento 4A" />
+                  </div>
+                  <div>
+                    <Label htmlFor="new-location">Ubicación</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona ubicación" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="el-sunzal">El Sunzal</SelectItem>
+                        <SelectItem value="corinto">Corinto</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="new-type">Tipo</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona tipo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="apartamento">Apartamento</SelectItem>
+                        <SelectItem value="casa">Casa</SelectItem>
+                        <SelectItem value="suite">Suite</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="new-capacity">Capacidad</Label>
+                    <Input
+                      id="new-capacity"
+                      type="number"
+                      placeholder="Número de personas"
+                      min="1"
+                      max="12"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="new-description">Descripción</Label>
+                  <Textarea
+                    id="new-description"
+                    placeholder="Describe las características del alojamiento..."
+                    rows={3}
+                  />
+                </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="new-weekday-price">
+                      Precio Entre Semana ($)
+                    </Label>
+                    <Input
+                      id="new-weekday-price"
+                      type="number"
+                      placeholder="100"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="new-weekend-price">
+                      Precio Fin de Semana ($)
+                    </Label>
+                    <Input
+                      id="new-weekend-price"
+                      type="number"
+                      placeholder="200"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="new-holiday-price">
+                      Precio Festivo ($)
+                    </Label>
+                    <Input
+                      id="new-holiday-price"
+                      type="number"
+                      placeholder="250"
+                    />
+                  </div>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm text-blue-700">
+                    <strong>Nota:</strong> Una vez creado el alojamiento, podrás
+                    añadir amenidades e imágenes desde la opción "Editar".
+                  </p>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsNewAccommodationDialogOpen(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={() => {
+                    toast({
+                      title: "Alojamiento creado",
+                      description:
+                        "El nuevo alojamiento ha sido agregado al sistema.",
+                    });
+                    setIsNewAccommodationDialogOpen(false);
+                  }}
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  Crear Alojamiento
                 </Button>
               </DialogFooter>
             </DialogContent>
