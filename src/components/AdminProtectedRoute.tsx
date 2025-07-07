@@ -19,18 +19,45 @@ const AdminProtectedRoute = ({
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(
+      "🛡️ AdminProtectedRoute: Verificando acceso para rol:",
+      requiredRole,
+    );
+
     // Verificar autenticación
-    if (!requireAuth()) {
+    const isAuth = requireAuth();
+    console.log("🛡️ AdminProtectedRoute: requireAuth() =", isAuth);
+
+    if (!isAuth) {
+      console.log(
+        "❌ AdminProtectedRoute: No autenticado, redirigiendo a backoffice login",
+      );
       navigate("/backoffice/login");
       return;
     }
 
+    const currentUser = getCurrentUser();
+    console.log("🛡️ AdminProtectedRoute: Usuario actual:", {
+      id: currentUser?.id,
+      role: currentUser?.role,
+      fullName: currentUser?.fullName,
+    });
+
     // Verificar permisos de rol
-    if (!hasRole(requiredRole)) {
-      const currentUser = getCurrentUser();
+    const hasRequiredRole = hasRole(requiredRole);
+    console.log(
+      "🛡️ AdminProtectedRoute: hasRole(" + requiredRole + ") =",
+      hasRequiredRole,
+    );
+
+    if (!hasRequiredRole) {
+      console.log("❌ AdminProtectedRoute: Usuario sin permisos suficientes");
 
       // Si es miembro regular, redirigir al dashboard público
       if (currentUser?.role === "miembro") {
+        console.log(
+          "↪️ AdminProtectedRoute: Miembro regular, redirigiendo a dashboard público",
+        );
         navigate("/dashboard");
         return;
       }
@@ -47,14 +74,22 @@ const AdminProtectedRoute = ({
           "recepcion",
         ].includes(currentUser.role)
       ) {
+        console.log(
+          "↪️ AdminProtectedRoute: Staff sin permisos para esta sección, redirigiendo a dashboard admin",
+        );
         navigate("/admin/dashboard");
         return;
       }
 
       // Si no es staff, redirigir al login del backoffice
+      console.log(
+        "↪️ AdminProtectedRoute: Usuario sin permisos de staff, redirigiendo a backoffice login",
+      );
       navigate("/backoffice/login");
       return;
     }
+
+    console.log("✅ AdminProtectedRoute: Acceso autorizado");
   }, [navigate, requiredRole]);
 
   const currentUser = getCurrentUser();
