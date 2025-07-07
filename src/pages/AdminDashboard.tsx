@@ -218,206 +218,204 @@ const AdminDashboard = () => {
   }
 
   return (
-    <>
-      <AuthDebug />
-      <AdminLayout>
-        <div className="space-y-6">
-          {/* Connection Status */}
-          {!apiConnected && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <div className="flex items-center space-x-2">
-                <AlertCircle className="h-5 w-5 text-yellow-600" />
-                <span className="text-yellow-800">
-                  Conectando con API en modo desarrollo. Mostrando datos de
-                  ejemplo.
-                </span>
-              </div>
+    <AdminLayout>
+      <div className="space-y-6">
+        {/* Connection Status */}
+        {!apiConnected && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2">
+              <AlertCircle className="h-5 w-5 text-yellow-600" />
+              <span className="text-yellow-800">
+                Conectando con API en modo desarrollo. Mostrando datos de
+                ejemplo.
+              </span>
             </div>
-          )}
-
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickStats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <Card key={index}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      {stat.title}
-                    </CardTitle>
-                    <Icon className={`h-4 w-4 text-${stat.color}-600`} />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{stat.value}</div>
-                    <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                      {stat.trend === "up" && (
-                        <TrendingUp className="h-3 w-3 text-green-500" />
-                      )}
-                      {stat.trend === "down" && (
-                        <TrendingDown className="h-3 w-3 text-red-500" />
-                      )}
-                      {stat.trend === "warning" && (
-                        <AlertCircle className="h-3 w-3 text-orange-500" />
-                      )}
-                      <span>{stat.change}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
           </div>
+        )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Recent Activities */}
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle>Actividad Reciente</CardTitle>
-                <CardDescription>
-                  Últimas actividades en el sistema
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentActivities.map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="flex items-center space-x-4"
-                    >
-                      <div className="flex-shrink-0">
-                        {activity.status === "pending" && (
-                          <Clock className="h-5 w-5 text-orange-500" />
-                        )}
-                        {activity.status === "confirmed" && (
-                          <CheckCircle className="h-5 w-5 text-green-500" />
-                        )}
-                        {activity.status === "completed" && (
-                          <CheckCircle className="h-5 w-5 text-blue-500" />
-                        )}
-                        {activity.status === "cancelled" && (
-                          <AlertCircle className="h-5 w-5 text-red-500" />
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900">
-                          {activity.message}
-                        </p>
-                        <p className="text-sm text-gray-500">{activity.time}</p>
-                      </div>
-                      <Badge
-                        variant={
-                          activity.status === "pending"
-                            ? "outline"
-                            : activity.status === "confirmed"
-                              ? "default"
-                              : activity.status === "completed"
-                                ? "secondary"
-                                : "destructive"
-                        }
-                      >
-                        {activity.status === "pending" && "Pendiente"}
-                        {activity.status === "confirmed" && "Confirmado"}
-                        {activity.status === "completed" && "Completado"}
-                        {activity.status === "cancelled" && "Cancelado"}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickStats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <Card key={index}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    {stat.title}
+                  </CardTitle>
+                  <Icon className={`h-4 w-4 text-${stat.color}-600`} />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                    {stat.trend === "up" && (
+                      <TrendingUp className="h-3 w-3 text-green-500" />
+                    )}
+                    {stat.trend === "down" && (
+                      <TrendingDown className="h-3 w-3 text-red-500" />
+                    )}
+                    {stat.trend === "warning" && (
+                      <AlertCircle className="h-3 w-3 text-orange-500" />
+                    )}
+                    <span>{stat.change}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
-            {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Acciones Rápidas</CardTitle>
-                <CardDescription>Tareas comunes del sistema</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button asChild className="w-full" variant="default">
-                  <Link to="/admin/reservations/new">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    Nueva Reserva
-                  </Link>
-                </Button>
-                <Button asChild className="w-full" variant="outline">
-                  <Link to="/admin/users">
-                    <Users className="mr-2 h-4 w-4" />
-                    Gestionar Usuarios
-                  </Link>
-                </Button>
-                <Button asChild className="w-full" variant="outline">
-                  <Link to="/admin/accommodations">
-                    <Building2 className="mr-2 h-4 w-4" />
-                    Gestionar Alojamientos
-                  </Link>
-                </Button>
-                <Button asChild className="w-full" variant="outline">
-                  <Link to="/admin/calendar">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    Ver Calendario
-                  </Link>
-                </Button>
-                <Button asChild className="w-full" variant="outline">
-                  <Link to="/dashboard">
-                    <Eye className="mr-2 h-4 w-4" />
-                    Ver Sitio Público
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Upcoming Reservations */}
-          <Card>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Recent Activities */}
+          <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Próximas Llegadas</CardTitle>
+              <CardTitle>Actividad Reciente</CardTitle>
               <CardDescription>
-                Reservas confirmadas para los próximos días
+                Últimas actividades en el sistema
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {upcomingReservations.map((reservation) => (
+                {recentActivities.map((activity) => (
                   <div
-                    key={reservation.id}
-                    className="flex items-center justify-between p-4 border rounded-lg"
+                    key={activity.id}
+                    className="flex items-center space-x-4"
                   >
-                    <div className="space-y-1">
-                      <p className="font-medium">{reservation.guest}</p>
-                      <p className="text-sm text-gray-600">
-                        {reservation.accommodation}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {reservation.checkIn} - {reservation.checkOut} •{" "}
-                        {reservation.guests} huésped(es)
-                      </p>
+                    <div className="flex-shrink-0">
+                      {activity.status === "pending" && (
+                        <Clock className="h-5 w-5 text-orange-500" />
+                      )}
+                      {activity.status === "confirmed" && (
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                      )}
+                      {activity.status === "completed" && (
+                        <CheckCircle className="h-5 w-5 text-blue-500" />
+                      )}
+                      {activity.status === "cancelled" && (
+                        <AlertCircle className="h-5 w-5 text-red-500" />
+                      )}
                     </div>
-                    <div className="text-right space-y-2">
-                      <Badge
-                        variant={
-                          reservation.status === "confirmed"
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900">
+                        {activity.message}
+                      </p>
+                      <p className="text-sm text-gray-500">{activity.time}</p>
+                    </div>
+                    <Badge
+                      variant={
+                        activity.status === "pending"
+                          ? "outline"
+                          : activity.status === "confirmed"
                             ? "default"
-                            : "outline"
-                        }
-                      >
-                        {reservation.status === "confirmed"
-                          ? "Confirmada"
-                          : "Pendiente"}
-                      </Badge>
-                      <div>
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={`/admin/reservations/${reservation.id}`}>
-                            Ver Detalles
-                          </Link>
-                        </Button>
-                      </div>
-                    </div>
+                            : activity.status === "completed"
+                              ? "secondary"
+                              : "destructive"
+                      }
+                    >
+                      {activity.status === "pending" && "Pendiente"}
+                      {activity.status === "confirmed" && "Confirmado"}
+                      {activity.status === "completed" && "Completado"}
+                      {activity.status === "cancelled" && "Cancelado"}
+                    </Badge>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
+
+          {/* Quick Actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Acciones Rápidas</CardTitle>
+              <CardDescription>Tareas comunes del sistema</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button asChild className="w-full" variant="default">
+                <Link to="/admin/reservations/new">
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Nueva Reserva
+                </Link>
+              </Button>
+              <Button asChild className="w-full" variant="outline">
+                <Link to="/admin/users">
+                  <Users className="mr-2 h-4 w-4" />
+                  Gestionar Usuarios
+                </Link>
+              </Button>
+              <Button asChild className="w-full" variant="outline">
+                <Link to="/admin/accommodations">
+                  <Building2 className="mr-2 h-4 w-4" />
+                  Gestionar Alojamientos
+                </Link>
+              </Button>
+              <Button asChild className="w-full" variant="outline">
+                <Link to="/admin/calendar">
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Ver Calendario
+                </Link>
+              </Button>
+              <Button asChild className="w-full" variant="outline">
+                <Link to="/dashboard">
+                  <Eye className="mr-2 h-4 w-4" />
+                  Ver Sitio Público
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
-      </AdminLayout>
+
+        {/* Upcoming Reservations */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Próximas Llegadas</CardTitle>
+            <CardDescription>
+              Reservas confirmadas para los próximos días
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {upcomingReservations.map((reservation) => (
+                <div
+                  key={reservation.id}
+                  className="flex items-center justify-between p-4 border rounded-lg"
+                >
+                  <div className="space-y-1">
+                    <p className="font-medium">{reservation.guest}</p>
+                    <p className="text-sm text-gray-600">
+                      {reservation.accommodation}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {reservation.checkIn} - {reservation.checkOut} •{" "}
+                      {reservation.guests} huésped(es)
+                    </p>
+                  </div>
+                  <div className="text-right space-y-2">
+                    <Badge
+                      variant={
+                        reservation.status === "confirmed"
+                          ? "default"
+                          : "outline"
+                      }
+                    >
+                      {reservation.status === "confirmed"
+                        ? "Confirmada"
+                        : "Pendiente"}
+                    </Badge>
+                    <div>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to={`/admin/reservations/${reservation.id}`}>
+                          Ver Detalles
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </AdminLayout>
     </>
   );
 };
