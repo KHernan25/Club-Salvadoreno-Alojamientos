@@ -165,8 +165,8 @@ const AdminReservations = () => {
       );
     } catch (error) {
       console.error("❌ Error loading data:", error);
+      console.log("📋 Loading fallback mock data...");
       // Use fallback mock data - api-service already handles mock data when API fails
-      // so we'll get the same mock data here automatically
       setReservations([]);
       setUsers(getMockUsers());
       setAccommodations(getMockAccommodations());
