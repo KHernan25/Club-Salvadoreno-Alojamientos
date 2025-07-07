@@ -96,7 +96,7 @@ const App = () => (
               <Route path="/mis-reservas" element={<MyReservations />} />
               <Route path="/perfil" element={<UserProfile />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/upload-documents" element={<DocumentUpload />} />
+              <Route path="/upload-documents" element={<UploadDocuments />} />
               <Route
                 path="/validar-identidad"
                 element={<IdentityValidation />}
