@@ -175,7 +175,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                         ? "Monitor"
                         : currentUser?.role === "mercadeo"
                           ? "Mercadeo"
-                          : "Usuario"}
+                          : currentUser?.role === "recepcion"
+                            ? "Recepción"
+                            : "Usuario"}
               </Badge>
             </div>
           </div>
