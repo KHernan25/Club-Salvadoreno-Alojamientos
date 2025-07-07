@@ -20,9 +20,16 @@ export interface User {
     | "miembro";
   isActive: boolean;
   status?: "pending" | "approved" | "rejected";
+  memberStatus?: "activo" | "inactivo" | "en_mora"; // Estado específico para miembros
   lastLogin?: Date;
   createdAt: Date;
   profileImage?: string;
+  documents?: {
+    idDocument?: string; // URL de la foto del documento de identidad
+    memberCard?: string; // URL de la foto del carnet de miembro
+    facePhoto?: string; // URL de la foto del rostro
+    uploadedAt?: Date;
+  };
 }
 
 // Definir permisos por rol
@@ -279,6 +286,7 @@ export const registeredUsers: User[] = [
     fullName: "María José González",
     role: "miembro",
     isActive: true,
+    memberStatus: "activo",
     createdAt: new Date("2024-02-01"),
   },
   {
@@ -292,6 +300,7 @@ export const registeredUsers: User[] = [
     fullName: "Carlos Rivera",
     role: "miembro",
     isActive: true,
+    memberStatus: "activo",
     createdAt: new Date("2024-02-10"),
   },
   {
@@ -305,6 +314,7 @@ export const registeredUsers: User[] = [
     fullName: "Ana Martínez",
     role: "miembro",
     isActive: true,
+    memberStatus: "en_mora",
     createdAt: new Date("2024-02-15"),
   },
   {
@@ -318,6 +328,7 @@ export const registeredUsers: User[] = [
     fullName: "Juan Pérez",
     role: "miembro",
     isActive: true,
+    memberStatus: "activo",
     createdAt: new Date("2024-03-01"),
   },
 
@@ -333,6 +344,7 @@ export const registeredUsers: User[] = [
     fullName: "Usuario de Demostración",
     role: "miembro",
     isActive: true,
+    memberStatus: "activo",
     createdAt: new Date("2024-01-01"),
   },
 
@@ -348,6 +360,7 @@ export const registeredUsers: User[] = [
     fullName: "Usuario Inactivo",
     role: "miembro",
     isActive: false,
+    memberStatus: "inactivo",
     createdAt: new Date("2024-01-01"),
   },
 ];
