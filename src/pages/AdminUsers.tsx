@@ -621,40 +621,38 @@ const AdminUsers = () => {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Pendientes</CardTitle>
+              <CardTitle className="text-sm font-medium">BackOffice</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">
-                {pendingUsers.length}
+              <div className="text-2xl font-bold text-blue-600">
+                {(users || []).filter((u) => isBackOfficeUser(u.role)).length}
               </div>
               <p className="text-xs text-muted-foreground">
-                Esperando aprobación
+                Personal administrativo
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Activos</CardTitle>
+              <CardTitle className="text-sm font-medium">Miembros</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {activeUsers.length}
+                {(users || []).filter((u) => u.role === "miembro").length}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Usuarios aprobados
-              </p>
+              <p className="text-xs text-muted-foreground">Usuarios miembros</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Inactivos</CardTitle>
+              <CardTitle className="text-sm font-medium">Pendientes</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">
-                {inactiveUsers.length}
+              <div className="text-2xl font-bold text-yellow-600">
+                {pendingUsers.length}
               </div>
               <p className="text-xs text-muted-foreground">
-                Usuarios desactivados
+                Miembros por aprobar
               </p>
             </CardContent>
           </Card>
