@@ -93,6 +93,7 @@ const AdminReservations = () => {
   const [isNewReservationDialogOpen, setIsNewReservationDialogOpen] =
     useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [newReservationForm, setNewReservationForm] = useState({
     userId: "",
     accommodationId: "",
