@@ -886,6 +886,193 @@ const AdminCalendar = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Reservation Details Dialog */}
+        <Dialog
+          open={isReservationDialogOpen}
+          onOpenChange={setIsReservationDialogOpen}
+        >
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Detalles de la Reserva</DialogTitle>
+              <DialogDescription>
+                Información completa de la reserva seleccionada
+              </DialogDescription>
+            </DialogHeader>
+            {selectedReservation && (
+              <div className="space-y-6">
+                {/* Status Badge */}
+                <div className="flex items-center justify-between">
+                  <Badge
+                    className={`${
+                      selectedReservation.status === "confirmed"
+                        ? "bg-green-100 text-green-800"
+                        : selectedReservation.status === "pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : selectedReservation.status === "cancelled"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {selectedReservation.status === "confirmed" && "Confirmada"}
+                    {selectedReservation.status === "pending" && "Pendiente"}
+                    {selectedReservation.status === "cancelled" && "Cancelada"}
+                    {selectedReservation.status === "completed" && "Completada"}
+                  </Badge>
+                  <span className="text-sm text-gray-500">
+                    ID: {selectedReservation.id}
+                  </span>
+                </div>
+
+                {/* Guest Information */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium">
+                        Información del Huésped
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div>
+                        <Label className="text-xs text-gray-500">Nombre</Label>
+                        <p className="font-medium">
+                          {selectedReservation.guestName}
+                        </p>
+                      </div>
+                      {selectedReservation.guestEmail && (
+                        <div>
+                          <Label className="text-xs text-gray-500">Email</Label>
+                          <p className="text-sm">
+                            {selectedReservation.guestEmail}
+                          </p>
+                        </div>
+                      )}
+                      {selectedReservation.guestPhone && (
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Teléfono
+                          </Label>
+                          <p className="text-sm">
+                            {selectedReservation.guestPhone}
+                          </p>
+                        </div>
+                      )}
+                      {selectedReservation.guests && (
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Huéspedes
+                          </Label>
+                          <p className="text-sm">
+                            {selectedReservation.guests} persona
+                            {selectedReservation.guests > 1 ? "s" : ""}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium">
+                        Detalles de la Reserva
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div>
+                        <Label className="text-xs text-gray-500">
+                          Alojamiento
+                        </Label>
+                        <p className="font-medium">
+                          {getAccommodationName(
+                            selectedReservation.accommodationId,
+                          )}
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Check-in
+                          </Label>
+                          <p className="text-sm">
+                            {new Date(
+                              selectedReservation.checkIn,
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div>
+                          <Label className="text-xs text-gray-500">
+                            Check-out
+                          </Label>
+                          <p className="text-sm">
+                            {new Date(
+                              selectedReservation.checkOut,
+                            ).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      {selectedReservation.totalAmount && (
+                        <div>
+                          <Label className="text-xs text-gray-500">Total</Label>
+                          <p className="font-semibold text-lg">
+                            ${selectedReservation.totalAmount.toFixed(2)}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Notes */}
+                {selectedReservation.notes && (
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm font-medium">
+                        Notas
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-700">
+                        {selectedReservation.notes}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Duration */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">
+                      Duración de la estadía:
+                    </span>
+                    <span className="font-medium">
+                      {Math.ceil(
+                        (new Date(selectedReservation.checkOut).getTime() -
+                          new Date(selectedReservation.checkIn).getTime()) /
+                          (1000 * 60 * 60 * 24),
+                      )}{" "}
+                      noche
+                      {Math.ceil(
+                        (new Date(selectedReservation.checkOut).getTime() -
+                          new Date(selectedReservation.checkIn).getTime()) /
+                          (1000 * 60 * 60 * 24),
+                      ) > 1
+                        ? "s"
+                        : ""}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsReservationDialogOpen(false)}
+              >
+                Cerrar
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );
