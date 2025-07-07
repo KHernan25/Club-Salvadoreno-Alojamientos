@@ -288,7 +288,7 @@ const AdminUsers = () => {
         email: "",
         username: "",
         phone: "",
-        role: "user",
+        role: "miembro",
         password: "",
       });
       // Navigate back to main users page if came from /new route
