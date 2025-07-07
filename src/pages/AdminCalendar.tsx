@@ -123,6 +123,59 @@ const AdminCalendar = () => {
     { id: "suite-1", name: "Suite Premium 1", location: "el-sunzal" },
     { id: "casa-1", name: "Casa Familiar 1", location: "el-sunzal" },
     { id: "corinto-casa-1", name: "Casa Corinto 1", location: "corinto" },
+    {
+      id: "corinto-apto-1",
+      name: "Apartamento Corinto 1",
+      location: "corinto",
+    },
+    {
+      id: "corinto-apto-2",
+      name: "Apartamento Corinto 2",
+      location: "corinto",
+    },
+  ];
+
+  const getMockReservations = (): CalendarReservation[] => [
+    {
+      id: "res-1",
+      accommodationId: "1A",
+      checkIn: "2024-01-15",
+      checkOut: "2024-01-17",
+      status: "confirmed",
+      guestName: "María González",
+    },
+    {
+      id: "res-2",
+      accommodationId: "suite-1",
+      checkIn: "2024-01-20",
+      checkOut: "2024-01-22",
+      status: "pending",
+      guestName: "Carlos Rodríguez",
+    },
+    {
+      id: "res-3",
+      accommodationId: "casa-1",
+      checkIn: "2024-01-25",
+      checkOut: "2024-01-28",
+      status: "cancelled",
+      guestName: "Ana Martínez",
+    },
+    {
+      id: "res-4",
+      accommodationId: "corinto-casa-1",
+      checkIn: "2024-01-18",
+      checkOut: "2024-01-21",
+      status: "confirmed",
+      guestName: "Luis García",
+    },
+    {
+      id: "res-5",
+      accommodationId: "corinto-apto-1",
+      checkIn: "2024-01-22",
+      checkOut: "2024-01-24",
+      status: "pending",
+      guestName: "Carmen López",
+    },
   ];
 
   const getMockBlockedDates = (): BlockedDate[] => [
