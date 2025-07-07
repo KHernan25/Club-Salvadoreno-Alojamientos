@@ -452,6 +452,25 @@ const AdminCalendar = () => {
     return disabled;
   };
 
+  const handleDateClick = (date: Date) => {
+    const clickedDateStr = date.toISOString().split("T")[0];
+    const filteredReservations = getFilteredReservations();
+
+    // Buscar reserva para esta fecha
+    const reservation = filteredReservations.find((res) => {
+      const startDate = new Date(res.checkIn);
+      const endDate = new Date(res.checkOut);
+      const clickedDate = new Date(clickedDateStr);
+
+      return clickedDate >= startDate && clickedDate <= endDate;
+    });
+
+    if (reservation) {
+      setSelectedReservation(reservation);
+      setIsReservationDialogOpen(true);
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
