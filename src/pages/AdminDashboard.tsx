@@ -219,9 +219,11 @@ const AdminDashboard = () => {
   }
 
   return (
-    <AdminLayout>
-      <div className="space-y-6">
-        {/* Connection Status */}
+    <>
+      <AuthDebug />
+      <AdminLayout>
+        <div className="space-y-6">
+          {/* Connection Status */}
         {!apiConnected && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <div className="flex items-center space-x-2">
