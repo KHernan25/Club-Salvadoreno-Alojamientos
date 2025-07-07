@@ -7,7 +7,6 @@ import { Eye, EyeOff, User, Loader2, AlertCircle, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { authenticateUser, getCurrentSession } from "@/lib/auth-service";
 import { useAuthPageProtection } from "@/hooks/use-prevent-back-navigation";
-import AuthDebug from "@/components/AuthDebug";
 
 const BackofficeLogin = () => {
   const navigate = useNavigate();
