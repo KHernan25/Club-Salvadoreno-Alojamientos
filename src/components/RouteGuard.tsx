@@ -30,6 +30,7 @@ const RouteGuard = ({ children }: RouteGuardProps) => {
     "/corinto",
     "/el-sunzal",
     "/backoffice",
+    "/backoffice/login",
   ];
 
   // Función para verificar si es ruta pública
