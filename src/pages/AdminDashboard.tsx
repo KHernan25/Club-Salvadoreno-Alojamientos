@@ -330,11 +330,15 @@ const AdminDashboard = () => {
               <CardDescription>Tareas comunes del sistema</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button asChild className="w-full" variant="default">
-                <Link to="/admin/reservations/new">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Nueva Reserva
-                </Link>
+              <Button
+                className="w-full"
+                variant="default"
+                onClick={() => {
+                  window.location.href = "/admin/reservations/new";
+                }}
+              >
+                <Calendar className="mr-2 h-4 w-4" />
+                Nueva Reserva
               </Button>
               <Button asChild className="w-full" variant="outline">
                 <Link to="/admin/users">
