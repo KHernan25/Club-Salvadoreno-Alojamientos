@@ -273,10 +273,23 @@ const BackofficeLogin = () => {
               </form>
 
               {/* Info */}
-              <div className="mt-6 text-center">
+              <div className="mt-6 text-center space-y-2">
                 <p className="text-blue-100 text-sm">
                   Solo personal autorizado puede acceder
                 </p>
+
+                {/* Credenciales de desarrollo */}
+                <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-3 text-xs">
+                  <p className="text-blue-200 font-semibold mb-1">
+                    🔧 Desarrollo - Credenciales de prueba:
+                  </p>
+                  <div className="text-blue-100 space-y-1">
+                    <div>superadmin / SuperAdmin123</div>
+                    <div>atencion / Atencion123</div>
+                    <div>mercadeo / Mercadeo123</div>
+                  </div>
+                </div>
+
                 <button
                   onClick={() => navigate("/login")}
                   className="text-blue-200 hover:text-white text-sm underline mt-2"
