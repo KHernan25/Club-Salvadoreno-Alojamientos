@@ -419,21 +419,27 @@ const AdminUsers = () => {
         </div>
       </TableCell>
       <TableCell>
-        <Badge
-          variant={
-            user.status === "approved"
-              ? "default"
+        {isBackOfficeUser(user.role) ? (
+          <Badge variant={user.isActive ? "default" : "destructive"}>
+            {user.isActive ? "Activo" : "Inactivo"}
+          </Badge>
+        ) : (
+          <Badge
+            variant={
+              user.status === "approved"
+                ? "default"
+                : user.status === "pending"
+                  ? "outline"
+                  : "destructive"
+            }
+          >
+            {user.status === "approved"
+              ? "Aprobado"
               : user.status === "pending"
-                ? "outline"
-                : "destructive"
-          }
-        >
-          {user.status === "approved"
-            ? "Aprobado"
-            : user.status === "pending"
-              ? "Pendiente"
-              : "Rechazado"}
-        </Badge>
+                ? "Pendiente"
+                : "Rechazado"}
+          </Badge>
+        )}
       </TableCell>
       <TableCell>
         <p className="text-sm">
@@ -447,28 +453,8 @@ const AdminUsers = () => {
       </TableCell>
       <TableCell>
         <div className="flex items-center space-x-2">
-          {user.status === "pending" && (
-            <>
-              <Button
-                size="sm"
-                variant="default"
-                onClick={() => handleApproveUser(user.id)}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <Check className="h-3 w-3 mr-1" />
-                Aprobar
-              </Button>
-              <Button
-                size="sm"
-                variant="destructive"
-                onClick={() => handleRejectUser(user.id)}
-              >
-                <X className="h-3 w-3 mr-1" />
-                Rechazar
-              </Button>
-            </>
-          )}
-          {user.status !== "pending" && (
+          {isBackOfficeUser(user.role) ? (
+            // BackOffice users: Just edit and activate/deactivate
             <>
               <Button
                 size="sm"
@@ -515,6 +501,79 @@ const AdminUsers = () => {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
+              )}
+            </>
+          ) : (
+            // Members: Keep approval/rejection flow
+            <>
+              {user.status === "pending" && (
+                <>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    onClick={() => handleApproveUser(user.id)}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Check className="h-3 w-3 mr-1" />
+                    Aprobar
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleRejectUser(user.id)}
+                  >
+                    <X className="h-3 w-3 mr-1" />
+                    Rechazar
+                  </Button>
+                </>
+              )}
+              {user.status !== "pending" && (
+                <>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setIsEditDialogOpen(true);
+                    }}
+                    className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                  >
+                    <Edit className="h-3 w-3 mr-1" />
+                    Editar
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="outline">
+                        <Trash2 className="h-3 w-3 mr-1" />
+                        {user.isActive ? "Desactivar" : "Activar"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          {user.isActive ? "Desactivar" : "Activar"} usuario
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          ¿Estás seguro de que deseas{" "}
+                          {user.isActive ? "desactivar" : "activar"} a{" "}
+                          {user.firstName} {user.lastName}?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() =>
+                            user.isActive
+                              ? handleRejectUser(user.id)
+                              : handleApproveUser(user.id)
+                          }
+                        >
+                          Confirmar
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
               )}
             </>
           )}
