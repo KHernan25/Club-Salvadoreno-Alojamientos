@@ -157,7 +157,15 @@ router.put(
 
     if (
       filteredUpdates.role &&
-      !["user", "staff", "admin"].includes(filteredUpdates.role)
+      ![
+        "miembro",
+        "recepcion",
+        "monitor",
+        "anfitrion",
+        "mercadeo",
+        "atencion_miembro",
+        "super_admin",
+      ].includes(filteredUpdates.role)
     ) {
       throw createError("Rol inválido", 400);
     }
