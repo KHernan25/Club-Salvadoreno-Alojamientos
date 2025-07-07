@@ -537,7 +537,7 @@ export const registerNewUser = (userData: NewUserData): RegistrationResult => {
     email: email.toLowerCase(),
     phone: formatPhone(phone),
     fullName: `${firstName} ${lastName}`,
-    role: "user", // Nuevos usuarios son "user" por defecto
+    role: "miembro",
     isActive: false, // Los nuevos usuarios están inactivos hasta ser aprobados
     createdAt: new Date(),
   };
