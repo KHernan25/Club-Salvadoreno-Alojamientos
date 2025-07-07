@@ -402,10 +402,15 @@ const AdminDashboard = () => {
                         : "Pendiente"}
                     </Badge>
                     <div>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to={`/admin/reservations/${reservation.id}`}>
-                          Ver Detalles
-                        </Link>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          // Navigate to reservations page and show reservation details
+                          window.location.href = `/admin/reservations#${reservation.id}`;
+                        }}
+                      >
+                        Ver Detalles
                       </Button>
                     </div>
                   </div>
