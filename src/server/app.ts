@@ -201,6 +201,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/accommodations", accommodationRoutes);
 app.use("/api/reservations", reservationRoutes);
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notifications", notificationRoutes);
