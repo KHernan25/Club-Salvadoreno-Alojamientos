@@ -20,6 +20,50 @@ import ReservationValidationService from "../../lib/reservation-validation-servi
 
 const router = Router();
 
+// Simulación de BD de usuarios en memoria
+const mockUsers = [
+  {
+    id: "7",
+    type: "miembro",
+    name: "Carlos Rivera",
+    email: "carlos@example.com",
+    isActive: true,
+    familyMembers: ["spouse-1", "child-1", "child-2"],
+  },
+  {
+    id: "8",
+    type: "viuda",
+    name: "Ana María Torres",
+    email: "ana@example.com",
+    isActive: true,
+    familyMembers: ["child-3"],
+  },
+  {
+    id: "9",
+    type: "director_jcd",
+    name: "José Pérez",
+    email: "jose@example.com",
+    isActive: true,
+    familyMembers: ["spouse-2"],
+  },
+  {
+    id: "10",
+    type: "visitador_especial",
+    name: "María González",
+    email: "maria@example.com",
+    isActive: true,
+    familyMembers: [],
+  },
+  {
+    id: "11",
+    type: "visitador_juvenil",
+    name: "Pedro Junior",
+    email: "pedro@example.com",
+    isActive: true,
+    familyMembers: [],
+  },
+];
+
 // Simulación de BD de reservas en memoria
 const reservations: any[] = [
   {
