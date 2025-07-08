@@ -566,7 +566,26 @@ const AdminProfile = () => {
                       <span className="text-sm">Cuenta creada</span>
                     </div>
                     <span className="text-sm font-medium">
-                      {new Date(currentUser.createdAt).toLocaleDateString()}
+                      {(() => {
+                        try {
+                          const date =
+                            currentUser.createdAt instanceof Date
+                              ? currentUser.createdAt
+                              : new Date(currentUser.createdAt);
+
+                          if (isNaN(date.getTime())) {
+                            return "No disponible";
+                          }
+
+                          return date.toLocaleDateString("es-ES", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          });
+                        } catch (error) {
+                          return "No disponible";
+                        }
+                      })()}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
