@@ -804,18 +804,19 @@ const AdminCalendar = () => {
                       onSelect={setSelectedDates}
                       onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
-                      className="rounded-md border w-full"
+                      className="rounded-md border w-full max-w-none"
                       classNames={{
                         months:
-                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
-                        month: "space-y-4 w-full",
+                          "flex flex-col lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0 w-full justify-center",
+                        month:
+                          "space-y-4 w-full max-w-md mx-auto lg:max-w-none",
                         table: "w-full border-collapse space-y-1",
                         head_row: "flex w-full",
                         head_cell:
-                          "text-muted-foreground rounded-md w-16 h-12 font-normal text-sm flex items-center justify-center",
+                          "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                        day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
+                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
                       modifiersClassNames={getModifiersClassNames()}
