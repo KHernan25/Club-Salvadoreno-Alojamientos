@@ -937,10 +937,14 @@ export const apiService = {
 
   // Accommodations
   getAccommodations: apiGetAccommodations,
+  getAccommodationById: apiGetAccommodationById,
+  getAccommodationsByLocation: apiGetAccommodationsByLocation,
+  checkAccommodationAvailability: apiCheckAccommodationAvailability,
   updateAccommodation: apiUpdateAccommodation,
 
   // Reservations
   getReservations: apiGetReservations,
+  getReservationById: apiGetReservationById,
   createReservation: apiCreateReservation,
   updateReservation: apiUpdateReservation,
   cancelReservation: apiCancelReservation,
@@ -948,9 +952,26 @@ export const apiService = {
 
   // Pricing
   getPricing: apiGetPricing,
+  getPricingRates: apiGetPricingRates,
+  calculatePricing: apiCalculatePricing,
+  getDayTypes: apiGetDayTypes,
+  getAccommodationPricing: apiGetAccommodationPricing,
+  comparePricing: apiComparePricing,
+  getLowestPrices: apiGetLowestPrices,
 
   // Contact
   sendContactMessage: apiSendContactMessage,
+  getContactMessages: apiGetContactMessages,
+  getContactMessageById: apiGetContactMessageById,
+  updateContactMessage: apiUpdateContactMessage,
+  getContactStats: apiGetContactStats,
+  sendTestEmail: apiSendTestEmail,
+  sendTestSMS: apiSendTestSMS,
+
+  // Notifications
+  getNotifications: apiGetNotifications,
+  markNotificationAsRead: apiMarkNotificationAsRead,
+  markAllNotificationsAsRead: apiMarkAllNotificationsAsRead,
 
   // Registration Requests
   getRegistrationRequests: apiGetRegistrationRequests,
