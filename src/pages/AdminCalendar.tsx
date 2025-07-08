@@ -135,8 +135,13 @@ const AdminCalendar = () => {
     { id: "2A", name: "Apartamento 2A", location: "el-sunzal" },
     { id: "suite1", name: "Suite 1", location: "el-sunzal" },
     { id: "casa1", name: "Casa Surf Paradise", location: "el-sunzal" },
-    { id: "corinto1A", name: "Apartamento Corinto 1A", location: "corinto" },
     { id: "corinto-casa-1", name: "Casa del Lago", location: "corinto" },
+    { id: "corinto-casa-2", name: "Casa Vista al Lago", location: "corinto" },
+    {
+      id: "corinto-casa-3",
+      name: "Casa Familiar Corinto",
+      location: "corinto",
+    },
   ];
 
   const getMockReservations = (): CalendarReservation[] => {
