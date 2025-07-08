@@ -105,6 +105,7 @@ interface Reservation {
   createdAt: string;
   updatedAt?: string;
   paymentStatus: "pending" | "paid" | "refunded";
+  paymentMethod?: "pay_later" | "payment_link" | "transfer" | "credit" | "card";
   confirmationCode: string;
   specialRequests?: string;
   guestName?: string;

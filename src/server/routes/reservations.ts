@@ -112,6 +112,7 @@ interface Reservation {
   createdAt: Date;
   updatedAt: Date;
   paymentStatus: "pending" | "paid" | "refunded";
+  paymentMethod?: "pay_later" | "payment_link" | "transfer" | "credit" | "card";
   confirmationCode: string;
 }
 
