@@ -399,9 +399,14 @@ router.post(
 
     reviews.push(review);
 
+    const responseMessage =
+      initialStatus === "approved"
+        ? "Reseña creada y publicada exitosamente."
+        : "Reseña creada exitosamente. Será revisada antes de publicarse.";
+
     res.status(201).json({
       success: true,
-      message: "Reseña creada exitosamente. Será revisada antes de publicarse.",
+      message: responseMessage,
       data: {
         review: {
           id: review.id,
@@ -411,6 +416,14 @@ router.post(
           comment: review.comment,
           status: review.status,
           createdAt: review.createdAt,
+        },
+        moderation: {
+          autoApproved: initialStatus === "approved",
+          confidence: moderationResult.confidence,
+          issues:
+            moderationResult.issues.length > 0
+              ? moderationResult.issues
+              : undefined,
         },
       },
     });
