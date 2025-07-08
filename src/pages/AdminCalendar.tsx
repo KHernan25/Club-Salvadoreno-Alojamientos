@@ -606,7 +606,7 @@ const AdminCalendar = () => {
       blocked:
         "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2", // Naranja - bloqueado
       cancelledAvailable:
-        "bg-gradient-to-r from-gray-400 to-green-200 text-gray-800 font-medium border-2 border-green-300 hover:from-gray-300 hover:to-green-300", // Mitad cancelado, mitad disponible
+        "bg-white text-gray-700 font-medium border-2 border-dashed border-gray-400 hover:bg-gray-50", // Blanco con borde punteado para mostrar historial
     };
   };
 
