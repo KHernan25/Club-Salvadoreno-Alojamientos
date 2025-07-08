@@ -171,36 +171,49 @@ router.post(
       req.body;
     const user = req.user;
 
-    // Validar fechas
-    const dateValidation = validateReservationDates(checkIn, checkOut);
-    if (!dateValidation.valid) {
-      throw createError(dateValidation.error!, 400);
+    // Inicializar servicio de validación con datos actuales
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    // Determinar tipo de alojamiento basado en el ID
+    let accommodationType:
+      | "corinto_casas"
+      | "el_sunzal_casas"
+      | "apartamentos"
+      | "suites";
+
+    if (accommodationId.includes("corinto-casa")) {
+      accommodationType = "corinto_casas";
+    } else if (accommodationId.includes("casa")) {
+      accommodationType = "el_sunzal_casas";
+    } else if (accommodationId.includes("suite")) {
+      accommodationType = "suites";
+    } else {
+      accommodationType = "apartamentos";
+    }
+
+    // Validar reglas de negocio
+    const businessRulesValidation = validationService.validateNewReservation(
+      user.id,
+      accommodationId,
+      accommodationType,
+      checkIn,
+      checkOut,
+    );
+
+    if (!businessRulesValidation.valid) {
+      throw createError(
+        `Violación de reglas de negocio: ${businessRulesValidation.errors.join(", ")}`,
+        400,
+      );
     }
 
     // Verificar que el alojamiento existe y obtener precios
     const rates = getAccommodationRates(accommodationId);
     if (!rates) {
       throw createError("Alojamiento no encontrado", 404);
-    }
-
-    // Verificar disponibilidad (simulado)
-    const existingReservation = reservations.find(
-      (r) =>
-        r.accommodationId === accommodationId &&
-        r.status !== "cancelled" &&
-        ((new Date(checkIn) >= new Date(r.checkIn) &&
-          new Date(checkIn) < new Date(r.checkOut)) ||
-          (new Date(checkOut) > new Date(r.checkIn) &&
-            new Date(checkOut) <= new Date(r.checkOut)) ||
-          (new Date(checkIn) <= new Date(r.checkIn) &&
-            new Date(checkOut) >= new Date(r.checkOut))),
-    );
-
-    if (existingReservation) {
-      throw createError(
-        "El alojamiento no está disponible en las fechas seleccionadas",
-        409,
-      );
     }
 
     // Calcular precio total
@@ -212,11 +225,26 @@ router.post(
       rates,
     );
 
+    // Calcular información de pago según reglas de negocio
+    const paymentInfo = validationService.calculatePaymentInfo(
+      user.id,
+      checkIn,
+      priceCalculation.totalPrice,
+    );
+
+    // Obtener información de horarios
+    const checkInOutTimes = validationService.getCheckInOutInfo(
+      user.id,
+      accommodationType,
+    );
+
     // Crear reserva
     const reservation: Reservation = {
       id: uuidv4(),
       userId: user.id,
+      userType: mockUsers.find((u) => u.id === user.id)?.type || "miembro",
       accommodationId,
+      accommodationType,
       checkIn,
       checkOut,
       guests,
@@ -226,7 +254,7 @@ router.post(
       priceBreakdown: priceCalculation,
       createdAt: new Date(),
       updatedAt: new Date(),
-      paymentStatus: "pending",
+      paymentStatus: paymentInfo.paymentRequired ? "pending" : "exempt",
       confirmationCode: Math.random()
         .toString(36)
         .substring(2, 8)
@@ -235,25 +263,37 @@ router.post(
 
     reservations.push(reservation);
 
+    // Preparar respuesta con información de reglas de negocio
+    const responseData = {
+      reservation: {
+        id: reservation.id,
+        accommodationId: reservation.accommodationId,
+        accommodationType: reservation.accommodationType,
+        checkIn: reservation.checkIn,
+        checkOut: reservation.checkOut,
+        guests: reservation.guests,
+        specialRequests: reservation.specialRequests,
+        status: reservation.status,
+        totalPrice: reservation.totalPrice,
+        priceBreakdown: reservation.priceBreakdown,
+        confirmationCode: reservation.confirmationCode,
+        paymentStatus: reservation.paymentStatus,
+        createdAt: reservation.createdAt,
+      },
+      businessRules: {
+        paymentRequired: paymentInfo.paymentRequired,
+        paymentTimeLimit: paymentInfo.timeLimit,
+        exemptReason: paymentInfo.exemptReason,
+        checkInTime: checkInOutTimes.checkIn,
+        checkOutTime: checkInOutTimes.checkOut,
+        warnings: businessRulesValidation.warnings,
+      },
+    };
+
     res.status(201).json({
       success: true,
       message: "Reserva creada exitosamente",
-      data: {
-        reservation: {
-          id: reservation.id,
-          accommodationId: reservation.accommodationId,
-          checkIn: reservation.checkIn,
-          checkOut: reservation.checkOut,
-          guests: reservation.guests,
-          specialRequests: reservation.specialRequests,
-          status: reservation.status,
-          totalPrice: reservation.totalPrice,
-          priceBreakdown: reservation.priceBreakdown,
-          confirmationCode: reservation.confirmationCode,
-          paymentStatus: reservation.paymentStatus,
-          createdAt: reservation.createdAt,
-        },
-      },
+      data: responseData,
     });
   }),
 );
