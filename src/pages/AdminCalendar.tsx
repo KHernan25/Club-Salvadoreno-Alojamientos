@@ -564,25 +564,55 @@ const AdminCalendar = () => {
       cancelled: [],
       completed: [],
       blocked: [],
+      // Location-specific modifiers
+      confirmedSunzal: [],
+      confirmedCorinto: [],
+      pendingSunzal: [],
+      pendingCorinto: [],
+      completedSunzal: [],
+      completedCorinto: [],
+      blockedSunzal: [],
+      blockedCorinto: [],
       cancelledAvailable: [], // Nuevo estado: cancelada pero disponible
     };
 
     const filteredReservations = getFilteredReservations();
     const filteredBlocked = getFilteredBlockedDates();
 
-    // Fechas reservadas - separar las canceladas de las demás
+    // Fechas reservadas - separar por estado y ubicación
     filteredReservations.forEach((reservation) => {
       const start = new Date(reservation.checkIn);
       const end = new Date(reservation.checkOut);
+
+      // Obtener la ubicación del alojamiento
+      const accommodation = accommodations.find(
+        (acc) => acc.id === reservation.accommodationId,
+      );
+      const location = accommodation?.location || "";
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         const date = new Date(d);
 
         if (reservation.status === "cancelled") {
-          // Las canceladas van a un modificador especial que las marca como disponibles
           modifiers.cancelledAvailable.push(date);
-        } else if (reservation.status in modifiers) {
-          modifiers[reservation.status].push(date);
+        } else {
+          // Solo usar modificadores específicos de ubicación en vista "all"
+          if (selectedLocation === "all" && location) {
+            const locationKey = `${reservation.status}${location === "el-sunzal" ? "Sunzal" : "Corinto"}`;
+            if (locationKey in modifiers) {
+              modifiers[locationKey].push(date);
+            } else {
+              // Fallback al modificador base
+              if (reservation.status in modifiers) {
+                modifiers[reservation.status].push(date);
+              }
+            }
+          } else {
+            // En vistas específicas de ubicación, usar modificadores base
+            if (reservation.status in modifiers) {
+              modifiers[reservation.status].push(date);
+            }
+          }
         }
       }
     });
@@ -592,8 +622,26 @@ const AdminCalendar = () => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
 
+      // Obtener la ubicación del alojamiento bloqueado
+      const accommodation = accommodations.find(
+        (acc) => acc.id === block.accommodationId,
+      );
+      const location = accommodation?.location || "";
+
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        modifiers.blocked.push(new Date(d));
+        const date = new Date(d);
+
+        // Solo usar modificadores específicos de ubicación en vista "all"
+        if (selectedLocation === "all" && location) {
+          const locationKey = `blocked${location === "el-sunzal" ? "Sunzal" : "Corinto"}`;
+          if (locationKey in modifiers) {
+            modifiers[locationKey].push(date);
+          } else {
+            modifiers.blocked.push(date);
+          }
+        } else {
+          modifiers.blocked.push(date);
+        }
       }
     });
 
