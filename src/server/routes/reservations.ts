@@ -146,7 +146,13 @@ const reservations: any[] = [
 interface Reservation {
   id: string;
   userId: string;
+  userType: string;
   accommodationId: string;
+  accommodationType:
+    | "corinto_casas"
+    | "el_sunzal_casas"
+    | "apartamentos"
+    | "suites";
   checkIn: string;
   checkOut: string;
   guests: number;
@@ -156,9 +162,11 @@ interface Reservation {
   priceBreakdown: any;
   createdAt: Date;
   updatedAt: Date;
-  paymentStatus: "pending" | "paid" | "refunded";
+  paymentStatus: "pending" | "paid" | "refunded" | "exempt";
   paymentMethod?: "pay_later" | "payment_link" | "transfer" | "credit" | "card";
   confirmationCode: string;
+  emergencyModification?: boolean;
+  emergencyProof?: boolean;
 }
 
 // POST /api/reservations - Crear nueva reserva
