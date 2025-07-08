@@ -371,7 +371,11 @@ const AdminReservations = () => {
 
   const handleCreateReservation = async () => {
     try {
-      await apiCreateReservation(newReservationForm);
+      const reservationData = {
+        ...newReservationForm,
+        paymentMethod: newReservationForm.paymentMethod || undefined,
+      };
+      await apiCreateReservation(reservationData);
       toast({
         title: "Reserva creada",
         description: "La reserva ha sido creada exitosamente.",
