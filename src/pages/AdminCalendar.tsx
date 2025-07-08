@@ -139,73 +139,175 @@ const AdminCalendar = () => {
     { id: "corinto-casa-1", name: "Casa del Lago", location: "corinto" },
   ];
 
-  const getMockReservations = (): CalendarReservation[] => [
-    {
-      id: "res-1",
-      accommodationId: "1A",
-      checkIn: "2024-01-15",
-      checkOut: "2024-01-17",
-      status: "confirmed",
-      guestName: "María González",
-      guestEmail: "maria.gonzalez@email.com",
-      guestPhone: "+503 7777-8888",
-      totalAmount: 120.0,
-      guests: 2,
-      notes: "Llegada tardía confirmada",
-    },
-    {
-      id: "res-2",
-      accommodationId: "suite1",
-      checkIn: "2024-01-20",
-      checkOut: "2024-01-22",
-      status: "pending",
-      guestName: "Carlos Rodríguez",
-      guestEmail: "carlos.rodriguez@email.com",
-      guestPhone: "+503 6666-7777",
-      totalAmount: 180.0,
-      guests: 3,
-      notes: "Esperando confirmación de pago",
-    },
-    {
-      id: "res-3",
-      accommodationId: "casa1",
-      checkIn: "2024-01-25",
-      checkOut: "2024-01-28",
-      status: "cancelled",
-      guestName: "Ana Martínez",
-      guestEmail: "ana.martinez@email.com",
-      guestPhone: "+503 5555-6666",
-      totalAmount: 240.0,
-      guests: 4,
-      notes: "Cancelado por motivos personales",
-    },
-    {
-      id: "res-4",
-      accommodationId: "corinto-casa-1",
-      checkIn: "2024-01-18",
-      checkOut: "2024-01-21",
-      status: "confirmed",
-      guestName: "Luis García",
-      guestEmail: "luis.garcia@email.com",
-      guestPhone: "+503 4444-5555",
-      totalAmount: 210.0,
-      guests: 5,
-      notes: "Familia con niños pequeños",
-    },
-    {
-      id: "res-5",
-      accommodationId: "corinto1A",
-      checkIn: "2024-01-22",
-      checkOut: "2024-01-24",
-      status: "pending",
-      guestName: "Carmen López",
-      guestEmail: "carmen.lopez@email.com",
-      guestPhone: "+503 3333-4444",
-      totalAmount: 140.0,
-      guests: 2,
-      notes: "Primera reserva",
-    },
-  ];
+  const getMockReservations = (): CalendarReservation[] => {
+    const today = new Date();
+    const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
+    return [
+      // Confirmadas - próximos días
+      {
+        id: "res-1",
+        accommodationId: "1A",
+        checkIn: formatDate(
+          new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 4 * 24 * 60 * 60 * 1000),
+        ),
+        status: "confirmed",
+        guestName: "María González",
+        guestEmail: "maria.gonzalez@email.com",
+        guestPhone: "+503 7777-8888",
+        totalAmount: 120.0,
+        guests: 2,
+        notes: "Llegada tardía confirmada",
+      },
+      {
+        id: "res-2",
+        accommodationId: "2A",
+        checkIn: formatDate(
+          new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 8 * 24 * 60 * 60 * 1000),
+        ),
+        status: "confirmed",
+        guestName: "Roberto Silva",
+        guestEmail: "roberto.silva@email.com",
+        guestPhone: "+503 8888-9999",
+        totalAmount: 180.0,
+        guests: 3,
+        notes: "Cliente VIP - preparar amenities especiales",
+      },
+
+      // Pendientes - próxima semana
+      {
+        id: "res-3",
+        accommodationId: "suite1",
+        checkIn: formatDate(
+          new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 10 * 24 * 60 * 60 * 1000),
+        ),
+        status: "pending",
+        guestName: "Carlos Rodríguez",
+        guestEmail: "carlos.rodriguez@email.com",
+        guestPhone: "+503 6666-7777",
+        totalAmount: 240.0,
+        guests: 3,
+        notes: "Esperando confirmación de pago",
+      },
+      {
+        id: "res-4",
+        accommodationId: "corinto1A",
+        checkIn: formatDate(
+          new Date(today.getTime() + 12 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000),
+        ),
+        status: "pending",
+        guestName: "Carmen López",
+        guestEmail: "carmen.lopez@email.com",
+        guestPhone: "+503 3333-4444",
+        totalAmount: 140.0,
+        guests: 2,
+        notes: "Primera reserva - requiere verificación adicional",
+      },
+
+      // Canceladas - mes actual
+      {
+        id: "res-5",
+        accommodationId: "casa1",
+        checkIn: formatDate(
+          new Date(today.getTime() + 15 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 18 * 24 * 60 * 60 * 1000),
+        ),
+        status: "cancelled",
+        guestName: "Ana Martínez",
+        guestEmail: "ana.martinez@email.com",
+        guestPhone: "+503 5555-6666",
+        totalAmount: 240.0,
+        guests: 4,
+        notes: "Cancelado por motivos personales - reembolso procesado",
+      },
+
+      // Completadas - fechas pasadas
+      {
+        id: "res-6",
+        accommodationId: "corinto-casa-1",
+        checkIn: formatDate(
+          new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
+        ),
+        status: "completed",
+        guestName: "Luis García",
+        guestEmail: "luis.garcia@email.com",
+        guestPhone: "+503 4444-5555",
+        totalAmount: 210.0,
+        guests: 5,
+        notes: "Estadía completada - excelente review recibida",
+      },
+      {
+        id: "res-7",
+        accommodationId: "1A",
+        checkIn: formatDate(
+          new Date(today.getTime() - 10 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
+        ),
+        status: "completed",
+        guestName: "Sandra Morales",
+        guestEmail: "sandra.morales@email.com",
+        guestPhone: "+503 2222-3333",
+        totalAmount: 160.0,
+        guests: 2,
+        notes: "Estadía completada - cliente frecuente",
+      },
+
+      // Más reservas confirmadas
+      {
+        id: "res-8",
+        accommodationId: "suite1",
+        checkIn: formatDate(
+          new Date(today.getTime() + 20 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 25 * 24 * 60 * 60 * 1000),
+        ),
+        status: "confirmed",
+        guestName: "Diego Ramírez",
+        guestEmail: "diego.ramirez@email.com",
+        guestPhone: "+503 9999-0000",
+        totalAmount: 300.0,
+        guests: 4,
+        notes: "Grupo corporativo - facturación empresarial requerida",
+      },
+      {
+        id: "res-9",
+        accommodationId: "corinto-casa-1",
+        checkIn: formatDate(
+          new Date(today.getTime() + 28 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000),
+        ),
+        status: "confirmed",
+        guestName: "Patricia Herrera",
+        guestEmail: "patricia.herrera@email.com",
+        guestPhone: "+503 1111-2222",
+        totalAmount: 150.0,
+        guests: 3,
+        notes: "Celebración de aniversario - preparar decoración especial",
+      },
+    ];
+  };
 
   const getMockBlockedDates = (): BlockedDate[] => [
     {
