@@ -131,10 +131,20 @@ const AdminCalendar = () => {
   };
 
   const getMockAccommodations = () => [
+    // El Sunzal - Apartamentos
     { id: "1A", name: "Apartamento 1A", location: "el-sunzal" },
     { id: "2A", name: "Apartamento 2A", location: "el-sunzal" },
+    { id: "3A", name: "Apartamento 3A", location: "el-sunzal" },
+    { id: "4A", name: "Apartamento 4A", location: "el-sunzal" },
+    // El Sunzal - Suites
     { id: "suite1", name: "Suite 1", location: "el-sunzal" },
+    { id: "suite2", name: "Suite 2", location: "el-sunzal" },
+    { id: "suite3", name: "Suite Premium", location: "el-sunzal" },
+    // El Sunzal - Casas
     { id: "casa1", name: "Casa Surf Paradise", location: "el-sunzal" },
+    { id: "casa2", name: "Casa Oceanview", location: "el-sunzal" },
+    { id: "casa3", name: "Casa Beachfront", location: "el-sunzal" },
+    // Corinto - Solo Casas
     { id: "corinto-casa-1", name: "Casa del Lago", location: "corinto" },
     { id: "corinto-casa-2", name: "Casa Vista al Lago", location: "corinto" },
     {
@@ -142,6 +152,7 @@ const AdminCalendar = () => {
       name: "Casa Familiar Corinto",
       location: "corinto",
     },
+    { id: "corinto-casa-4", name: "Casa Ribereña", location: "corinto" },
   ];
 
   const getMockReservations = (): CalendarReservation[] => {
