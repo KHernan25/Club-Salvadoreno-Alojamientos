@@ -45,6 +45,8 @@ import AdminSettings from "./pages/AdminSettings";
 import AdminProfile from "./pages/AdminProfile";
 import AdminSiteContent from "./pages/AdminSiteContent";
 import AdminRegistrationRequests from "./pages/AdminRegistrationRequests";
+import AdminReviews from "./pages/AdminReviews";
+import AccommodationWithReviews from "./pages/AccommodationWithReviews";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import UserActivationDebug from "./pages/UserActivationDebug";
 
@@ -70,6 +72,10 @@ const App = () => (
               <Route path="/apartamento/:id" element={<ApartmentDetail />} />
               <Route path="/casa/:id" element={<CasaDetail />} />
               <Route path="/suite/:id" element={<SuiteDetail />} />
+              <Route
+                path="/accommodation/:id"
+                element={<AccommodationWithReviews />}
+              />
               <Route path="/corinto" element={<Corinto />} />
               <Route path="/el-sunzal" element={<ElSunzal />} />
               <Route path="/corinto/casas" element={<CorintoCasas />} />
@@ -221,6 +227,14 @@ const App = () => (
                 element={
                   <AdminProtectedRoute requiredRole="mercadeo">
                     <AdminSiteContent />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/reviews"
+                element={
+                  <AdminProtectedRoute requiredRole="anfitrion">
+                    <AdminReviews />
                   </AdminProtectedRoute>
                 }
               />

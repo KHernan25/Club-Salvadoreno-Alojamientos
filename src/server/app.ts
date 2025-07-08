@@ -7,6 +7,7 @@ import { authRoutes } from "./routes/auth";
 import { userRoutes } from "./routes/users";
 import { accommodationRoutes } from "./routes/accommodations";
 import { reservationRoutes } from "./routes/reservations";
+import { reviewRoutes } from "./routes/reviews";
 import { pricingRoutes } from "./routes/pricing";
 import { contactRoutes } from "./routes/contact";
 import { notificationRoutes } from "./routes/notifications";
@@ -166,6 +167,22 @@ app.get("/api", (req: Request, res: Response) => {
           "POST /api/registration-requests/:id/reject - Rechazar solicitud",
         ],
       },
+      reviews: {
+        path: "/api/reviews",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        description: "Sistema de reseñas de huéspedes",
+        endpoints: [
+          "GET /api/reviews - Listar reseñas con filtros",
+          "GET /api/reviews/:id - Obtener reseña específica",
+          "POST /api/reviews - Crear nueva reseña",
+          "PUT /api/reviews/:id - Actualizar reseña",
+          "DELETE /api/reviews/:id - Eliminar reseña",
+          "POST /api/reviews/:id/helpful - Marcar reseña como útil",
+          "POST /api/reviews/:id/response - Respuesta del anfitrión",
+          "PUT /api/reviews/:id/moderate - Moderar reseña (admin)",
+          "GET /api/reviews/accommodation/:id/stats - Estadísticas de reseñas",
+        ],
+      },
     },
     rateLimit: {
       general: "100 requests por 15 minutos",
@@ -184,6 +201,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/accommodations", accommodationRoutes);
 app.use("/api/reservations", reservationRoutes);
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notifications", notificationRoutes);
