@@ -16,6 +16,7 @@ import {
   validateReservationDates,
 } from "../../lib/pricing-system";
 import { asyncHandler, createError } from "../middleware/errorHandler";
+import ReservationValidationService from "../../lib/reservation-validation-service";
 
 const router = Router();
 
