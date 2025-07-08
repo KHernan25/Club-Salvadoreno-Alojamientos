@@ -639,4 +639,131 @@ router.get(
   }),
 );
 
+// GET /api/reservations/business-rules - Obtener reglas de negocio del usuario
+router.get(
+  "/business-rules",
+  authenticateToken,
+  asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const user = req.user;
+
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    const businessRulesSummary = validationService.getUserBusinessRulesSummary(
+      user.id,
+    );
+
+    res.json({
+      success: true,
+      data: {
+        businessRules: businessRulesSummary,
+      },
+    });
+  }),
+);
+
+// POST /api/reservations/:id/validate-modification - Validar modificación de reserva
+router.post(
+  "/:id/validate-modification",
+  authenticateToken,
+  validateIdParam,
+  asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const { id } = req.params;
+    const { newCheckIn, newCheckOut, isEmergency, emergencyProof } = req.body;
+
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    const validation = validationService.validateReservationModification(
+      id,
+      newCheckIn,
+      newCheckOut,
+      {
+        isEmergencyModification: isEmergency,
+        emergencyProof: emergencyProof,
+      },
+    );
+
+    res.json({
+      success: true,
+      data: {
+        validation: {
+          valid: validation.valid,
+          errors: validation.errors,
+          warnings: validation.warnings,
+        },
+      },
+    });
+  }),
+);
+
+// POST /api/reservations/:id/validate-cancellation - Validar cancelación de reserva
+router.post(
+  "/:id/validate-cancellation",
+  authenticateToken,
+  validateIdParam,
+  asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    const validation = validationService.validateReservationCancellation(
+      id,
+      reason,
+    );
+
+    res.json({
+      success: true,
+      data: {
+        validation: {
+          valid: validation.valid,
+          errors: validation.errors,
+          warnings: validation.warnings,
+        },
+      },
+    });
+  }),
+);
+
+// POST /api/reservations/:id/validate-key-handover - Validar entrega de llaves
+router.post(
+  "/:id/validate-key-handover",
+  authenticateToken,
+  validateIdParam,
+  asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const { id } = req.params;
+    const { recipientId, authorizationLetter } = req.body;
+
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    const validation = validationService.validateKeyHandover(
+      id,
+      recipientId,
+      authorizationLetter,
+    );
+
+    res.json({
+      success: true,
+      data: {
+        validation: {
+          valid: validation.valid,
+          errors: validation.errors,
+          warnings: validation.warnings,
+        },
+      },
+    });
+  }),
+);
+
 export { router as reservationRoutes };
