@@ -25,7 +25,6 @@ import {
   User,
   Shield,
   Home,
-  Bell,
   UserPlus,
   MapPin,
   Globe,
@@ -38,6 +37,7 @@ import {
   isSuperAdmin,
 } from "@/lib/auth-service";
 import { getRolePermissions } from "@/lib/user-database";
+import { NotificationDropdown } from "@/components/NotificationDropdown";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -137,15 +137,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       <div className="flex items-center space-x-2">
         <div className="flex items-center gap-3 cursor-pointer">
           <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-              <img
-                src="/logo_menu.png"
-                alt="Logo Club Salvadoreño"
-                className="max-w-[35px] mx-auto object-contain"
-              />
-            </div>
-            <span className="text-xl font-semibold text-slate-900 hidden sm:block">
-              Club Salvadoreño
-            </span>
+            <img
+              src="/logo_menu.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[35px] mx-auto object-contain"
+            />
+          </div>
+          <span className="text-xl font-semibold text-slate-900 hidden sm:block">
+            Club Salvadoreño
+          </span>
         </div>
       </div>
 
