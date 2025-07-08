@@ -60,7 +60,9 @@ export function useApi<T>(
 
   useEffect(() => {
     if (immediate) {
-      execute();
+      execute().catch(() => {
+        // Silently handle errors in useEffect to prevent app crashes
+      });
     }
   }, dependencies);
 
