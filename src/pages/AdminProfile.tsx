@@ -173,6 +173,63 @@ const AdminProfile = () => {
     });
   };
 
+  const handlePasswordChange = () => {
+    // Validaciones
+    if (
+      !passwordForm.currentPassword ||
+      !passwordForm.newPassword ||
+      !passwordForm.confirmPassword
+    ) {
+      toast({
+        title: "Error",
+        description: "Todos los campos son obligatorios.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Las contraseñas nuevas no coinciden.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (passwordForm.newPassword.length < 8) {
+      toast({
+        title: "Error",
+        description: "La nueva contraseña debe tener al menos 8 caracteres.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Simular cambio de contraseña (aquí iría la llamada a la API)
+    toast({
+      title: "Contraseña actualizada",
+      description: "Tu contraseña ha sido cambiada exitosamente.",
+    });
+
+    // Limpiar formulario y cerrar modal
+    setPasswordForm({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+    setIsPasswordDialogOpen(false);
+  };
+
+  const handlePasswordCancel = () => {
+    setPasswordForm({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+    setIsPasswordDialogOpen(false);
+  };
+
   const getCurrentProfileImage = () => {
     if (profileImage) return profileImage;
     if (currentUser.profileImage) return currentUser.profileImage;
