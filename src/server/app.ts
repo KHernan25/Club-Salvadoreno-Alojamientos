@@ -7,6 +7,7 @@ import { authRoutes } from "./routes/auth";
 import { userRoutes } from "./routes/users";
 import { accommodationRoutes } from "./routes/accommodations";
 import { reservationRoutes } from "./routes/reservations";
+import { reviewRoutes } from "./routes/reviews";
 import { pricingRoutes } from "./routes/pricing";
 import { contactRoutes } from "./routes/contact";
 import { notificationRoutes } from "./routes/notifications";
