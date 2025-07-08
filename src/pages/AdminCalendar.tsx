@@ -373,48 +373,52 @@ const AdminCalendar = () => {
   };
 
   // Crear fechas con estilos según su estado
-  const getDateStyles = () => {
-    const dateStyles: { [key: string]: string } = {};
+  const getDateModifiers = () => {
+    const modifiers: { [key: string]: Date[] } = {
+      confirmed: [],
+      pending: [],
+      cancelled: [],
+      completed: [],
+      blocked: [],
+    };
+
     const filteredReservations = getFilteredReservations();
     const filteredBlocked = getFilteredBlockedDates();
 
-    // Fechas reservadas (rojo)
+    // Fechas reservadas
     filteredReservations.forEach((reservation) => {
       const start = new Date(reservation.checkIn);
       const end = new Date(reservation.checkOut);
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        const dateKey = d.toISOString().split("T")[0];
-
-        switch (reservation.status) {
-          case "confirmed":
-            dateStyles[dateKey] = "bg-red-200 text-red-800 font-semibold"; // Rojo - reservado
-            break;
-          case "pending":
-            dateStyles[dateKey] = "bg-yellow-200 text-yellow-800 font-semibold"; // Amarillo - en espera
-            break;
-          case "cancelled":
-            dateStyles[dateKey] = "bg-gray-600 text-white"; // Gris oscuro - cancelado
-            break;
-          case "completed":
-            dateStyles[dateKey] = "bg-gray-300 text-gray-600"; // Gris claro - completado
-            break;
+        const date = new Date(d);
+        if (reservation.status in modifiers) {
+          modifiers[reservation.status].push(date);
         }
       }
     });
 
-    // Fechas bloqueadas (gris claro)
+    // Fechas bloqueadas
     filteredBlocked.forEach((block) => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        const dateKey = d.toISOString().split("T")[0];
-        dateStyles[dateKey] = "bg-gray-300 text-gray-600"; // Gris claro - bloqueado
+        modifiers.blocked.push(new Date(d));
       }
     });
 
-    return dateStyles;
+    return modifiers;
+  };
+
+  const getModifiersClassNames = () => {
+    return {
+      confirmed: "bg-red-200 text-red-800 font-semibold", // Rojo - reservado
+      pending: "bg-yellow-200 text-yellow-800 font-semibold", // Amarillo - en espera
+      cancelled: "bg-gray-600 text-white", // Gris oscuro - cancelado
+      completed: "bg-gray-300 text-gray-600", // Gris claro - completado
+      blocked: "bg-gray-300 text-gray-600", // Gris claro - bloqueado
+    };
   };
 
   // Fechas deshabilitadas (solo para interacción)
@@ -634,8 +638,8 @@ const AdminCalendar = () => {
                         cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
                         day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
                       }}
-                      modifiers={getDateStyles()}
-                      modifiersClassNames={getDateStyles()}
+                      modifiers={getDateModifiers()}
+                      modifiersClassNames={getModifiersClassNames()}
                     />
                   </TabsContent>
 
@@ -662,8 +666,8 @@ const AdminCalendar = () => {
                         cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
                         day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
                       }}
-                      modifiers={getDateStyles()}
-                      modifiersClassNames={getDateStyles()}
+                      modifiers={getDateModifiers()}
+                      modifiersClassNames={getModifiersClassNames()}
                     />
                   </TabsContent>
 
@@ -690,8 +694,8 @@ const AdminCalendar = () => {
                         cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
                         day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
                       }}
-                      modifiers={getDateStyles()}
-                      modifiersClassNames={getDateStyles()}
+                      modifiers={getDateModifiers()}
+                      modifiersClassNames={getModifiersClassNames()}
                     />
                   </TabsContent>
                 </div>
