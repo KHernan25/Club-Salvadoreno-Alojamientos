@@ -565,7 +565,7 @@ const AdminCalendar = () => {
     const filteredReservations = getFilteredReservations();
     const filteredBlocked = getFilteredBlockedDates();
 
-    // Fechas reservadas - separar las canceladas de las dem��s
+    // Fechas reservadas - separar las canceladas de las demás
     filteredReservations.forEach((reservation) => {
       const start = new Date(reservation.checkIn);
       const end = new Date(reservation.checkOut);
@@ -598,15 +598,15 @@ const AdminCalendar = () => {
   const getModifiersClassNames = () => {
     return {
       confirmed:
-        "bg-red-200 text-red-800 font-semibold border-red-300 border-2", // Rojo - confirmado
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2", // Rojo - confirmado (no disponible)
       pending:
         "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2", // Amarillo - en espera
-      cancelled:
-        "bg-gray-600 text-white font-semibold border-gray-700 border-2", // Gris oscuro - cancelado
       completed:
         "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2", // Gris claro - completado
       blocked:
         "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2", // Naranja - bloqueado
+      cancelledAvailable:
+        "bg-gradient-to-r from-gray-400 to-green-200 text-gray-800 font-medium border-2 border-green-300 hover:from-gray-300 hover:to-green-300", // Mitad cancelado, mitad disponible
     };
   };
 
