@@ -165,7 +165,43 @@ export const sendBackofficeNotification = async (
 };
 
 // Función para obtener notificaciones del backoffice (mock)
-let backofficeNotifications: any[] = [];
+let backofficeNotifications: any[] = [
+  {
+    id: "sample-1",
+    type: "contact",
+    message: "Nuevo mensaje de contacto recibido de Juan Pérez",
+    timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 minutos atrás
+    read: false,
+    priority: "medium",
+    userData: { email: "juan.perez@email.com" },
+  },
+  {
+    id: "sample-2",
+    type: "reservation",
+    message: "Nueva reserva creada para Casa Premium en Comalapa",
+    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15 minutos atrás
+    read: false,
+    priority: "high",
+    userData: { accommodationId: "comalapa-casa-1" },
+  },
+  {
+    id: "sample-3",
+    type: "user",
+    message: "Nuevo usuario registrado: Mar��a García",
+    timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString(), // 1 hora atrás
+    read: true,
+    priority: "medium",
+    userData: { email: "maria.garcia@email.com" },
+  },
+  {
+    id: "sample-4",
+    type: "system",
+    message: "Actualización de precios completada para temporada alta",
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 horas atrás
+    read: true,
+    priority: "low",
+  },
+];
 
 export const getBackofficeNotifications = () => {
   return backofficeNotifications;

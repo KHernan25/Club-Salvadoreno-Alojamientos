@@ -251,6 +251,56 @@ export const apiLogout = async (): Promise<void> => {
   clearAuthToken();
 };
 
+export const apiRegister = async (userData: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phone?: string;
+}): Promise<ApiResponse<{ user: User; token: string }>> => {
+  return apiRequest("/auth/register", {
+    method: "POST",
+    body: JSON.stringify(userData),
+  });
+};
+
+export const apiGetCurrentUser = async (): Promise<ApiResponse<User>> => {
+  return apiRequest("/auth/me");
+};
+
+export const apiRefreshToken = async (): Promise<
+  ApiResponse<{ token: string }>
+> => {
+  return apiRequest("/auth/refresh", {
+    method: "POST",
+  });
+};
+
+export const apiForgotPassword = async (
+  email: string,
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest("/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+};
+
+export const apiResetPassword = async (
+  token: string,
+  newPassword: string,
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest("/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ token, newPassword }),
+  });
+};
+
+export const apiValidateToken = async (): Promise<
+  ApiResponse<{ valid: boolean; user?: User }>
+> => {
+  return apiRequest("/auth/validate-token");
+};
+
 // User management functions
 export const apiGetUsers = async (): Promise<User[]> => {
   try {
@@ -299,9 +349,23 @@ export const apiUpdateUser = async (
   return result.success;
 };
 
+export const apiGetUserById = async (
+  userId: string,
+): Promise<ApiResponse<User>> => {
+  return apiRequest(`/users/${userId}`);
+};
+
+export const apiDeleteUser = async (
+  userId: string,
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest(`/users/${userId}`, {
+    method: "DELETE",
+  });
+};
+
 export const apiGetUserStats = async (): Promise<UserStats> => {
   try {
-    const result = await apiRequest<UserStats>("/users/stats");
+    const result = await apiRequest<UserStats>("/users/stats/summary");
     if (result.success && result.data) {
       return result.data;
     }
@@ -421,6 +485,28 @@ const getMockAccommodations = (): Accommodation[] => {
       pricing: { weekday: 140, weekend: 280, holiday: 350 },
     },
   ];
+};
+
+export const apiGetAccommodationById = async (
+  accommodationId: string,
+): Promise<ApiResponse<Accommodation>> => {
+  return apiRequest(`/accommodations/${accommodationId}`);
+};
+
+export const apiGetAccommodationsByLocation = async (
+  location: string,
+): Promise<ApiResponse<Accommodation[]>> => {
+  return apiRequest(`/accommodations/location/${location}`);
+};
+
+export const apiCheckAccommodationAvailability = async (
+  accommodationId: string,
+  checkIn: string,
+  checkOut: string,
+): Promise<ApiResponse<{ available: boolean; message?: string }>> => {
+  return apiRequest(
+    `/accommodations/search/availability?accommodationId=${accommodationId}&checkIn=${checkIn}&checkOut=${checkOut}`,
+  );
 };
 
 export const apiUpdateAccommodation = async (
@@ -571,6 +657,12 @@ export const apiCreateReservation = async (
   return result.success;
 };
 
+export const apiGetReservationById = async (
+  reservationId: string,
+): Promise<ApiResponse<Reservation>> => {
+  return apiRequest(`/reservations/${reservationId}`);
+};
+
 export const apiUpdateReservation = async (
   reservationId: string,
   reservationData: Partial<Reservation>,
@@ -611,17 +703,77 @@ export const apiGetReservationStats = async (): Promise<ReservationStats> => {
 };
 
 // Pricing functions
+export const apiGetPricingRates = async (): Promise<ApiResponse<any>> => {
+  return apiRequest("/pricing/rates");
+};
+
+export const apiCalculatePricing = async (
+  accommodationId: string,
+  checkIn: string,
+  checkOut: string,
+  guests?: number,
+): Promise<
+  ApiResponse<{
+    basePrice: number;
+    totalPrice: number;
+    nights: number;
+    breakdown: any[];
+    taxes: number;
+    fees: number;
+  }>
+> => {
+  return apiRequest("/pricing/calculate", {
+    method: "POST",
+    body: JSON.stringify({
+      accommodationId,
+      checkIn,
+      checkOut,
+      guests,
+    }),
+  });
+};
+
+export const apiGetDayTypes = async (): Promise<ApiResponse<any>> => {
+  return apiRequest("/pricing/day-types");
+};
+
+export const apiGetAccommodationPricing = async (
+  accommodationId: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest(`/pricing/accommodation/${accommodationId}`);
+};
+
+export const apiComparePricing = async (
+  accommodationIds: string[],
+  checkIn: string,
+  checkOut: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest(
+    `/pricing/compare?ids=${accommodationIds.join(",")}&checkIn=${checkIn}&checkOut=${checkOut}`,
+  );
+};
+
+export const apiGetLowestPrices = async (
+  location?: string,
+  maxPrice?: number,
+): Promise<ApiResponse<any>> => {
+  const params = new URLSearchParams();
+  if (location) params.append("location", location);
+  if (maxPrice) params.append("maxPrice", maxPrice.toString());
+
+  return apiRequest(`/pricing/lowest?${params.toString()}`);
+};
+
+// Legacy function for backward compatibility
 export const apiGetPricing = async (
   accommodationType: string,
   dateRange: string[],
 ): Promise<any> => {
-  const result = await apiRequest(`/pricing/calculate`, {
-    method: "POST",
-    body: JSON.stringify({
-      accommodationType,
-      dates: dateRange,
-    }),
-  });
+  const result = await apiCalculatePricing(
+    accommodationType,
+    dateRange[0],
+    dateRange[1],
+  );
   return result.data;
 };
 
@@ -629,11 +781,77 @@ export const apiGetPricing = async (
 export const apiSendContactMessage = async (
   messageData: any,
 ): Promise<boolean> => {
-  const result = await apiRequest("/contact", {
+  const result = await apiRequest("/contact/message", {
     method: "POST",
     body: JSON.stringify(messageData),
   });
   return result.success;
+};
+
+export const apiGetContactMessages = async (
+  page: number = 1,
+  limit: number = 10,
+  status?: string,
+  department?: string,
+  priority?: string,
+): Promise<
+  ApiResponse<{
+    messages: any[];
+    pagination: any;
+    stats: any;
+  }>
+> => {
+  const params = new URLSearchParams();
+  params.append("page", page.toString());
+  params.append("limit", limit.toString());
+  if (status) params.append("status", status);
+  if (department) params.append("department", department);
+  if (priority) params.append("priority", priority);
+
+  return apiRequest(`/contact/messages?${params.toString()}`);
+};
+
+export const apiGetContactMessageById = async (
+  messageId: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest(`/contact/messages/${messageId}`);
+};
+
+export const apiUpdateContactMessage = async (
+  messageId: string,
+  updateData: {
+    status?: "new" | "read" | "replied" | "closed";
+    priority?: "low" | "medium" | "high";
+    department?: "general" | "reservations" | "support" | "complaints";
+    notes?: string;
+  },
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest(`/contact/messages/${messageId}`, {
+    method: "PUT",
+    body: JSON.stringify(updateData),
+  });
+};
+
+export const apiGetContactStats = async (): Promise<ApiResponse<any>> => {
+  return apiRequest("/contact/stats");
+};
+
+export const apiSendTestEmail = async (
+  email: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest("/contact/email-test", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+};
+
+export const apiSendTestSMS = async (
+  phone: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest("/contact/sms-test", {
+    method: "POST",
+    body: JSON.stringify({ phone }),
+  });
 };
 
 // Registration Requests functions
@@ -695,26 +913,65 @@ export const apiRejectRegistrationRequest = async (
   return result.success;
 };
 
+// Notifications API
+export const apiGetNotifications = async (): Promise<
+  ApiResponse<{
+    notifications: any[];
+    unreadCount: number;
+    total: number;
+  }>
+> => {
+  return apiRequest("/api/notifications");
+};
+
+export const apiMarkNotificationAsRead = async (
+  notificationId: string,
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest(`/api/notifications/${notificationId}/read`, {
+    method: "PATCH",
+  });
+};
+
+export const apiMarkAllNotificationsAsRead = async (): Promise<
+  ApiResponse<{ message: string }>
+> => {
+  return apiRequest("/api/notifications/mark-all-read", {
+    method: "POST",
+  });
+};
+
 // Export all API functions for easy import
 export const apiService = {
   // Auth
   login: apiLogin,
   logout: apiLogout,
+  register: apiRegister,
+  getCurrentUser: apiGetCurrentUser,
+  refreshToken: apiRefreshToken,
+  forgotPassword: apiForgotPassword,
+  resetPassword: apiResetPassword,
+  validateToken: apiValidateToken,
   isAvailable: isApiAvailable,
 
   // Users
   getUsers: apiGetUsers,
+  getUserById: apiGetUserById,
   activateUser: apiActivateUser,
   deactivateUser: apiDeactivateUser,
   updateUser: apiUpdateUser,
+  deleteUser: apiDeleteUser,
   getUserStats: apiGetUserStats,
 
   // Accommodations
   getAccommodations: apiGetAccommodations,
+  getAccommodationById: apiGetAccommodationById,
+  getAccommodationsByLocation: apiGetAccommodationsByLocation,
+  checkAccommodationAvailability: apiCheckAccommodationAvailability,
   updateAccommodation: apiUpdateAccommodation,
 
   // Reservations
   getReservations: apiGetReservations,
+  getReservationById: apiGetReservationById,
   createReservation: apiCreateReservation,
   updateReservation: apiUpdateReservation,
   cancelReservation: apiCancelReservation,
@@ -722,9 +979,26 @@ export const apiService = {
 
   // Pricing
   getPricing: apiGetPricing,
+  getPricingRates: apiGetPricingRates,
+  calculatePricing: apiCalculatePricing,
+  getDayTypes: apiGetDayTypes,
+  getAccommodationPricing: apiGetAccommodationPricing,
+  comparePricing: apiComparePricing,
+  getLowestPrices: apiGetLowestPrices,
 
   // Contact
   sendContactMessage: apiSendContactMessage,
+  getContactMessages: apiGetContactMessages,
+  getContactMessageById: apiGetContactMessageById,
+  updateContactMessage: apiUpdateContactMessage,
+  getContactStats: apiGetContactStats,
+  sendTestEmail: apiSendTestEmail,
+  sendTestSMS: apiSendTestSMS,
+
+  // Notifications
+  getNotifications: apiGetNotifications,
+  markNotificationAsRead: apiMarkNotificationAsRead,
+  markAllNotificationsAsRead: apiMarkAllNotificationsAsRead,
 
   // Registration Requests
   getRegistrationRequests: apiGetRegistrationRequests,

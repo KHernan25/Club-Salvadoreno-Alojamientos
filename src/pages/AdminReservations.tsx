@@ -96,7 +96,23 @@ const AdminReservations = () => {
     useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [newReservationForm, setNewReservationForm] = useState({
+  const [newReservationForm, setNewReservationForm] = useState<{
+    userId: string;
+    accommodationId: string;
+    checkIn: string;
+    checkOut: string;
+    guests: number;
+    specialRequests: string;
+    paymentMethod:
+      | "pay_later"
+      | "payment_link"
+      | "transfer"
+      | "credit"
+      | "card"
+      | "";
+    paymentHandledBy: string;
+    paymentDeadline: string;
+  }>({
     userId: "",
     accommodationId: "",
     checkIn: "",
@@ -355,7 +371,11 @@ const AdminReservations = () => {
 
   const handleCreateReservation = async () => {
     try {
-      await apiCreateReservation(newReservationForm);
+      const reservationData = {
+        ...newReservationForm,
+        paymentMethod: newReservationForm.paymentMethod || undefined,
+      };
+      await apiCreateReservation(reservationData);
       toast({
         title: "Reserva creada",
         description: "La reserva ha sido creada exitosamente.",

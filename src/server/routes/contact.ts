@@ -5,6 +5,7 @@ import {
   sendPasswordResetSMS,
   generateResetToken,
   generateSMSCode,
+  sendBackofficeNotification,
 } from "../../lib/contact-services";
 import { optionalAuth, AuthenticatedRequest } from "../middleware/auth";
 import { validateContact } from "../middleware/validators";
@@ -80,6 +81,20 @@ router.post(
     };
 
     contactMessages.push(contactMessage);
+
+    // Enviar notificación al backoffice
+    await sendBackofficeNotification({
+      type: "contact",
+      message: `Nuevo mensaje de contacto recibido de ${name} - ${subject}`,
+      timestamp: new Date().toISOString(),
+      userData: {
+        messageId: contactMessage.id,
+        email,
+        phone,
+        department,
+        priority,
+      },
+    });
 
     // En implementación real:
     // 1. Guardar en BD
