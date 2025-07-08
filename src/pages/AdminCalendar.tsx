@@ -827,20 +827,14 @@ const AdminCalendar = () => {
                         <SelectItem value="all">
                           Todos los alojamientos
                         </SelectItem>
-                        {(accommodations || [])
-                          .filter(
-                            (acc) =>
-                              selectedLocation === "all" ||
-                              acc.location === selectedLocation,
-                          )
-                          .map((accommodation) => (
-                            <SelectItem
-                              key={accommodation.id}
-                              value={accommodation.id}
-                            >
-                              {accommodation.name}
-                            </SelectItem>
-                          ))}
+                        {(accommodations || []).map((accommodation) => (
+                          <SelectItem
+                            key={accommodation.id}
+                            value={accommodation.id}
+                          >
+                            {accommodation.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
