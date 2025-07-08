@@ -703,17 +703,77 @@ export const apiGetReservationStats = async (): Promise<ReservationStats> => {
 };
 
 // Pricing functions
+export const apiGetPricingRates = async (): Promise<ApiResponse<any>> => {
+  return apiRequest("/pricing/rates");
+};
+
+export const apiCalculatePricing = async (
+  accommodationId: string,
+  checkIn: string,
+  checkOut: string,
+  guests?: number,
+): Promise<
+  ApiResponse<{
+    basePrice: number;
+    totalPrice: number;
+    nights: number;
+    breakdown: any[];
+    taxes: number;
+    fees: number;
+  }>
+> => {
+  return apiRequest("/pricing/calculate", {
+    method: "POST",
+    body: JSON.stringify({
+      accommodationId,
+      checkIn,
+      checkOut,
+      guests,
+    }),
+  });
+};
+
+export const apiGetDayTypes = async (): Promise<ApiResponse<any>> => {
+  return apiRequest("/pricing/day-types");
+};
+
+export const apiGetAccommodationPricing = async (
+  accommodationId: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest(`/pricing/accommodation/${accommodationId}`);
+};
+
+export const apiComparePricing = async (
+  accommodationIds: string[],
+  checkIn: string,
+  checkOut: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest(
+    `/pricing/compare?ids=${accommodationIds.join(",")}&checkIn=${checkIn}&checkOut=${checkOut}`,
+  );
+};
+
+export const apiGetLowestPrices = async (
+  location?: string,
+  maxPrice?: number,
+): Promise<ApiResponse<any>> => {
+  const params = new URLSearchParams();
+  if (location) params.append("location", location);
+  if (maxPrice) params.append("maxPrice", maxPrice.toString());
+
+  return apiRequest(`/pricing/lowest?${params.toString()}`);
+};
+
+// Legacy function for backward compatibility
 export const apiGetPricing = async (
   accommodationType: string,
   dateRange: string[],
 ): Promise<any> => {
-  const result = await apiRequest(`/pricing/calculate`, {
-    method: "POST",
-    body: JSON.stringify({
-      accommodationType,
-      dates: dateRange,
-    }),
-  });
+  const result = await apiCalculatePricing(
+    accommodationType,
+    dateRange[0],
+    dateRange[1],
+  );
   return result.data;
 };
 
