@@ -463,20 +463,6 @@ const AdminProfile = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="bio">Biografía</Label>
-                    <Textarea
-                      id="bio"
-                      placeholder="Cuéntanos un poco sobre ti..."
-                      value={profileData.bio}
-                      onChange={(e) =>
-                        setProfileData({ ...profileData, bio: e.target.value })
-                      }
-                      disabled={!isEditing}
-                      rows={3}
-                    />
-                  </div>
-
                   {isEditing && (
                     <div className="flex space-x-2 pt-4">
                       <Button onClick={handleSave}>
