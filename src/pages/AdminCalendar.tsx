@@ -900,26 +900,59 @@ const AdminCalendar = () => {
                 </div>
               </Tabs>
 
-              <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-white border border-gray-300 rounded"></div>
-                  <span>Disponible</span>
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                <h4 className="text-sm font-medium text-gray-900 mb-3">
+                  Leyenda del Calendario
+                </h4>
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 text-xs">
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-white border-2 border-gray-300 rounded"></div>
+                    <span className="text-gray-700 font-medium">
+                      Disponible
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-yellow-200 border-2 border-yellow-300 rounded"></div>
+                    <span className="text-yellow-800 font-medium">
+                      En espera
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-red-200 border-2 border-red-300 rounded"></div>
+                    <span className="text-red-800 font-medium">Confirmado</span>
+                  </div>
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-gray-300 border-2 border-gray-400 rounded"></div>
+                    <span className="text-gray-600 font-medium">
+                      Completado
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-gray-600 border-2 border-gray-700 rounded"></div>
+                    <span className="text-gray-800 font-medium">Cancelado</span>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-yellow-200 rounded"></div>
-                  <span>En espera</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-red-200 rounded"></div>
-                  <span>Reservado</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-gray-600 rounded"></div>
-                  <span>Cancelado</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-gray-300 rounded"></div>
-                  <span>Bloqueado</span>
+                <div className="mt-3 pt-3 border-t border-gray-200">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 text-xs">
+                    <div className="flex items-center space-x-2 p-2 bg-orange-50 rounded border border-orange-200">
+                      <div className="w-4 h-4 bg-orange-200 border-2 border-orange-300 rounded"></div>
+                      <span className="text-orange-800 font-medium">
+                        Mantenimiento programado
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded border border-blue-200">
+                      <div className="w-4 h-4 bg-blue-200 border-2 border-blue-300 rounded"></div>
+                      <span className="text-blue-800 font-medium">
+                        Evento especial
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2 p-2 bg-purple-50 rounded border border-purple-200">
+                      <div className="w-4 h-4 bg-purple-200 border-2 border-purple-300 rounded"></div>
+                      <span className="text-purple-800 font-medium">
+                        Otro bloqueo
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>
