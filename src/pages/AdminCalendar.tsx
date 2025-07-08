@@ -139,108 +139,287 @@ const AdminCalendar = () => {
     { id: "corinto-casa-1", name: "Casa del Lago", location: "corinto" },
   ];
 
-  const getMockReservations = (): CalendarReservation[] => [
-    {
-      id: "res-1",
-      accommodationId: "1A",
-      checkIn: "2024-01-15",
-      checkOut: "2024-01-17",
-      status: "confirmed",
-      guestName: "María González",
-      guestEmail: "maria.gonzalez@email.com",
-      guestPhone: "+503 7777-8888",
-      totalAmount: 120.0,
-      guests: 2,
-      notes: "Llegada tardía confirmada",
-    },
-    {
-      id: "res-2",
-      accommodationId: "suite1",
-      checkIn: "2024-01-20",
-      checkOut: "2024-01-22",
-      status: "pending",
-      guestName: "Carlos Rodríguez",
-      guestEmail: "carlos.rodriguez@email.com",
-      guestPhone: "+503 6666-7777",
-      totalAmount: 180.0,
-      guests: 3,
-      notes: "Esperando confirmación de pago",
-    },
-    {
-      id: "res-3",
-      accommodationId: "casa1",
-      checkIn: "2024-01-25",
-      checkOut: "2024-01-28",
-      status: "cancelled",
-      guestName: "Ana Martínez",
-      guestEmail: "ana.martinez@email.com",
-      guestPhone: "+503 5555-6666",
-      totalAmount: 240.0,
-      guests: 4,
-      notes: "Cancelado por motivos personales",
-    },
-    {
-      id: "res-4",
-      accommodationId: "corinto-casa-1",
-      checkIn: "2024-01-18",
-      checkOut: "2024-01-21",
-      status: "confirmed",
-      guestName: "Luis García",
-      guestEmail: "luis.garcia@email.com",
-      guestPhone: "+503 4444-5555",
-      totalAmount: 210.0,
-      guests: 5,
-      notes: "Familia con niños pequeños",
-    },
-    {
-      id: "res-5",
-      accommodationId: "corinto1A",
-      checkIn: "2024-01-22",
-      checkOut: "2024-01-24",
-      status: "pending",
-      guestName: "Carmen López",
-      guestEmail: "carmen.lopez@email.com",
-      guestPhone: "+503 3333-4444",
-      totalAmount: 140.0,
-      guests: 2,
-      notes: "Primera reserva",
-    },
-  ];
+  const getMockReservations = (): CalendarReservation[] => {
+    const today = new Date();
+    const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
-  const getMockBlockedDates = (): BlockedDate[] => [
-    {
-      id: "block-1",
-      accommodationId: "1A",
-      startDate: "2024-01-20",
-      endDate: "2024-01-22",
-      reason: "Mantenimiento de aire acondicionado",
-      type: "maintenance",
-      notes: "Reemplazo de unidad",
-      createdBy: "admin",
-      createdAt: "2024-01-15T10:00:00Z",
-    },
-    {
-      id: "block-2",
-      accommodationId: "suite-1",
-      startDate: "2024-01-25",
-      endDate: "2024-01-25",
-      reason: "Evento privado del club",
-      type: "personal",
-      createdBy: "admin",
-      createdAt: "2024-01-10T15:30:00Z",
-    },
-    {
-      id: "block-3",
-      accommodationId: "casa-1",
-      startDate: "2024-02-01",
-      endDate: "2024-02-03",
-      reason: "Renovación de pintura",
-      type: "maintenance",
-      notes: "Pintura exterior e interior",
-      createdBy: "staff",
-      createdAt: "2024-01-18T09:00:00Z",
-    },
-  ];
+    return [
+      // Confirmadas - próximos días
+      {
+        id: "res-1",
+        accommodationId: "1A",
+        checkIn: formatDate(
+          new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 4 * 24 * 60 * 60 * 1000),
+        ),
+        status: "confirmed",
+        guestName: "María González",
+        guestEmail: "maria.gonzalez@email.com",
+        guestPhone: "+503 7777-8888",
+        totalAmount: 120.0,
+        guests: 2,
+        notes: "Llegada tardía confirmada",
+      },
+      {
+        id: "res-2",
+        accommodationId: "2A",
+        checkIn: formatDate(
+          new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 8 * 24 * 60 * 60 * 1000),
+        ),
+        status: "confirmed",
+        guestName: "Roberto Silva",
+        guestEmail: "roberto.silva@email.com",
+        guestPhone: "+503 8888-9999",
+        totalAmount: 180.0,
+        guests: 3,
+        notes: "Cliente VIP - preparar amenities especiales",
+      },
+
+      // Pendientes - próxima semana
+      {
+        id: "res-3",
+        accommodationId: "suite1",
+        checkIn: formatDate(
+          new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 10 * 24 * 60 * 60 * 1000),
+        ),
+        status: "pending",
+        guestName: "Carlos Rodríguez",
+        guestEmail: "carlos.rodriguez@email.com",
+        guestPhone: "+503 6666-7777",
+        totalAmount: 240.0,
+        guests: 3,
+        notes: "Esperando confirmación de pago",
+      },
+      {
+        id: "res-4",
+        accommodationId: "corinto1A",
+        checkIn: formatDate(
+          new Date(today.getTime() + 12 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000),
+        ),
+        status: "pending",
+        guestName: "Carmen López",
+        guestEmail: "carmen.lopez@email.com",
+        guestPhone: "+503 3333-4444",
+        totalAmount: 140.0,
+        guests: 2,
+        notes: "Primera reserva - requiere verificación adicional",
+      },
+
+      // Canceladas - mes actual
+      {
+        id: "res-5",
+        accommodationId: "casa1",
+        checkIn: formatDate(
+          new Date(today.getTime() + 15 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 18 * 24 * 60 * 60 * 1000),
+        ),
+        status: "cancelled",
+        guestName: "Ana Martínez",
+        guestEmail: "ana.martinez@email.com",
+        guestPhone: "+503 5555-6666",
+        totalAmount: 240.0,
+        guests: 4,
+        notes: "Cancelado por motivos personales - reembolso procesado",
+      },
+
+      // Completadas - fechas pasadas
+      {
+        id: "res-6",
+        accommodationId: "corinto-casa-1",
+        checkIn: formatDate(
+          new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
+        ),
+        status: "completed",
+        guestName: "Luis García",
+        guestEmail: "luis.garcia@email.com",
+        guestPhone: "+503 4444-5555",
+        totalAmount: 210.0,
+        guests: 5,
+        notes: "Estadía completada - excelente review recibida",
+      },
+      {
+        id: "res-7",
+        accommodationId: "1A",
+        checkIn: formatDate(
+          new Date(today.getTime() - 10 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
+        ),
+        status: "completed",
+        guestName: "Sandra Morales",
+        guestEmail: "sandra.morales@email.com",
+        guestPhone: "+503 2222-3333",
+        totalAmount: 160.0,
+        guests: 2,
+        notes: "Estadía completada - cliente frecuente",
+      },
+
+      // Más reservas confirmadas
+      {
+        id: "res-8",
+        accommodationId: "suite1",
+        checkIn: formatDate(
+          new Date(today.getTime() + 20 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 25 * 24 * 60 * 60 * 1000),
+        ),
+        status: "confirmed",
+        guestName: "Diego Ramírez",
+        guestEmail: "diego.ramirez@email.com",
+        guestPhone: "+503 9999-0000",
+        totalAmount: 300.0,
+        guests: 4,
+        notes: "Grupo corporativo - facturación empresarial requerida",
+      },
+      {
+        id: "res-9",
+        accommodationId: "corinto-casa-1",
+        checkIn: formatDate(
+          new Date(today.getTime() + 28 * 24 * 60 * 60 * 1000),
+        ),
+        checkOut: formatDate(
+          new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000),
+        ),
+        status: "confirmed",
+        guestName: "Patricia Herrera",
+        guestEmail: "patricia.herrera@email.com",
+        guestPhone: "+503 1111-2222",
+        totalAmount: 150.0,
+        guests: 3,
+        notes: "Celebración de aniversario - preparar decoración especial",
+      },
+    ];
+  };
+
+  const getMockBlockedDates = (): BlockedDate[] => {
+    const today = new Date();
+    const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
+    return [
+      // Mantenimientos programados
+      {
+        id: "block-1",
+        accommodationId: "1A",
+        startDate: formatDate(
+          new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 8 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Mantenimiento de aire acondicionado",
+        type: "maintenance",
+        notes: "Reemplazo de unidad - técnico programado 9:00 AM",
+        createdBy: "admin",
+        createdAt: new Date(
+          today.getTime() - 2 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+      {
+        id: "block-2",
+        accommodationId: "2A",
+        startDate: formatDate(
+          new Date(today.getTime() + 13 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 13 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Inspección de fontanería",
+        type: "maintenance",
+        notes: "Revisión rutinaria de tuberías y grifos",
+        createdBy: "admin",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: "block-3",
+        accommodationId: "casa1",
+        startDate: formatDate(
+          new Date(today.getTime() + 21 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 23 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Renovación de pintura exterior",
+        type: "maintenance",
+        notes: "Pintura exterior completa - contratista externo",
+        createdBy: "staff",
+        createdAt: new Date(
+          today.getTime() - 5 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+
+      // Eventos especiales del club
+      {
+        id: "block-4",
+        accommodationId: "suite1",
+        startDate: formatDate(
+          new Date(today.getTime() + 16 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 16 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Evento privado del club - Gala Anual",
+        type: "personal",
+        notes: "Reservado para miembros VIP del club",
+        createdBy: "admin",
+        createdAt: new Date(
+          today.getTime() - 7 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+      {
+        id: "block-5",
+        accommodationId: "corinto-casa-1",
+        startDate: formatDate(
+          new Date(today.getTime() + 35 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 37 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Sesión fotográfica promocional",
+        type: "personal",
+        notes: "Equipo de marketing - actualización de fotos para web",
+        createdBy: "mercadeo",
+        createdAt: new Date().toISOString(),
+      },
+
+      // Otros bloqueos
+      {
+        id: "block-6",
+        accommodationId: "corinto1A",
+        startDate: formatDate(
+          new Date(today.getTime() + 40 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 42 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Fumigación programada",
+        type: "other",
+        notes:
+          "Tratamiento preventivo contra plagas - requiere ventilación 24h",
+        createdBy: "admin",
+        createdAt: new Date(
+          today.getTime() - 1 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+    ];
+  };
 
   const handleCreateBlock = async () => {
     try {
@@ -380,25 +559,30 @@ const AdminCalendar = () => {
       cancelled: [],
       completed: [],
       blocked: [],
+      cancelledAvailable: [], // Nuevo estado: cancelada pero disponible
     };
 
     const filteredReservations = getFilteredReservations();
     const filteredBlocked = getFilteredBlockedDates();
 
-    // Fechas reservadas
+    // Fechas reservadas - separar las canceladas de las demás
     filteredReservations.forEach((reservation) => {
       const start = new Date(reservation.checkIn);
       const end = new Date(reservation.checkOut);
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         const date = new Date(d);
-        if (reservation.status in modifiers) {
+
+        if (reservation.status === "cancelled") {
+          // Las canceladas van a un modificador especial que las marca como disponibles
+          modifiers.cancelledAvailable.push(date);
+        } else if (reservation.status in modifiers) {
           modifiers[reservation.status].push(date);
         }
       }
     });
 
-    // Fechas bloqueadas
+    // Fechas bloqueadas por mantenimiento/eventos
     filteredBlocked.forEach((block) => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
@@ -413,21 +597,26 @@ const AdminCalendar = () => {
 
   const getModifiersClassNames = () => {
     return {
-      confirmed: "bg-red-200 text-red-800 font-semibold", // Rojo - reservado
-      pending: "bg-yellow-200 text-yellow-800 font-semibold", // Amarillo - en espera
-      cancelled: "bg-gray-600 text-white", // Gris oscuro - cancelado
-      completed: "bg-gray-300 text-gray-600", // Gris claro - completado
-      blocked: "bg-gray-300 text-gray-600", // Gris claro - bloqueado
+      confirmed:
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2", // Rojo - confirmado (no disponible)
+      pending:
+        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2", // Amarillo - en espera
+      completed:
+        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2", // Gris claro - completado
+      blocked:
+        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2", // Naranja - bloqueado
+      cancelledAvailable:
+        "bg-white text-gray-700 font-medium border-2 border-dashed border-gray-400 hover:bg-gray-50", // Blanco con borde punteado para mostrar historial
     };
   };
 
-  // Fechas deshabilitadas (solo para interacción)
+  // Fechas completamente deshabilitadas (no se puede reservar)
   const getDisabledDates = () => {
     const disabled: Date[] = [];
     const filteredReservations = getFilteredReservations();
     const filteredBlocked = getFilteredBlockedDates();
 
-    // Agregar fechas de reservas confirmadas
+    // Solo agregar fechas de reservas CONFIRMADAS (no canceladas ni pendientes)
     filteredReservations
       .filter((res) => res.status === "confirmed")
       .forEach((reservation) => {
@@ -439,7 +628,7 @@ const AdminCalendar = () => {
         }
       });
 
-    // Agregar fechas bloqueadas
+    // Agregar fechas bloqueadas por mantenimiento o eventos
     filteredBlocked.forEach((block) => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
@@ -450,6 +639,26 @@ const AdminCalendar = () => {
     });
 
     return disabled;
+  };
+
+  // Fechas con reservas canceladas (disponibles para nueva reserva pero con historial)
+  const getCancelledAvailableDates = () => {
+    const cancelledAvailable: Date[] = [];
+    const filteredReservations = getFilteredReservations();
+
+    // Buscar fechas con reservas canceladas que están disponibles
+    filteredReservations
+      .filter((res) => res.status === "cancelled")
+      .forEach((reservation) => {
+        const start = new Date(reservation.checkIn);
+        const end = new Date(reservation.checkOut);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          cancelledAvailable.push(new Date(d));
+        }
+      });
+
+    return cancelledAvailable;
   };
 
   const handleDateClick = (date: Date) => {
@@ -559,9 +768,9 @@ const AdminCalendar = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 2xl:grid-cols-4 gap-6">
           {/* Calendar View */}
-          <Card className="xl:col-span-3">
+          <Card className="2xl:col-span-3">
             <CardHeader>
               <CardTitle>Calendario de Reservas</CardTitle>
               <CardDescription>
@@ -625,18 +834,19 @@ const AdminCalendar = () => {
                       onSelect={setSelectedDates}
                       onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
-                      className="rounded-md border w-full"
+                      className="rounded-md border w-full max-w-none"
                       classNames={{
                         months:
-                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
-                        month: "space-y-4 w-full",
+                          "flex flex-col lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0 w-full justify-center",
+                        month:
+                          "space-y-4 w-full max-w-md mx-auto lg:max-w-none",
                         table: "w-full border-collapse space-y-1",
                         head_row: "flex w-full",
                         head_cell:
-                          "text-muted-foreground rounded-md w-16 h-12 font-normal text-sm flex items-center justify-center",
+                          "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                        day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
+                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
                       modifiersClassNames={getModifiersClassNames()}
@@ -644,8 +854,17 @@ const AdminCalendar = () => {
                   </TabsContent>
 
                   <TabsContent value="el-sunzal" className="mt-0">
-                    <div className="mb-2 text-sm text-blue-600 font-medium">
-                      Mostrando reservas para El Sunzal
+                    <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm text-blue-800 font-medium">
+                          Mostrando reservas para El Sunzal
+                        </span>
+                      </div>
+                      <p className="text-xs text-blue-600 mt-1">
+                        Apartamentos, Suites y Casas disponibles en esta
+                        ubicación
+                      </p>
                     </div>
                     <Calendar
                       mode="multiple"
@@ -653,18 +872,19 @@ const AdminCalendar = () => {
                       onSelect={setSelectedDates}
                       onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
-                      className="rounded-md border w-full"
+                      className="rounded-md border w-full max-w-none"
                       classNames={{
                         months:
-                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
-                        month: "space-y-4 w-full",
+                          "flex flex-col lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0 w-full justify-center",
+                        month:
+                          "space-y-4 w-full max-w-md mx-auto lg:max-w-none",
                         table: "w-full border-collapse space-y-1",
                         head_row: "flex w-full",
                         head_cell:
-                          "text-muted-foreground rounded-md w-16 h-12 font-normal text-sm flex items-center justify-center",
+                          "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                        day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
+                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
                       modifiersClassNames={getModifiersClassNames()}
@@ -672,8 +892,16 @@ const AdminCalendar = () => {
                   </TabsContent>
 
                   <TabsContent value="corinto" className="mt-0">
-                    <div className="mb-2 text-sm text-blue-600 font-medium">
-                      Mostrando reservas para Corinto
+                    <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4 text-green-600" />
+                        <span className="text-sm text-green-800 font-medium">
+                          Mostrando reservas para Corinto
+                        </span>
+                      </div>
+                      <p className="text-xs text-green-600 mt-1">
+                        Apartamentos y Casas frente al lago en Corinto
+                      </p>
                     </div>
                     <Calendar
                       mode="multiple"
@@ -681,18 +909,19 @@ const AdminCalendar = () => {
                       onSelect={setSelectedDates}
                       onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
-                      className="rounded-md border w-full"
+                      className="rounded-md border w-full max-w-none"
                       classNames={{
                         months:
-                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
-                        month: "space-y-4 w-full",
+                          "flex flex-col lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0 w-full justify-center",
+                        month:
+                          "space-y-4 w-full max-w-md mx-auto lg:max-w-none",
                         table: "w-full border-collapse space-y-1",
                         head_row: "flex w-full",
                         head_cell:
-                          "text-muted-foreground rounded-md w-16 h-12 font-normal text-sm flex items-center justify-center",
+                          "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-16 w-16 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                        day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors",
+                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
                       modifiersClassNames={getModifiersClassNames()}
@@ -701,26 +930,75 @@ const AdminCalendar = () => {
                 </div>
               </Tabs>
 
-              <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-white border border-gray-300 rounded"></div>
-                  <span>Disponible</span>
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                <h4 className="text-sm font-medium text-gray-900 mb-3">
+                  Leyenda del Calendario
+                </h4>
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 text-xs">
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-white border-2 border-gray-300 rounded"></div>
+                    <span className="text-gray-700 font-medium">
+                      Disponible
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-yellow-200 border-2 border-yellow-300 rounded"></div>
+                    <span className="text-yellow-800 font-medium">
+                      En espera
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-red-200 border-2 border-red-300 rounded"></div>
+                    <span className="text-red-800 font-medium">Reservado</span>
+                  </div>
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-gray-300 border-2 border-gray-400 rounded"></div>
+                    <span className="text-gray-600 font-medium">
+                      Completado
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 p-2 bg-white rounded border">
+                    <div className="w-4 h-4 bg-white border-2 border-dashed border-gray-400 rounded"></div>
+                    <span className="text-gray-800 font-medium">
+                      Disponible*
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-yellow-200 rounded"></div>
-                  <span>En espera</span>
+                <div className="mt-3 space-y-1 text-xs text-gray-600">
+                  <div>
+                    <span className="font-medium">
+                      *Disponible con historial:
+                    </span>{" "}
+                    Fecha que tuvo una reserva cancelada, ahora disponible para
+                    reservar.
+                  </div>
+                  <div className="p-2 bg-blue-50 border border-blue-200 rounded text-blue-700">
+                    <span className="font-medium">🛡️ Protección:</span> Solo las
+                    fechas rojas (reservadas) y naranjas (bloqueadas) no
+                    permiten nuevas reservas.
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-red-200 rounded"></div>
-                  <span>Reservado</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-gray-600 rounded"></div>
-                  <span>Cancelado</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-gray-300 rounded"></div>
-                  <span>Bloqueado</span>
+                <div className="mt-3 pt-3 border-t border-gray-200">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 text-xs">
+                    <div className="flex items-center space-x-2 p-2 bg-orange-50 rounded border border-orange-200">
+                      <div className="w-4 h-4 bg-orange-200 border-2 border-orange-300 rounded"></div>
+                      <span className="text-orange-800 font-medium">
+                        Mantenimiento programado
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded border border-blue-200">
+                      <div className="w-4 h-4 bg-blue-200 border-2 border-blue-300 rounded"></div>
+                      <span className="text-blue-800 font-medium">
+                        Evento especial
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2 p-2 bg-purple-50 rounded border border-purple-200">
+                      <div className="w-4 h-4 bg-purple-200 border-2 border-purple-300 rounded"></div>
+                      <span className="text-purple-800 font-medium">
+                        Otro bloqueo
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>
