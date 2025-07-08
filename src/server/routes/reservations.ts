@@ -16,8 +16,53 @@ import {
   validateReservationDates,
 } from "../../lib/pricing-system";
 import { asyncHandler, createError } from "../middleware/errorHandler";
+import ReservationValidationService from "../../lib/reservation-validation-service";
 
 const router = Router();
+
+// Simulación de BD de usuarios en memoria
+const mockUsers = [
+  {
+    id: "7",
+    type: "miembro",
+    name: "Carlos Rivera",
+    email: "carlos@example.com",
+    isActive: true,
+    familyMembers: ["spouse-1", "child-1", "child-2"],
+  },
+  {
+    id: "8",
+    type: "viuda",
+    name: "Ana María Torres",
+    email: "ana@example.com",
+    isActive: true,
+    familyMembers: ["child-3"],
+  },
+  {
+    id: "9",
+    type: "director_jcd",
+    name: "José Pérez",
+    email: "jose@example.com",
+    isActive: true,
+    familyMembers: ["spouse-2"],
+  },
+  {
+    id: "10",
+    type: "visitador_especial",
+    name: "María González",
+    email: "maria@example.com",
+    isActive: true,
+    familyMembers: [],
+  },
+  {
+    id: "11",
+    type: "visitador_juvenil",
+    name: "Pedro Junior",
+    email: "pedro@example.com",
+    isActive: true,
+    familyMembers: [],
+  },
+];
 
 // Simulación de BD de reservas en memoria
 const reservations: any[] = [
@@ -101,7 +146,13 @@ const reservations: any[] = [
 interface Reservation {
   id: string;
   userId: string;
+  userType: string;
   accommodationId: string;
+  accommodationType:
+    | "corinto_casas"
+    | "el_sunzal_casas"
+    | "apartamentos"
+    | "suites";
   checkIn: string;
   checkOut: string;
   guests: number;
@@ -111,9 +162,11 @@ interface Reservation {
   priceBreakdown: any;
   createdAt: Date;
   updatedAt: Date;
-  paymentStatus: "pending" | "paid" | "refunded";
+  paymentStatus: "pending" | "paid" | "refunded" | "exempt";
   paymentMethod?: "pay_later" | "payment_link" | "transfer" | "credit" | "card";
   confirmationCode: string;
+  emergencyModification?: boolean;
+  emergencyProof?: boolean;
 }
 
 // POST /api/reservations - Crear nueva reserva
@@ -126,36 +179,49 @@ router.post(
       req.body;
     const user = req.user;
 
-    // Validar fechas
-    const dateValidation = validateReservationDates(checkIn, checkOut);
-    if (!dateValidation.valid) {
-      throw createError(dateValidation.error!, 400);
+    // Inicializar servicio de validación con datos actuales
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    // Determinar tipo de alojamiento basado en el ID
+    let accommodationType:
+      | "corinto_casas"
+      | "el_sunzal_casas"
+      | "apartamentos"
+      | "suites";
+
+    if (accommodationId.includes("corinto-casa")) {
+      accommodationType = "corinto_casas";
+    } else if (accommodationId.includes("casa")) {
+      accommodationType = "el_sunzal_casas";
+    } else if (accommodationId.includes("suite")) {
+      accommodationType = "suites";
+    } else {
+      accommodationType = "apartamentos";
+    }
+
+    // Validar reglas de negocio
+    const businessRulesValidation = validationService.validateNewReservation(
+      user.id,
+      accommodationId,
+      accommodationType,
+      checkIn,
+      checkOut,
+    );
+
+    if (!businessRulesValidation.valid) {
+      throw createError(
+        `Violación de reglas de negocio: ${businessRulesValidation.errors.join(", ")}`,
+        400,
+      );
     }
 
     // Verificar que el alojamiento existe y obtener precios
     const rates = getAccommodationRates(accommodationId);
     if (!rates) {
       throw createError("Alojamiento no encontrado", 404);
-    }
-
-    // Verificar disponibilidad (simulado)
-    const existingReservation = reservations.find(
-      (r) =>
-        r.accommodationId === accommodationId &&
-        r.status !== "cancelled" &&
-        ((new Date(checkIn) >= new Date(r.checkIn) &&
-          new Date(checkIn) < new Date(r.checkOut)) ||
-          (new Date(checkOut) > new Date(r.checkIn) &&
-            new Date(checkOut) <= new Date(r.checkOut)) ||
-          (new Date(checkIn) <= new Date(r.checkIn) &&
-            new Date(checkOut) >= new Date(r.checkOut))),
-    );
-
-    if (existingReservation) {
-      throw createError(
-        "El alojamiento no está disponible en las fechas seleccionadas",
-        409,
-      );
     }
 
     // Calcular precio total
@@ -167,11 +233,26 @@ router.post(
       rates,
     );
 
+    // Calcular información de pago según reglas de negocio
+    const paymentInfo = validationService.calculatePaymentInfo(
+      user.id,
+      checkIn,
+      priceCalculation.totalPrice,
+    );
+
+    // Obtener información de horarios
+    const checkInOutTimes = validationService.getCheckInOutInfo(
+      user.id,
+      accommodationType,
+    );
+
     // Crear reserva
     const reservation: Reservation = {
       id: uuidv4(),
       userId: user.id,
+      userType: mockUsers.find((u) => u.id === user.id)?.type || "miembro",
       accommodationId,
+      accommodationType,
       checkIn,
       checkOut,
       guests,
@@ -181,7 +262,7 @@ router.post(
       priceBreakdown: priceCalculation,
       createdAt: new Date(),
       updatedAt: new Date(),
-      paymentStatus: "pending",
+      paymentStatus: paymentInfo.paymentRequired ? "pending" : "exempt",
       confirmationCode: Math.random()
         .toString(36)
         .substring(2, 8)
@@ -190,25 +271,37 @@ router.post(
 
     reservations.push(reservation);
 
+    // Preparar respuesta con información de reglas de negocio
+    const responseData = {
+      reservation: {
+        id: reservation.id,
+        accommodationId: reservation.accommodationId,
+        accommodationType: reservation.accommodationType,
+        checkIn: reservation.checkIn,
+        checkOut: reservation.checkOut,
+        guests: reservation.guests,
+        specialRequests: reservation.specialRequests,
+        status: reservation.status,
+        totalPrice: reservation.totalPrice,
+        priceBreakdown: reservation.priceBreakdown,
+        confirmationCode: reservation.confirmationCode,
+        paymentStatus: reservation.paymentStatus,
+        createdAt: reservation.createdAt,
+      },
+      businessRules: {
+        paymentRequired: paymentInfo.paymentRequired,
+        paymentTimeLimit: paymentInfo.timeLimit,
+        exemptReason: paymentInfo.exemptReason,
+        checkInTime: checkInOutTimes.checkIn,
+        checkOutTime: checkInOutTimes.checkOut,
+        warnings: businessRulesValidation.warnings,
+      },
+    };
+
     res.status(201).json({
       success: true,
       message: "Reserva creada exitosamente",
-      data: {
-        reservation: {
-          id: reservation.id,
-          accommodationId: reservation.accommodationId,
-          checkIn: reservation.checkIn,
-          checkOut: reservation.checkOut,
-          guests: reservation.guests,
-          specialRequests: reservation.specialRequests,
-          status: reservation.status,
-          totalPrice: reservation.totalPrice,
-          priceBreakdown: reservation.priceBreakdown,
-          confirmationCode: reservation.confirmationCode,
-          paymentStatus: reservation.paymentStatus,
-          createdAt: reservation.createdAt,
-        },
-      },
+      data: responseData,
     });
   }),
 );
@@ -540,6 +633,133 @@ router.get(
           monthly: {
             reservations: monthlyReservations,
           },
+        },
+      },
+    });
+  }),
+);
+
+// GET /api/reservations/business-rules - Obtener reglas de negocio del usuario
+router.get(
+  "/business-rules",
+  authenticateToken,
+  asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const user = req.user;
+
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    const businessRulesSummary = validationService.getUserBusinessRulesSummary(
+      user.id,
+    );
+
+    res.json({
+      success: true,
+      data: {
+        businessRules: businessRulesSummary,
+      },
+    });
+  }),
+);
+
+// POST /api/reservations/:id/validate-modification - Validar modificación de reserva
+router.post(
+  "/:id/validate-modification",
+  authenticateToken,
+  validateIdParam,
+  asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const { id } = req.params;
+    const { newCheckIn, newCheckOut, isEmergency, emergencyProof } = req.body;
+
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    const validation = validationService.validateReservationModification(
+      id,
+      newCheckIn,
+      newCheckOut,
+      {
+        isEmergencyModification: isEmergency,
+        emergencyProof: emergencyProof,
+      },
+    );
+
+    res.json({
+      success: true,
+      data: {
+        validation: {
+          valid: validation.valid,
+          errors: validation.errors,
+          warnings: validation.warnings,
+        },
+      },
+    });
+  }),
+);
+
+// POST /api/reservations/:id/validate-cancellation - Validar cancelación de reserva
+router.post(
+  "/:id/validate-cancellation",
+  authenticateToken,
+  validateIdParam,
+  asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    const validation = validationService.validateReservationCancellation(
+      id,
+      reason,
+    );
+
+    res.json({
+      success: true,
+      data: {
+        validation: {
+          valid: validation.valid,
+          errors: validation.errors,
+          warnings: validation.warnings,
+        },
+      },
+    });
+  }),
+);
+
+// POST /api/reservations/:id/validate-key-handover - Validar entrega de llaves
+router.post(
+  "/:id/validate-key-handover",
+  authenticateToken,
+  validateIdParam,
+  asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const { id } = req.params;
+    const { recipientId, authorizationLetter } = req.body;
+
+    const validationService = new ReservationValidationService(
+      reservations,
+      mockUsers,
+    );
+
+    const validation = validationService.validateKeyHandover(
+      id,
+      recipientId,
+      authorizationLetter,
+    );
+
+    res.json({
+      success: true,
+      data: {
+        validation: {
+          valid: validation.valid,
+          errors: validation.errors,
+          warnings: validation.warnings,
         },
       },
     });

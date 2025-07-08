@@ -38,6 +38,8 @@ import {
   Clock,
 } from "lucide-react";
 import { PaymentOptionsModal } from "@/components/PaymentOptionsModal";
+import BusinessRulesInfo from "@/components/BusinessRulesInfo";
+import ReservationValidationFeedback from "@/components/ReservationValidationFeedback";
 import Navbar from "@/components/Navbar";
 
 const Reservations = () => {
@@ -100,6 +102,12 @@ const Reservations = () => {
   const [isCalculating, setIsCalculating] = useState(false);
   const [dateError, setDateError] = useState("");
 
+  // State for business rules validation
+  const [validationErrors, setValidationErrors] = useState([]);
+  const [isValidating, setIsValidating] = useState(false);
+  const [businessRulesInfo, setBusinessRulesInfo] = useState(null);
+  const [paymentInfo, setPaymentInfo] = useState(null);
+
   // Generate unique reservation code
   const generateReservationCode = () => {
     const timestamp = Date.now();
@@ -141,8 +149,91 @@ const Reservations = () => {
   useEffect(() => {
     if (selectedDates.checkIn && selectedDates.checkOut) {
       calculatePrices();
+      validateBusinessRulesLocal();
     }
   }, [selectedDates.checkIn, selectedDates.checkOut, accommodationId]);
+
+  // Validate business rules locally (mock implementation)
+  const validateBusinessRulesLocal = () => {
+    setIsValidating(true);
+    setValidationErrors([]);
+
+    // Simulate validation delay
+    setTimeout(() => {
+      const errors = [];
+      const warnings = [];
+      const info = [];
+
+      // Mock user type (in real implementation, this would come from auth context)
+      const mockUserType = "miembro";
+
+      // Check for weekend restrictions for certain user types
+      const checkInDate = new Date(selectedDates.checkIn);
+      const isWeekend =
+        checkInDate.getDay() === 0 || checkInDate.getDay() === 6;
+
+      if (mockUserType === "viuda" && isWeekend) {
+        const today = new Date();
+        const daysInAdvance = Math.ceil(
+          (checkInDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+        );
+
+        if (daysInAdvance < 3) {
+          errors.push({
+            type: "error",
+            message:
+              "Las viudas requieren al menos 3 días de anticipación para reservas de fin de semana",
+            code: "WEEKEND_ADVANCE_NOTICE",
+          });
+        } else {
+          warnings.push({
+            type: "warning",
+            message:
+              "Reserva de fin de semana autorizada por anticipación suficiente",
+            code: "WEEKEND_AUTHORIZED",
+          });
+        }
+      }
+
+      // Check maximum stay duration
+      const checkOutDate = new Date(selectedDates.checkOut);
+      const diffTime = checkOutDate.getTime() - checkInDate.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays > 7) {
+        errors.push({
+          type: "error",
+          message: "La estadía no puede exceder 7 días consecutivos",
+          code: "MAX_STAY_EXCEEDED",
+        });
+      }
+
+      // Set business rules info
+      setBusinessRulesInfo({
+        userType: mockUserType,
+        checkInTime: "15:00",
+        checkOutTime: "12:00",
+      });
+
+      // Set payment info
+      setPaymentInfo({
+        paymentRequired: true,
+        timeLimit: 72,
+        exemptReason: null,
+      });
+
+      if (errors.length === 0) {
+        info.push({
+          type: "info",
+          message: "Todas las reglas de negocio se han validado correctamente",
+          code: "VALIDATION_SUCCESS",
+        });
+      }
+
+      setValidationErrors([...errors, ...warnings, ...info]);
+      setIsValidating(false);
+    }, 1000);
+  };
 
   const calculatePrices = () => {
     const validation = validateReservationDates(
@@ -349,12 +440,24 @@ const Reservations = () => {
               asegura tu lugar con solo unos clics.
             </p>
             <p className="text-xl">Tu descanso comienza aquí.</p>
-            <Button
-              className="mt-8 bg-blue-700 hover:bg-blue-600 text-white px-8 py-3"
-              onClick={() => navigate("/mis-reservas")}
-            >
-              Ver tus reservas
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
+              <Button
+                className="bg-blue-700 hover:bg-blue-600 text-white px-8 py-3"
+                onClick={() => navigate("/mis-reservas")}
+              >
+                Ver tus reservas
+              </Button>
+              <BusinessRulesInfo
+                trigger={
+                  <Button
+                    variant="outline"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20 px-8 py-3"
+                  >
+                    📋 Reglas de Reserva
+                  </Button>
+                }
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -501,6 +604,16 @@ const Reservations = () => {
                       <p className="text-sm text-red-600">{dateError}</p>
                     </div>
                   )}
+
+                  {/* Business Rules Validation Feedback */}
+                  <div className="mt-4">
+                    <ReservationValidationFeedback
+                      validationErrors={validationErrors}
+                      paymentInfo={paymentInfo}
+                      businessRulesInfo={businessRulesInfo}
+                      isValidating={isValidating}
+                    />
+                  </div>
 
                   <Button
                     className="w-full mt-6 bg-blue-900 hover:bg-blue-800 py-3"
