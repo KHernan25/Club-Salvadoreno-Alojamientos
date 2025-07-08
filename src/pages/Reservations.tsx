@@ -102,6 +102,12 @@ const Reservations = () => {
   const [isCalculating, setIsCalculating] = useState(false);
   const [dateError, setDateError] = useState("");
 
+  // State for business rules validation
+  const [validationErrors, setValidationErrors] = useState([]);
+  const [isValidating, setIsValidating] = useState(false);
+  const [businessRulesInfo, setBusinessRulesInfo] = useState(null);
+  const [paymentInfo, setPaymentInfo] = useState(null);
+
   // Generate unique reservation code
   const generateReservationCode = () => {
     const timestamp = Date.now();
