@@ -101,7 +101,6 @@ const AdminProfile = () => {
       lastName: currentUser.lastName,
       email: currentUser.email,
       phone: currentUser.phone,
-      bio: "",
       timezone: "America/El_Salvador",
       language: "es",
     });
