@@ -251,6 +251,56 @@ export const apiLogout = async (): Promise<void> => {
   clearAuthToken();
 };
 
+export const apiRegister = async (userData: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phone?: string;
+}): Promise<ApiResponse<{ user: User; token: string }>> => {
+  return apiRequest("/auth/register", {
+    method: "POST",
+    body: JSON.stringify(userData),
+  });
+};
+
+export const apiGetCurrentUser = async (): Promise<ApiResponse<User>> => {
+  return apiRequest("/auth/me");
+};
+
+export const apiRefreshToken = async (): Promise<
+  ApiResponse<{ token: string }>
+> => {
+  return apiRequest("/auth/refresh", {
+    method: "POST",
+  });
+};
+
+export const apiForgotPassword = async (
+  email: string,
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest("/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+};
+
+export const apiResetPassword = async (
+  token: string,
+  newPassword: string,
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest("/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ token, newPassword }),
+  });
+};
+
+export const apiValidateToken = async (): Promise<
+  ApiResponse<{ valid: boolean; user?: User }>
+> => {
+  return apiRequest("/auth/validate-token");
+};
+
 // User management functions
 export const apiGetUsers = async (): Promise<User[]> => {
   try {
