@@ -487,6 +487,28 @@ const getMockAccommodations = (): Accommodation[] => {
   ];
 };
 
+export const apiGetAccommodationById = async (
+  accommodationId: string,
+): Promise<ApiResponse<Accommodation>> => {
+  return apiRequest(`/accommodations/${accommodationId}`);
+};
+
+export const apiGetAccommodationsByLocation = async (
+  location: string,
+): Promise<ApiResponse<Accommodation[]>> => {
+  return apiRequest(`/accommodations/location/${location}`);
+};
+
+export const apiCheckAccommodationAvailability = async (
+  accommodationId: string,
+  checkIn: string,
+  checkOut: string,
+): Promise<ApiResponse<{ available: boolean; message?: string }>> => {
+  return apiRequest(
+    `/accommodations/search/availability?accommodationId=${accommodationId}&checkIn=${checkIn}&checkOut=${checkOut}`,
+  );
+};
+
 export const apiUpdateAccommodation = async (
   accommodationId: string,
   accommodationData: Partial<Accommodation>,
