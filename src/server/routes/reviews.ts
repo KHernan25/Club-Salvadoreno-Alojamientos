@@ -341,6 +341,36 @@ router.post(
       throw createError("Ya has reseñado este alojamiento", 409);
     }
 
+    // Moderate content before creating review
+    const moderationResult = moderateReviewContent({
+      title,
+      comment,
+      pros,
+      cons,
+    });
+
+    // Determine initial status based on moderation
+    let initialStatus: "pending" | "approved" | "rejected" = "pending";
+    if (moderationResult.autoApprove && moderationResult.isAppropriate) {
+      initialStatus = "approved";
+    } else if (
+      !moderationResult.isAppropriate ||
+      moderationResult.confidence < 0.3
+    ) {
+      initialStatus = "rejected";
+    }
+
+    // If content is rejected, return error with suggestions
+    if (initialStatus === "rejected") {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Tu reseña no cumple con nuestras políticas de contenido. Por favor, revísala y vuelve a intentar.",
+        moderationIssues: moderationResult.issues,
+        suggestions: moderationResult.suggestions,
+      });
+    }
+
     // Create review
     const review: Review = {
       id: uuidv4(),
@@ -355,7 +385,11 @@ router.post(
       pros,
       cons,
       wouldRecommend,
-      status: "pending", // Reviews start as pending for moderation
+      status: initialStatus,
+      moderationReason:
+        initialStatus === "pending"
+          ? "Reseña en revisión para aprobación"
+          : undefined,
       isVerifiedStay: true, // Set based on reservation verification
       stayDate: "2024-01-01", // Get from reservation data
       createdAt: new Date(),
