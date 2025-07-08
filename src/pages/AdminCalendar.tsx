@@ -81,7 +81,7 @@ const AdminCalendar = () => {
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("all");
   const [selectedLocation, setSelectedLocation] = useState<string>("all");
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] =
     useState<CalendarReservation | null>(null);
@@ -105,6 +105,14 @@ const AdminCalendar = () => {
 
   useEffect(() => {
     loadData();
+  }, []);
+
+  // Force refresh data on component mount to ensure latest mock data
+  useEffect(() => {
+    console.log("Loading accommodations:", getMockAccommodations());
+    console.log("Loading reservations:", getMockReservations());
+    setAccommodations(getMockAccommodations());
+    setReservations(getMockReservations());
   }, []);
 
   const loadData = async () => {
@@ -131,12 +139,28 @@ const AdminCalendar = () => {
   };
 
   const getMockAccommodations = () => [
+    // El Sunzal - Apartamentos
     { id: "1A", name: "Apartamento 1A", location: "el-sunzal" },
     { id: "2A", name: "Apartamento 2A", location: "el-sunzal" },
+    { id: "3A", name: "Apartamento 3A", location: "el-sunzal" },
+    { id: "4A", name: "Apartamento 4A", location: "el-sunzal" },
+    // El Sunzal - Suites
     { id: "suite1", name: "Suite 1", location: "el-sunzal" },
+    { id: "suite2", name: "Suite 2", location: "el-sunzal" },
+    { id: "suite3", name: "Suite Premium", location: "el-sunzal" },
+    // El Sunzal - Casas
     { id: "casa1", name: "Casa Surf Paradise", location: "el-sunzal" },
-    { id: "corinto1A", name: "Apartamento Corinto 1A", location: "corinto" },
+    { id: "casa2", name: "Casa Oceanview", location: "el-sunzal" },
+    { id: "casa3", name: "Casa Beachfront", location: "el-sunzal" },
+    // Corinto - Solo Casas
     { id: "corinto-casa-1", name: "Casa del Lago", location: "corinto" },
+    { id: "corinto-casa-2", name: "Casa Vista al Lago", location: "corinto" },
+    {
+      id: "corinto-casa-3",
+      name: "Casa Familiar Corinto",
+      location: "corinto",
+    },
+    { id: "corinto-casa-4", name: "Casa Ribereña", location: "corinto" },
   ];
 
   const getMockReservations = (): CalendarReservation[] => {
@@ -200,7 +224,7 @@ const AdminCalendar = () => {
       },
       {
         id: "res-4",
-        accommodationId: "corinto1A",
+        accommodationId: "corinto-casa-1",
         checkIn: formatDate(
           new Date(today.getTime() + 12 * 24 * 60 * 60 * 1000),
         ),
@@ -402,7 +426,7 @@ const AdminCalendar = () => {
       // Otros bloqueos
       {
         id: "block-6",
-        accommodationId: "corinto1A",
+        accommodationId: "corinto-casa-1",
         startDate: formatDate(
           new Date(today.getTime() + 40 * 24 * 60 * 60 * 1000),
         ),
@@ -559,25 +583,55 @@ const AdminCalendar = () => {
       cancelled: [],
       completed: [],
       blocked: [],
+      // Location-specific modifiers
+      confirmedSunzal: [],
+      confirmedCorinto: [],
+      pendingSunzal: [],
+      pendingCorinto: [],
+      completedSunzal: [],
+      completedCorinto: [],
+      blockedSunzal: [],
+      blockedCorinto: [],
       cancelledAvailable: [], // Nuevo estado: cancelada pero disponible
     };
 
     const filteredReservations = getFilteredReservations();
     const filteredBlocked = getFilteredBlockedDates();
 
-    // Fechas reservadas - separar las canceladas de las demás
+    // Fechas reservadas - separar por estado y ubicación
     filteredReservations.forEach((reservation) => {
       const start = new Date(reservation.checkIn);
       const end = new Date(reservation.checkOut);
+
+      // Obtener la ubicación del alojamiento
+      const accommodation = accommodations.find(
+        (acc) => acc.id === reservation.accommodationId,
+      );
+      const location = accommodation?.location || "";
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         const date = new Date(d);
 
         if (reservation.status === "cancelled") {
-          // Las canceladas van a un modificador especial que las marca como disponibles
           modifiers.cancelledAvailable.push(date);
-        } else if (reservation.status in modifiers) {
-          modifiers[reservation.status].push(date);
+        } else {
+          // Solo usar modificadores específicos de ubicación en vista "all"
+          if (selectedLocation === "all" && location) {
+            const locationKey = `${reservation.status}${location === "el-sunzal" ? "Sunzal" : "Corinto"}`;
+            if (locationKey in modifiers) {
+              modifiers[locationKey].push(date);
+            } else {
+              // Fallback al modificador base
+              if (reservation.status in modifiers) {
+                modifiers[reservation.status].push(date);
+              }
+            }
+          } else {
+            // En vistas específicas de ubicación, usar modificadores base
+            if (reservation.status in modifiers) {
+              modifiers[reservation.status].push(date);
+            }
+          }
         }
       }
     });
@@ -587,8 +641,26 @@ const AdminCalendar = () => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
 
+      // Obtener la ubicación del alojamiento bloqueado
+      const accommodation = accommodations.find(
+        (acc) => acc.id === block.accommodationId,
+      );
+      const location = accommodation?.location || "";
+
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        modifiers.blocked.push(new Date(d));
+        const date = new Date(d);
+
+        // Solo usar modificadores específicos de ubicación en vista "all"
+        if (selectedLocation === "all" && location) {
+          const locationKey = `blocked${location === "el-sunzal" ? "Sunzal" : "Corinto"}`;
+          if (locationKey in modifiers) {
+            modifiers[locationKey].push(date);
+          } else {
+            modifiers.blocked.push(date);
+          }
+        } else {
+          modifiers.blocked.push(date);
+        }
       }
     });
 
@@ -597,14 +669,38 @@ const AdminCalendar = () => {
 
   const getModifiersClassNames = () => {
     return {
+      // Reservas confirmadas
+      confirmedSunzal:
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2 border-l-4 border-l-blue-500", // Rojo con borde azul - El Sunzal
+      confirmedCorinto:
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2 border-l-4 border-l-green-500", // Rojo con borde verde - Corinto
       confirmed:
-        "bg-red-200 text-red-800 font-semibold border-red-300 border-2", // Rojo - confirmado (no disponible)
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2", // Rojo - confirmado (fallback)
+
+      // Reservas pendientes
+      pendingSunzal:
+        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2 border-l-4 border-l-blue-500", // Amarillo con borde azul - El Sunzal
+      pendingCorinto:
+        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2 border-l-4 border-l-green-500", // Amarillo con borde verde - Corinto
       pending:
-        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2", // Amarillo - en espera
+        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2", // Amarillo - en espera (fallback)
+
+      // Reservas completadas
+      completedSunzal:
+        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2 border-l-4 border-l-blue-500", // Gris con borde azul - El Sunzal
+      completedCorinto:
+        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2 border-l-4 border-l-green-500", // Gris con borde verde - Corinto
       completed:
-        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2", // Gris claro - completado
+        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2", // Gris claro - completado (fallback)
+
+      // Fechas bloqueadas
+      blockedSunzal:
+        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2 border-l-4 border-l-blue-500", // Naranja con borde azul - El Sunzal
+      blockedCorinto:
+        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2 border-l-4 border-l-green-500", // Naranja con borde verde - Corinto
       blocked:
-        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2", // Naranja - bloqueado
+        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2", // Naranja - bloqueado (fallback)
+
       cancelledAvailable:
         "bg-white text-gray-700 font-medium border-2 border-dashed border-gray-400 hover:bg-gray-50", // Blanco con borde punteado para mostrar historial
     };
@@ -665,18 +761,51 @@ const AdminCalendar = () => {
     const clickedDateStr = date.toISOString().split("T")[0];
     const filteredReservations = getFilteredReservations();
 
+    console.log("Clicked date:", clickedDateStr);
+    console.log("Available reservations:", filteredReservations);
+
     // Buscar reserva para esta fecha
     const reservation = filteredReservations.find((res) => {
-      const startDate = new Date(res.checkIn);
-      const endDate = new Date(res.checkOut);
-      const clickedDate = new Date(clickedDateStr);
+      const startDateStr = res.checkIn;
+      const endDateStr = res.checkOut;
 
-      return clickedDate >= startDate && clickedDate <= endDate;
+      console.log(
+        `Checking reservation ${res.id}: ${startDateStr} to ${endDateStr}`,
+      );
+      console.log(
+        `Date comparison: ${clickedDateStr} >= ${startDateStr} && ${clickedDateStr} <= ${endDateStr}`,
+      );
+
+      // Incluir tanto el día de check-in como el día de check-out
+      const isInRange =
+        clickedDateStr >= startDateStr && clickedDateStr <= endDateStr;
+      console.log(`Is in range: ${isInRange}`);
+
+      return isInRange;
     });
+
+    console.log("Found reservation:", reservation);
 
     if (reservation) {
       setSelectedReservation(reservation);
       setIsReservationDialogOpen(true);
+    } else {
+      // También buscar en fechas bloqueadas para mostrar información
+      const filteredBlocked = getFilteredBlockedDates();
+      const blockedDate = filteredBlocked.find((blocked) => {
+        const startDateStr = blocked.startDate;
+        const endDateStr = blocked.endDate;
+        return clickedDateStr >= startDateStr && clickedDateStr <= endDateStr;
+      });
+
+      if (blockedDate) {
+        console.log("Fecha bloqueada:", blockedDate);
+      } else {
+        console.log(
+          "No reservation or blocked date found for:",
+          clickedDateStr,
+        );
+      }
     }
   };
 
@@ -809,29 +938,21 @@ const AdminCalendar = () => {
                         <SelectItem value="all">
                           Todos los alojamientos
                         </SelectItem>
-                        {(accommodations || [])
-                          .filter(
-                            (acc) =>
-                              selectedLocation === "all" ||
-                              acc.location === selectedLocation,
-                          )
-                          .map((accommodation) => (
-                            <SelectItem
-                              key={accommodation.id}
-                              value={accommodation.id}
-                            >
-                              {accommodation.name}
-                            </SelectItem>
-                          ))}
+                        {(accommodations || []).map((accommodation) => (
+                          <SelectItem
+                            key={accommodation.id}
+                            value={accommodation.id}
+                          >
+                            {accommodation.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
 
                   <TabsContent value="all" className="mt-0">
                     <Calendar
-                      mode="multiple"
-                      selected={selectedDates}
-                      onSelect={setSelectedDates}
+                      mode="default"
                       onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
                       className="rounded-md border w-full max-w-none"
@@ -845,7 +966,7 @@ const AdminCalendar = () => {
                         head_cell:
                           "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
                         day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
@@ -867,9 +988,7 @@ const AdminCalendar = () => {
                       </p>
                     </div>
                     <Calendar
-                      mode="multiple"
-                      selected={selectedDates}
-                      onSelect={setSelectedDates}
+                      mode="default"
                       onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
                       className="rounded-md border w-full max-w-none"
@@ -883,7 +1002,7 @@ const AdminCalendar = () => {
                         head_cell:
                           "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
                         day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
@@ -900,13 +1019,11 @@ const AdminCalendar = () => {
                         </span>
                       </div>
                       <p className="text-xs text-green-600 mt-1">
-                        Apartamentos y Casas frente al lago en Corinto
+                        Casas frente al lago en Corinto
                       </p>
                     </div>
                     <Calendar
-                      mode="multiple"
-                      selected={selectedDates}
-                      onSelect={setSelectedDates}
+                      mode="default"
                       onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
                       className="rounded-md border w-full max-w-none"
@@ -920,7 +1037,7 @@ const AdminCalendar = () => {
                         head_cell:
                           "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
                         day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
@@ -976,6 +1093,15 @@ const AdminCalendar = () => {
                     <span className="font-medium">🛡️ Protección:</span> Solo las
                     fechas rojas (reservadas) y naranjas (bloqueadas) no
                     permiten nuevas reservas.
+                  </div>
+                  <div className="p-2 bg-purple-50 border border-purple-200 rounded text-purple-700">
+                    <span className="font-medium">📍 Ubicaciones:</span> En la
+                    vista "Todas las ubicaciones", las fechas tienen un borde
+                    lateral que indica la ubicación:
+                    <span className="inline-block w-3 h-3 bg-gray-200 border-l-2 border-l-blue-500 mx-1"></span>
+                    Azul para El Sunzal y
+                    <span className="inline-block w-3 h-3 bg-gray-200 border-l-2 border-l-green-500 mx-1"></span>
+                    Verde para Corinto.
                   </div>
                 </div>
                 <div className="mt-3 pt-3 border-t border-gray-200">
@@ -1174,7 +1300,7 @@ const AdminCalendar = () => {
             <DialogHeader>
               <DialogTitle>Detalles de la Reserva</DialogTitle>
               <DialogDescription>
-                Información completa de la reserva seleccionada
+                Informaci��n completa de la reserva seleccionada
               </DialogDescription>
             </DialogHeader>
             {selectedReservation && (
