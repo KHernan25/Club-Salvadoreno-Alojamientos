@@ -107,6 +107,14 @@ const AdminCalendar = () => {
     loadData();
   }, []);
 
+  // Force refresh data on component mount to ensure latest mock data
+  useEffect(() => {
+    console.log("Loading accommodations:", getMockAccommodations());
+    console.log("Loading reservations:", getMockReservations());
+    setAccommodations(getMockAccommodations());
+    setReservations(getMockReservations());
+  }, []);
+
   const loadData = async () => {
     try {
       setLoading(true);
