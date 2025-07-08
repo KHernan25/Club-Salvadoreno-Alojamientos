@@ -559,25 +559,30 @@ const AdminCalendar = () => {
       cancelled: [],
       completed: [],
       blocked: [],
+      cancelledAvailable: [], // Nuevo estado: cancelada pero disponible
     };
 
     const filteredReservations = getFilteredReservations();
     const filteredBlocked = getFilteredBlockedDates();
 
-    // Fechas reservadas
+    // Fechas reservadas - separar las canceladas de las dem��s
     filteredReservations.forEach((reservation) => {
       const start = new Date(reservation.checkIn);
       const end = new Date(reservation.checkOut);
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         const date = new Date(d);
-        if (reservation.status in modifiers) {
+
+        if (reservation.status === "cancelled") {
+          // Las canceladas van a un modificador especial que las marca como disponibles
+          modifiers.cancelledAvailable.push(date);
+        } else if (reservation.status in modifiers) {
           modifiers[reservation.status].push(date);
         }
       }
     });
 
-    // Fechas bloqueadas
+    // Fechas bloqueadas por mantenimiento/eventos
     filteredBlocked.forEach((block) => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
