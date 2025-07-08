@@ -309,40 +309,117 @@ const AdminCalendar = () => {
     ];
   };
 
-  const getMockBlockedDates = (): BlockedDate[] => [
-    {
-      id: "block-1",
-      accommodationId: "1A",
-      startDate: "2024-01-20",
-      endDate: "2024-01-22",
-      reason: "Mantenimiento de aire acondicionado",
-      type: "maintenance",
-      notes: "Reemplazo de unidad",
-      createdBy: "admin",
-      createdAt: "2024-01-15T10:00:00Z",
-    },
-    {
-      id: "block-2",
-      accommodationId: "suite-1",
-      startDate: "2024-01-25",
-      endDate: "2024-01-25",
-      reason: "Evento privado del club",
-      type: "personal",
-      createdBy: "admin",
-      createdAt: "2024-01-10T15:30:00Z",
-    },
-    {
-      id: "block-3",
-      accommodationId: "casa-1",
-      startDate: "2024-02-01",
-      endDate: "2024-02-03",
-      reason: "Renovación de pintura",
-      type: "maintenance",
-      notes: "Pintura exterior e interior",
-      createdBy: "staff",
-      createdAt: "2024-01-18T09:00:00Z",
-    },
-  ];
+  const getMockBlockedDates = (): BlockedDate[] => {
+    const today = new Date();
+    const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
+    return [
+      // Mantenimientos programados
+      {
+        id: "block-1",
+        accommodationId: "1A",
+        startDate: formatDate(
+          new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 8 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Mantenimiento de aire acondicionado",
+        type: "maintenance",
+        notes: "Reemplazo de unidad - técnico programado 9:00 AM",
+        createdBy: "admin",
+        createdAt: new Date(
+          today.getTime() - 2 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+      {
+        id: "block-2",
+        accommodationId: "2A",
+        startDate: formatDate(
+          new Date(today.getTime() + 13 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 13 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Inspección de fontanería",
+        type: "maintenance",
+        notes: "Revisión rutinaria de tuberías y grifos",
+        createdBy: "admin",
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: "block-3",
+        accommodationId: "casa1",
+        startDate: formatDate(
+          new Date(today.getTime() + 21 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 23 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Renovación de pintura exterior",
+        type: "maintenance",
+        notes: "Pintura exterior completa - contratista externo",
+        createdBy: "staff",
+        createdAt: new Date(
+          today.getTime() - 5 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+
+      // Eventos especiales del club
+      {
+        id: "block-4",
+        accommodationId: "suite1",
+        startDate: formatDate(
+          new Date(today.getTime() + 16 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 16 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Evento privado del club - Gala Anual",
+        type: "personal",
+        notes: "Reservado para miembros VIP del club",
+        createdBy: "admin",
+        createdAt: new Date(
+          today.getTime() - 7 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+      {
+        id: "block-5",
+        accommodationId: "corinto-casa-1",
+        startDate: formatDate(
+          new Date(today.getTime() + 35 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 37 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Sesión fotográfica promocional",
+        type: "personal",
+        notes: "Equipo de marketing - actualización de fotos para web",
+        createdBy: "mercadeo",
+        createdAt: new Date().toISOString(),
+      },
+
+      // Otros bloqueos
+      {
+        id: "block-6",
+        accommodationId: "corinto1A",
+        startDate: formatDate(
+          new Date(today.getTime() + 40 * 24 * 60 * 60 * 1000),
+        ),
+        endDate: formatDate(
+          new Date(today.getTime() + 42 * 24 * 60 * 60 * 1000),
+        ),
+        reason: "Fumigación programada",
+        type: "other",
+        notes:
+          "Tratamiento preventivo contra plagas - requiere ventilación 24h",
+        createdBy: "admin",
+        createdAt: new Date(
+          today.getTime() - 1 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+    ];
+  };
 
   const handleCreateBlock = async () => {
     try {
