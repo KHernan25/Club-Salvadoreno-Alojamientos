@@ -732,6 +732,33 @@ export const apiService = {
   rejectRegistrationRequest: apiRejectRegistrationRequest,
 };
 
+// Notifications API
+export const apiGetNotifications = async (): Promise<
+  ApiResponse<{
+    notifications: any[];
+    unreadCount: number;
+    total: number;
+  }>
+> => {
+  return apiRequest("/api/notifications");
+};
+
+export const apiMarkNotificationAsRead = async (
+  notificationId: string,
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest(`/api/notifications/${notificationId}/read`, {
+    method: "PATCH",
+  });
+};
+
+export const apiMarkAllNotificationsAsRead = async (): Promise<
+  ApiResponse<{ message: string }>
+> => {
+  return apiRequest("/api/notifications/mark-all-read", {
+    method: "POST",
+  });
+};
+
 // Export interfaces
 export type { RegistrationRequest, Accommodation, Reservation, User };
 
