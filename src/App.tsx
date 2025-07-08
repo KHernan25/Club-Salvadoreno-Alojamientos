@@ -45,6 +45,7 @@ import AdminSettings from "./pages/AdminSettings";
 import AdminProfile from "./pages/AdminProfile";
 import AdminSiteContent from "./pages/AdminSiteContent";
 import AdminRegistrationRequests from "./pages/AdminRegistrationRequests";
+import AdminReviews from "./pages/AdminReviews";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import UserActivationDebug from "./pages/UserActivationDebug";
 
