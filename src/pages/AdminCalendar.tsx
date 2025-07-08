@@ -753,14 +753,30 @@ const AdminCalendar = () => {
     const clickedDateStr = date.toISOString().split("T")[0];
     const filteredReservations = getFilteredReservations();
 
+    console.log("Clicked date:", clickedDateStr);
+    console.log("Available reservations:", filteredReservations);
+
     // Buscar reserva para esta fecha
     const reservation = filteredReservations.find((res) => {
       const startDateStr = res.checkIn;
       const endDateStr = res.checkOut;
 
+      console.log(
+        `Checking reservation ${res.id}: ${startDateStr} to ${endDateStr}`,
+      );
+      console.log(
+        `Date comparison: ${clickedDateStr} >= ${startDateStr} && ${clickedDateStr} <= ${endDateStr}`,
+      );
+
       // Incluir tanto el día de check-in como el día de check-out
-      return clickedDateStr >= startDateStr && clickedDateStr <= endDateStr;
+      const isInRange =
+        clickedDateStr >= startDateStr && clickedDateStr <= endDateStr;
+      console.log(`Is in range: ${isInRange}`);
+
+      return isInRange;
     });
+
+    console.log("Found reservation:", reservation);
 
     if (reservation) {
       setSelectedReservation(reservation);
@@ -775,8 +791,12 @@ const AdminCalendar = () => {
       });
 
       if (blockedDate) {
-        // Mostrar información del bloqueo (puedes expandir esto según necesidades)
         console.log("Fecha bloqueada:", blockedDate);
+      } else {
+        console.log(
+          "No reservation or blocked date found for:",
+          clickedDateStr,
+        );
       }
     }
   };
