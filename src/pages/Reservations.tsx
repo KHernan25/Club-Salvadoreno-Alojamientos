@@ -605,6 +605,16 @@ const Reservations = () => {
                     </div>
                   )}
 
+                  {/* Business Rules Validation Feedback */}
+                  <div className="mt-4">
+                    <ReservationValidationFeedback
+                      validationErrors={validationErrors}
+                      paymentInfo={paymentInfo}
+                      businessRulesInfo={businessRulesInfo}
+                      isValidating={isValidating}
+                    />
+                  </div>
+
                   <Button
                     className="w-full mt-6 bg-blue-900 hover:bg-blue-800 py-3"
                     onClick={handleViewAvailability}
