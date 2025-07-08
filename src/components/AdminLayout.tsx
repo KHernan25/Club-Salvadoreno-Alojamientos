@@ -25,7 +25,6 @@ import {
   User,
   Shield,
   Home,
-  Bell,
   UserPlus,
   MapPin,
   Globe,
