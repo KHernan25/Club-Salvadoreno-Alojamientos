@@ -17,18 +17,31 @@ const NotFound = () => {
   return (
     <div className="min-h-screen relative">
       {/* Background with Club Salvadoreño styling */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-blue-800"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-blue-800" />
 
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
         <div className="text-center">
           {/* Logo */}
-          <div className="mb-8">
-            <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
-              <div className="text-white text-2xl font-bold">CS</div>
-            </div>
-            <h2 className="text-white text-2xl font-bold tracking-wider">
-              CLUB SALVADOREÑO
-            </h2>
+          <div className="text-center mb-8">
+            <img
+              src="/logo.png"
+              alt="Logo Club Salvadoreño"
+              className="max-w-[300px] mx-auto object-contain mb-6"
+              onError={(e) => {
+                console.error("Primary logo failed to load, trying fallback");
+                // Try fallback logo
+                const target = e.currentTarget as HTMLImageElement;
+                if (target.src.includes("logo.png")) {
+                  target.src = "/logo_azul.png";
+                } else if (target.src.includes("logo_azul.png")) {
+                  target.src = "/logo_menu.png";
+                } else {
+                  // All logos failed, hide the image
+                  target.style.display = "none";
+                }
+              }}
+              style={{ display: "block" }}
+            />
           </div>
 
           {/* 404 Content */}
@@ -62,7 +75,7 @@ const NotFound = () => {
           </div>
 
           <p className="text-blue-200 text-sm mt-6">
-            Si crees que esto es un error, contacta al soporte técnico.
+            Si crees que esto es un error, contacta a soporte técnico.
           </p>
         </div>
       </div>
