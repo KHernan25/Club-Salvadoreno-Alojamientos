@@ -934,7 +934,7 @@ const AdminCalendar = () => {
                 <h4 className="text-sm font-medium text-gray-900 mb-3">
                   Leyenda del Calendario
                 </h4>
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 text-xs">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 text-xs">
                   <div className="flex items-center space-x-2 p-2 bg-white rounded border">
                     <div className="w-4 h-4 bg-white border-2 border-gray-300 rounded"></div>
                     <span className="text-gray-700 font-medium">
@@ -949,9 +949,7 @@ const AdminCalendar = () => {
                   </div>
                   <div className="flex items-center space-x-2 p-2 bg-white rounded border">
                     <div className="w-4 h-4 bg-red-200 border-2 border-red-300 rounded"></div>
-                    <span className="text-red-800 font-medium">
-                      No disponible
-                    </span>
+                    <span className="text-red-800 font-medium">Reservado</span>
                   </div>
                   <div className="flex items-center space-x-2 p-2 bg-white rounded border">
                     <div className="w-4 h-4 bg-gray-300 border-2 border-gray-400 rounded"></div>
@@ -960,24 +958,23 @@ const AdminCalendar = () => {
                     </span>
                   </div>
                   <div className="flex items-center space-x-2 p-2 bg-white rounded border">
-                    <div className="w-4 h-4 bg-gradient-to-r from-gray-400 to-green-200 border-2 border-green-300 rounded"></div>
+                    <div className="w-4 h-4 bg-white border-2 border-dashed border-gray-400 rounded"></div>
                     <span className="text-gray-800 font-medium">
                       Disponible*
                     </span>
                   </div>
-                  <div className="col-span-1 lg:col-span-3 xl:col-span-1"></div>
                 </div>
                 <div className="mt-3 space-y-1 text-xs text-gray-600">
                   <div>
-                    <span className="font-medium">*Disponible:</span> Fecha con
-                    reserva cancelada previamente, ahora disponible para nueva
-                    reserva.
+                    <span className="font-medium">
+                      *Disponible con historial:
+                    </span>{" "}
+                    Fecha que tuvo una reserva cancelada, ahora disponible para
+                    reservar.
                   </div>
                   <div className="p-2 bg-blue-50 border border-blue-200 rounded text-blue-700">
-                    <span className="font-medium">
-                      🛡️ Protección contra dobles reservas:
-                    </span>{" "}
-                    Las fechas confirmadas (rojas) y bloqueadas (naranjas) no
+                    <span className="font-medium">🛡️ Protección:</span> Solo las
+                    fechas rojas (reservadas) y naranjas (bloqueadas) no
                     permiten nuevas reservas.
                   </div>
                 </div>
