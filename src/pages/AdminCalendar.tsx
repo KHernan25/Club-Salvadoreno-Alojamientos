@@ -602,14 +602,38 @@ const AdminCalendar = () => {
 
   const getModifiersClassNames = () => {
     return {
+      // Reservas confirmadas
+      confirmedSunzal:
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2 border-l-4 border-l-blue-500", // Rojo con borde azul - El Sunzal
+      confirmedCorinto:
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2 border-l-4 border-l-green-500", // Rojo con borde verde - Corinto
       confirmed:
-        "bg-red-200 text-red-800 font-semibold border-red-300 border-2", // Rojo - confirmado (no disponible)
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2", // Rojo - confirmado (fallback)
+
+      // Reservas pendientes
+      pendingSunzal:
+        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2 border-l-4 border-l-blue-500", // Amarillo con borde azul - El Sunzal
+      pendingCorinto:
+        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2 border-l-4 border-l-green-500", // Amarillo con borde verde - Corinto
       pending:
-        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2", // Amarillo - en espera
+        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2", // Amarillo - en espera (fallback)
+
+      // Reservas completadas
+      completedSunzal:
+        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2 border-l-4 border-l-blue-500", // Gris con borde azul - El Sunzal
+      completedCorinto:
+        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2 border-l-4 border-l-green-500", // Gris con borde verde - Corinto
       completed:
-        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2", // Gris claro - completado
+        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2", // Gris claro - completado (fallback)
+
+      // Fechas bloqueadas
+      blockedSunzal:
+        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2 border-l-4 border-l-blue-500", // Naranja con borde azul - El Sunzal
+      blockedCorinto:
+        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2 border-l-4 border-l-green-500", // Naranja con borde verde - Corinto
       blocked:
-        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2", // Naranja - bloqueado
+        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2", // Naranja - bloqueado (fallback)
+
       cancelledAvailable:
         "bg-white text-gray-700 font-medium border-2 border-dashed border-gray-400 hover:bg-gray-50", // Blanco con borde punteado para mostrar historial
     };
