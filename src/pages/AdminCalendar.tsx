@@ -592,11 +592,16 @@ const AdminCalendar = () => {
 
   const getModifiersClassNames = () => {
     return {
-      confirmed: "bg-red-200 text-red-800 font-semibold", // Rojo - reservado
-      pending: "bg-yellow-200 text-yellow-800 font-semibold", // Amarillo - en espera
-      cancelled: "bg-gray-600 text-white", // Gris oscuro - cancelado
-      completed: "bg-gray-300 text-gray-600", // Gris claro - completado
-      blocked: "bg-gray-300 text-gray-600", // Gris claro - bloqueado
+      confirmed:
+        "bg-red-200 text-red-800 font-semibold border-red-300 border-2", // Rojo - confirmado
+      pending:
+        "bg-yellow-200 text-yellow-800 font-semibold border-yellow-300 border-2", // Amarillo - en espera
+      cancelled:
+        "bg-gray-600 text-white font-semibold border-gray-700 border-2", // Gris oscuro - cancelado
+      completed:
+        "bg-gray-300 text-gray-600 font-medium border-gray-400 border-2", // Gris claro - completado
+      blocked:
+        "bg-orange-200 text-orange-800 font-medium border-orange-300 border-2", // Naranja - bloqueado
     };
   };
 
