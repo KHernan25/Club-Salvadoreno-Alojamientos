@@ -349,9 +349,23 @@ export const apiUpdateUser = async (
   return result.success;
 };
 
+export const apiGetUserById = async (
+  userId: string,
+): Promise<ApiResponse<User>> => {
+  return apiRequest(`/users/${userId}`);
+};
+
+export const apiDeleteUser = async (
+  userId: string,
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest(`/users/${userId}`, {
+    method: "DELETE",
+  });
+};
+
 export const apiGetUserStats = async (): Promise<UserStats> => {
   try {
-    const result = await apiRequest<UserStats>("/users/stats");
+    const result = await apiRequest<UserStats>("/users/stats/summary");
     if (result.success && result.data) {
       return result.data;
     }
