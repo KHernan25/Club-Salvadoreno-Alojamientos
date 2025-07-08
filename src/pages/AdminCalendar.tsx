@@ -205,7 +205,7 @@ const AdminCalendar = () => {
       },
       {
         id: "res-4",
-        accommodationId: "corinto1A",
+        accommodationId: "corinto-casa-1",
         checkIn: formatDate(
           new Date(today.getTime() + 12 * 24 * 60 * 60 * 1000),
         ),
