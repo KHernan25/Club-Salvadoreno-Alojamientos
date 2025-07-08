@@ -149,8 +149,91 @@ const Reservations = () => {
   useEffect(() => {
     if (selectedDates.checkIn && selectedDates.checkOut) {
       calculatePrices();
+      validateBusinessRulesLocal();
     }
   }, [selectedDates.checkIn, selectedDates.checkOut, accommodationId]);
+
+  // Validate business rules locally (mock implementation)
+  const validateBusinessRulesLocal = () => {
+    setIsValidating(true);
+    setValidationErrors([]);
+
+    // Simulate validation delay
+    setTimeout(() => {
+      const errors = [];
+      const warnings = [];
+      const info = [];
+
+      // Mock user type (in real implementation, this would come from auth context)
+      const mockUserType = "miembro";
+
+      // Check for weekend restrictions for certain user types
+      const checkInDate = new Date(selectedDates.checkIn);
+      const isWeekend =
+        checkInDate.getDay() === 0 || checkInDate.getDay() === 6;
+
+      if (mockUserType === "viuda" && isWeekend) {
+        const today = new Date();
+        const daysInAdvance = Math.ceil(
+          (checkInDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+        );
+
+        if (daysInAdvance < 3) {
+          errors.push({
+            type: "error",
+            message:
+              "Las viudas requieren al menos 3 días de anticipación para reservas de fin de semana",
+            code: "WEEKEND_ADVANCE_NOTICE",
+          });
+        } else {
+          warnings.push({
+            type: "warning",
+            message:
+              "Reserva de fin de semana autorizada por anticipación suficiente",
+            code: "WEEKEND_AUTHORIZED",
+          });
+        }
+      }
+
+      // Check maximum stay duration
+      const checkOutDate = new Date(selectedDates.checkOut);
+      const diffTime = checkOutDate.getTime() - checkInDate.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays > 7) {
+        errors.push({
+          type: "error",
+          message: "La estadía no puede exceder 7 días consecutivos",
+          code: "MAX_STAY_EXCEEDED",
+        });
+      }
+
+      // Set business rules info
+      setBusinessRulesInfo({
+        userType: mockUserType,
+        checkInTime: "15:00",
+        checkOutTime: "12:00",
+      });
+
+      // Set payment info
+      setPaymentInfo({
+        paymentRequired: true,
+        timeLimit: 72,
+        exemptReason: null,
+      });
+
+      if (errors.length === 0) {
+        info.push({
+          type: "info",
+          message: "Todas las reglas de negocio se han validado correctamente",
+          code: "VALIDATION_SUCCESS",
+        });
+      }
+
+      setValidationErrors([...errors, ...warnings, ...info]);
+      setIsValidating(false);
+    }, 1000);
+  };
 
   const calculatePrices = () => {
     const validation = validateReservationDates(
