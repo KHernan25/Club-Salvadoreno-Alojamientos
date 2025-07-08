@@ -407,7 +407,7 @@ const AdminCalendar = () => {
       // Otros bloqueos
       {
         id: "block-6",
-        accommodationId: "corinto1A",
+        accommodationId: "corinto-casa-1",
         startDate: formatDate(
           new Date(today.getTime() + 40 * 24 * 60 * 60 * 1000),
         ),
