@@ -829,9 +829,7 @@ const AdminCalendar = () => {
 
                   <TabsContent value="all" className="mt-0">
                     <Calendar
-                      mode="multiple"
-                      selected={selectedDates}
-                      onSelect={setSelectedDates}
+                      mode="default"
                       onDayClick={handleDateClick}
                       disabled={getDisabledDates()}
                       className="rounded-md border w-full max-w-none"
