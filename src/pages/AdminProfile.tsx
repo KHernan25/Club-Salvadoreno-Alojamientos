@@ -603,7 +603,12 @@ const AdminProfile = () => {
                         </p>
                       </div>
                     </div>
-                    <Button variant="outline">Cambiar</Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsPasswordDialogOpen(true)}
+                    >
+                      Cambiar
+                    </Button>
                   </div>
 
                   <div className="flex items-center justify-between p-4 border rounded-lg">
