@@ -23,6 +23,7 @@ import {
   Home,
   Shield,
   Calendar,
+  HelpCircle,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { availableLanguages, Language } from "@/lib/i18n";
@@ -229,6 +230,16 @@ const Navbar = ({ className }: NavbarProps) => {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* Centro de Ayuda */}
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/ayuda")}
+              className="gap-2 h-9"
+            >
+              <HelpCircle className="h-4 w-4" />
+              <span className="hidden lg:inline">Ayuda</span>
+            </Button>
+
             {/* Mi Perfil */}
             <Button
               variant="ghost"
@@ -378,6 +389,18 @@ const Navbar = ({ className }: NavbarProps) => {
               >
                 <Calendar className="h-5 w-5 text-slate-600" />
                 <span className="text-slate-900">Mis Reservas</span>
+              </button>
+
+              {/* Centro de Ayuda */}
+              <button
+                onClick={() => {
+                  navigate("/ayuda");
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 transition-colors"
+              >
+                <HelpCircle className="h-5 w-5 text-slate-600" />
+                <span className="text-slate-900">Centro de Ayuda</span>
               </button>
 
               {/* Cerrar Sesión */}

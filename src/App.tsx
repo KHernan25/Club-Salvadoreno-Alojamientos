@@ -49,6 +49,7 @@ import AdminReviews from "./pages/AdminReviews";
 import AccommodationWithReviews from "./pages/AccommodationWithReviews";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import UserActivationDebug from "./pages/UserActivationDebug";
+import HelpCenter from "./pages/HelpCenter";
 
 const queryClient = new QueryClient();
 
@@ -113,6 +114,8 @@ const App = () => (
               <Route path="/navigation-demo" element={<NavigationDemo />} />
               <Route path="/translation-test" element={<TranslationTest />} />
               <Route path="/country-club" element={<CountryClub />} />
+              <Route path="/ayuda" element={<HelpCenter />} />
+              <Route path="/help" element={<HelpCenter />} />
 
               {/* Debug Tools - Development only */}
               <Route path="/debug/users" element={<UserActivationDebug />} />
