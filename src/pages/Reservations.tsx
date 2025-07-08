@@ -350,12 +350,24 @@ const Reservations = () => {
               asegura tu lugar con solo unos clics.
             </p>
             <p className="text-xl">Tu descanso comienza aquí.</p>
-            <Button
-              className="mt-8 bg-blue-700 hover:bg-blue-600 text-white px-8 py-3"
-              onClick={() => navigate("/mis-reservas")}
-            >
-              Ver tus reservas
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
+              <Button
+                className="bg-blue-700 hover:bg-blue-600 text-white px-8 py-3"
+                onClick={() => navigate("/mis-reservas")}
+              >
+                Ver tus reservas
+              </Button>
+              <BusinessRulesInfo
+                trigger={
+                  <Button
+                    variant="outline"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20 px-8 py-3"
+                  >
+                    📋 Reglas de Reserva
+                  </Button>
+                }
+              />
+            </div>
           </div>
         </div>
       </section>
