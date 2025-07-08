@@ -918,13 +918,21 @@ export const apiService = {
   // Auth
   login: apiLogin,
   logout: apiLogout,
+  register: apiRegister,
+  getCurrentUser: apiGetCurrentUser,
+  refreshToken: apiRefreshToken,
+  forgotPassword: apiForgotPassword,
+  resetPassword: apiResetPassword,
+  validateToken: apiValidateToken,
   isAvailable: isApiAvailable,
 
   // Users
   getUsers: apiGetUsers,
+  getUserById: apiGetUserById,
   activateUser: apiActivateUser,
   deactivateUser: apiDeactivateUser,
   updateUser: apiUpdateUser,
+  deleteUser: apiDeleteUser,
   getUserStats: apiGetUserStats,
 
   // Accommodations
