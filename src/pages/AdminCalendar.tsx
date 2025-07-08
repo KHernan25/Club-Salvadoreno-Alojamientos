@@ -667,16 +667,29 @@ const AdminCalendar = () => {
 
     // Buscar reserva para esta fecha
     const reservation = filteredReservations.find((res) => {
-      const startDate = new Date(res.checkIn);
-      const endDate = new Date(res.checkOut);
-      const clickedDate = new Date(clickedDateStr);
+      const startDateStr = res.checkIn;
+      const endDateStr = res.checkOut;
 
-      return clickedDate >= startDate && clickedDate <= endDate;
+      // Comparar directamente las fechas como strings para evitar problemas de timezone
+      return clickedDateStr >= startDateStr && clickedDateStr < endDateStr;
     });
 
     if (reservation) {
       setSelectedReservation(reservation);
       setIsReservationDialogOpen(true);
+    } else {
+      // También buscar en fechas bloqueadas para mostrar información
+      const filteredBlocked = getFilteredBlockedDates();
+      const blockedDate = filteredBlocked.find((blocked) => {
+        const startDateStr = blocked.startDate;
+        const endDateStr = blocked.endDate;
+        return clickedDateStr >= startDateStr && clickedDateStr <= endDateStr;
+      });
+
+      if (blockedDate) {
+        // Mostrar información del bloqueo (puedes expandir esto según necesidades)
+        console.log("Fecha bloqueada:", blockedDate);
+      }
     }
   };
 
