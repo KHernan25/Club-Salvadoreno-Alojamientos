@@ -908,7 +908,7 @@ const AdminCalendar = () => {
                         </span>
                       </div>
                       <p className="text-xs text-green-600 mt-1">
-                        Apartamentos y Casas frente al lago en Corinto
+                        Casas frente al lago en Corinto
                       </p>
                     </div>
                     <Calendar
