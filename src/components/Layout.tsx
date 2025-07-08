@@ -2,6 +2,7 @@
 
 import React from "react";
 import Navbar from "@/components/Navbar";
+import LiveChat from "@/components/LiveChat";
 import { cn } from "@/lib/utils";
 
 interface LayoutProps {
@@ -19,6 +20,7 @@ const Layout: React.FC<LayoutProps> = ({
     <div className={cn("min-h-screen bg-white", className)}>
       {showNavbar && <Navbar />}
       <main className="flex-1">{children}</main>
+      <LiveChat />
     </div>
   );
 };
