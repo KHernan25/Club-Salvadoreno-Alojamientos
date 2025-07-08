@@ -657,6 +657,12 @@ export const apiCreateReservation = async (
   return result.success;
 };
 
+export const apiGetReservationById = async (
+  reservationId: string,
+): Promise<ApiResponse<Reservation>> => {
+  return apiRequest(`/reservations/${reservationId}`);
+};
+
 export const apiUpdateReservation = async (
   reservationId: string,
   reservationData: Partial<Reservation>,
