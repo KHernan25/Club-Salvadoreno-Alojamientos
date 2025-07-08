@@ -967,10 +967,19 @@ const AdminCalendar = () => {
                   </div>
                   <div className="col-span-1 lg:col-span-3 xl:col-span-1"></div>
                 </div>
-                <div className="mt-2 text-xs text-gray-600">
-                  <span className="font-medium">*Disponible:</span> Fecha con
-                  reserva cancelada previamente, ahora disponible para nueva
-                  reserva.
+                <div className="mt-3 space-y-1 text-xs text-gray-600">
+                  <div>
+                    <span className="font-medium">*Disponible:</span> Fecha con
+                    reserva cancelada previamente, ahora disponible para nueva
+                    reserva.
+                  </div>
+                  <div className="p-2 bg-blue-50 border border-blue-200 rounded text-blue-700">
+                    <span className="font-medium">
+                      🛡️ Protección contra dobles reservas:
+                    </span>{" "}
+                    Las fechas confirmadas (rojas) y bloqueadas (naranjas) no
+                    permiten nuevas reservas.
+                  </div>
                 </div>
                 <div className="mt-3 pt-3 border-t border-gray-200">
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 text-xs">
