@@ -605,13 +605,13 @@ const AdminCalendar = () => {
     };
   };
 
-  // Fechas deshabilitadas (solo para interacción)
+  // Fechas completamente deshabilitadas (no se puede reservar)
   const getDisabledDates = () => {
     const disabled: Date[] = [];
     const filteredReservations = getFilteredReservations();
     const filteredBlocked = getFilteredBlockedDates();
 
-    // Agregar fechas de reservas confirmadas
+    // Solo agregar fechas de reservas CONFIRMADAS (no canceladas ni pendientes)
     filteredReservations
       .filter((res) => res.status === "confirmed")
       .forEach((reservation) => {
@@ -623,7 +623,7 @@ const AdminCalendar = () => {
         }
       });
 
-    // Agregar fechas bloqueadas
+    // Agregar fechas bloqueadas por mantenimiento o eventos
     filteredBlocked.forEach((block) => {
       const start = new Date(block.startDate);
       const end = new Date(block.endDate);
@@ -634,6 +634,26 @@ const AdminCalendar = () => {
     });
 
     return disabled;
+  };
+
+  // Fechas con reservas canceladas (disponibles para nueva reserva pero con historial)
+  const getCancelledAvailableDates = () => {
+    const cancelledAvailable: Date[] = [];
+    const filteredReservations = getFilteredReservations();
+
+    // Buscar fechas con reservas canceladas que están disponibles
+    filteredReservations
+      .filter((res) => res.status === "cancelled")
+      .forEach((reservation) => {
+        const start = new Date(reservation.checkIn);
+        const end = new Date(reservation.checkOut);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          cancelledAvailable.push(new Date(d));
+        }
+      });
+
+    return cancelledAvailable;
   };
 
   const handleDateClick = (date: Date) => {
