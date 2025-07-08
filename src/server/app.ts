@@ -167,6 +167,22 @@ app.get("/api", (req: Request, res: Response) => {
           "POST /api/registration-requests/:id/reject - Rechazar solicitud",
         ],
       },
+      reviews: {
+        path: "/api/reviews",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        description: "Sistema de reseñas de huéspedes",
+        endpoints: [
+          "GET /api/reviews - Listar reseñas con filtros",
+          "GET /api/reviews/:id - Obtener reseña específica",
+          "POST /api/reviews - Crear nueva reseña",
+          "PUT /api/reviews/:id - Actualizar reseña",
+          "DELETE /api/reviews/:id - Eliminar reseña",
+          "POST /api/reviews/:id/helpful - Marcar reseña como útil",
+          "POST /api/reviews/:id/response - Respuesta del anfitrión",
+          "PUT /api/reviews/:id/moderate - Moderar reseña (admin)",
+          "GET /api/reviews/accommodation/:id/stats - Estadísticas de reseñas",
+        ],
+      },
     },
     rateLimit: {
       general: "100 requests por 15 minutos",
