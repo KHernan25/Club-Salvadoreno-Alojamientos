@@ -781,11 +781,77 @@ export const apiGetPricing = async (
 export const apiSendContactMessage = async (
   messageData: any,
 ): Promise<boolean> => {
-  const result = await apiRequest("/contact", {
+  const result = await apiRequest("/contact/message", {
     method: "POST",
     body: JSON.stringify(messageData),
   });
   return result.success;
+};
+
+export const apiGetContactMessages = async (
+  page: number = 1,
+  limit: number = 10,
+  status?: string,
+  department?: string,
+  priority?: string,
+): Promise<
+  ApiResponse<{
+    messages: any[];
+    pagination: any;
+    stats: any;
+  }>
+> => {
+  const params = new URLSearchParams();
+  params.append("page", page.toString());
+  params.append("limit", limit.toString());
+  if (status) params.append("status", status);
+  if (department) params.append("department", department);
+  if (priority) params.append("priority", priority);
+
+  return apiRequest(`/contact/messages?${params.toString()}`);
+};
+
+export const apiGetContactMessageById = async (
+  messageId: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest(`/contact/messages/${messageId}`);
+};
+
+export const apiUpdateContactMessage = async (
+  messageId: string,
+  updateData: {
+    status?: "new" | "read" | "replied" | "closed";
+    priority?: "low" | "medium" | "high";
+    department?: "general" | "reservations" | "support" | "complaints";
+    notes?: string;
+  },
+): Promise<ApiResponse<{ message: string }>> => {
+  return apiRequest(`/contact/messages/${messageId}`, {
+    method: "PUT",
+    body: JSON.stringify(updateData),
+  });
+};
+
+export const apiGetContactStats = async (): Promise<ApiResponse<any>> => {
+  return apiRequest("/contact/stats");
+};
+
+export const apiSendTestEmail = async (
+  email: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest("/contact/email-test", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+};
+
+export const apiSendTestSMS = async (
+  phone: string,
+): Promise<ApiResponse<any>> => {
+  return apiRequest("/contact/sms-test", {
+    method: "POST",
+    body: JSON.stringify({ phone }),
+  });
 };
 
 // Registration Requests functions
