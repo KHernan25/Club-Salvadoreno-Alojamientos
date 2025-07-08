@@ -1020,7 +1020,13 @@ const AdminReservations = () => {
                         onValueChange={(value) =>
                           setNewReservationForm({
                             ...newReservationForm,
-                            paymentMethod: value,
+                            paymentMethod: value as
+                              | ""
+                              | "pay_later"
+                              | "payment_link"
+                              | "transfer"
+                              | "credit"
+                              | "card",
                           })
                         }
                       >

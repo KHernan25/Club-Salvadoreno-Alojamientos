@@ -16,6 +16,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Table,
   TableBody,
   TableCell,
@@ -60,6 +68,12 @@ const AdminProfile = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [profileImage, setProfileImage] = useState<string>("");
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
     smsNotifications: false,
@@ -82,7 +96,6 @@ const AdminProfile = () => {
     lastName: currentUser.lastName,
     email: currentUser.email,
     phone: currentUser.phone,
-    bio: "",
     timezone: "America/El_Salvador",
     language: "es",
   });
@@ -102,7 +115,6 @@ const AdminProfile = () => {
       lastName: currentUser.lastName,
       email: currentUser.email,
       phone: currentUser.phone,
-      bio: "",
       timezone: "America/El_Salvador",
       language: "es",
     });
@@ -167,6 +179,63 @@ const AdminProfile = () => {
       title: "Imagen eliminada",
       description: "Tu foto de perfil ha sido eliminada.",
     });
+  };
+
+  const handlePasswordChange = () => {
+    // Validaciones
+    if (
+      !passwordForm.currentPassword ||
+      !passwordForm.newPassword ||
+      !passwordForm.confirmPassword
+    ) {
+      toast({
+        title: "Error",
+        description: "Todos los campos son obligatorios.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Las contraseñas nuevas no coinciden.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (passwordForm.newPassword.length < 8) {
+      toast({
+        title: "Error",
+        description: "La nueva contraseña debe tener al menos 8 caracteres.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Simular cambio de contraseña (aquí iría la llamada a la API)
+    toast({
+      title: "Contraseña actualizada",
+      description: "Tu contraseña ha sido cambiada exitosamente.",
+    });
+
+    // Limpiar formulario y cerrar modal
+    setPasswordForm({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+    setIsPasswordDialogOpen(false);
+  };
+
+  const handlePasswordCancel = () => {
+    setPasswordForm({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+    setIsPasswordDialogOpen(false);
   };
 
   const getCurrentProfileImage = () => {
@@ -463,20 +532,6 @@ const AdminProfile = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="bio">Biografía</Label>
-                    <Textarea
-                      id="bio"
-                      placeholder="Cuéntanos un poco sobre ti..."
-                      value={profileData.bio}
-                      onChange={(e) =>
-                        setProfileData({ ...profileData, bio: e.target.value })
-                      }
-                      disabled={!isEditing}
-                      rows={3}
-                    />
-                  </div>
-
                   {isEditing && (
                     <div className="flex space-x-2 pt-4">
                       <Button onClick={handleSave}>
@@ -508,7 +563,7 @@ const AdminProfile = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Calendar className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm">Miembro desde</span>
+                      <span className="text-sm">Cuenta creada</span>
                     </div>
                     <span className="text-sm font-medium">
                       {new Date(currentUser.createdAt).toLocaleDateString()}
@@ -556,7 +611,12 @@ const AdminProfile = () => {
                         </p>
                       </div>
                     </div>
-                    <Button variant="outline">Cambiar</Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsPasswordDialogOpen(true)}
+                    >
+                      Cambiar
+                    </Button>
                   </div>
 
                   <div className="flex items-center justify-between p-4 border rounded-lg">
@@ -776,6 +836,77 @@ const AdminProfile = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Password Change Dialog */}
+      <Dialog
+        open={isPasswordDialogOpen}
+        onOpenChange={setIsPasswordDialogOpen}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Cambiar Contraseña</DialogTitle>
+            <DialogDescription>
+              Ingresa tu contraseña actual y la nueva contraseña para actualizar
+              tu acceso.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="currentPassword">Contraseña Actual</Label>
+              <Input
+                id="currentPassword"
+                type="password"
+                value={passwordForm.currentPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    currentPassword: e.target.value,
+                  })
+                }
+                placeholder="Ingresa tu contraseña actual"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="newPassword">Nueva Contraseña</Label>
+              <Input
+                id="newPassword"
+                type="password"
+                value={passwordForm.newPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    newPassword: e.target.value,
+                  })
+                }
+                placeholder="Mínimo 8 caracteres"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">
+                Confirmar Nueva Contraseña
+              </Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={passwordForm.confirmPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    confirmPassword: e.target.value,
+                  })
+                }
+                placeholder="Repite la nueva contraseña"
+              />
+            </div>
+          </div>
+          <DialogFooter className="flex space-x-2">
+            <Button variant="outline" onClick={handlePasswordCancel}>
+              Cancelar
+            </Button>
+            <Button onClick={handlePasswordChange}>Cambiar Contraseña</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AdminLayout>
   );
 };
