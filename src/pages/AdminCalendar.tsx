@@ -81,7 +81,7 @@ const AdminCalendar = () => {
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("all");
   const [selectedLocation, setSelectedLocation] = useState<string>("all");
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] =
     useState<CalendarReservation | null>(null);
