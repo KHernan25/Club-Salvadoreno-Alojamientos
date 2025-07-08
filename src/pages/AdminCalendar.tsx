@@ -675,8 +675,8 @@ const AdminCalendar = () => {
       const startDateStr = res.checkIn;
       const endDateStr = res.checkOut;
 
-      // Comparar directamente las fechas como strings para evitar problemas de timezone
-      return clickedDateStr >= startDateStr && clickedDateStr < endDateStr;
+      // Incluir tanto el día de check-in como el día de check-out
+      return clickedDateStr >= startDateStr && clickedDateStr <= endDateStr;
     });
 
     if (reservation) {
