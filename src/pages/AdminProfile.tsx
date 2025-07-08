@@ -60,6 +60,12 @@ const AdminProfile = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [profileImage, setProfileImage] = useState<string>("");
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
     smsNotifications: false,
