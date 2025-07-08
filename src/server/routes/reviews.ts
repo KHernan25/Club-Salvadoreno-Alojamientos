@@ -12,6 +12,10 @@ import {
 } from "../middleware/validators";
 import { asyncHandler, createError } from "../middleware/errorHandler";
 import { body, validationResult } from "express-validator";
+import {
+  moderateReviewContent,
+  getReviewModerationStatus,
+} from "../../lib/content-moderation";
 
 const router = Router();
 
