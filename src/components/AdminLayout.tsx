@@ -37,7 +37,7 @@ import {
   isSuperAdmin,
 } from "@/lib/auth-service";
 import { getRolePermissions } from "@/lib/user-database";
-import { NotificationDropdown } from "@/components/NotificationDropdown";
+// import { NotificationDropdown } from "@/components/NotificationDropdown";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -326,7 +326,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
             <div className="flex items-center space-x-4">
               {/* Notifications */}
-              <NotificationDropdown />
+              <Button variant="ghost" size="icon" className="relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
+              </Button>
 
               {/* User Menu */}
               <DropdownMenu>
