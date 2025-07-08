@@ -39,6 +39,7 @@ import {
 } from "lucide-react";
 import { PaymentOptionsModal } from "@/components/PaymentOptionsModal";
 import BusinessRulesInfo from "@/components/BusinessRulesInfo";
+import ReservationValidationFeedback from "@/components/ReservationValidationFeedback";
 import Navbar from "@/components/Navbar";
 
 const Reservations = () => {
