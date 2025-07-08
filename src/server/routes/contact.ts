@@ -82,6 +82,20 @@ router.post(
 
     contactMessages.push(contactMessage);
 
+    // Enviar notificación al backoffice
+    await sendBackofficeNotification({
+      type: "contact",
+      message: `Nuevo mensaje de contacto recibido de ${name} - ${subject}`,
+      timestamp: new Date().toISOString(),
+      userData: {
+        messageId: contactMessage.id,
+        email,
+        phone,
+        department,
+        priority,
+      },
+    });
+
     // En implementación real:
     // 1. Guardar en BD
     // 2. Enviar email de confirmación al usuario
