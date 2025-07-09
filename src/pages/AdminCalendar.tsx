@@ -904,309 +904,357 @@ const AdminCalendar = () => {
           </Card>
         </div>
 
-        {/* El Sunzal Calendars Section - One calendar per accommodation type */}
-        <div className="space-y-6">
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-center space-x-2">
-              <MapPin className="h-5 w-5 text-blue-600" />
-              <span className="text-lg text-blue-800 font-semibold">
-                El Sunzal - Calendarios por Tipo de Alojamiento
-              </span>
-            </div>
-            <p className="text-sm text-blue-600 mt-1">
-              Vista separada para Apartamentos, Suites y Casas
-            </p>
-          </div>
+        {/* Main Calendar Section with Tabs */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Calendario de Reservas</CardTitle>
+            <CardDescription>
+              Vista de disponibilidad por ubicación y estado de reservas
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs
+              value={selectedLocation}
+              onValueChange={setSelectedLocation}
+              className="w-full"
+            >
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="el-sunzal">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  El Sunzal
+                </TabsTrigger>
+                <TabsTrigger value="corinto">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  Corinto
+                </TabsTrigger>
+              </TabsList>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Apartamentos Calendar */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <Building2 className="mr-2 h-5 w-5 text-blue-600" />
-                  🏠 Apartamentos
-                </CardTitle>
-                <CardDescription>
-                  Vista de disponibilidad para apartamentos en El Sunzal
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <Filter className="h-4 w-4" />
-                    <Select
-                      value={selectedAccommodation}
-                      onValueChange={setSelectedAccommodation}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Todos los apartamentos" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">
-                          Todos los apartamentos
-                        </SelectItem>
-                        <SelectItem value="apt-101">Apartamento 101</SelectItem>
-                        <SelectItem value="apt-102">Apartamento 102</SelectItem>
-                        <SelectItem value="apt-201">Apartamento 201</SelectItem>
-                        <SelectItem value="apt-202">Apartamento 202</SelectItem>
-                      </SelectContent>
-                    </Select>
+              {/* El Sunzal Tab Content - Multiple mini calendars */}
+              <TabsContent value="el-sunzal" className="mt-6">
+                <div className="space-y-6">
+                  <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-5 w-5 text-blue-600" />
+                      <span className="text-lg text-blue-800 font-semibold">
+                        El Sunzal - Calendarios por Tipo de Alojamiento
+                      </span>
+                    </div>
+                    <p className="text-sm text-blue-600 mt-1">
+                      Vista separada para Apartamentos, Suites y Casas
+                    </p>
                   </div>
-                  <Calendar
-                    mode="default"
-                    onDayClick={handleDateClick}
-                    disabled={getDisabledDates()}
-                    className="rounded-md border w-full"
-                    classNames={{
-                      months: "flex flex-col space-y-4 w-full",
-                      month: "space-y-4 w-full",
-                      table: "w-full border-collapse space-y-1",
-                      head_row: "flex w-full",
-                      head_cell:
-                        "text-muted-foreground rounded-md w-8 h-8 font-normal text-xs flex items-center justify-center",
-                      row: "flex w-full mt-1",
-                      cell: "h-8 w-8 text-center text-xs p-0 relative",
-                      day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs",
-                    }}
-                    modifiers={getDateModifiers()}
-                    modifiersClassNames={getModifiersClassNames()}
-                  />
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Suites Calendar */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <Building2 className="mr-2 h-5 w-5 text-purple-600" />
-                  🏨 Suites
-                </CardTitle>
-                <CardDescription>
-                  Vista de disponibilidad para suites en El Sunzal
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <Filter className="h-4 w-4" />
-                    <Select
-                      value={selectedAccommodation}
-                      onValueChange={setSelectedAccommodation}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Todas las suites" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Todas las suites</SelectItem>
-                        <SelectItem value="suite-ocean">
-                          Suite Ocean View
-                        </SelectItem>
-                        <SelectItem value="suite-sunset">
-                          Suite Sunset
-                        </SelectItem>
-                        <SelectItem value="suite-family">
-                          Suite Familiar
-                        </SelectItem>
-                        <SelectItem value="suite-deluxe">
-                          Suite Deluxe
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Apartamentos Calendar */}
+                    <Card>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="flex items-center text-lg">
+                          <Building2 className="mr-2 h-5 w-5 text-blue-600" />
+                          🏠 Apartamentos
+                        </CardTitle>
+                        <CardDescription>
+                          Vista de disponibilidad para apartamentos en El Sunzal
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <Filter className="h-4 w-4" />
+                            <Select
+                              value={selectedAccommodation}
+                              onValueChange={setSelectedAccommodation}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Todos los apartamentos" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="all">
+                                  Todos los apartamentos
+                                </SelectItem>
+                                <SelectItem value="apt-101">
+                                  Apartamento 101
+                                </SelectItem>
+                                <SelectItem value="apt-102">
+                                  Apartamento 102
+                                </SelectItem>
+                                <SelectItem value="apt-201">
+                                  Apartamento 201
+                                </SelectItem>
+                                <SelectItem value="apt-202">
+                                  Apartamento 202
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <Calendar
+                            mode="default"
+                            onDayClick={handleDateClick}
+                            disabled={getDisabledDates()}
+                            className="rounded-md border w-full"
+                            classNames={{
+                              months: "flex flex-col space-y-4 w-full",
+                              month: "space-y-4 w-full",
+                              table: "w-full border-collapse space-y-1",
+                              head_row: "flex w-full",
+                              head_cell:
+                                "text-muted-foreground rounded-md w-8 h-8 font-normal text-xs flex items-center justify-center",
+                              row: "flex w-full mt-1",
+                              cell: "h-8 w-8 text-center text-xs p-0 relative",
+                              day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs",
+                            }}
+                            modifiers={getDateModifiers()}
+                            modifiersClassNames={getModifiersClassNames()}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Suites Calendar */}
+                    <Card>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="flex items-center text-lg">
+                          <Building2 className="mr-2 h-5 w-5 text-purple-600" />
+                          🏨 Suites
+                        </CardTitle>
+                        <CardDescription>
+                          Vista de disponibilidad para suites en El Sunzal
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <Filter className="h-4 w-4" />
+                            <Select
+                              value={selectedAccommodation}
+                              onValueChange={setSelectedAccommodation}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Todas las suites" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="all">
+                                  Todas las suites
+                                </SelectItem>
+                                <SelectItem value="suite-ocean">
+                                  Suite Ocean View
+                                </SelectItem>
+                                <SelectItem value="suite-sunset">
+                                  Suite Sunset
+                                </SelectItem>
+                                <SelectItem value="suite-family">
+                                  Suite Familiar
+                                </SelectItem>
+                                <SelectItem value="suite-deluxe">
+                                  Suite Deluxe
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <Calendar
+                            mode="default"
+                            onDayClick={handleDateClick}
+                            disabled={getDisabledDates()}
+                            className="rounded-md border w-full"
+                            classNames={{
+                              months: "flex flex-col space-y-4 w-full",
+                              month: "space-y-4 w-full",
+                              table: "w-full border-collapse space-y-1",
+                              head_row: "flex w-full",
+                              head_cell:
+                                "text-muted-foreground rounded-md w-8 h-8 font-normal text-xs flex items-center justify-center",
+                              row: "flex w-full mt-1",
+                              cell: "h-8 w-8 text-center text-xs p-0 relative",
+                              day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs",
+                            }}
+                            modifiers={getDateModifiers()}
+                            modifiersClassNames={getModifiersClassNames()}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Casas Calendar */}
+                    <Card>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="flex items-center text-lg">
+                          <Building2 className="mr-2 h-5 w-5 text-green-600" />
+                          🏡 Casas
+                        </CardTitle>
+                        <CardDescription>
+                          Vista de disponibilidad para casas en El Sunzal
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <Filter className="h-4 w-4" />
+                            <Select
+                              value={selectedAccommodation}
+                              onValueChange={setSelectedAccommodation}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Todas las casas" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="all">
+                                  Todas las casas
+                                </SelectItem>
+                                <SelectItem value="casa-playa">
+                                  Casa Frente a la Playa
+                                </SelectItem>
+                                <SelectItem value="casa-jardin">
+                                  Casa con Jardín
+                                </SelectItem>
+                                <SelectItem value="casa-family">
+                                  Casa Familiar
+                                </SelectItem>
+                                <SelectItem value="casa-luxury">
+                                  Casa de Lujo
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <Calendar
+                            mode="default"
+                            onDayClick={handleDateClick}
+                            disabled={getDisabledDates()}
+                            className="rounded-md border w-full"
+                            classNames={{
+                              months: "flex flex-col space-y-4 w-full",
+                              month: "space-y-4 w-full",
+                              table: "w-full border-collapse space-y-1",
+                              head_row: "flex w-full",
+                              head_cell:
+                                "text-muted-foreground rounded-md w-8 h-8 font-normal text-xs flex items-center justify-center",
+                              row: "flex w-full mt-1",
+                              cell: "h-8 w-8 text-center text-xs p-0 relative",
+                              day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs",
+                            }}
+                            modifiers={getDateModifiers()}
+                            modifiersClassNames={getModifiersClassNames()}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
-                  <Calendar
-                    mode="default"
-                    onDayClick={handleDateClick}
-                    disabled={getDisabledDates()}
-                    className="rounded-md border w-full"
-                    classNames={{
-                      months: "flex flex-col space-y-4 w-full",
-                      month: "space-y-4 w-full",
-                      table: "w-full border-collapse space-y-1",
-                      head_row: "flex w-full",
-                      head_cell:
-                        "text-muted-foreground rounded-md w-8 h-8 font-normal text-xs flex items-center justify-center",
-                      row: "flex w-full mt-1",
-                      cell: "h-8 w-8 text-center text-xs p-0 relative",
-                      day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs",
-                    }}
-                    modifiers={getDateModifiers()}
-                    modifiersClassNames={getModifiersClassNames()}
-                  />
                 </div>
-              </CardContent>
-            </Card>
+              </TabsContent>
 
-            {/* Casas Calendar */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center text-lg">
-                  <Building2 className="mr-2 h-5 w-5 text-green-600" />
-                  🏡 Casas
-                </CardTitle>
-                <CardDescription>
-                  Vista de disponibilidad para casas en El Sunzal
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <Filter className="h-4 w-4" />
-                    <Select
-                      value={selectedAccommodation}
-                      onValueChange={setSelectedAccommodation}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Todas las casas" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Todas las casas</SelectItem>
-                        <SelectItem value="casa-playa">
-                          Casa Frente a la Playa
-                        </SelectItem>
-                        <SelectItem value="casa-jardin">
-                          Casa con Jardín
-                        </SelectItem>
-                        <SelectItem value="casa-family">
-                          Casa Familiar
-                        </SelectItem>
-                        <SelectItem value="casa-luxury">
-                          Casa de Lujo
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+              {/* Corinto Tab Content */}
+              <TabsContent value="corinto" className="mt-6">
+                <div className="space-y-6">
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-5 w-5 text-green-600" />
+                      <span className="text-lg text-green-800 font-semibold">
+                        Corinto - Casas Frente al Lago
+                      </span>
+                    </div>
+                    <p className="text-sm text-green-600 mt-1">
+                      Vista de disponibilidad para todas las propiedades en
+                      Corinto
+                    </p>
                   </div>
-                  <Calendar
-                    mode="default"
-                    onDayClick={handleDateClick}
-                    disabled={getDisabledDates()}
-                    className="rounded-md border w-full"
-                    classNames={{
-                      months: "flex flex-col space-y-4 w-full",
-                      month: "space-y-4 w-full",
-                      table: "w-full border-collapse space-y-1",
-                      head_row: "flex w-full",
-                      head_cell:
-                        "text-muted-foreground rounded-md w-8 h-8 font-normal text-xs flex items-center justify-center",
-                      row: "flex w-full mt-1",
-                      cell: "h-8 w-8 text-center text-xs p-0 relative",
-                      day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs",
-                    }}
-                    modifiers={getDateModifiers()}
-                    modifiersClassNames={getModifiersClassNames()}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
 
-        {/* Corinto Calendar Section */}
-        <div className="space-y-6">
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <div className="flex items-center space-x-2">
-              <MapPin className="h-5 w-5 text-green-600" />
-              <span className="text-lg text-green-800 font-semibold">
-                Corinto - Casas Frente al Lago
-              </span>
-            </div>
-            <p className="text-sm text-green-600 mt-1">
-              Vista de disponibilidad para todas las propiedades en Corinto
-            </p>
-          </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    {/* Corinto Main Calendar */}
+                    <Card className="lg:col-span-3">
+                      <CardHeader>
+                        <CardTitle className="flex items-center">
+                          <Building2 className="mr-2 h-5 w-5 text-green-600" />
+                          Calendario Corinto
+                        </CardTitle>
+                        <CardDescription>
+                          Vista principal de reservas para casas en Corinto
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-center space-x-2 mb-4">
+                            <Filter className="h-4 w-4" />
+                            <Select
+                              value={selectedAccommodation}
+                              onValueChange={setSelectedAccommodation}
+                            >
+                              <SelectTrigger className="w-64">
+                                <SelectValue placeholder="Todas las casas" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="all">
+                                  Todas las casas
+                                </SelectItem>
+                                <SelectItem value="casa-lago-1">
+                                  Casa Lago Vista 1
+                                </SelectItem>
+                                <SelectItem value="casa-lago-2">
+                                  Casa Lago Vista 2
+                                </SelectItem>
+                                <SelectItem value="casa-lago-3">
+                                  Casa Lago Vista 3
+                                </SelectItem>
+                                <SelectItem value="casa-lago-premium">
+                                  Casa Premium Lago
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <Calendar
+                            mode="default"
+                            onDayClick={handleDateClick}
+                            disabled={getDisabledDates()}
+                            className="rounded-md border w-full max-w-none"
+                            classNames={{
+                              months:
+                                "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full justify-center",
+                              month:
+                                "space-y-4 w-full max-w-md mx-auto sm:max-w-none",
+                              table: "w-full border-collapse space-y-1",
+                              head_row: "flex w-full",
+                              head_cell:
+                                "text-muted-foreground rounded-md w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 font-normal text-xs sm:text-sm flex items-center justify-center",
+                              row: "flex w-full mt-2",
+                              cell: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-center text-xs sm:text-sm p-0 relative",
+                              day: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
+                            }}
+                            modifiers={getDateModifiers()}
+                            modifiersClassNames={getModifiersClassNames()}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Corinto Main Calendar */}
-            <Card className="lg:col-span-3">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Building2 className="mr-2 h-5 w-5 text-green-600" />
-                  Calendario Corinto
-                </CardTitle>
-                <CardDescription>
-                  Vista principal de reservas para casas en Corinto
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <Filter className="h-4 w-4" />
-                    <Select
-                      value={selectedAccommodation}
-                      onValueChange={setSelectedAccommodation}
-                    >
-                      <SelectTrigger className="w-64">
-                        <SelectValue placeholder="Todas las casas" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Todas las casas</SelectItem>
-                        <SelectItem value="casa-lago-1">
-                          Casa Lago Vista 1
-                        </SelectItem>
-                        <SelectItem value="casa-lago-2">
-                          Casa Lago Vista 2
-                        </SelectItem>
-                        <SelectItem value="casa-lago-3">
-                          Casa Lago Vista 3
-                        </SelectItem>
-                        <SelectItem value="casa-lago-premium">
-                          Casa Premium Lago
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    {/* Corinto Filters and Mini Calendar */}
+                    <div className="lg:col-span-1 space-y-6">
+                      <MiniCalendar
+                        selectedDate={selectedDate}
+                        onDateSelect={setSelectedDate}
+                        selectedAccommodationType={selectedAccommodationType}
+                        onAccommodationTypeChange={setSelectedAccommodationType}
+                        selectedDateRange={selectedDateRange}
+                        onDateRangeChange={setSelectedDateRange}
+                        availableDates={[
+                          new Date(2024, 2, 18),
+                          new Date(2024, 2, 19),
+                          new Date(2024, 2, 25),
+                          new Date(2024, 3, 2),
+                          new Date(2024, 3, 10),
+                        ]}
+                        bookedDates={[
+                          new Date(2024, 2, 12),
+                          new Date(2024, 2, 13),
+                          new Date(2024, 2, 20),
+                          new Date(2024, 3, 5),
+                          new Date(2024, 3, 16),
+                        ]}
+                        className="w-full"
+                      />
+                    </div>
                   </div>
-                  <Calendar
-                    mode="default"
-                    onDayClick={handleDateClick}
-                    disabled={getDisabledDates()}
-                    className="rounded-md border w-full max-w-none"
-                    classNames={{
-                      months:
-                        "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full justify-center",
-                      month: "space-y-4 w-full max-w-md mx-auto sm:max-w-none",
-                      table: "w-full border-collapse space-y-1",
-                      head_row: "flex w-full",
-                      head_cell:
-                        "text-muted-foreground rounded-md w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 font-normal text-xs sm:text-sm flex items-center justify-center",
-                      row: "flex w-full mt-2",
-                      cell: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-center text-xs sm:text-sm p-0 relative",
-                      day: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
-                    }}
-                    modifiers={getDateModifiers()}
-                    modifiersClassNames={getModifiersClassNames()}
-                  />
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Corinto Filters and Mini Calendar */}
-            <div className="lg:col-span-1 space-y-6">
-              <MiniCalendar
-                selectedDate={selectedDate}
-                onDateSelect={setSelectedDate}
-                selectedAccommodationType={selectedAccommodationType}
-                onAccommodationTypeChange={setSelectedAccommodationType}
-                selectedDateRange={selectedDateRange}
-                onDateRangeChange={setSelectedDateRange}
-                availableDates={[
-                  new Date(2024, 2, 18),
-                  new Date(2024, 2, 19),
-                  new Date(2024, 2, 25),
-                  new Date(2024, 3, 2),
-                  new Date(2024, 3, 10),
-                ]}
-                bookedDates={[
-                  new Date(2024, 2, 12),
-                  new Date(2024, 2, 13),
-                  new Date(2024, 2, 20),
-                  new Date(2024, 3, 5),
-                  new Date(2024, 3, 16),
-                ]}
-                className="w-full"
-              />
-            </div>
-          </div>
-        </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
 
         {/* Calendar Legend */}
         <Card>
