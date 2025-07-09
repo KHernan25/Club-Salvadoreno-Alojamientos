@@ -904,9 +904,10 @@ const AdminCalendar = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-          {/* Calendar View */}
-          <Card className="xl:col-span-3">
+        {/* Main Calendar Section - Two calendars side by side */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Main Calendar View */}
+          <Card className="lg:col-span-8">
             <CardHeader>
               <CardTitle>Calendario de Reservas</CardTitle>
               <CardDescription>
@@ -964,16 +965,16 @@ const AdminCalendar = () => {
                       className="rounded-md border w-full max-w-none"
                       classNames={{
                         months:
-                          "flex flex-col lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0 w-full justify-center",
+                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full justify-center",
                         month:
-                          "space-y-4 w-full max-w-md mx-auto lg:max-w-none",
+                          "space-y-4 w-full max-w-md mx-auto sm:max-w-none",
                         table: "w-full border-collapse space-y-1",
                         head_row: "flex w-full",
                         head_cell:
-                          "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
+                          "text-muted-foreground rounded-md w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-12 xl:w-16 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
-                        day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
+                        cell: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
+                        day: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
                       modifiersClassNames={getModifiersClassNames()}
@@ -1000,16 +1001,16 @@ const AdminCalendar = () => {
                       className="rounded-md border w-full max-w-none"
                       classNames={{
                         months:
-                          "flex flex-col lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0 w-full justify-center",
+                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full justify-center",
                         month:
-                          "space-y-4 w-full max-w-md mx-auto lg:max-w-none",
+                          "space-y-4 w-full max-w-md mx-auto sm:max-w-none",
                         table: "w-full border-collapse space-y-1",
                         head_row: "flex w-full",
                         head_cell:
-                          "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
+                          "text-muted-foreground rounded-md w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-12 xl:w-16 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
-                        day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
+                        cell: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
+                        day: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
                       modifiersClassNames={getModifiersClassNames()}
@@ -1035,16 +1036,16 @@ const AdminCalendar = () => {
                       className="rounded-md border w-full max-w-none"
                       classNames={{
                         months:
-                          "flex flex-col lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0 w-full justify-center",
+                          "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full justify-center",
                         month:
-                          "space-y-4 w-full max-w-md mx-auto lg:max-w-none",
+                          "space-y-4 w-full max-w-md mx-auto sm:max-w-none",
                         table: "w-full border-collapse space-y-1",
                         head_row: "flex w-full",
                         head_cell:
-                          "text-muted-foreground rounded-md w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-12 xl:w-20 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
+                          "text-muted-foreground rounded-md w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-12 xl:w-16 xl:h-14 font-normal text-xs sm:text-sm flex items-center justify-center",
                         row: "flex w-full mt-2",
-                        cell: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
-                        day: "h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 xl:h-20 xl:w-20 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
+                        cell: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 text-center text-xs sm:text-sm p-0 relative focus-within:relative focus-within:z-20",
+                        day: "h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors text-xs sm:text-sm",
                       }}
                       modifiers={getDateModifiers()}
                       modifiersClassNames={getModifiersClassNames()}
@@ -1057,7 +1058,7 @@ const AdminCalendar = () => {
                 <h4 className="text-sm font-medium text-gray-900 mb-3">
                   Leyenda del Calendario
                 </h4>
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 text-xs">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-xs">
                   <div className="flex items-center space-x-2 p-2 bg-white rounded border">
                     <div className="w-4 h-4 bg-white border-2 border-gray-300 rounded"></div>
                     <span className="text-gray-700 font-medium">
@@ -1107,7 +1108,7 @@ const AdminCalendar = () => {
                   </div>
                 </div>
                 <div className="mt-3 pt-3 border-t border-gray-200">
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 text-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                     <div className="flex items-center space-x-2 p-2 bg-orange-50 rounded border border-orange-200">
                       <div className="w-4 h-4 bg-orange-200 border-2 border-orange-300 rounded"></div>
                       <span className="text-orange-800 font-medium">
@@ -1132,57 +1133,8 @@ const AdminCalendar = () => {
             </CardContent>
           </Card>
 
-          {/* Blocked Dates List */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Bloqueos Activos</CardTitle>
-              <CardDescription>Lista de fechas bloqueadas</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 max-h-96 overflow-y-auto">
-                {(getFilteredBlockedDates() || []).map((block) => (
-                  <div key={block.id} className="border rounded-lg p-3">
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-1">
-                        <p className="font-medium text-sm">
-                          {getAccommodationName(block.accommodationId)}
-                        </p>
-                        <p className="text-xs text-gray-600">
-                          {new Date(block.startDate).toLocaleDateString()} -{" "}
-                          {new Date(block.endDate).toLocaleDateString()}
-                        </p>
-                        <Badge
-                          className={`text-xs ${getTypeColor(block.type)}`}
-                        >
-                          {getTypeLabel(block.type)}
-                        </Badge>
-                        <p className="text-xs text-gray-700">{block.reason}</p>
-                        {block.notes && (
-                          <p className="text-xs text-gray-500">{block.notes}</p>
-                        )}
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => handleDeleteBlock(block.id)}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                {getFilteredBlockedDates().length === 0 && (
-                  <div className="text-center py-6 text-gray-500">
-                    <CalendarDays className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">No hay fechas bloqueadas</p>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Mini Calendar and Filters */}
-          <div className="space-y-6">
+          {/* Mini Calendar and Filters - Now alongside the main calendar */}
+          <div className="lg:col-span-4 space-y-6">
             <MiniCalendar
               selectedDate={selectedDate}
               onDateSelect={setSelectedDate}
@@ -1190,10 +1142,176 @@ const AdminCalendar = () => {
               onAccommodationTypeChange={setSelectedAccommodationType}
               selectedDateRange={selectedDateRange}
               onDateRangeChange={setSelectedDateRange}
+              availableDates={[
+                new Date(2024, 2, 15),
+                new Date(2024, 2, 16),
+                new Date(2024, 2, 20),
+                new Date(2024, 2, 25),
+                new Date(2024, 3, 5),
+                new Date(2024, 3, 12),
+              ]}
+              bookedDates={[
+                new Date(2024, 2, 10),
+                new Date(2024, 2, 11),
+                new Date(2024, 2, 18),
+                new Date(2024, 2, 22),
+                new Date(2024, 3, 8),
+                new Date(2024, 3, 15),
+              ]}
               className="w-full"
             />
           </div>
         </div>
+
+        {/* Blocked Dates Section - Moved to bottom for more space */}
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <CalendarDays className="mr-2 h-5 w-5 text-orange-600" />
+              Bloqueos Activos
+            </CardTitle>
+            <CardDescription>
+              Lista de fechas bloqueadas organizadas por alojamiento y tipo
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {(getFilteredBlockedDates() || []).map((block) => (
+                <div
+                  key={block.id}
+                  className="border rounded-lg p-4 hover:shadow-md transition-shadow"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1 flex-1">
+                        <p className="font-medium text-sm">
+                          {getAccommodationName(block.accommodationId)}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {new Date(block.startDate).toLocaleDateString()} -{" "}
+                          {new Date(block.endDate).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleDeleteBlock(block.id)}
+                        className="shrink-0"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                    <Badge
+                      className={`text-xs w-fit ${getTypeColor(block.type)}`}
+                    >
+                      {getTypeLabel(block.type)}
+                    </Badge>
+                    <p className="text-xs text-gray-700 line-clamp-2">
+                      {block.reason}
+                    </p>
+                    {block.notes && (
+                      <p className="text-xs text-gray-500 line-clamp-1">
+                        {block.notes}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {/* Example blocked dates for demonstration */}
+              <div className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-orange-50 border-orange-200">
+                <div className="space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1 flex-1">
+                      <p className="font-medium text-sm">Suite El Sunzal 101</p>
+                      <p className="text-xs text-orange-600">
+                        15/03/2024 - 20/03/2024
+                      </p>
+                    </div>
+                    <Button size="sm" variant="ghost" className="shrink-0">
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                  <Badge className="text-xs w-fit bg-orange-200 text-orange-800">
+                    Mantenimiento
+                  </Badge>
+                  <p className="text-xs text-gray-700 line-clamp-2">
+                    Reparación del aire acondicionado
+                  </p>
+                  <p className="text-xs text-gray-500 line-clamp-1">
+                    Técnico confirmado para el martes
+                  </p>
+                </div>
+              </div>
+
+              <div className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-blue-50 border-blue-200">
+                <div className="space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1 flex-1">
+                      <p className="font-medium text-sm">
+                        Casa Corinto Vista Lago
+                      </p>
+                      <p className="text-xs text-blue-600">
+                        25/03/2024 - 28/03/2024
+                      </p>
+                    </div>
+                    <Button size="sm" variant="ghost" className="shrink-0">
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                  <Badge className="text-xs w-fit bg-blue-200 text-blue-800">
+                    Evento especial
+                  </Badge>
+                  <p className="text-xs text-gray-700 line-clamp-2">
+                    Uso personal para evento familiar
+                  </p>
+                  <p className="text-xs text-gray-500 line-clamp-1">
+                    Cumpleaños de la abuela
+                  </p>
+                </div>
+              </div>
+
+              <div className="border rounded-lg p-4 hover:shadow-md transition-shadow bg-purple-50 border-purple-200">
+                <div className="space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1 flex-1">
+                      <p className="font-medium text-sm">
+                        Apartamento El Sunzal 205
+                      </p>
+                      <p className="text-xs text-purple-600">
+                        10/04/2024 - 12/04/2024
+                      </p>
+                    </div>
+                    <Button size="sm" variant="ghost" className="shrink-0">
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                  <Badge className="text-xs w-fit bg-purple-200 text-purple-800">
+                    Otro bloqueo
+                  </Badge>
+                  <p className="text-xs text-gray-700 line-clamp-2">
+                    Fotografías profesionales para marketing
+                  </p>
+                  <p className="text-xs text-gray-500 line-clamp-1">
+                    Sesión con fotógrafo especializado
+                  </p>
+                </div>
+              </div>
+
+              {getFilteredBlockedDates().length === 0 && (
+                <div className="col-span-full text-center py-8 text-gray-500">
+                  <CalendarDays className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                  <p className="text-sm">
+                    No hay fechas bloqueadas actualmente
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Los bloqueos aparecerán aquí cuando se agreguen
+                  </p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Block Dates Dialog */}
         <Dialog open={isBlockDialogOpen} onOpenChange={setIsBlockDialogOpen}>
