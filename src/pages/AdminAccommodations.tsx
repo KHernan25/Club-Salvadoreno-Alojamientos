@@ -606,10 +606,9 @@ const AdminAccommodations = () => {
                   onValueChange={setLocationFilter}
                 >
                   <SelectTrigger className="w-40">
-                    <SelectValue placeholder="Todas las ubicaciones" />
+                    <SelectValue placeholder="Seleccionar ubicación" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todas las ubicaciones</SelectItem>
                     <SelectItem value="el-sunzal">El Sunzal</SelectItem>
                     <SelectItem value="corinto">Corinto</SelectItem>
                   </SelectContent>

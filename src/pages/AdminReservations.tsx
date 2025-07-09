@@ -542,7 +542,7 @@ const AdminReservations = () => {
             </p>
             {/* Debug info */}
             <div className="text-xs text-gray-500 mt-1">
-              👤 {getCurrentUser()?.firstName || "No autenticado"} | 🔑{" "}
+              �� {getCurrentUser()?.firstName || "No autenticado"} | 🔑{" "}
               {getAuthToken() ? "Token OK" : "Sin token"} | 👥 {users.length}{" "}
               usuarios cargados
             </div>
@@ -644,10 +644,9 @@ const AdminReservations = () => {
                   onValueChange={setLocationFilter}
                 >
                   <SelectTrigger className="w-40">
-                    <SelectValue placeholder="Todas las ubicaciones" />
+                    <SelectValue placeholder="Seleccionar ubicación" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todas las ubicaciones</SelectItem>
                     <SelectItem value="el-sunzal">
                       <div className="flex items-center space-x-2">
                         <MapPin className="h-4 w-4 text-blue-600" />
