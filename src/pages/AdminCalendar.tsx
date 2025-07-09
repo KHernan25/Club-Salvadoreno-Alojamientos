@@ -1184,6 +1184,19 @@ const AdminCalendar = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Mini Calendar and Filters */}
+          <div className="space-y-6">
+            <MiniCalendar
+              selectedDate={selectedDate}
+              onDateSelect={setSelectedDate}
+              selectedAccommodationType={selectedAccommodationType}
+              onAccommodationTypeChange={setSelectedAccommodationType}
+              selectedDateRange={selectedDateRange}
+              onDateRangeChange={setSelectedDateRange}
+              className="w-full"
+            />
+          </div>
         </div>
 
         {/* Block Dates Dialog */}
