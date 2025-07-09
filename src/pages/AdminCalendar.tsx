@@ -47,6 +47,7 @@ import {
   Users,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
+import MiniCalendar from "@/components/MiniCalendar";
 import { apiGetAccommodations, apiGetReservations } from "@/lib/api-service";
 
 interface BlockedDate {
