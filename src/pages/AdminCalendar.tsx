@@ -82,6 +82,12 @@ const AdminCalendar = () => {
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("all");
   const [selectedLocation, setSelectedLocation] = useState<string>("el-sunzal");
+  const [selectedAccommodationType, setSelectedAccommodationType] =
+    useState<string>("apartamento");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [selectedDateRange, setSelectedDateRange] = useState<
+    { from: Date; to: Date } | undefined
+  >();
 
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] =
