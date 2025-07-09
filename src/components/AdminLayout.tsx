@@ -29,6 +29,7 @@ import {
   MapPin,
   Globe,
   UserCheck,
+  FileText,
 } from "lucide-react";
 import {
   getCurrentUser,
@@ -50,8 +51,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const currentUser = getCurrentUser();
 
   const handleLogout = async () => {
-    // Navegar inmediatamente al backoffice login
-    navigate("/backoffice/login");
+    // Navegar inmediatamente al backoffice
+    navigate("/backoffice");
     // Limpiar sesión en segundo plano
     await logout();
   };
@@ -66,6 +67,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       href: "/admin/dashboard",
       icon: BarChart3,
       permission: "canViewDashboard",
+    },
+    {
+      label: "Bitácora del Día",
+      href: "/admin/activity-log",
+      icon: FileText,
+      permission: "canViewDashboard", // All roles can access activity log
     },
     {
       label: "Usuarios",
@@ -303,6 +310,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <div>
                 <h1 className="text-xl font-semibold text-gray-900">
                   {location.pathname === "/admin/dashboard" && "Dashboard"}
+                  {location.pathname === "/admin/activity-log" &&
+                    "Bitácora del Día"}
                   {location.pathname === "/admin/users" &&
                     "Gestión de Usuarios"}
                   {location.pathname === "/admin/registration-requests" &&

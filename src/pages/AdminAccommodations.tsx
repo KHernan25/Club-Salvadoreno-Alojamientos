@@ -85,7 +85,7 @@ const AdminAccommodations = () => {
   } = useUnifiedData();
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [locationFilter, setLocationFilter] = useState("all");
+  const [locationFilter, setLocationFilter] = useState("el-sunzal");
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedAccommodation, setSelectedAccommodation] =
     useState<UnifiedAccommodation | null>(null);
@@ -606,10 +606,9 @@ const AdminAccommodations = () => {
                   onValueChange={setLocationFilter}
                 >
                   <SelectTrigger className="w-40">
-                    <SelectValue placeholder="Todas las ubicaciones" />
+                    <SelectValue placeholder="Seleccionar ubicación" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todas las ubicaciones</SelectItem>
                     <SelectItem value="el-sunzal">El Sunzal</SelectItem>
                     <SelectItem value="corinto">Corinto</SelectItem>
                   </SelectContent>
