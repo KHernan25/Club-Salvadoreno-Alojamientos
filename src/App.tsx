@@ -130,6 +130,14 @@ const App = () => (
                 }
               />
               <Route
+                path="/admin/activity-log"
+                element={
+                  <AdminProtectedRoute requiredRole="mercadeo">
+                    <AdminActivityLog />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
                 path="/admin/users"
                 element={
                   <AdminProtectedRoute requiredRole="atencion_miembro">
