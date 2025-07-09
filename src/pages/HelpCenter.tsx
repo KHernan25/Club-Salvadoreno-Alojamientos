@@ -62,7 +62,7 @@ const HelpCenter = () => {
       category: "reservations",
       question: "¿Puedo modificar o cancelar mi reserva?",
       answer:
-        "Sí, puedes modificar o cancelar tu reserva:\n\n**Modificaciones:**\n- Disponibles hasta 48 horas antes del check-in\n- Sujetas a disponibilidad\n- Pueden aplicar diferencias de precio\n\n**Cancelaciones:**\n- Gratuitas hasta 7 días antes del check-in\n- Entre 7-2 días: cargo del 50%\n- Menos de 48 horas: cargo del 100%\n\nPuedes gestionar tu reserva desde 'Mis Reservas' en tu perfil.",
+        "Sí, puedes modificar o cancelar tu reserva:\n\nModificaciones:\n- Disponibles hasta 48 horas antes del check-in\n- Sujetas a disponibilidad\n- Pueden aplicar diferencias de precio\n\nCancelaciones:\n- Gratuitas hasta 7 días antes del check-in\n- Entre 7-2 días: cargo del 50%\n- Menos de 48 horas: cargo del 100%\n\nPuedes gestionar tu reserva desde 'Mis Reservas' en tu perfil.",
       tags: ["cancelar", "modificar", "cambios"],
     },
     {
@@ -70,7 +70,7 @@ const HelpCenter = () => {
       category: "payments",
       question: "¿Qué métodos de pago aceptan?",
       answer:
-        "Aceptamos los siguientes métodos de pago seguros:\n\n• **Tarjetas de crédito:** Visa, Mastercard, American Express\n• **Tarjetas de débito:** Con logo Visa o Mastercard\n• **Transferencias bancarias:** Para reservas con más de 30 días de anticipación\n• **PayPal:** Disponible para huéspedes internacionales\n\nTodos los pagos son procesados de forma segura con encriptación SSL.",
+        "Aceptamos los siguientes métodos de pago seguros:\n\n• Tarjetas de crédito: Visa, Mastercard, American Express\n• Tarjetas de débito: Con logo Visa o Mastercard\n• Transferencias bancarias: Para reservas con más de 30 días de anticipación\n• PayPal: Disponible para huéspedes internacionales\n\nTodos los pagos son procesados de forma segura con encriptación SSL.",
       tags: ["pago", "tarjeta", "paypal", "transferencia"],
     },
     {
@@ -78,7 +78,7 @@ const HelpCenter = () => {
       category: "payments",
       question: "¿Cuándo se cobra el pago?",
       answer:
-        "El proceso de pago es el siguiente:\n\n• **Reserva confirmada:** 30% al momento de la reserva\n• **Pago restante:** 7 días antes del check-in\n• **Depósito de seguridad:** $100 USD (reembolsable)\n\nPara estancias de más de 30 días, ofrecemos planes de pago especiales. El depósito de seguridad se reembolsa 3-5 días después del check-out, descontando cualquier daño o cargo adicional.",
+        "El proceso de pago es el siguiente:\n\n• Reserva confirmada: 30% al momento de la reserva\n• Pago restante: 7 días antes del check-in\n• Depósito de seguridad: $100 USD (reembolsable)\n\nPara estancias de más de 30 días, ofrecemos planes de pago especiales. El depósito de seguridad se reembolsa 3-5 días después del check-out, descontando cualquier daño o cargo adicional.",
       tags: ["cobro", "depósito", "cuando", "plazos"],
     },
     {
@@ -86,7 +86,7 @@ const HelpCenter = () => {
       category: "locations",
       question: "¿Dónde están ubicadas las propiedades?",
       answer:
-        "Tenemos propiedades en dos ubicaciones principales:\n\n**Corinto:**\n• Casas familiares y apartamentos\n• Cerca de la playa y restaurantes\n• Ideal para familias\n• Acceso a actividades acuáticas\n\n**El Sunzal:**\n• Apartamentos, casas y suites\n• Zona surfista reconocida mundialmente\n• Ambiente más juvenil y aventurero\n• Cerca de puntos de surf famosos\n\nAmbas ubicaciones ofrecen fácil acceso a servicios y atracciones locales.",
+        "Tenemos propiedades en dos ubicaciones principales:\n\nCorinto:\n• Casas familiares y apartamentos\n• Cerca de la playa y restaurantes\n• Ideal para familias\n• Acceso a actividades acuáticas\n\nEl Sunzal:\n• Apartamentos, casas y suites\n• Zona surfista reconocida mundialmente\n• Ambiente más juvenil y aventurero\n• Cerca de puntos de surf famosos\n\nAmbas ubicaciones ofrecen fácil acceso a servicios y atracciones locales.",
       tags: ["ubicación", "corinto", "el sunzal", "donde"],
     },
     {
@@ -94,7 +94,7 @@ const HelpCenter = () => {
       category: "locations",
       question: "¿Qué servicios incluyen las propiedades?",
       answer:
-        "Nuestras propiedades incluyen:\n\n**Servicios básicos incluidos:**\n• WiFi de alta velocidad\n• Aire acondicionado\n• Cocina completamente equipada\n• Ropa de cama y toallas\n• Productos de limpieza básicos\n• Acceso a áreas comunes\n\n**Servicios adicionales (según propiedad):**\n• Piscina privada o comunitaria\n• Jardín o terraza\n• Parrilla/BBQ\n• Estacionamiento\n• Servicio de limpieza\n• Lavandería",
+        "Nuestras propiedades incluyen:\n\nServicios básicos incluidos:\n• WiFi de alta velocidad\n• Aire acondicionado\n• Cocina completamente equipada\n• Ropa de cama y toallas\n• Productos de limpieza básicos\n• Acceso a áreas comunes\n\nServicios adicionales (según propiedad):\n• Piscina privada o comunitaria\n• Jardín o terraza\n• Parrilla/BBQ\n• Estacionamiento\n• Servicio de limpieza\n• Lavandería",
       tags: ["servicios", "incluido", "wifi", "cocina"],
     },
     {
@@ -102,7 +102,7 @@ const HelpCenter = () => {
       category: "account",
       question: "¿Cómo creo una cuenta?",
       answer:
-        "Crear una cuenta es fácil y gratuito:\n\n1. Haz clic en 'Registrarse' en la página principal\n2. Completa la información requerida:\n   • Nombre completo\n   • Email válido\n   • Contraseña segura\n   • Número de teléfono\n3. Verifica tu email (revisa spam/promociones)\n4. Completa tu perfil con información adicional\n\n**Beneficios de tener cuenta:**\n• Reservas más rápidas\n• Historial de estadías\n• Ofertas exclusivas\n• Soporte prioritario",
+        "Crear una cuenta es fácil y gratuito:\n\n1. Haz clic en 'Registrarse' en la página principal\n2. Completa la información requerida:\n   • Nombre completo\n   • Email válido\n   • Contraseña segura\n   • Número de teléfono\n3. Verifica tu email (revisa spam/promociones)\n4. Completa tu perfil con información adicional\n\nBeneficios de tener cuenta:\n• Reservas más rápidas\n• Historial de estadías\n• Ofertas exclusivas\n• Soporte prioritario",
       tags: ["cuenta", "registro", "crear", "perfil"],
     },
     {
@@ -110,7 +110,7 @@ const HelpCenter = () => {
       category: "account",
       question: "¿Cómo actualizo mi información personal?",
       answer:
-        "Para actualizar tu información:\n\n1. Inicia sesión en tu cuenta\n2. Ve a 'Mi Perfil' en el menú\n3. Haz clic en 'Editar información'\n4. Actualiza los campos necesarios\n5. Guarda los cambios\n\n**Información que puedes actualizar:**\n• Datos personales\n• Información de contacto\n• Preferencias de comunicación\n• Foto de perfil\n• Contraseña\n\nAlgunos cambios pueden requerir verificación adicional por seguridad.",
+        "Para actualizar tu información:\n\n1. Inicia sesión en tu cuenta\n2. Ve a 'Mi Perfil' en el menú\n3. Haz clic en 'Editar información'\n4. Actualiza los campos necesarios\n5. Guarda los cambios\n\nInformación que puedes actualizar:\n• Datos personales\n• Información de contacto\n• Preferencias de comunicación\n• Foto de perfil\n• Contraseña\n\nAlgunos cambios pueden requerir verificación adicional por seguridad.",
       tags: ["actualizar", "perfil", "información", "cambiar"],
     },
     {
@@ -118,7 +118,7 @@ const HelpCenter = () => {
       category: "policies",
       question: "¿Cuál es la política de check-in y check-out?",
       answer:
-        "**Horarios estándar:**\n• **Check-in:** 3:00 PM - 8:00 PM\n• **Check-out:** Hasta las 11:00 AM\n\n**Check-in tardío:**\n• 8:00 PM - 10:00 PM: Sin costo adicional (previa coordinación)\n• Después de 10:00 PM: Cargo de $25 USD\n\n**Check-out tardío:**\n• Hasta 1:00 PM: $20 USD (sujeto a disponibilidad)\n• Después de 1:00 PM: Se cobra noche adicional\n\n**Proceso de check-in:**\n1. Confirmación de identidad\n2. Registro de huéspedes\n3. Entrega de llaves/códigos\n4. Tour de la propiedad\n5. Información local",
+        "Horarios estándar:\n• Check-in: 3:00 PM\n• Check-out: Hasta las 12:00 MD\n\n**Proceso de check-in:**\n1. Confirmación de identidad\n2. Registro de huéspedes\n3. Entrega de llaves/códigos\n4. Tour de la propiedad\n5. Información local",
       tags: ["check-in", "check-out", "horarios", "llegada"],
     },
     {
@@ -126,7 +126,7 @@ const HelpCenter = () => {
       category: "policies",
       question: "¿Permiten mascotas?",
       answer:
-        "**Política de mascotas:**\n\nAlgunas de nuestras propiedades permiten mascotas con las siguientes condiciones:\n\n• **Cargo adicional:** $25 USD por noche por mascota\n• **Máximo:** 2 mascotas por reserva\n• **Peso límite:** Hasta 25 kg por mascota\n• **Documentación requerida:** Vacunas al día\n• **Depósito adicional:** $100 USD (reembolsable)\n\n**Restricciones:**\n• No se permiten en camas o muebles\n• Deben estar supervisadas en todo momento\n• Limpieza de desechos es responsabilidad del huésped\n\n*Verifica la disponibilidad para mascotas al hacer tu reserva.*",
+        "Política de mascotas:\n\nAlgunas de nuestras propiedades permiten mascotas con las siguientes condiciones:\n\n• Cargo adicional: $25 USD por noche por mascota\n• Máximo: 2 mascotas por reserva\n• Peso límite: Hasta 25 kg por mascota\n• Documentación requerida: Vacunas al día\n• Depósito adicional: $100 USD (reembolsable)\n\nRestricciones:\n• No se permiten en camas o muebles\n• Deben estar supervisadas en todo momento\n• Limpieza de desechos es responsabilidad del huésped\n\nVerifica la disponibilidad para mascotas al hacer tu reserva.",
       tags: ["mascotas", "perros", "gatos", "política"],
     },
   ];
