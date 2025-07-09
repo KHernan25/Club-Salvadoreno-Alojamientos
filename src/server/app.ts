@@ -168,6 +168,16 @@ app.get("/api", (req: Request, res: Response) => {
           "POST /api/registration-requests/:id/reject - Rechazar solicitud",
         ],
       },
+      activityLog: {
+        path: "/api/activity-log",
+        methods: ["GET", "POST", "DELETE"],
+        description: "Bitácora de actividades diarias",
+        endpoints: [
+          "GET /api/activity-log - Obtener entradas de actividad",
+          "POST /api/activity-log - Crear nueva entrada de actividad",
+          "DELETE /api/activity-log/:id - Eliminar entrada (SuperAdmin únicamente)",
+        ],
+      },
       reviews: {
         path: "/api/reviews",
         methods: ["GET", "POST", "PUT", "DELETE"],
