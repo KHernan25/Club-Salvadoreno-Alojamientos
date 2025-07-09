@@ -1101,13 +1101,9 @@ const AdminCalendar = () => {
                     permiten nuevas reservas.
                   </div>
                   <div className="p-2 bg-purple-50 border border-purple-200 rounded text-purple-700">
-                    <span className="font-medium">📍 Ubicaciones:</span> En la
-                    vista "Todas las ubicaciones", las fechas tienen un borde
-                    lateral que indica la ubicación:
-                    <span className="inline-block w-3 h-3 bg-gray-200 border-l-2 border-l-blue-500 mx-1"></span>
-                    Azul para El Sunzal y
-                    <span className="inline-block w-3 h-3 bg-gray-200 border-l-2 border-l-green-500 mx-1"></span>
-                    Verde para Corinto.
+                    <span className="font-medium">📍 Ubicaciones:</span> Cambia
+                    entre El Sunzal y Corinto usando las pestañas superiores
+                    para ver las reservas específicas de cada ubicación.
                   </div>
                 </div>
                 <div className="mt-3 pt-3 border-t border-gray-200">
