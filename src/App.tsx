@@ -35,6 +35,7 @@ import NotFound from "./pages/NotFound";
 import BackofficeLogin from "./pages/BackofficeLogin";
 import UploadDocuments from "./pages/UploadDocuments";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminActivityLog from "./pages/AdminActivityLog";
 import AdminUsers from "./pages/AdminUsers";
 import AdminAccommodations from "./pages/AdminAccommodations";
 import AdminReservations from "./pages/AdminReservations";
