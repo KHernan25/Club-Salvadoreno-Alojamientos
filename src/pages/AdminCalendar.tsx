@@ -80,7 +80,7 @@ const AdminCalendar = () => {
   const [reservations, setReservations] = useState<CalendarReservation[]>([]);
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("all");
-  const [selectedLocation, setSelectedLocation] = useState<string>("all");
+  const [selectedLocation, setSelectedLocation] = useState<string>("el-sunzal");
 
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] =
@@ -912,8 +912,7 @@ const AdminCalendar = () => {
                 onValueChange={setSelectedLocation}
                 className="w-full"
               >
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="all">Todas las Ubicaciones</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="el-sunzal">
                     <MapPin className="h-4 w-4 mr-1" />
                     El Sunzal
