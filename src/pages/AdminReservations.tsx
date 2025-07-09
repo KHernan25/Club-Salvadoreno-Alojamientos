@@ -89,7 +89,7 @@ const AdminReservations = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [locationFilter, setLocationFilter] = useState("all");
+  const [locationFilter, setLocationFilter] = useState("el-sunzal");
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [isNewReservationDialogOpen, setIsNewReservationDialogOpen] =
