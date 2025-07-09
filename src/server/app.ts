@@ -12,6 +12,7 @@ import { pricingRoutes } from "./routes/pricing";
 import { contactRoutes } from "./routes/contact";
 import { notificationRoutes } from "./routes/notifications";
 import registrationRequestsRouter from "./routes/registration-requests";
+import activityLogRouter from "./routes/activity-log";
 import { errorHandler } from "./middleware/errorHandler";
 
 // Crear aplicación Express
@@ -167,6 +168,16 @@ app.get("/api", (req: Request, res: Response) => {
           "POST /api/registration-requests/:id/reject - Rechazar solicitud",
         ],
       },
+      activityLog: {
+        path: "/api/activity-log",
+        methods: ["GET", "POST", "DELETE"],
+        description: "Bitácora de actividades diarias",
+        endpoints: [
+          "GET /api/activity-log - Obtener entradas de actividad",
+          "POST /api/activity-log - Crear nueva entrada de actividad",
+          "DELETE /api/activity-log/:id - Eliminar entrada (SuperAdmin únicamente)",
+        ],
+      },
       reviews: {
         path: "/api/reviews",
         methods: ["GET", "POST", "PUT", "DELETE"],
@@ -206,6 +217,7 @@ app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/registration-requests", registrationRequestsRouter);
+app.use("/api/activity-log", activityLogRouter);
 
 // 404 handler
 app.use("*", (req: Request, res: Response) => {

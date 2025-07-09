@@ -47,6 +47,7 @@ import {
   Users,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
+import MiniCalendar from "@/components/MiniCalendar";
 import { apiGetAccommodations, apiGetReservations } from "@/lib/api-service";
 
 interface BlockedDate {
@@ -80,7 +81,13 @@ const AdminCalendar = () => {
   const [reservations, setReservations] = useState<CalendarReservation[]>([]);
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("all");
-  const [selectedLocation, setSelectedLocation] = useState<string>("all");
+  const [selectedLocation, setSelectedLocation] = useState<string>("el-sunzal");
+  const [selectedAccommodationType, setSelectedAccommodationType] =
+    useState<string>("apartamento");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [selectedDateRange, setSelectedDateRange] = useState<
+    { from: Date; to: Date } | undefined
+  >();
 
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] =
@@ -897,9 +904,9 @@ const AdminCalendar = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 2xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           {/* Calendar View */}
-          <Card className="2xl:col-span-3">
+          <Card className="xl:col-span-3">
             <CardHeader>
               <CardTitle>Calendario de Reservas</CardTitle>
               <CardDescription>
@@ -912,8 +919,7 @@ const AdminCalendar = () => {
                 onValueChange={setSelectedLocation}
                 className="w-full"
               >
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="all">Todas las Ubicaciones</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="el-sunzal">
                     <MapPin className="h-4 w-4 mr-1" />
                     El Sunzal
@@ -1095,13 +1101,9 @@ const AdminCalendar = () => {
                     permiten nuevas reservas.
                   </div>
                   <div className="p-2 bg-purple-50 border border-purple-200 rounded text-purple-700">
-                    <span className="font-medium">📍 Ubicaciones:</span> En la
-                    vista "Todas las ubicaciones", las fechas tienen un borde
-                    lateral que indica la ubicación:
-                    <span className="inline-block w-3 h-3 bg-gray-200 border-l-2 border-l-blue-500 mx-1"></span>
-                    Azul para El Sunzal y
-                    <span className="inline-block w-3 h-3 bg-gray-200 border-l-2 border-l-green-500 mx-1"></span>
-                    Verde para Corinto.
+                    <span className="font-medium">📍 Ubicaciones:</span> Cambia
+                    entre El Sunzal y Corinto usando las pestañas superiores
+                    para ver las reservas específicas de cada ubicación.
                   </div>
                 </div>
                 <div className="mt-3 pt-3 border-t border-gray-200">
@@ -1178,6 +1180,19 @@ const AdminCalendar = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Mini Calendar and Filters */}
+          <div className="space-y-6">
+            <MiniCalendar
+              selectedDate={selectedDate}
+              onDateSelect={setSelectedDate}
+              selectedAccommodationType={selectedAccommodationType}
+              onAccommodationTypeChange={setSelectedAccommodationType}
+              selectedDateRange={selectedDateRange}
+              onDateRangeChange={setSelectedDateRange}
+              className="w-full"
+            />
+          </div>
         </div>
 
         {/* Block Dates Dialog */}
