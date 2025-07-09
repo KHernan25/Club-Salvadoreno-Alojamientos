@@ -300,12 +300,12 @@ export const logout = async (): Promise<void> => {
       window.location.pathname.startsWith("/admin") ||
       window.location.pathname.startsWith("/backoffice");
 
-    const loginPath = isBackofficeContext ? "/backoffice/login" : "/login";
+    const loginPath = isBackofficeContext ? "/backoffice" : "/login";
     window.history.replaceState(null, "", loginPath);
   }
 };
 
-// Verificar si la sesión es válida (no expirada, etc.)
+// Verificar si la sesión es v��lida (no expirada, etc.)
 export const isSessionValid = (): boolean => {
   const session = getCurrentSession();
   if (!session) return false;
