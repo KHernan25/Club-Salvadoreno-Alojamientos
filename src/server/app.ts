@@ -12,6 +12,7 @@ import { pricingRoutes } from "./routes/pricing";
 import { contactRoutes } from "./routes/contact";
 import { notificationRoutes } from "./routes/notifications";
 import registrationRequestsRouter from "./routes/registration-requests";
+import activityLogRouter from "./routes/activity-log";
 import { errorHandler } from "./middleware/errorHandler";
 
 // Crear aplicación Express
@@ -206,6 +207,7 @@ app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/registration-requests", registrationRequestsRouter);
+app.use("/api/activity-log", activityLogRouter);
 
 // 404 handler
 app.use("*", (req: Request, res: Response) => {
