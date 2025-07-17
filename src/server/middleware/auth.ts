@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { findUserById } from "../../lib/user-database";
 import { createError } from "./errorHandler";
+import { config } from "../../lib/config";
 
 export interface AuthenticatedRequest extends Request {
   user?: any;
@@ -20,7 +21,7 @@ export const authenticateToken = async (
       throw createError("Token de acceso requerido", 401);
     }
 
-    const jwtSecret = process.env.JWT_SECRET || "your-secret-key";
+    const jwtSecret = config.auth.jwtSecret;
     const decoded = jwt.verify(token, jwtSecret) as any;
 
     // Verificar que el usuario aún existe y está activo
@@ -92,7 +93,7 @@ export const optionalAuth = async (
     const token = authHeader && authHeader.split(" ")[1];
 
     if (token) {
-      const jwtSecret = process.env.JWT_SECRET || "your-secret-key";
+      const jwtSecret = config.auth.jwtSecret;
       const decoded = jwt.verify(token, jwtSecret) as any;
       const user = findUserById(decoded.userId);
 
