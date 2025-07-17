@@ -30,9 +30,22 @@ router.post(
       req.body;
     const user = req.user;
 
+    // Obtener datos de la base de datos
+    const existingReservations = database.getAllReservations();
+    const mockUsers = [
+      {
+        id: user.id,
+        type: user.role,
+        name: user.fullName,
+        email: user.email,
+        isActive: user.isActive,
+        familyMembers: [],
+      },
+    ];
+
     // Inicializar servicio de validación con datos actuales
     const validationService = new ReservationValidationService(
-      reservations,
+      existingReservations,
       mockUsers,
     );
 
@@ -69,9 +82,9 @@ router.post(
       );
     }
 
-    // Verificar que el alojamiento existe y obtener precios
-    const rates = getAccommodationRates(accommodationId);
-    if (!rates) {
+    // Verificar que el alojamiento existe
+    const accommodation = database.getAccommodationById(accommodationId);
+    if (!accommodation) {
       throw createError("Alojamiento no encontrado", 404);
     }
 
@@ -81,7 +94,7 @@ router.post(
     const priceCalculation = calculateStayPrice(
       checkInDate,
       checkOutDate,
-      rates,
+      accommodation.pricing,
     );
 
     // Calcular información de pago según reglas de negocio
@@ -98,29 +111,19 @@ router.post(
     );
 
     // Crear reserva
-    const reservation: Reservation = {
-      id: uuidv4(),
+    const reservationId = database.createReservation({
       userId: user.id,
-      userType: mockUsers.find((u) => u.id === user.id)?.type || "miembro",
       accommodationId,
-      accommodationType,
       checkIn,
       checkOut,
       guests,
-      specialRequests: specialRequests || "",
-      status: "pending",
       totalPrice: priceCalculation.totalPrice,
-      priceBreakdown: priceCalculation,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      paymentStatus: paymentInfo.paymentRequired ? "pending" : "exempt",
-      confirmationCode: Math.random()
-        .toString(36)
-        .substring(2, 8)
-        .toUpperCase(),
-    };
+      status: "pending",
+      specialRequests: specialRequests || "",
+      breakdown: priceCalculation,
+    });
 
-    reservations.push(reservation);
+    const reservation = database.getReservationById(reservationId);
 
     // Preparar respuesta con información de reglas de negocio
     const responseData = {
