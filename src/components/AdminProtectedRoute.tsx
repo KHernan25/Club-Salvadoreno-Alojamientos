@@ -111,7 +111,12 @@ const AdminProtectedRoute = ({
   const currentUser = getCurrentUser();
 
   // Renderizar solo si está autenticado y tiene permisos
-  if (!requireAuth() || !hasRole(requiredRole)) {
+  const hasAccess =
+    allowedRoles && allowedRoles.length > 0
+      ? allowedRoles.some((role) => hasRole(role))
+      : hasRole(requiredRole);
+
+  if (!requireAuth() || !hasAccess) {
     return null;
   }
 
