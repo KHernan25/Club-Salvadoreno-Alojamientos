@@ -202,6 +202,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: false,
         canDetectMembers: false,
         canRegisterCompanions: true,
+        canViewReports: false,
       };
     case "porteria":
       return {
