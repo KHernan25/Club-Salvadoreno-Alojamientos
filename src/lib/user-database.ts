@@ -17,6 +17,7 @@ export interface User {
     | "monitor"
     | "mercadeo"
     | "recepcion"
+    | "porteria"
     | "miembro";
   isActive: boolean;
   status?: "pending" | "approved" | "rejected";
@@ -49,6 +50,10 @@ export interface RolePermissions {
   canCreateRoles: boolean;
   canEditSiteContent: boolean; // Nuevo permiso para editar contenido del sitio
   canManageImages: boolean; // Nuevo permiso para gestionar imágenes
+  canManageAccessControl: boolean; // Gestionar control de acceso
+  canViewAccessHistory: boolean; // Ver historial de accesos
+  canDetectMembers: boolean; // Detectar miembros en pluma de acceso
+  canRegisterCompanions: boolean; // Registrar acompañantes
 }
 
 export const getRolePermissions = (role: User["role"]): RolePermissions => {
