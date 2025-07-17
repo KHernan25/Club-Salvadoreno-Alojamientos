@@ -134,7 +134,7 @@ const AdminUsers = () => {
 
       // Filtrar usuarios según permisos
       let filteredUsers = response;
-      if (currentUser && !isSuperAdmin(currentUser)) {
+      if (currentUser && !isSuperAdmin()) {
         // Solo superadmin puede ver usuarios de backoffice
         filteredUsers = response.filter((user) => user.role === "miembro");
       }
