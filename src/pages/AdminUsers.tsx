@@ -771,16 +771,20 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos los roles</SelectItem>
-                    <SelectItem value="super_admin">
-                      Super Administrador
-                    </SelectItem>
-                    <SelectItem value="atencion_miembro">
-                      Atención al Miembro
-                    </SelectItem>
-                    <SelectItem value="anfitrion">Anfitrión</SelectItem>
-                    <SelectItem value="monitor">Monitor</SelectItem>
-                    <SelectItem value="mercadeo">Mercadeo</SelectItem>
-                    <SelectItem value="recepcion">Recepción</SelectItem>
+                    {currentUser && isSuperAdmin(currentUser) && (
+                      <>
+                        <SelectItem value="super_admin">
+                          Super Administrador
+                        </SelectItem>
+                        <SelectItem value="atencion_miembro">
+                          Atención al Miembro
+                        </SelectItem>
+                        <SelectItem value="anfitrion">Anfitrión</SelectItem>
+                        <SelectItem value="monitor">Monitor</SelectItem>
+                        <SelectItem value="mercadeo">Mercadeo</SelectItem>
+                        <SelectItem value="recepcion">Recepción</SelectItem>
+                      </>
+                    )}
                     <SelectItem value="miembro">Miembro</SelectItem>
                   </SelectContent>
                 </Select>
