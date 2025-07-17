@@ -244,7 +244,7 @@ class AlertService {
           title: alert.title,
           message: alert.message,
           actionUrl: alert.data.actions?.[0]?.url || "/my-reservations",
-          priority: alert.severity,
+          priority: alert.severity === "critical" ? "high" : alert.severity,
         },
       });
       return true;
