@@ -38,10 +38,14 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [apiConnected, setApiConnected] = useState(false);
 
-  // Redirect porteria users to their specific dashboard
+  // Redirect users to their specific dashboards
   useEffect(() => {
     if (currentUser?.role === "porteria") {
       navigate("/admin/porteria", { replace: true });
+      return;
+    }
+    if (currentUser?.role === "anfitrion") {
+      navigate("/admin/anfitrion", { replace: true });
       return;
     }
   }, [currentUser, navigate]);
