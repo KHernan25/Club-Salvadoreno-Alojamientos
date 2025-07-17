@@ -419,7 +419,7 @@ router.delete(
 
     // Cancelar reserva
     reservation.status = "cancelled";
-    reservation.updatedAt = new Date();
+    reservation.updatedAt = new Date().toISOString();
 
     // En implementación real, manejar reembolsos automáticos
     if (reservation.paymentStatus === "paid") {
