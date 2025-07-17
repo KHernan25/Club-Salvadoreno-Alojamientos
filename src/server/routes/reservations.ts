@@ -174,7 +174,9 @@ router.get(
     const status = req.query.status as string;
 
     // Filtrar reservas del usuario
-    let userReservations = reservations.filter((r) => r.userId === user.id);
+    let userReservations = database.reservations.filter(
+      (r) => r.userId === user.id,
+    );
 
     // Filtrar por estado si se especifica
     if (status) {
