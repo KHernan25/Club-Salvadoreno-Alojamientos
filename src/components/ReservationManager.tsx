@@ -422,9 +422,11 @@ const ReservationManager = () => {
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">
-                            <p className="flex items-center">
-                              Check-in:{" "}
-                              {reservation.checkInDate.toLocaleDateString()}
+                            <div className="flex items-center">
+                              <span>
+                                Check-in:{" "}
+                                {reservation.checkInDate.toLocaleDateString()}
+                              </span>
                               {isToday(reservation.checkInDate) && (
                                 <Badge
                                   variant="outline"
@@ -433,10 +435,12 @@ const ReservationManager = () => {
                                   HOY
                                 </Badge>
                               )}
-                            </p>
-                            <p className="flex items-center text-gray-600">
-                              Check-out:{" "}
-                              {reservation.checkOutDate.toLocaleDateString()}
+                            </div>
+                            <div className="flex items-center text-gray-600">
+                              <span>
+                                Check-out:{" "}
+                                {reservation.checkOutDate.toLocaleDateString()}
+                              </span>
                               {isToday(reservation.checkOutDate) && (
                                 <Badge
                                   variant="outline"
@@ -445,7 +449,7 @@ const ReservationManager = () => {
                                   HOY
                                 </Badge>
                               )}
-                            </p>
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell>
