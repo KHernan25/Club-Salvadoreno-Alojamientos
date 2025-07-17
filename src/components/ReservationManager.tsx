@@ -398,13 +398,13 @@ const ReservationManager = () => {
                         </TableCell>
                         <TableCell>
                           <div>
-                            <p className="font-medium">
+                            <div className="font-medium">
                               {reservation.guestName}
-                            </p>
-                            <p className="text-sm text-gray-600 flex items-center">
+                            </div>
+                            <div className="text-sm text-gray-600 flex items-center">
                               <Users className="w-3 h-3 mr-1" />
                               {reservation.numberOfGuests} huéspedes
-                            </p>
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell>
