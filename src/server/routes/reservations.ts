@@ -236,8 +236,8 @@ router.get(
           specialRequests: r.specialRequests,
           status: r.status,
           totalPrice: r.totalPrice,
-          confirmationCode: r.confirmationCode,
-          paymentStatus: r.paymentStatus,
+          confirmationCode: r.id.slice(-8).toUpperCase(),
+          paymentStatus: "pending",
           createdAt: r.createdAt,
         })),
         pagination: {
