@@ -158,7 +158,7 @@ export class PushNotificationService {
         body: data.body,
         icon: data.icon || "/icons/notification-icon.png",
         badge: data.badge || "/icons/notification-badge.png",
-        image: data.image,
+
         data: data.data,
         actions: data.actions,
         requireInteraction: data.requireInteraction || false,

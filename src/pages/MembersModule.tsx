@@ -163,7 +163,7 @@ const MembersModule = () => {
       isActive: true,
       status: "approved",
       memberStatus: "activo",
-      membershipType: "contribuyente",
+      membershipType: "Contribuyente",
       createdAt: new Date("2024-02-01"),
     },
     {
@@ -178,7 +178,7 @@ const MembersModule = () => {
       isActive: true,
       status: "approved",
       memberStatus: "activo",
-      membershipType: "fundador",
+      membershipType: "Fundador",
       createdAt: new Date("2024-02-10"),
     },
     {
@@ -193,7 +193,7 @@ const MembersModule = () => {
       isActive: true,
       status: "approved",
       memberStatus: "en_mora",
-      membershipType: "honorario",
+      membershipType: "Honorario",
       createdAt: new Date("2024-02-15"),
     },
     {
@@ -208,7 +208,7 @@ const MembersModule = () => {
       isActive: false,
       status: "approved",
       memberStatus: "inactivo",
-      membershipType: "benefactor",
+      membershipType: "Honorario",
       createdAt: new Date("2024-01-20"),
     },
     {
@@ -222,8 +222,8 @@ const MembersModule = () => {
       role: "miembro",
       isActive: true,
       status: "pending",
-      memberStatus: "pendiente",
-      membershipType: "contribuyente",
+      memberStatus: "activo",
+      membershipType: "Contribuyente",
       createdAt: new Date("2024-03-01"),
     },
   ];
@@ -252,11 +252,11 @@ const MembersModule = () => {
   // Contadores para las pestañas
   const tabCounts = {
     todos: members.length,
-    fundador: members.filter((m) => m.membershipType === "fundador").length,
-    contribuyente: members.filter((m) => m.membershipType === "contribuyente")
+    fundador: members.filter((m) => m.membershipType === "Fundador").length,
+    contribuyente: members.filter((m) => m.membershipType === "Contribuyente")
       .length,
-    honorario: members.filter((m) => m.membershipType === "honorario").length,
-    benefactor: members.filter((m) => m.membershipType === "benefactor").length,
+    honorario: members.filter((m) => m.membershipType === "Honorario").length,
+    benefactor: members.filter((m) => m.membershipType === "Honorario").length,
   };
 
   const handleViewDetails = (member: User) => {

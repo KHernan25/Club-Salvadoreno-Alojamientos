@@ -134,7 +134,7 @@ const AdminUsers = () => {
 
       // Filtrar usuarios según permisos
       let filteredUsers = response;
-      if (currentUser && !isSuperAdmin(currentUser)) {
+      if (currentUser && !isSuperAdmin()) {
         // Solo superadmin puede ver usuarios de backoffice
         filteredUsers = response.filter((user) => user.role === "miembro");
       }
@@ -146,7 +146,7 @@ const AdminUsers = () => {
       let mockUsers = getMockUsers();
 
       // Aplicar filtro también a datos mock
-      if (currentUser && !isSuperAdmin(currentUser)) {
+      if (currentUser && !isSuperAdmin()) {
         mockUsers = mockUsers.filter((user) => user.role === "miembro");
       }
 
@@ -674,12 +674,12 @@ const AdminUsers = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">
-              {currentUser && isSuperAdmin(currentUser)
+              {currentUser && isSuperAdmin()
                 ? "Gestión de Usuarios"
                 : "Gestión de Miembros"}
             </h1>
             <p className="text-gray-600">
-              {currentUser && isSuperAdmin(currentUser)
+              {currentUser && isSuperAdmin()
                 ? "Administra usuarios y solicitudes de registro"
                 : "Administra miembros del club y solicitudes de registro"}
             </p>
@@ -690,7 +690,7 @@ const AdminUsers = () => {
               className="bg-blue-600 hover:bg-blue-700"
             >
               <UserPlus className="mr-2 h-4 w-4" />
-              {currentUser && isSuperAdmin(currentUser)
+              {currentUser && isSuperAdmin()
                 ? "Nuevo Usuario"
                 : "Nuevo Miembro"}
             </Button>
@@ -779,7 +779,7 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos los roles</SelectItem>
-                    {currentUser && isSuperAdmin(currentUser) && (
+                    {currentUser && isSuperAdmin() && (
                       <>
                         <SelectItem value="super_admin">
                           Super Administrador
@@ -827,7 +827,7 @@ const AdminUsers = () => {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              {currentUser && isSuperAdmin(currentUser)
+              {currentUser && isSuperAdmin()
                 ? "Gestión de Usuarios"
                 : "Gestión de Miembros"}
             </CardTitle>
@@ -933,7 +933,7 @@ const AdminUsers = () => {
               <DialogTitle className="flex items-center space-x-2">
                 <Crown className="h-5 w-5 text-blue-600" />
                 <span>
-                  {currentUser && isSuperAdmin(currentUser)
+                  {currentUser && isSuperAdmin()
                     ? "Crear Nuevo Usuario"
                     : "Crear Nuevo Miembro"}
                 </span>
@@ -1033,7 +1033,7 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="miembro">Miembro</SelectItem>
-                    {currentUser && isSuperAdmin(currentUser) && (
+                    {currentUser && isSuperAdmin() && (
                       <>
                         <SelectItem value="recepcion">Recepción</SelectItem>
                         <SelectItem value="mercadeo">Mercadeo</SelectItem>

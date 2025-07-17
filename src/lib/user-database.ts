@@ -180,6 +180,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: false,
         canDetectMembers: false,
         canRegisterCompanions: false,
+        canViewReports: false,
       };
     case "recepcion":
       return {
