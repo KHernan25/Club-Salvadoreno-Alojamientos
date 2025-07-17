@@ -932,7 +932,11 @@ const AdminUsers = () => {
             <DialogHeader>
               <DialogTitle className="flex items-center space-x-2">
                 <Crown className="h-5 w-5 text-blue-600" />
-                <span>Crear Nuevo Usuario</span>
+                <span>
+                  {currentUser && isSuperAdmin(currentUser)
+                    ? "Crear Nuevo Usuario"
+                    : "Crear Nuevo Miembro"}
+                </span>
               </DialogTitle>
               <DialogDescription>
                 Solo el Super Administrador puede crear nuevos usuarios con
