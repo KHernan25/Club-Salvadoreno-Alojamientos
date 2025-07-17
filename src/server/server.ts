@@ -1,10 +1,14 @@
 import dotenv from "dotenv";
 import { app } from "./app";
+import initializeDemoData from "./scripts/init-database";
 
 // Cargar variables de entorno
 dotenv.config();
 
 const PORT = process.env.PORT || 3001;
+
+// Inicializar datos de demostración
+initializeDemoData();
 
 // Iniciar servidor
 app.listen(PORT, () => {
