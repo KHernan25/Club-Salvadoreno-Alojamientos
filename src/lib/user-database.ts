@@ -17,10 +17,19 @@ export interface User {
     | "monitor"
     | "mercadeo"
     | "recepcion"
+    | "porteria"
     | "miembro";
   isActive: boolean;
   status?: "pending" | "approved" | "rejected";
   memberStatus?: "activo" | "inactivo" | "en_mora"; // Estado específico para miembros
+  membershipType?:
+    | "Viuda"
+    | "Honorario"
+    | "Fundador"
+    | "Visitador Transeunte"
+    | "Visitador Especial"
+    | "Visitador Juvenil"
+    | "Contribuyente"; // Tipo de membresía
   lastLogin?: Date;
   createdAt: Date;
   profileImage?: string;
@@ -49,6 +58,10 @@ export interface RolePermissions {
   canCreateRoles: boolean;
   canEditSiteContent: boolean; // Nuevo permiso para editar contenido del sitio
   canManageImages: boolean; // Nuevo permiso para gestionar imágenes
+  canManageAccessControl: boolean; // Gestionar control de acceso
+  canViewAccessHistory: boolean; // Ver historial de accesos
+  canDetectMembers: boolean; // Detectar miembros en pluma de acceso
+  canRegisterCompanions: boolean; // Registrar acompañantes
 }
 
 export const getRolePermissions = (role: User["role"]): RolePermissions => {
@@ -70,6 +83,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: true,
         canEditSiteContent: true,
         canManageImages: true,
+        canManageAccessControl: true,
+        canViewAccessHistory: true,
+        canDetectMembers: true,
+        canRegisterCompanions: true,
       };
     case "atencion_miembro":
       return {
@@ -88,6 +105,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: false,
+        canManageAccessControl: false,
+        canViewAccessHistory: true,
+        canDetectMembers: false,
+        canRegisterCompanions: false,
       };
     case "anfitrion":
       return {
@@ -106,6 +127,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: true, // Anfitriones pueden gestionar imágenes de alojamientos
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: true,
       };
     case "monitor":
       return {
@@ -124,6 +149,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: false,
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: false,
       };
     case "mercadeo":
       return {
@@ -142,6 +171,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: true, // Permiso específico para editar contenido del sitio
         canManageImages: true, // Permiso específico para gestionar imágenes
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: false,
       };
     case "recepcion":
       return {
@@ -160,6 +193,32 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: false,
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: true,
+      };
+    case "porteria":
+      return {
+        canViewDashboard: true,
+        canManageUsers: false,
+        canCreateUsers: false,
+        canUpdateUsers: false,
+        canDeleteUsers: false,
+        canManageAccommodations: false,
+        canManageReservations: false,
+        canManageCalendar: false,
+        canManagePricing: false,
+        canManageMessages: false,
+        canManageSettings: false,
+        canAccessAllLocations: false,
+        canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
+        canManageAccessControl: true,
+        canViewAccessHistory: true,
+        canDetectMembers: true,
+        canRegisterCompanions: true,
       };
     default:
       return {
@@ -178,6 +237,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: false,
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: false,
       };
   }
 };
@@ -288,6 +351,7 @@ export const registeredUsers: User[] = [
     isActive: true,
     status: "approved",
     memberStatus: "activo",
+    membershipType: "Contribuyente",
     createdAt: new Date("2024-02-01"),
   },
   {
@@ -303,6 +367,7 @@ export const registeredUsers: User[] = [
     isActive: true,
     status: "approved",
     memberStatus: "activo",
+    membershipType: "Fundador",
     createdAt: new Date("2024-02-10"),
   },
   {
@@ -318,6 +383,7 @@ export const registeredUsers: User[] = [
     isActive: true,
     status: "approved",
     memberStatus: "en_mora",
+    membershipType: "Honorario",
     createdAt: new Date("2024-02-15"),
   },
   {
@@ -351,6 +417,26 @@ export const registeredUsers: User[] = [
     status: "approved",
     memberStatus: "activo",
     createdAt: new Date("2024-01-01"),
+  },
+
+  // Portero
+  {
+    id: "11",
+    firstName: "Roberto",
+    lastName: "Portillo",
+    username: "portero",
+    password: "Portero123",
+    email: "portero@clubsalvadoreno.com",
+    phone: "+503 7890-1234",
+    fullName: "Roberto Portillo",
+    role: "porteria",
+    isActive: true,
+    status: "approved",
+    memberStatus: "activo",
+    lastLogin: new Date("2024-01-15T08:00:00Z"),
+    createdAt: new Date("2024-01-01T09:00:00Z"),
+    profileImage:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
   },
 
   // Usuario inactivo (para testing)

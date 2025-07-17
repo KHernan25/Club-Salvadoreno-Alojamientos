@@ -66,7 +66,7 @@ export const authenticateUser = async (
           rememberMe,
         });
 
-        console.log("📤 API Login result:", {
+        console.log("�� API Login result:", {
           success: result.success,
           hasUser: !!result.user,
           hasToken: !!result.token,
@@ -374,7 +374,7 @@ export const requireAuth = (): boolean => {
     // Verificar que el usuario esté activo
     if (!currentUser.isActive) {
       console.log("❌ requireAuth: Usuario inactivo, limpiando sesión");
-      logout(); // Limpiar sesión de usuario inactivo
+      logout(); // Limpiar sesi��n de usuario inactivo
       return false;
     }
 
@@ -422,8 +422,11 @@ export const hasRole = (requiredRole: User["role"]): boolean => {
     super_admin: 5,
     atencion_miembro: 4,
     anfitrion: 3,
+    porteria: 3,
     monitor: 2,
     mercadeo: 2,
+    recepcion: 2,
+    miembro: 1,
     user: 1,
   };
 

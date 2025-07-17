@@ -28,11 +28,27 @@ import {
   apiGetReservationStats,
   isApiAvailable,
 } from "@/lib/api-service";
+import { getCurrentUser } from "@/lib/auth-service";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+  const currentUser = getCurrentUser();
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [apiConnected, setApiConnected] = useState(false);
+
+  // Redirect users to their specific dashboards
+  useEffect(() => {
+    if (currentUser?.role === "porteria") {
+      navigate("/admin/porteria", { replace: true });
+      return;
+    }
+    if (currentUser?.role === "anfitrion") {
+      navigate("/admin/anfitrion", { replace: true });
+      return;
+    }
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -356,12 +372,6 @@ const AdminDashboard = () => {
                 <Link to="/admin/calendar">
                   <Calendar className="mr-2 h-4 w-4" />
                   Ver Calendario
-                </Link>
-              </Button>
-              <Button asChild className="w-full" variant="outline">
-                <Link to="/dashboard">
-                  <Eye className="mr-2 h-4 w-4" />
-                  Ver Sitio Público
                 </Link>
               </Button>
             </CardContent>

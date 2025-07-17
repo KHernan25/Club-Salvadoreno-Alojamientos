@@ -35,9 +35,16 @@ const BackofficeLogin = () => {
         session.user.role === "anfitrion" ||
         session.user.role === "monitor" ||
         session.user.role === "mercadeo" ||
-        session.user.role === "recepcion"
+        session.user.role === "recepcion" ||
+        session.user.role === "porteria"
       ) {
-        navigate("/admin/dashboard", { replace: true });
+        if (session.user.role === "porteria") {
+          navigate("/admin/porteria", { replace: true });
+        } else if (session.user.role === "anfitrion") {
+          navigate("/admin/anfitrion", { replace: true });
+        } else {
+          navigate("/admin/dashboard", { replace: true });
+        }
       } else {
         navigate("/dashboard", { replace: true });
       }
@@ -77,6 +84,7 @@ const BackofficeLogin = () => {
           "monitor",
           "mercadeo",
           "recepcion",
+          "porteria",
         ].includes(result.user.role);
 
         console.log("🔐 Verificando permisos backoffice:", {
@@ -105,8 +113,16 @@ const BackofficeLogin = () => {
 
         // Forzar navegación con un pequeño delay para asegurar que el toast se muestre
         setTimeout(() => {
-          console.log("🔄 Navegando a /admin/dashboard");
-          navigate("/admin/dashboard", { replace: true });
+          if (result.user.role === "porteria") {
+            console.log("🔄 Navegando a /admin/porteria");
+            navigate("/admin/porteria", { replace: true });
+          } else if (result.user.role === "anfitrion") {
+            console.log("🔄 Navegando a /admin/anfitrion");
+            navigate("/admin/anfitrion", { replace: true });
+          } else {
+            console.log("🔄 Navegando a /admin/dashboard");
+            navigate("/admin/dashboard", { replace: true });
+          }
         }, 100);
       } else {
         console.log("❌ Login fallido:", result.error);
