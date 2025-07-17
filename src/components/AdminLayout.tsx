@@ -140,9 +140,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
     // Special restriction for portería role - only show dashboard and activity log
     if (currentUser?.role === "porteria") {
-      return (
-        item.href === "/admin/porteria" || item.href === "/admin/activity-log"
-      );
+      return item.permission === "canViewDashboard";
     }
 
     return userPermissions[item.permission as keyof typeof userPermissions];
