@@ -280,7 +280,7 @@ router.get(
     const { id } = req.params;
     const user = req.user;
 
-    const reservation = reservations.find((r) => r.id === id);
+    const reservation = database.getReservationById(id);
     if (!reservation) {
       throw createError("Reserva no encontrada", 404);
     }
