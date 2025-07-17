@@ -62,6 +62,7 @@ export interface RolePermissions {
   canViewAccessHistory: boolean; // Ver historial de accesos
   canDetectMembers: boolean; // Detectar miembros en pluma de acceso
   canRegisterCompanions: boolean; // Registrar acompañantes
+  canViewReports: boolean; // Ver módulo de reportes
 }
 
 export const getRolePermissions = (role: User["role"]): RolePermissions => {
