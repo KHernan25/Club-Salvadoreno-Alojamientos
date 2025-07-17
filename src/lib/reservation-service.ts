@@ -278,6 +278,14 @@ class ReservationService {
       .sort((a, b) => b.checkInDate.getTime() - a.checkInDate.getTime());
   }
 
+  // Obtener todas las reservas
+  public getAllReservations(): Reservation[] {
+    return [...this.reservations].sort((a, b) => {
+      // Ordenar por fecha de check-in descendente (más recientes primero)
+      return b.checkInDate.getTime() - a.checkInDate.getTime();
+    });
+  }
+
   // Obtener estadísticas de reservas
   public getReservationStats(): {
     todayCheckIns: number;
