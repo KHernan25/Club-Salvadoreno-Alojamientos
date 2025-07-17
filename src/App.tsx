@@ -135,6 +135,24 @@ const App = () => (
                   </AdminProtectedRoute>
                 }
               />
+
+              {/* Módulo de Miembros - Para roles no-superadmin */}
+              <Route
+                path="/admin/miembros"
+                element={
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
+                    <MembersModule />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/members"
+                element={
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
+                    <MembersModule />
+                  </AdminProtectedRoute>
+                }
+              />
               <Route
                 path="/admin/activity-log"
                 element={
