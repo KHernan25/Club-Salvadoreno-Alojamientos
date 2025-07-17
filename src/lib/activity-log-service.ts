@@ -171,6 +171,8 @@ export const getRoleDisplayName = (role: string): string => {
     monitor: "Monitor",
     mercadeo: "Mercadeo",
     recepcion: "Recepción",
+    porteria: "Portería",
+    miembro: "Miembro",
     user: "Usuario",
   };
 
