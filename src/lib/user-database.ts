@@ -408,6 +408,26 @@ export const registeredUsers: User[] = [
     createdAt: new Date("2024-01-01"),
   },
 
+  // Portero
+  {
+    id: "11",
+    firstName: "Roberto",
+    lastName: "Portillo",
+    username: "portero",
+    password: "Portero123",
+    email: "portero@clubsalvadoreno.com",
+    phone: "+503 7890-1234",
+    fullName: "Roberto Portillo",
+    role: "porteria",
+    isActive: true,
+    status: "approved",
+    memberStatus: "activo",
+    lastLogin: new Date("2024-01-15T08:00:00Z"),
+    createdAt: new Date("2024-01-01T09:00:00Z"),
+    profileImage:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+  },
+
   // Usuario inactivo (para testing)
   {
     id: "12",
