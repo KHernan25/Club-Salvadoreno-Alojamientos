@@ -85,10 +85,20 @@ const getMockActivityLogs = (): ActivityLogEntry[] => {
 
 // Obtener todas las entradas de actividad permitidas para el usuario
 export const getActivityLogs = async (): Promise<ActivityLogEntry[]> => {
+  // For development/demo, always use mock data to avoid fetch errors
+  const isDevelopment =
+    process.env.NODE_ENV === "development" || !process.env.NODE_ENV;
+
+  if (isDevelopment) {
+    console.log("Using mock activity logs data");
+    return getMockActivityLogs();
+  }
+
   try {
     const response = await fetch(API_BASE_URL, {
       method: "GET",
       headers: getAuthHeaders(),
+      signal: AbortSignal.timeout(5000), // 5 second timeout
     });
 
     if (!response.ok) {
@@ -157,10 +167,20 @@ export const createActivityLogEntry = async (
 
 // Eliminar entrada de actividad (solo SuperAdmin)
 export const deleteActivityLogEntry = async (id: string): Promise<void> => {
+  // For development/demo, always use mock behavior to avoid fetch errors
+  const isDevelopment =
+    process.env.NODE_ENV === "development" || !process.env.NODE_ENV;
+
+  if (isDevelopment) {
+    console.log(`Mock: Deleted activity log entry ${id}`);
+    return;
+  }
+
   try {
     const response = await fetch(`${API_BASE_URL}/${id}`, {
       method: "DELETE",
       headers: getAuthHeaders(),
+      signal: AbortSignal.timeout(5000), // 5 second timeout
     });
 
     if (!response.ok) {
