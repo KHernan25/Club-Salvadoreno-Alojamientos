@@ -537,10 +537,7 @@ router.get(
   asyncHandler(async (req: AuthenticatedRequest, res) => {
     const user = req.user;
 
-    const validationService = new ReservationValidationService(
-      reservations,
-      mockUsers,
-    );
+    const validationService = createValidationService(user);
 
     const businessRulesSummary = validationService.getUserBusinessRulesSummary(
       user.id,
@@ -564,10 +561,7 @@ router.post(
     const { id } = req.params;
     const { newCheckIn, newCheckOut, isEmergency, emergencyProof } = req.body;
 
-    const validationService = new ReservationValidationService(
-      reservations,
-      mockUsers,
-    );
+    const validationService = createValidationService(user);
 
     const validation = validationService.validateReservationModification(
       id,
@@ -601,10 +595,7 @@ router.post(
     const { id } = req.params;
     const { reason } = req.body;
 
-    const validationService = new ReservationValidationService(
-      reservations,
-      mockUsers,
-    );
+    const validationService = createValidationService(user);
 
     const validation = validationService.validateReservationCancellation(
       id,
@@ -633,10 +624,7 @@ router.post(
     const { id } = req.params;
     const { recipientId, authorizationLetter } = req.body;
 
-    const validationService = new ReservationValidationService(
-      reservations,
-      mockUsers,
-    );
+    const validationService = createValidationService(user);
 
     const validation = validationService.validateKeyHandover(
       id,
