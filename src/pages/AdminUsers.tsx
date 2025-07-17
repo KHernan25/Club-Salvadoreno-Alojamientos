@@ -146,7 +146,7 @@ const AdminUsers = () => {
       let mockUsers = getMockUsers();
 
       // Aplicar filtro también a datos mock
-      if (currentUser && !isSuperAdmin(currentUser)) {
+      if (currentUser && !isSuperAdmin()) {
         mockUsers = mockUsers.filter((user) => user.role === "miembro");
       }
 
@@ -239,7 +239,7 @@ const AdminUsers = () => {
       email: "pedro.martinez@email.com",
       username: "pedro_martinez",
       password: "pedro123",
-      fullName: "Pedro Martínez",
+      fullName: "Pedro Mart��nez",
       role: "miembro",
       isActive: true,
       phone: "+503 4567-8901",
