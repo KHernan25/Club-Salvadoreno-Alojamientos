@@ -10,11 +10,13 @@ interface AdminProtectedRouteProps {
     | "anfitrion"
     | "monitor"
     | "mercadeo";
+  allowedRoles?: string[]; // Para permitir múltiples roles
 }
 
 const AdminProtectedRoute = ({
   children,
   requiredRole = "mercadeo",
+  allowedRoles,
 }: AdminProtectedRouteProps) => {
   const navigate = useNavigate();
 
@@ -44,11 +46,25 @@ const AdminProtectedRoute = ({
     });
 
     // Verificar permisos de rol
-    const hasRequiredRole = hasRole(requiredRole);
-    console.log(
-      "🛡️ AdminProtectedRoute: hasRole(" + requiredRole + ") =",
-      hasRequiredRole,
-    );
+    let hasRequiredRole: boolean;
+
+    if (allowedRoles && allowedRoles.length > 0) {
+      // Si se especifican roles permitidos, verificar si el usuario tiene alguno de ellos
+      hasRequiredRole = allowedRoles.some((role) => hasRole(role));
+      console.log(
+        "🛡️ AdminProtectedRoute: Verificando roles permitidos:",
+        allowedRoles,
+        "Resultado:",
+        hasRequiredRole,
+      );
+    } else {
+      // Verificación tradicional con un solo rol requerido
+      hasRequiredRole = hasRole(requiredRole);
+      console.log(
+        "🛡️ AdminProtectedRoute: hasRole(" + requiredRole + ") =",
+        hasRequiredRole,
+      );
+    }
 
     if (!hasRequiredRole) {
       console.log("❌ AdminProtectedRoute: Usuario sin permisos suficientes");
@@ -95,7 +111,12 @@ const AdminProtectedRoute = ({
   const currentUser = getCurrentUser();
 
   // Renderizar solo si está autenticado y tiene permisos
-  if (!requireAuth() || !hasRole(requiredRole)) {
+  const hasAccess =
+    allowedRoles && allowedRoles.length > 0
+      ? allowedRoles.some((role) => hasRole(role))
+      : hasRole(requiredRole);
+
+  if (!requireAuth() || !hasAccess) {
     return null;
   }
 

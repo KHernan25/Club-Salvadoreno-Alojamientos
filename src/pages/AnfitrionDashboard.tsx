@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   DollarSign,
@@ -16,12 +17,12 @@ import {
   CheckCircle,
   AlertTriangle,
   Calendar,
-  TrendingUp,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import CompanionBillingManager from "@/components/CompanionBillingManager";
 import CheckInManager from "@/components/CheckInManager";
 import CheckOutManager from "@/components/CheckOutManager";
+import ReservationManager from "@/components/ReservationManager";
 import { getCurrentUser, requireAuth, hasPermission } from "@/lib/auth-service";
 import { companionBillingService } from "@/lib/companion-billing-service";
 import { reservationService } from "@/lib/reservation-service";
@@ -115,7 +116,15 @@ const AnfitrionDashboard = () => {
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
+            <Button
+              onClick={() => navigate("/admin/check-in-out")}
+              className="bg-green-600 hover:bg-green-700"
+              size="sm"
+            >
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Check-in/Check-out
+            </Button>
             <Badge variant="outline" className="text-blue-600 border-blue-600">
               <Users className="w-3 h-3 mr-1" />
               Anfitrión: {currentUser.firstName}
@@ -196,6 +205,81 @@ const AnfitrionDashboard = () => {
           </div>
         )}
 
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card
+            className="border-green-200 bg-green-50 hover:bg-green-100 transition-colors cursor-pointer"
+            onClick={() => navigate("/admin/check-in-out")}
+          >
+            <CardContent className="pt-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-green-600 rounded-lg">
+                  <CheckCircle className="h-8 w-8 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-green-800 text-lg">
+                    Check-in de Huéspedes
+                  </h3>
+                  <p className="text-green-700 text-sm">
+                    Buscar por código de reserva y registrar llegada
+                  </p>
+                </div>
+                <div className="text-green-600">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="border-orange-200 bg-orange-50 hover:bg-orange-100 transition-colors cursor-pointer"
+            onClick={() => navigate("/admin/check-in-out")}
+          >
+            <CardContent className="pt-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-orange-600 rounded-lg">
+                  <Clock className="h-8 w-8 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-orange-800 text-lg">
+                    Check-out de Huéspedes
+                  </h3>
+                  <p className="text-orange-700 text-sm">
+                    Procesar salidas y inspeccionar alojamientos
+                  </p>
+                </div>
+                <div className="text-orange-600">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Alert for Pending Billings */}
         {dashboardStats && dashboardStats.pendingCount > 0 && (
           <Card className="border-orange-200 bg-orange-50">
@@ -221,7 +305,7 @@ const AnfitrionDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="checkin" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger
               value="checkin"
               className="flex items-center space-x-2"
@@ -250,13 +334,6 @@ const AnfitrionDashboard = () => {
               <Calendar className="w-4 h-4" />
               <span>Reservas</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="reports"
-              className="flex items-center space-x-2"
-            >
-              <TrendingUp className="w-4 h-4" />
-              <span>Reportes</span>
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="checkin" className="space-y-4">
@@ -272,49 +349,7 @@ const AnfitrionDashboard = () => {
           </TabsContent>
 
           <TabsContent value="reservations" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Gestión de Reservas</CardTitle>
-                <CardDescription>
-                  Administra las reservas activas y próximas llegadas
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8">
-                  <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Gestión de Reservas
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Esta sección estará disponible próximamente para gestionar
-                    reservas y check-ins
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="reports" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Reportes y Estadísticas</CardTitle>
-                <CardDescription>
-                  Análisis de facturación y ocupación
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8">
-                  <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Reportes Detallados
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Próximamente: reportes de facturación, tendencias de
-                    ocupación y análisis financiero
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <ReservationManager />
           </TabsContent>
         </Tabs>
       </div>

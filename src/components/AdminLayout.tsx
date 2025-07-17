@@ -30,6 +30,7 @@ import {
   Globe,
   UserCheck,
   FileText,
+  FileBarChart,
 } from "lucide-react";
 import {
   getCurrentUser,
@@ -61,6 +62,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     ? getRolePermissions(currentUser.role)
     : null;
 
+  // Optimización: calcular una sola vez si es super admin
+  const isUserSuperAdmin = currentUser
+    ? currentUser.role === "super_admin"
+    : false;
+
   const menuItems = [
     {
       label: "Dashboard",
@@ -80,8 +86,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       permission: "canViewDashboard", // All roles can access activity log
     },
     {
-      label: "Usuarios",
-      href: "/admin/users",
+      label: isUserSuperAdmin ? "Usuarios" : "Miembros",
+      href: isUserSuperAdmin ? "/admin/users" : "/admin/miembros",
       icon: Users,
       permission: "canManageUsers",
     },
@@ -134,6 +140,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       href: "/admin/settings",
       icon: Settings,
       permission: "canManageSettings",
+    },
+    {
+      label: "Reportes",
+      href: "/admin/reportes",
+      icon: FileBarChart,
+      permission: "canViewReports",
     },
   ];
 

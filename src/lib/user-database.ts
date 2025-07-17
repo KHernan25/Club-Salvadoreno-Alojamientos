@@ -62,6 +62,7 @@ export interface RolePermissions {
   canViewAccessHistory: boolean; // Ver historial de accesos
   canDetectMembers: boolean; // Detectar miembros en pluma de acceso
   canRegisterCompanions: boolean; // Registrar acompañantes
+  canViewReports: boolean; // Ver módulo de reportes
 }
 
 export const getRolePermissions = (role: User["role"]): RolePermissions => {
@@ -87,6 +88,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: true,
         canDetectMembers: true,
         canRegisterCompanions: true,
+        canViewReports: true,
       };
     case "atencion_miembro":
       return {
@@ -109,6 +111,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: true,
         canDetectMembers: false,
         canRegisterCompanions: false,
+        canViewReports: true,
       };
     case "anfitrion":
       return {
@@ -131,6 +134,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: false,
         canDetectMembers: false,
         canRegisterCompanions: true,
+        canViewReports: false,
       };
     case "monitor":
       return {
@@ -153,6 +157,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: false,
         canDetectMembers: false,
         canRegisterCompanions: false,
+        canViewReports: true,
       };
     case "mercadeo":
       return {
@@ -197,6 +202,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: false,
         canDetectMembers: false,
         canRegisterCompanions: true,
+        canViewReports: false,
       };
     case "porteria":
       return {
@@ -219,6 +225,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: true,
         canDetectMembers: true,
         canRegisterCompanions: true,
+        canViewReports: false,
       };
     default:
       return {
@@ -241,6 +248,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: false,
         canDetectMembers: false,
         canRegisterCompanions: false,
+        canViewReports: false,
       };
   }
 };

@@ -131,11 +131,26 @@ const AdminUsers = () => {
       setLoading(true);
       // Intentar cargar desde API real
       const response = await apiGetUsers();
-      setUsers(response);
+
+      // Filtrar usuarios según permisos
+      let filteredUsers = response;
+      if (currentUser && !isSuperAdmin(currentUser)) {
+        // Solo superadmin puede ver usuarios de backoffice
+        filteredUsers = response.filter((user) => user.role === "miembro");
+      }
+
+      setUsers(filteredUsers);
     } catch (error) {
       console.error("Error loading users:", error);
       // Cargar datos mock si la API no está disponible
-      setUsers(getMockUsers());
+      let mockUsers = getMockUsers();
+
+      // Aplicar filtro también a datos mock
+      if (currentUser && !isSuperAdmin(currentUser)) {
+        mockUsers = mockUsers.filter((user) => user.role === "miembro");
+      }
+
+      setUsers(mockUsers);
     } finally {
       setLoading(false);
     }
@@ -658,9 +673,15 @@ const AdminUsers = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Gestión de Usuarios</h1>
+            <h1 className="text-2xl font-bold">
+              {currentUser && isSuperAdmin(currentUser)
+                ? "Gestión de Usuarios"
+                : "Gestión de Miembros"}
+            </h1>
             <p className="text-gray-600">
-              Administra usuarios y solicitudes de registro
+              {currentUser && isSuperAdmin(currentUser)
+                ? "Administra usuarios y solicitudes de registro"
+                : "Administra miembros del club y solicitudes de registro"}
             </p>
           </div>
           {hasPermission("canCreateUsers") && (
@@ -669,7 +690,9 @@ const AdminUsers = () => {
               className="bg-blue-600 hover:bg-blue-700"
             >
               <UserPlus className="mr-2 h-4 w-4" />
-              Nuevo Usuario
+              {currentUser && isSuperAdmin(currentUser)
+                ? "Nuevo Usuario"
+                : "Nuevo Miembro"}
             </Button>
           )}
         </div>
@@ -756,16 +779,20 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos los roles</SelectItem>
-                    <SelectItem value="super_admin">
-                      Super Administrador
-                    </SelectItem>
-                    <SelectItem value="atencion_miembro">
-                      Atención al Miembro
-                    </SelectItem>
-                    <SelectItem value="anfitrion">Anfitrión</SelectItem>
-                    <SelectItem value="monitor">Monitor</SelectItem>
-                    <SelectItem value="mercadeo">Mercadeo</SelectItem>
-                    <SelectItem value="recepcion">Recepción</SelectItem>
+                    {currentUser && isSuperAdmin(currentUser) && (
+                      <>
+                        <SelectItem value="super_admin">
+                          Super Administrador
+                        </SelectItem>
+                        <SelectItem value="atencion_miembro">
+                          Atención al Miembro
+                        </SelectItem>
+                        <SelectItem value="anfitrion">Anfitrión</SelectItem>
+                        <SelectItem value="monitor">Monitor</SelectItem>
+                        <SelectItem value="mercadeo">Mercadeo</SelectItem>
+                        <SelectItem value="recepcion">Recepción</SelectItem>
+                      </>
+                    )}
                     <SelectItem value="miembro">Miembro</SelectItem>
                   </SelectContent>
                 </Select>
@@ -799,7 +826,11 @@ const AdminUsers = () => {
         {/* Users Table with Tabs */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Gestión de Usuarios</CardTitle>
+            <CardTitle className="text-lg">
+              {currentUser && isSuperAdmin(currentUser)
+                ? "Gestión de Usuarios"
+                : "Gestión de Miembros"}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -901,7 +932,11 @@ const AdminUsers = () => {
             <DialogHeader>
               <DialogTitle className="flex items-center space-x-2">
                 <Crown className="h-5 w-5 text-blue-600" />
-                <span>Crear Nuevo Usuario</span>
+                <span>
+                  {currentUser && isSuperAdmin(currentUser)
+                    ? "Crear Nuevo Usuario"
+                    : "Crear Nuevo Miembro"}
+                </span>
               </DialogTitle>
               <DialogDescription>
                 Solo el Super Administrador puede crear nuevos usuarios con
@@ -998,20 +1033,22 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="miembro">Miembro</SelectItem>
-                    <SelectItem value="recepcion">Recepción</SelectItem>
-                    <SelectItem value="mercadeo">Mercadeo</SelectItem>
-                    <SelectItem value="monitor">Monitor</SelectItem>
-                    <SelectItem value="anfitrion">Anfitrión</SelectItem>
-                    <SelectItem value="atencion_miembro">
-                      Atención al Miembro
-                    </SelectItem>
-                    {isSuperAdmin() && (
-                      <SelectItem value="super_admin">
-                        <div className="flex items-center space-x-2">
-                          <Crown className="h-4 w-4 text-blue-600" />
-                          <span>Super Administrador</span>
-                        </div>
-                      </SelectItem>
+                    {currentUser && isSuperAdmin(currentUser) && (
+                      <>
+                        <SelectItem value="recepcion">Recepción</SelectItem>
+                        <SelectItem value="mercadeo">Mercadeo</SelectItem>
+                        <SelectItem value="monitor">Monitor</SelectItem>
+                        <SelectItem value="anfitrion">Anfitrión</SelectItem>
+                        <SelectItem value="atencion_miembro">
+                          Atención al Miembro
+                        </SelectItem>
+                        <SelectItem value="super_admin">
+                          <div className="flex items-center space-x-2">
+                            <Crown className="h-4 w-4 text-blue-600" />
+                            <span>Super Administrador</span>
+                          </div>
+                        </SelectItem>
+                      </>
                     )}
                   </SelectContent>
                 </Select>

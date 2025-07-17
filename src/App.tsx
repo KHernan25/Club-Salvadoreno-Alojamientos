@@ -49,6 +49,9 @@ import AdminRegistrationRequests from "./pages/AdminRegistrationRequests";
 import AdminReviews from "./pages/AdminReviews";
 import PorteriaDashboard from "./pages/PorteriaDashboard";
 import AnfitrionDashboard from "./pages/AnfitrionDashboard";
+import HostCheckInOut from "./pages/HostCheckInOut";
+import ReportsModule from "./pages/ReportsModule";
+import MembersModule from "./pages/MembersModule";
 import AccommodationWithReviews from "./pages/AccommodationWithReviews";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import UserActivationDebug from "./pages/UserActivationDebug";
@@ -129,6 +132,24 @@ const App = () => (
                 element={
                   <AdminProtectedRoute requiredRole="mercadeo">
                     <AdminDashboard />
+                  </AdminProtectedRoute>
+                }
+              />
+
+              {/* Módulo de Miembros - Para roles no-superadmin */}
+              <Route
+                path="/admin/miembros"
+                element={
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
+                    <MembersModule />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/members"
+                element={
+                  <AdminProtectedRoute requiredRole="atencion_miembro">
+                    <MembersModule />
                   </AdminProtectedRoute>
                 }
               />
@@ -265,6 +286,60 @@ const App = () => (
                 element={
                   <AdminProtectedRoute requiredRole="anfitrion">
                     <AnfitrionDashboard />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/check-in-out"
+                element={
+                  <AdminProtectedRoute requiredRole="anfitrion">
+                    <HostCheckInOut />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/anfitrion/checkin"
+                element={
+                  <AdminProtectedRoute requiredRole="anfitrion">
+                    <HostCheckInOut />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/anfitrion/checkout"
+                element={
+                  <AdminProtectedRoute requiredRole="anfitrion">
+                    <HostCheckInOut />
+                  </AdminProtectedRoute>
+                }
+              />
+
+              {/* Módulo de Reportes - Accesible para superadmin, atencion_miembro y monitor */}
+              <Route
+                path="/admin/reportes"
+                element={
+                  <AdminProtectedRoute
+                    allowedRoles={[
+                      "super_admin",
+                      "atencion_miembro",
+                      "monitor",
+                    ]}
+                  >
+                    <ReportsModule />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/reports"
+                element={
+                  <AdminProtectedRoute
+                    allowedRoles={[
+                      "super_admin",
+                      "atencion_miembro",
+                      "monitor",
+                    ]}
+                  >
+                    <ReportsModule />
                   </AdminProtectedRoute>
                 }
               />
