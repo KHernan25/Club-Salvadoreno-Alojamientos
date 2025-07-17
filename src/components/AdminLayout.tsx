@@ -62,6 +62,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     ? getRolePermissions(currentUser.role)
     : null;
 
+  // Optimización: calcular una sola vez si es super admin
+  const isUserSuperAdmin = currentUser ? isSuperAdmin(currentUser) : false;
+
   const menuItems = [
     {
       label: "Dashboard",
