@@ -625,6 +625,7 @@ router.post(
   asyncHandler(async (req: AuthenticatedRequest, res) => {
     const { id } = req.params;
     const { recipientId, authorizationLetter } = req.body;
+    const user = req.user;
 
     const validationService = createValidationService(user);
 
