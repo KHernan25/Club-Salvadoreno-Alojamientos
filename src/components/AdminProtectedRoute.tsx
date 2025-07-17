@@ -10,6 +10,7 @@ interface AdminProtectedRouteProps {
     | "anfitrion"
     | "monitor"
     | "mercadeo";
+  allowedRoles?: string[]; // Para permitir múltiples roles
 }
 
 const AdminProtectedRoute = ({
