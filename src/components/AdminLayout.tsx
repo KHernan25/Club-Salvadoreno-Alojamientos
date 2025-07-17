@@ -130,6 +130,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       icon: Settings,
       permission: "canManageSettings",
     },
+    {
+      label: "Portería",
+      href: "/admin/porteria",
+      icon: Shield,
+      permission: "canManageAccessControl",
+    },
   ];
 
   const filteredMenuItems = menuItems.filter((item) =>
