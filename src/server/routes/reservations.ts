@@ -499,10 +499,7 @@ router.get(
     const monthlyRevenue = database
       .getAllReservations()
       .filter(
-        (r) =>
-          new Date(r.createdAt) >= thisMonth &&
-          r.status === "completed" &&
-          r.paymentStatus === "paid",
+        (r) => new Date(r.createdAt) >= thisMonth && r.status === "completed",
       )
       .reduce((sum, r) => sum + r.totalPrice, 0);
 
