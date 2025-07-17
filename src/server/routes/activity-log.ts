@@ -163,7 +163,7 @@ router.post(
 router.delete(
   "/:id",
   authenticateToken,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const { user } = req as any;
       const { id } = req.params;
