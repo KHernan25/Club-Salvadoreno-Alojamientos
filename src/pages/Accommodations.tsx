@@ -233,8 +233,12 @@ const Accommodations = () => {
     },
   ];
 
-  const getAccommodationsByLocation = () => {
+  const getAccommodationsByLocationFromAPI = () => {
+    const locationAccommodations =
+      getAccommodationsByLocation(selectedLocation);
+
     if (selectedLocation === "corinto") {
+      const casas = getAccommodationsByType(selectedLocation, "casa");
       return {
         location: "Corinto",
         types: [
@@ -242,45 +246,50 @@ const Accommodations = () => {
             id: "corinto-casas",
             title: "Casas en Corinto",
             description: "Amplias casas familiares junto al lago de Coatepeque",
-            accommodations: casas.map((casa) => ({
-              ...casa,
-              location: "corinto",
-            })),
+            accommodations: casas.map(mapAccommodationToDisplay),
           },
         ],
       };
     } else {
+      const casas = getAccommodationsByType(selectedLocation, "casa");
+      const apartamentos = getAccommodationsByType(
+        selectedLocation,
+        "apartamento",
+      );
+      const suites = getAccommodationsByType(selectedLocation, "suite");
+
+      const types = [];
+
+      if (casas.length > 0) {
+        types.push({
+          id: "sunzal-casas",
+          title: "Casas en El Sunzal",
+          description: "Casas frente a la playa con acceso directo al océano",
+          accommodations: casas.map(mapAccommodationToDisplay),
+        });
+      }
+
+      if (apartamentos.length > 0) {
+        types.push({
+          id: "sunzal-apartamentos",
+          title: "Apartamentos en El Sunzal",
+          description: "Modernos apartamentos con vista al mar",
+          accommodations: apartamentos.map(mapAccommodationToDisplay),
+        });
+      }
+
+      if (suites.length > 0) {
+        types.push({
+          id: "sunzal-suites",
+          title: "Suites en El Sunzal",
+          description: "Suites de lujo con servicios premium",
+          accommodations: suites.map(mapAccommodationToDisplay),
+        });
+      }
+
       return {
         location: "El Sunzal",
-        types: [
-          {
-            id: "sunzal-casas",
-            title: "Casas en El Sunzal",
-            description: "Casas frente a la playa con acceso directo al océano",
-            accommodations: casas.map((casa) => ({
-              ...casa,
-              location: "el-sunzal",
-            })),
-          },
-          {
-            id: "sunzal-apartamentos",
-            title: "Apartamentos en El Sunzal",
-            description: "Modernos apartamentos con vista al mar",
-            accommodations: apartmentDetails.map((apt) => ({
-              ...apt,
-              location: "el-sunzal",
-            })),
-          },
-          {
-            id: "sunzal-suites",
-            title: "Suites en El Sunzal",
-            description: "Suites de lujo con servicios premium",
-            accommodations: suites.map((suite) => ({
-              ...suite,
-              location: "el-sunzal",
-            })),
-          },
-        ],
+        types,
       };
     }
   };
