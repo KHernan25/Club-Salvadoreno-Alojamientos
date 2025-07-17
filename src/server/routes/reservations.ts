@@ -71,10 +71,7 @@ router.post(
     ];
 
     // Inicializar servicio de validación con datos actuales
-    const validationService = new ReservationValidationService(
-      existingReservations,
-      mockUsers,
-    );
+    const validationService = createValidationService(user);
 
     // Determinar tipo de alojamiento basado en el ID
     let accommodationType:
