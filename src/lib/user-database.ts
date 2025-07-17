@@ -88,6 +88,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: true,
         canDetectMembers: true,
         canRegisterCompanions: true,
+        canViewReports: true,
       };
     case "atencion_miembro":
       return {
