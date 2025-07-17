@@ -496,7 +496,8 @@ router.get(
       .getAllReservations()
       .filter((r) => new Date(r.createdAt) >= thisMonth).length;
 
-    const monthlyRevenue = reservations
+    const monthlyRevenue = database
+      .getAllReservations()
       .filter(
         (r) =>
           new Date(r.createdAt) >= thisMonth &&
