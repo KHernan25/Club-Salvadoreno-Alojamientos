@@ -115,7 +115,15 @@ const AnfitrionDashboard = () => {
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
+            <Button
+              onClick={() => navigate("/admin/check-in-out")}
+              className="bg-green-600 hover:bg-green-700"
+              size="sm"
+            >
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Check-in/Check-out
+            </Button>
             <Badge variant="outline" className="text-blue-600 border-blue-600">
               <Users className="w-3 h-3 mr-1" />
               Anfitrión: {currentUser.firstName}
