@@ -232,7 +232,7 @@ router.get(
     const status = req.query.status as string;
     const accommodationId = req.query.accommodationId as string;
 
-    let filteredReservations = [...reservations];
+    let filteredReservations = [...database.reservations];
 
     // Filtros
     if (status) {
