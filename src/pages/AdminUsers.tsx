@@ -1033,7 +1033,7 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="miembro">Miembro</SelectItem>
-                    {currentUser && isSuperAdmin(currentUser) && (
+                    {currentUser && isSuperAdmin() && (
                       <>
                         <SelectItem value="recepcion">Recepción</SelectItem>
                         <SelectItem value="mercadeo">Mercadeo</SelectItem>
