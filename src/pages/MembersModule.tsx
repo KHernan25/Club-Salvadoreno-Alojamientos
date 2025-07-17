@@ -122,14 +122,15 @@ const MembersModule = () => {
       return;
     }
 
-    // Solo permitir acceso a roles no-superadmin
-    if (currentUser && isSuperAdmin(currentUser)) {
-      navigate("/admin/users"); // Redirigir superadmin a página completa
-      return;
-    }
-
     loadMembers();
-  }, [navigate]); // Remover currentUser de las dependencias para evitar loops
+  }, []); // Vacío para ejecutar solo una vez al montar
+
+  // Verificación de superadmin por separado para evitar loops
+  useEffect(() => {
+    if (currentUser && isSuperAdmin(currentUser)) {
+      navigate("/admin/users");
+    }
+  }, [currentUser, navigate]);
 
   const loadMembers = async () => {
     try {
