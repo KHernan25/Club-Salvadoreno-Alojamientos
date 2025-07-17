@@ -50,6 +50,7 @@ import AdminReviews from "./pages/AdminReviews";
 import PorteriaDashboard from "./pages/PorteriaDashboard";
 import AnfitrionDashboard from "./pages/AnfitrionDashboard";
 import HostCheckInOut from "./pages/HostCheckInOut";
+import ReportsModule from "./pages/ReportsModule";
 import AccommodationWithReviews from "./pages/AccommodationWithReviews";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import UserActivationDebug from "./pages/UserActivationDebug";
