@@ -9,7 +9,8 @@ interface AdminProtectedRouteProps {
     | "atencion_miembro"
     | "anfitrion"
     | "monitor"
-    | "mercadeo";
+    | "mercadeo"
+    | "porteria";
   allowedRoles?: string[]; // Para permitir múltiples roles
 }
 
