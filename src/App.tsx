@@ -295,6 +295,24 @@ const App = () => (
                 }
               />
 
+              {/* Módulo de Reportes - Accesible para superadmin, atencion_miembro y monitor */}
+              <Route
+                path="/admin/reportes"
+                element={
+                  <AdminProtectedRoute requiredRole="super_admin">
+                    <ReportsModule />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/reports"
+                element={
+                  <AdminProtectedRoute requiredRole="super_admin">
+                    <ReportsModule />
+                  </AdminProtectedRoute>
+                }
+              />
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
