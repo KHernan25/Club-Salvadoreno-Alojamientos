@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { v4 as uuidv4 } from "uuid";
+import { database } from "../../lib/database";
 import {
   authenticateToken,
   requireRole,
@@ -12,162 +12,13 @@ import {
 } from "../middleware/validators";
 import {
   calculateStayPrice,
-  getAccommodationRates,
   validateReservationDates,
 } from "../../lib/pricing-system";
 import { asyncHandler, createError } from "../middleware/errorHandler";
 import ReservationValidationService from "../../lib/reservation-validation-service";
+import { findUserById } from "../../lib/user-database";
 
 const router = Router();
-
-// Simulación de BD de usuarios en memoria
-const mockUsers = [
-  {
-    id: "7",
-    type: "miembro",
-    name: "Carlos Rivera",
-    email: "carlos@example.com",
-    isActive: true,
-    familyMembers: ["spouse-1", "child-1", "child-2"],
-  },
-  {
-    id: "8",
-    type: "viuda",
-    name: "Ana María Torres",
-    email: "ana@example.com",
-    isActive: true,
-    familyMembers: ["child-3"],
-  },
-  {
-    id: "9",
-    type: "director_jcd",
-    name: "José Pérez",
-    email: "jose@example.com",
-    isActive: true,
-    familyMembers: ["spouse-2"],
-  },
-  {
-    id: "10",
-    type: "visitador_especial",
-    name: "María González",
-    email: "maria@example.com",
-    isActive: true,
-    familyMembers: [],
-  },
-  {
-    id: "11",
-    type: "visitador_juvenil",
-    name: "Pedro Junior",
-    email: "pedro@example.com",
-    isActive: true,
-    familyMembers: [],
-  },
-];
-
-// Simulación de BD de reservas en memoria
-const reservations: any[] = [
-  {
-    id: "res-001",
-    userId: "7",
-    accommodationId: "1A",
-    checkIn: "2024-06-30",
-    checkOut: "2024-07-02",
-    guests: 2,
-    status: "confirmed",
-    totalPrice: 460,
-    paymentStatus: "paid",
-    confirmationCode: "CRV001",
-    createdAt: new Date("2024-06-20T10:00:00Z"),
-    updatedAt: new Date("2024-06-20T10:00:00Z"),
-    specialRequests: "Vista al mar, llegada tardía",
-  },
-  {
-    id: "res-002",
-    userId: "8",
-    accommodationId: "corinto-casa-1",
-    checkIn: "2024-07-05",
-    checkOut: "2024-07-07",
-    guests: 4,
-    status: "pending",
-    totalPrice: 560,
-    paymentStatus: "pending",
-    confirmationCode: "AMT002",
-    createdAt: new Date("2024-06-21T14:30:00Z"),
-    updatedAt: new Date("2024-06-21T14:30:00Z"),
-    specialRequests: "Llegada en la mañana",
-  },
-  {
-    id: "res-003",
-    userId: "10",
-    accommodationId: "suite1",
-    checkIn: "2024-07-10",
-    checkOut: "2024-07-12",
-    guests: 2,
-    status: "confirmed",
-    totalPrice: 640,
-    paymentStatus: "paid",
-    confirmationCode: "DEM003",
-    createdAt: new Date("2024-06-22T09:15:00Z"),
-    updatedAt: new Date("2024-06-22T09:15:00Z"),
-    specialRequests: "Celebración de aniversario",
-  },
-  {
-    id: "res-004",
-    userId: "9",
-    accommodationId: "casa1",
-    checkIn: "2024-07-15",
-    checkOut: "2024-07-18",
-    guests: 6,
-    status: "cancelled",
-    totalPrice: 1350,
-    paymentStatus: "refunded",
-    confirmationCode: "JPZ004",
-    createdAt: new Date("2024-06-23T11:45:00Z"),
-    updatedAt: new Date("2024-06-25T16:20:00Z"),
-    specialRequests: "Cancelación por emergencia familiar",
-  },
-  {
-    id: "res-005",
-    userId: "7",
-    accommodationId: "corinto1A",
-    checkIn: "2024-07-20",
-    checkOut: "2024-07-22",
-    guests: 2,
-    status: "pending",
-    totalPrice: 360,
-    paymentStatus: "pending",
-    confirmationCode: "CRV005",
-    createdAt: new Date("2024-06-24T08:30:00Z"),
-    updatedAt: new Date("2024-06-24T08:30:00Z"),
-    specialRequests: "Cuna para bebé",
-  },
-];
-
-interface Reservation {
-  id: string;
-  userId: string;
-  userType: string;
-  accommodationId: string;
-  accommodationType:
-    | "corinto_casas"
-    | "el_sunzal_casas"
-    | "apartamentos"
-    | "suites";
-  checkIn: string;
-  checkOut: string;
-  guests: number;
-  specialRequests?: string;
-  status: "pending" | "confirmed" | "cancelled" | "completed";
-  totalPrice: number;
-  priceBreakdown: any;
-  createdAt: Date;
-  updatedAt: Date;
-  paymentStatus: "pending" | "paid" | "refunded" | "exempt";
-  paymentMethod?: "pay_later" | "payment_link" | "transfer" | "credit" | "card";
-  confirmationCode: string;
-  emergencyModification?: boolean;
-  emergencyProof?: boolean;
-}
 
 // POST /api/reservations - Crear nueva reserva
 router.post(
@@ -179,9 +30,22 @@ router.post(
       req.body;
     const user = req.user;
 
+    // Obtener datos de la base de datos
+    const existingReservations = database.getAllReservations();
+    const mockUsers = [
+      {
+        id: user.id,
+        type: user.role,
+        name: user.fullName,
+        email: user.email,
+        isActive: user.isActive,
+        familyMembers: [],
+      },
+    ];
+
     // Inicializar servicio de validación con datos actuales
     const validationService = new ReservationValidationService(
-      reservations,
+      existingReservations,
       mockUsers,
     );
 
@@ -218,9 +82,9 @@ router.post(
       );
     }
 
-    // Verificar que el alojamiento existe y obtener precios
-    const rates = getAccommodationRates(accommodationId);
-    if (!rates) {
+    // Verificar que el alojamiento existe
+    const accommodation = database.getAccommodationById(accommodationId);
+    if (!accommodation) {
       throw createError("Alojamiento no encontrado", 404);
     }
 
@@ -230,7 +94,7 @@ router.post(
     const priceCalculation = calculateStayPrice(
       checkInDate,
       checkOutDate,
-      rates,
+      accommodation.pricing,
     );
 
     // Calcular información de pago según reglas de negocio
@@ -247,29 +111,19 @@ router.post(
     );
 
     // Crear reserva
-    const reservation: Reservation = {
-      id: uuidv4(),
+    const reservationId = database.createReservation({
       userId: user.id,
-      userType: mockUsers.find((u) => u.id === user.id)?.type || "miembro",
       accommodationId,
-      accommodationType,
       checkIn,
       checkOut,
       guests,
-      specialRequests: specialRequests || "",
-      status: "pending",
       totalPrice: priceCalculation.totalPrice,
-      priceBreakdown: priceCalculation,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      paymentStatus: paymentInfo.paymentRequired ? "pending" : "exempt",
-      confirmationCode: Math.random()
-        .toString(36)
-        .substring(2, 8)
-        .toUpperCase(),
-    };
+      status: "pending",
+      specialRequests: specialRequests || "",
+      breakdown: priceCalculation,
+    });
 
-    reservations.push(reservation);
+    const reservation = database.getReservationById(reservationId);
 
     // Preparar respuesta con información de reglas de negocio
     const responseData = {
@@ -426,7 +280,7 @@ router.get(
     const { id } = req.params;
     const user = req.user;
 
-    const reservation = reservations.find((r) => r.id === id);
+    const reservation = database.getReservationById(id);
     if (!reservation) {
       throw createError("Reserva no encontrada", 404);
     }
@@ -455,7 +309,7 @@ router.put(
     const user = req.user;
     const updates = req.body;
 
-    const reservation = reservations.find((r) => r.id === id);
+    const reservation = database.getReservationById(id);
     if (!reservation) {
       throw createError("Reserva no encontrada", 404);
     }
@@ -533,7 +387,7 @@ router.delete(
     const { id } = req.params;
     const user = req.user;
 
-    const reservation = reservations.find((r) => r.id === id);
+    const reservation = database.getReservationById(id);
     if (!reservation) {
       throw createError("Reserva no encontrada", 404);
     }
