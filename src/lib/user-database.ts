@@ -119,6 +119,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: true, // Anfitriones pueden gestionar imágenes de alojamientos
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: true,
       };
     case "monitor":
       return {
