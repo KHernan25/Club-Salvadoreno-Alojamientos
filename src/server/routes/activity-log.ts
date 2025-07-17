@@ -66,37 +66,41 @@ let activityLogs: ActivityLogEntry[] = [
 ];
 
 // GET /api/activity-log - Obtener entradas de actividad
-router.get("/", authenticateToken, async (req: Request, res: Response) => {
-  try {
-    const { user } = req as any;
+router.get(
+  "/",
+  authenticateToken,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { user } = req as any;
 
-    // Filtrar según permisos:
-    // - SuperAdmin ve todas las entradas
-    // - Otros usuarios solo ven sus propias entradas
-    let filteredLogs = activityLogs;
+      // Filtrar según permisos:
+      // - SuperAdmin ve todas las entradas
+      // - Otros usuarios solo ven sus propias entradas
+      let filteredLogs = activityLogs;
 
-    if (user.role !== "super_admin") {
-      filteredLogs = activityLogs.filter((log) => log.usuarioId === user.id);
+      if (user.role !== "super_admin") {
+        filteredLogs = activityLogs.filter((log) => log.usuarioId === user.id);
+      }
+
+      // Ordenar por fecha descendente (más recientes primero)
+      const sortedLogs = filteredLogs.sort(
+        (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
+      );
+
+      res.json({
+        success: true,
+        data: sortedLogs,
+        total: sortedLogs.length,
+      });
+    } catch (error) {
+      console.error("Error getting activity logs:", error);
+      res.status(500).json({
+        success: false,
+        error: "Error obteniendo bitácora de actividades",
+      });
     }
-
-    // Ordenar por fecha descendente (más recientes primero)
-    const sortedLogs = filteredLogs.sort(
-      (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
-    );
-
-    res.json({
-      success: true,
-      data: sortedLogs,
-      total: sortedLogs.length,
-    });
-  } catch (error) {
-    console.error("Error getting activity logs:", error);
-    res.status(500).json({
-      success: false,
-      error: "Error obteniendo bitácora de actividades",
-    });
-  }
-});
+  },
+);
 
 // POST /api/activity-log - Crear nueva entrada de actividad
 router.post(
