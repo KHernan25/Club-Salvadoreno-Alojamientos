@@ -35,7 +35,8 @@ const BackofficeLogin = () => {
         session.user.role === "anfitrion" ||
         session.user.role === "monitor" ||
         session.user.role === "mercadeo" ||
-        session.user.role === "recepcion"
+        session.user.role === "recepcion" ||
+        session.user.role === "porteria"
       ) {
         navigate("/admin/dashboard", { replace: true });
       } else {
@@ -77,6 +78,7 @@ const BackofficeLogin = () => {
           "monitor",
           "mercadeo",
           "recepcion",
+          "porteria",
         ].includes(result.user.role);
 
         console.log("🔐 Verificando permisos backoffice:", {
