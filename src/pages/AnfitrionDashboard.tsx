@@ -23,6 +23,7 @@ import AdminLayout from "@/components/AdminLayout";
 import CompanionBillingManager from "@/components/CompanionBillingManager";
 import CheckInManager from "@/components/CheckInManager";
 import CheckOutManager from "@/components/CheckOutManager";
+import ReservationManager from "@/components/ReservationManager";
 import { getCurrentUser, requireAuth, hasPermission } from "@/lib/auth-service";
 import { companionBillingService } from "@/lib/companion-billing-service";
 import { reservationService } from "@/lib/reservation-service";
@@ -147,7 +148,7 @@ const AnfitrionDashboard = () => {
                   {dashboardStats.activeReservations}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  huéspedes actuales
+                  hu��spedes actuales
                 </p>
               </CardContent>
             </Card>
