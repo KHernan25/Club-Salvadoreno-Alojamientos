@@ -469,16 +469,16 @@ router.get(
   authenticateToken,
   requireRole(["admin", "staff"]),
   asyncHandler(async (req: AuthenticatedRequest, res) => {
-    const total = database.reservations.length;
-    const pending = database.reservations.filter(
-      (r) => r.status === "pending",
-    ).length;
-    const confirmed = database.reservations.filter(
-      (r) => r.status === "confirmed",
-    ).length;
-    const cancelled = database.reservations.filter(
-      (r) => r.status === "cancelled",
-    ).length;
+    const total = database.getAllReservations().length;
+    const pending = database
+      .getAllReservations()
+      .filter((r) => r.status === "pending").length;
+    const confirmed = database
+      .getAllReservations()
+      .filter((r) => r.status === "confirmed").length;
+    const cancelled = database
+      .getAllReservations()
+      .filter((r) => r.status === "cancelled").length;
     const completed = reservations.filter(
       (r) => r.status === "completed",
     ).length;
