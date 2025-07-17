@@ -422,9 +422,7 @@ router.delete(
     reservation.updatedAt = new Date().toISOString();
 
     // En implementación real, manejar reembolsos automáticos
-    if (reservation.paymentStatus === "paid") {
-      reservation.paymentStatus = "refunded";
-    }
+    // Nota: paymentStatus sería manejado en una implementación completa
 
     res.json({
       success: true,
