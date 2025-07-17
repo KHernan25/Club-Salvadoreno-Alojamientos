@@ -129,7 +129,7 @@ const MembersModule = () => {
     }
 
     loadMembers();
-  }, [navigate, currentUser]);
+  }, [navigate]); // Remover currentUser de las dependencias para evitar loops
 
   const loadMembers = async () => {
     try {
