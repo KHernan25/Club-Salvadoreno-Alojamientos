@@ -17,7 +17,6 @@ import {
   CheckCircle,
   AlertTriangle,
   Calendar,
-  TrendingUp,
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import CompanionBillingManager from "@/components/CompanionBillingManager";
