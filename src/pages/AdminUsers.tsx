@@ -1017,20 +1017,22 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="miembro">Miembro</SelectItem>
-                    <SelectItem value="recepcion">Recepción</SelectItem>
-                    <SelectItem value="mercadeo">Mercadeo</SelectItem>
-                    <SelectItem value="monitor">Monitor</SelectItem>
-                    <SelectItem value="anfitrion">Anfitrión</SelectItem>
-                    <SelectItem value="atencion_miembro">
-                      Atención al Miembro
-                    </SelectItem>
-                    {isSuperAdmin() && (
-                      <SelectItem value="super_admin">
-                        <div className="flex items-center space-x-2">
-                          <Crown className="h-4 w-4 text-blue-600" />
-                          <span>Super Administrador</span>
-                        </div>
-                      </SelectItem>
+                    {currentUser && isSuperAdmin(currentUser) && (
+                      <>
+                        <SelectItem value="recepcion">Recepción</SelectItem>
+                        <SelectItem value="mercadeo">Mercadeo</SelectItem>
+                        <SelectItem value="monitor">Monitor</SelectItem>
+                        <SelectItem value="anfitrion">Anfitrión</SelectItem>
+                        <SelectItem value="atencion_miembro">
+                          Atención al Miembro
+                        </SelectItem>
+                        <SelectItem value="super_admin">
+                          <div className="flex items-center space-x-2">
+                            <Crown className="h-4 w-4 text-blue-600" />
+                            <span>Super Administrador</span>
+                          </div>
+                        </SelectItem>
+                      </>
                     )}
                   </SelectContent>
                 </Select>
