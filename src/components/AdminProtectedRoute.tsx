@@ -16,6 +16,7 @@ interface AdminProtectedRouteProps {
 const AdminProtectedRoute = ({
   children,
   requiredRole = "mercadeo",
+  allowedRoles,
 }: AdminProtectedRouteProps) => {
   const navigate = useNavigate();
 
