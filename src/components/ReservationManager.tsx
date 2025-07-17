@@ -409,9 +409,9 @@ const ReservationManager = () => {
                         </TableCell>
                         <TableCell>
                           <div>
-                            <p className="font-medium">
+                            <div className="font-medium">
                               {reservation.accommodationName}
-                            </p>
+                            </div>
                             <Badge
                               className={getLocationBadge(reservation.location)}
                             >
