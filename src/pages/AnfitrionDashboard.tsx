@@ -20,8 +20,11 @@ import {
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 import CompanionBillingManager from "@/components/CompanionBillingManager";
+import CheckInManager from "@/components/CheckInManager";
+import CheckOutManager from "@/components/CheckOutManager";
 import { getCurrentUser, requireAuth, hasPermission } from "@/lib/auth-service";
 import { companionBillingService } from "@/lib/companion-billing-service";
+import { reservationService } from "@/lib/reservation-service";
 import { toast } from "@/hooks/use-toast";
 
 const AnfitrionDashboard = () => {
@@ -56,18 +59,19 @@ const AnfitrionDashboard = () => {
       // Cargar estadísticas de facturación
       const billingStats = companionBillingService.getBillingStats();
 
-      // Simular datos adicionales del dashboard
-      const mockStats = {
-        totalReservations: 45,
-        checkInsToday: 12,
-        checkOutsToday: 8,
-        occupancyRate: 78,
+      // Cargar estadísticas de reservas
+      const reservationStats = reservationService.getReservationStats();
+
+      // Combinar todas las estadísticas
+      const combinedStats = {
+        occupancyRate: 78, // Simulado
         ...billingStats,
+        ...reservationStats,
       };
 
-      setDashboardStats(mockStats);
+      setDashboardStats(combinedStats);
 
-      console.log("✅ Anfitrión dashboard data loaded:", mockStats);
+      console.log("✅ Anfitrión dashboard data loaded:", combinedStats);
     } catch (error) {
       console.error("❌ Error loading dashboard data:", error);
       toast({
@@ -131,10 +135,10 @@ const AnfitrionDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {dashboardStats.totalReservations}
+                  {dashboardStats.activeReservations}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  reservas confirmadas
+                  huéspedes actuales
                 </p>
               </CardContent>
             </Card>
@@ -182,10 +186,10 @@ const AnfitrionDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {dashboardStats.checkInsToday}
+                  {dashboardStats.todayCheckIns}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {dashboardStats.checkOutsToday} check-outs
+                  {dashboardStats.todayCheckOuts} check-outs
                 </p>
               </CardContent>
             </Card>
@@ -216,14 +220,28 @@ const AnfitrionDashboard = () => {
         )}
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="billing" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
+        <Tabs defaultValue="checkin" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger
+              value="checkin"
+              className="flex items-center space-x-2"
+            >
+              <CheckCircle className="w-4 h-4" />
+              <span>Check-in</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="checkout"
+              className="flex items-center space-x-2"
+            >
+              <Clock className="w-4 h-4" />
+              <span>Check-out</span>
+            </TabsTrigger>
             <TabsTrigger
               value="billing"
               className="flex items-center space-x-2"
             >
               <DollarSign className="w-4 h-4" />
-              <span>Facturación de Acompañantes</span>
+              <span>Acompañantes</span>
             </TabsTrigger>
             <TabsTrigger
               value="reservations"
@@ -240,6 +258,14 @@ const AnfitrionDashboard = () => {
               <span>Reportes</span>
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="checkin" className="space-y-4">
+            <CheckInManager />
+          </TabsContent>
+
+          <TabsContent value="checkout" className="space-y-4">
+            <CheckOutManager />
+          </TabsContent>
 
           <TabsContent value="billing" className="space-y-4">
             <CompanionBillingManager />
