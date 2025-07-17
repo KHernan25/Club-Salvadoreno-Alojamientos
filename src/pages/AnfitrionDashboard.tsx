@@ -352,29 +352,6 @@ const AnfitrionDashboard = () => {
           <TabsContent value="reservations" className="space-y-4">
             <ReservationManager />
           </TabsContent>
-
-          <TabsContent value="reports" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Reportes y Estadísticas</CardTitle>
-                <CardDescription>
-                  Análisis de facturación y ocupación
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8">
-                  <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Reportes Detallados
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Próximamente: reportes de facturación, tendencias de
-                    ocupación y análisis financiero
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
     </AdminLayout>
