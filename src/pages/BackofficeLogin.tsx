@@ -40,6 +40,8 @@ const BackofficeLogin = () => {
       ) {
         if (session.user.role === "porteria") {
           navigate("/admin/porteria", { replace: true });
+        } else if (session.user.role === "anfitrion") {
+          navigate("/admin/anfitrion", { replace: true });
         } else {
           navigate("/admin/dashboard", { replace: true });
         }
@@ -114,6 +116,9 @@ const BackofficeLogin = () => {
           if (result.user.role === "porteria") {
             console.log("🔄 Navegando a /admin/porteria");
             navigate("/admin/porteria", { replace: true });
+          } else if (result.user.role === "anfitrion") {
+            console.log("🔄 Navegando a /admin/anfitrion");
+            navigate("/admin/anfitrion", { replace: true });
           } else {
             console.log("🔄 Navegando a /admin/dashboard");
             navigate("/admin/dashboard", { replace: true });
