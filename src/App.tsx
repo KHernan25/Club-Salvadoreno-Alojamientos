@@ -299,7 +299,13 @@ const App = () => (
               <Route
                 path="/admin/reportes"
                 element={
-                  <AdminProtectedRoute requiredRole="super_admin">
+                  <AdminProtectedRoute
+                    allowedRoles={[
+                      "super_admin",
+                      "atencion_miembro",
+                      "monitor",
+                    ]}
+                  >
                     <ReportsModule />
                   </AdminProtectedRoute>
                 }
@@ -307,7 +313,13 @@ const App = () => (
               <Route
                 path="/admin/reports"
                 element={
-                  <AdminProtectedRoute requiredRole="super_admin">
+                  <AdminProtectedRoute
+                    allowedRoles={[
+                      "super_admin",
+                      "atencion_miembro",
+                      "monitor",
+                    ]}
+                  >
                     <ReportsModule />
                   </AdminProtectedRoute>
                 }
