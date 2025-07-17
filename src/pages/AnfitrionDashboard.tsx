@@ -148,7 +148,7 @@ const AnfitrionDashboard = () => {
                   {dashboardStats.activeReservations}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  hu��spedes actuales
+                  huéspedes actuales
                 </p>
               </CardContent>
             </Card>
@@ -357,26 +357,7 @@ const AnfitrionDashboard = () => {
           </TabsContent>
 
           <TabsContent value="reservations" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Gestión de Reservas</CardTitle>
-                <CardDescription>
-                  Administra las reservas activas y próximas llegadas
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8">
-                  <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Gestión de Reservas
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Esta sección estará disponible próximamente para gestionar
-                    reservas y check-ins
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <ReservationManager />
           </TabsContent>
 
           <TabsContent value="reports" className="space-y-4">
