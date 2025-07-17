@@ -370,12 +370,6 @@ const AdminDashboard = () => {
                   Ver Calendario
                 </Link>
               </Button>
-              <Button asChild className="w-full" variant="outline">
-                <Link to="/dashboard">
-                  <Eye className="mr-2 h-4 w-4" />
-                  Ver Sitio Público
-                </Link>
-              </Button>
             </CardContent>
           </Card>
         </div>
