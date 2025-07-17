@@ -789,7 +789,6 @@ const ReportsModule = () => {
                     data={reportData.performanceData}
                   >
                     <RadialBar
-                      minAngle={15}
                       label={{ position: "insideStart", fill: "#fff" }}
                       background
                       clockWise
