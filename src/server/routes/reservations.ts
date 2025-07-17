@@ -349,7 +349,7 @@ router.put(
     for (const field of allowedFields) {
       if (updates[field] !== undefined) {
         reservation[field] = updates[field];
-        reservation.updatedAt = new Date();
+        reservation.updatedAt = new Date().toISOString();
       }
     }
 
