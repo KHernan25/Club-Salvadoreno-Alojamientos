@@ -779,7 +779,7 @@ const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos los roles</SelectItem>
-                    {currentUser && isSuperAdmin(currentUser) && (
+                    {currentUser && isSuperAdmin() && (
                       <>
                         <SelectItem value="super_admin">
                           Super Administrador
