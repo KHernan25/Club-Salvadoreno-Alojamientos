@@ -131,11 +131,26 @@ const AdminUsers = () => {
       setLoading(true);
       // Intentar cargar desde API real
       const response = await apiGetUsers();
-      setUsers(response);
+
+      // Filtrar usuarios según permisos
+      let filteredUsers = response;
+      if (currentUser && !isSuperAdmin(currentUser)) {
+        // Solo superadmin puede ver usuarios de backoffice
+        filteredUsers = response.filter((user) => user.role === "miembro");
+      }
+
+      setUsers(filteredUsers);
     } catch (error) {
       console.error("Error loading users:", error);
       // Cargar datos mock si la API no está disponible
-      setUsers(getMockUsers());
+      let mockUsers = getMockUsers();
+
+      // Aplicar filtro también a datos mock
+      if (currentUser && !isSuperAdmin(currentUser)) {
+        mockUsers = mockUsers.filter((user) => user.role === "miembro");
+      }
+
+      setUsers(mockUsers);
     } finally {
       setLoading(false);
     }
