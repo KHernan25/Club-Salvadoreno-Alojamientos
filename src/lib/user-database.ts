@@ -22,6 +22,14 @@ export interface User {
   isActive: boolean;
   status?: "pending" | "approved" | "rejected";
   memberStatus?: "activo" | "inactivo" | "en_mora"; // Estado específico para miembros
+  membershipType?:
+    | "Viuda"
+    | "Honorario"
+    | "Fundador"
+    | "Visitador Transeunte"
+    | "Visitador Especial"
+    | "Visitador Juvenil"
+    | "Contribuyente"; // Tipo de membresía
   lastLogin?: Date;
   createdAt: Date;
   profileImage?: string;
@@ -343,6 +351,7 @@ export const registeredUsers: User[] = [
     isActive: true,
     status: "approved",
     memberStatus: "activo",
+    membershipType: "Contribuyente",
     createdAt: new Date("2024-02-01"),
   },
   {
@@ -358,6 +367,7 @@ export const registeredUsers: User[] = [
     isActive: true,
     status: "approved",
     memberStatus: "activo",
+    membershipType: "Fundador",
     createdAt: new Date("2024-02-10"),
   },
   {
@@ -373,6 +383,7 @@ export const registeredUsers: User[] = [
     isActive: true,
     status: "approved",
     memberStatus: "en_mora",
+    membershipType: "Honorario",
     createdAt: new Date("2024-02-15"),
   },
   {
