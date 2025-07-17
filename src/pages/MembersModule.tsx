@@ -127,7 +127,7 @@ const MembersModule = () => {
 
   // Verificación de superadmin por separado para evitar loops
   useEffect(() => {
-    if (currentUser && isSuperAdmin(currentUser)) {
+    if (currentUser && currentUser.role === "super_admin") {
       navigate("/admin/users");
     }
   }, [currentUser, navigate]);
