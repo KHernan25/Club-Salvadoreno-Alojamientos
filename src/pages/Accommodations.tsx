@@ -323,7 +323,35 @@ const Accommodations = () => {
         </div>
       </section>
 
+            {/* Estados de carga y error */}
+      {loading && (
+        <section className="py-16">
+          <div className="container mx-auto px-4 text-center">
+            <div className="inline-block animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+            <p className="mt-4 text-lg text-slate-600">Cargando alojamientos...</p>
+          </div>
+        </section>
+      )}
+
+      {error && (
+        <section className="py-16">
+          <div className="container mx-auto px-4 text-center">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+              <p className="text-red-800">{error}</p>
+              <Button
+                onClick={() => window.location.reload()}
+                className="mt-4"
+                variant="outline"
+              >
+                Reintentar
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Selección de Ubicaciones */}
+      {!loading && !error && (
       <section className="py-16 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
