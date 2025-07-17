@@ -479,21 +479,22 @@ router.get(
     const cancelled = database
       .getAllReservations()
       .filter((r) => r.status === "cancelled").length;
-    const completed = reservations.filter(
-      (r) => r.status === "completed",
-    ).length;
+    const completed = database
+      .getAllReservations()
+      .filter((r) => r.status === "completed").length;
 
-    const totalRevenue = reservations
-      .filter((r) => r.status === "completed" && r.paymentStatus === "paid")
+    const totalRevenue = database
+      .getAllReservations()
+      .filter((r) => r.status === "completed")
       .reduce((sum, r) => sum + r.totalPrice, 0);
 
     const thisMonth = new Date();
     thisMonth.setDate(1);
     thisMonth.setHours(0, 0, 0, 0);
 
-    const monthlyReservations = reservations.filter(
-      (r) => new Date(r.createdAt) >= thisMonth,
-    ).length;
+    const monthlyReservations = database
+      .getAllReservations()
+      .filter((r) => new Date(r.createdAt) >= thisMonth).length;
 
     const monthlyRevenue = reservations
       .filter(
