@@ -679,7 +679,7 @@ const AdminUsers = () => {
                 : "Gestión de Miembros"}
             </h1>
             <p className="text-gray-600">
-              {currentUser && isSuperAdmin(currentUser)
+              {currentUser && isSuperAdmin()
                 ? "Administra usuarios y solicitudes de registro"
                 : "Administra miembros del club y solicitudes de registro"}
             </p>
