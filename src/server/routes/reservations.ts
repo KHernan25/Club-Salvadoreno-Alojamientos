@@ -455,7 +455,7 @@ router.delete(
         reservation: {
           id: reservation.id,
           status: reservation.status,
-          paymentStatus: reservation.paymentStatus,
+          paymentStatus: "pending",
           updatedAt: reservation.updatedAt,
         },
       },
