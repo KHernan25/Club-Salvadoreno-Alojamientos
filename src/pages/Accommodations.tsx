@@ -37,6 +37,28 @@ import {
 const Accommodations = () => {
   const navigate = useNavigate();
   const [selectedLocation, setSelectedLocation] = useState("el-sunzal");
+  const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Cargar alojamientos de la API
+  useEffect(() => {
+    const loadAccommodations = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await apiGetAccommodations();
+        setAccommodations(data);
+      } catch (err) {
+        console.error("Error loading accommodations:", err);
+        setError("Error al cargar los alojamientos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAccommodations();
+  }, []);
 
   const locations = [
     {
