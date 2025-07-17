@@ -457,11 +457,11 @@ const ReservationManager = () => {
                         </TableCell>
                         <TableCell>
                           {urgency && (
-                            <p
+                            <div
                               className={`text-sm font-medium ${urgency.color}`}
                             >
                               {urgency.message}
-                            </p>
+                            </div>
                           )}
                         </TableCell>
                         <TableCell className="text-right">
