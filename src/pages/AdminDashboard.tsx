@@ -28,11 +28,23 @@ import {
   apiGetReservationStats,
   isApiAvailable,
 } from "@/lib/api-service";
+import { getCurrentUser } from "@/lib/auth-service";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+  const currentUser = getCurrentUser();
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [apiConnected, setApiConnected] = useState(false);
+
+  // Redirect porteria users to their specific dashboard
+  useEffect(() => {
+    if (currentUser?.role === "porteria") {
+      navigate("/admin/porteria", { replace: true });
+      return;
+    }
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     const loadDashboardData = async () => {
