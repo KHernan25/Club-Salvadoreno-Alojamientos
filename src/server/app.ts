@@ -14,6 +14,7 @@ import { notificationRoutes } from "./routes/notifications";
 import registrationRequestsRouter from "./routes/registration-requests";
 import activityLogRouter from "./routes/activity-log";
 import { errorHandler } from "./middleware/errorHandler";
+import { config } from "../lib/config";
 
 // Crear aplicación Express
 const app: Application = express();
@@ -28,8 +29,8 @@ app.use(helmet());
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // máximo 100 requests por ventana por IP
+  windowMs: config.rateLimit.windowMs,
+  max: config.rateLimit.maxRequests,
   message: {
     error: "Demasiadas solicitudes, intenta nuevamente en 15 minutos",
   },
@@ -38,8 +39,8 @@ app.use("/api/", limiter);
 
 // Rate limiting más estricto para autenticación
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 5, // máximo 5 intentos de login por ventana por IP
+  windowMs: config.rateLimit.windowMs,
+  max: config.rateLimit.authMaxRequests,
   message: {
     error:
       "Demasiados intentos de autenticación, intenta nuevamente en 15 minutos",
@@ -50,7 +51,7 @@ app.use("/api/auth/", authLimiter);
 // CORS
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: config.server.frontendUrl,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -70,7 +71,7 @@ app.get("/health", (req: Request, res: Response) => {
     status: "OK",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || "development",
+    environment: config.server.nodeEnv,
   });
 });
 
@@ -81,7 +82,7 @@ app.get("/api", (req: Request, res: Response) => {
     message: "🏨 Club Salvadoreño API",
     version: "1.0.0",
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development",
+    environment: config.server.nodeEnv,
     endpoints: {
       health: {
         path: "/health",
