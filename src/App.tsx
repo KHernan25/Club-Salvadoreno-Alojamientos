@@ -269,6 +269,30 @@ const App = () => (
                   </AdminProtectedRoute>
                 }
               />
+              <Route
+                path="/admin/check-in-out"
+                element={
+                  <AdminProtectedRoute requiredRole="anfitrion">
+                    <HostCheckInOut />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/anfitrion/checkin"
+                element={
+                  <AdminProtectedRoute requiredRole="anfitrion">
+                    <HostCheckInOut />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/anfitrion/checkout"
+                element={
+                  <AdminProtectedRoute requiredRole="anfitrion">
+                    <HostCheckInOut />
+                  </AdminProtectedRoute>
+                }
+              />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
