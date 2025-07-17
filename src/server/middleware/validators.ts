@@ -219,3 +219,123 @@ export const validateDateRangeQuery = [
     }),
   handleValidationErrors,
 ];
+
+// Validadores para reseñas
+export const validateReview = [
+  body("accommodationId")
+    .trim()
+    .notEmpty()
+    .withMessage("ID del alojamiento es requerido"),
+  body("reservationId")
+    .trim()
+    .notEmpty()
+    .withMessage("ID de la reserva es requerido"),
+  body("rating")
+    .isInt({ min: 1, max: 5 })
+    .withMessage("La calificación debe ser entre 1 y 5"),
+  body("title")
+    .trim()
+    .isLength({ min: 5, max: 100 })
+    .withMessage("El título debe tener entre 5 y 100 caracteres"),
+  body("comment")
+    .trim()
+    .isLength({ min: 20, max: 1000 })
+    .withMessage("El comentario debe tener entre 20 y 1000 caracteres"),
+  body("categories.cleanliness")
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Calificación de limpieza inválida"),
+  body("categories.communication")
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Calificación de comunicación inválida"),
+  body("categories.checkin")
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Calificación de check-in inválida"),
+  body("categories.accuracy")
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Calificación de precisión inválida"),
+  body("categories.location")
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Calificación de ubicación inválida"),
+  body("categories.value")
+    .isInt({ min: 1, max: 5 })
+    .withMessage("Calificación de valor inválida"),
+  handleValidationErrors,
+];
+
+// Validadores para logs de actividad
+export const validateActivityLog = [
+  body("date").isISO8601().withMessage("Fecha inválida"),
+  body("type")
+    .isIn(["check_in", "check_out", "maintenance", "cleaning", "inspection"])
+    .withMessage("Tipo de actividad inválido"),
+  body("location")
+    .isIn(["el-sunzal", "corinto"])
+    .withMessage("Ubicación inválida"),
+  body("accommodationId")
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage("ID de alojamiento inválido"),
+  body("description")
+    .trim()
+    .isLength({ min: 5, max: 200 })
+    .withMessage("Descripción debe tener entre 5 y 200 caracteres"),
+  body("details")
+    .trim()
+    .isLength({ min: 10, max: 1000 })
+    .withMessage("Detalles deben tener entre 10 y 1000 caracteres"),
+  body("priority")
+    .isIn(["low", "medium", "high"])
+    .withMessage("Prioridad inválida"),
+  handleValidationErrors,
+];
+
+// Validadores para actualización de usuario
+export const validateUserUpdate = [
+  body("firstName")
+    .optional()
+    .trim()
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Nombre debe tener entre 2 y 50 caracteres"),
+  body("lastName")
+    .optional()
+    .trim()
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Apellido debe tener entre 2 y 50 caracteres"),
+  body("email")
+    .optional()
+    .isEmail()
+    .normalizeEmail()
+    .withMessage("Correo electrónico inválido"),
+  body("phone")
+    .optional()
+    .matches(/^(\+503\s?)?[0-9]{4}-?[0-9]{4}$/)
+    .withMessage("Número de teléfono inválido"),
+  body("role")
+    .optional()
+    .isIn([
+      "miembro",
+      "recepcion",
+      "porteria",
+      "monitor",
+      "anfitrion",
+      "mercadeo",
+      "atencion_miembro",
+      "super_admin",
+    ])
+    .withMessage("Rol inválido"),
+  body("isActive")
+    .optional()
+    .isBoolean()
+    .withMessage("Estado activo debe ser booleano"),
+  handleValidationErrors,
+];
+
+// Validadores para archivos subidos
+export const validateFileUpload = [
+  body("fileType")
+    .optional()
+    .isIn(["image", "document", "avatar"])
+    .withMessage("Tipo de archivo inválido"),
+  handleValidationErrors,
+];
