@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { database } from "../../lib/database";
+import { database, Reservation as DbReservation } from "../../lib/database";
 import {
   authenticateToken,
   requireRole,
@@ -13,6 +13,7 @@ import {
 import {
   calculateStayPrice,
   validateReservationDates,
+  getAccommodationRates,
 } from "../../lib/pricing-system";
 import { asyncHandler, createError } from "../middleware/errorHandler";
 import ReservationValidationService from "../../lib/reservation-validation-service";
