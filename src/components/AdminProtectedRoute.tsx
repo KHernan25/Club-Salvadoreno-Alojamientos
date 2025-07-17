@@ -46,11 +46,25 @@ const AdminProtectedRoute = ({
     });
 
     // Verificar permisos de rol
-    const hasRequiredRole = hasRole(requiredRole);
-    console.log(
-      "🛡️ AdminProtectedRoute: hasRole(" + requiredRole + ") =",
-      hasRequiredRole,
-    );
+    let hasRequiredRole: boolean;
+
+    if (allowedRoles && allowedRoles.length > 0) {
+      // Si se especifican roles permitidos, verificar si el usuario tiene alguno de ellos
+      hasRequiredRole = allowedRoles.some((role) => hasRole(role));
+      console.log(
+        "🛡️ AdminProtectedRoute: Verificando roles permitidos:",
+        allowedRoles,
+        "Resultado:",
+        hasRequiredRole,
+      );
+    } else {
+      // Verificación tradicional con un solo rol requerido
+      hasRequiredRole = hasRole(requiredRole);
+      console.log(
+        "🛡️ AdminProtectedRoute: hasRole(" + requiredRole + ") =",
+        hasRequiredRole,
+      );
+    }
 
     if (!hasRequiredRole) {
       console.log("❌ AdminProtectedRoute: Usuario sin permisos suficientes");
