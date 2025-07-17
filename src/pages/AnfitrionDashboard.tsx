@@ -306,7 +306,7 @@ const AnfitrionDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="checkin" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger
               value="checkin"
               className="flex items-center space-x-2"
@@ -334,13 +334,6 @@ const AnfitrionDashboard = () => {
             >
               <Calendar className="w-4 h-4" />
               <span>Reservas</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="reports"
-              className="flex items-center space-x-2"
-            >
-              <TrendingUp className="w-4 h-4" />
-              <span>Reportes</span>
             </TabsTrigger>
           </TabsList>
 
