@@ -60,6 +60,40 @@ const Accommodations = () => {
     loadAccommodations();
   }, []);
 
+  // Funciones helper para procesar datos de la API
+  const getAccommodationsByLocation = (location: string) => {
+    return accommodations.filter((acc) => acc.location === location);
+  };
+
+  const getAccommodationsByType = (location: string, type: string) => {
+    return accommodations.filter(
+      (acc) => acc.location === location && acc.type === type,
+    );
+  };
+
+  const mapAccommodationToDisplay = (acc: Accommodation) => {
+    return {
+      id: acc.id,
+      name: acc.name,
+      category: acc.type,
+      image: acc.images?.[0] || "/placeholder.svg",
+      description: acc.description,
+      features:
+        acc.amenities?.map((amenity) => ({
+          icon: Wifi, // Usamos un icono por defecto
+          text: amenity,
+        })) || [],
+      pricing: {
+        weekday: acc.pricing?.weekday || 0,
+        weekend: acc.pricing?.weekend || 0,
+        daily: acc.pricing?.holiday || 0,
+      },
+      capacity: acc.capacity,
+      view: acc.view,
+      available: acc.available,
+    };
+  };
+
   const locations = [
     {
       id: "corinto",
