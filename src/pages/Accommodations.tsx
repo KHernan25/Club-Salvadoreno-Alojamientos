@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
+import { apiGetAccommodations, type Accommodation } from "@/lib/api-service";
 import {
   Menu,
   Globe,
@@ -36,6 +37,62 @@ import {
 const Accommodations = () => {
   const navigate = useNavigate();
   const [selectedLocation, setSelectedLocation] = useState("el-sunzal");
+  const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Cargar alojamientos de la API
+  useEffect(() => {
+    const loadAccommodations = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await apiGetAccommodations();
+        setAccommodations(data);
+      } catch (err) {
+        console.error("Error loading accommodations:", err);
+        setError("Error al cargar los alojamientos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAccommodations();
+  }, []);
+
+  // Funciones helper para procesar datos de la API
+  const getAccommodationsByLocation = (location: string) => {
+    return accommodations.filter((acc) => acc.location === location);
+  };
+
+  const getAccommodationsByType = (location: string, type: string) => {
+    return accommodations.filter(
+      (acc) => acc.location === location && acc.type === type,
+    );
+  };
+
+  const mapAccommodationToDisplay = (acc: Accommodation) => {
+    return {
+      id: acc.id,
+      name: acc.name,
+      category: acc.type,
+      image: acc.images?.[0] || "/placeholder.svg",
+      description: acc.description,
+      features:
+        acc.amenities?.map((amenity) => ({
+          icon: Wifi, // Usamos un icono por defecto
+          text: amenity,
+        })) || [],
+      pricing: {
+        weekday: acc.pricing?.weekday || 0,
+        weekend: acc.pricing?.weekend || 0,
+        daily: acc.pricing?.holiday || 0,
+      },
+      capacity: acc.capacity,
+      view: acc.view,
+      available: acc.available,
+    };
+  };
 
   const locations = [
     {
@@ -62,122 +119,14 @@ const Accommodations = () => {
     },
   ];
 
-  const apartmentDetails = [
-    {
-      id: "1A",
-      name: "Apartamento 1A",
-      category: "apartamentos",
-      image: "/placeholder.svg",
-      description:
-        "Apartamento amplio con vista al océano, perfecto para parejas o familias pequeñas.",
-      features: [
-        { icon: Bed, text: "2 camas full" },
-        { icon: Tv, text: "LCD Smart TV Pantalla Plana" },
-        { icon: Wifi, text: "Internet Wi-Fi" },
-        { icon: Bath, text: "1 Baño" },
-        { icon: Utensils, text: "Vajilla y Utensilios de cocina" },
-        { icon: Users, text: "Caja Fuerte" },
-        { icon: Wind, text: "Cafetera" },
-        { icon: Home, text: "Toallas" },
-        { icon: Tv, text: "Tostador" },
-        { icon: Wind, text: "Aire Acondicionado" },
-        { icon: Crown, text: "Plataformas de Streaming" },
-        {
-          icon: Users,
-          text: "Acceso para personas con capacidades especiales",
-        },
-      ],
-      pricing: {
-        weekday: 110,
-        weekend: 230,
-        daily: 140,
-      },
-    },
-    {
-      id: "1B",
-      name: "Apartamento 1B",
-      category: "apartamentos",
-      image: "/placeholder.svg",
-      description:
-        "Moderno apartamento con todas las comodidades para una estancia perfecta.",
-      features: [
-        { icon: Bed, text: "1 cama queen" },
-        { icon: Tv, text: "Smart TV" },
-        { icon: Wifi, text: "Internet Wi-Fi" },
-        { icon: Bath, text: "1 Baño completo" },
-      ],
-      pricing: {
-        weekday: 95,
-        weekend: 210,
-        daily: 125,
-      },
-    },
-    {
-      id: "2A",
-      name: "Apartamento 2A",
-      category: "apartamentos",
-      image: "/placeholder.svg",
-      description:
-        "Espacioso apartamento en el segundo piso con vistas espectaculares.",
-      features: [
-        { icon: Bed, text: "2 camas full" },
-        { icon: Tv, text: "LCD Smart TV" },
-        { icon: Wifi, text: "Internet Wi-Fi" },
-        { icon: Bath, text: "2 Baños" },
-      ],
-      pricing: {
-        weekday: 120,
-        weekend: 250,
-        daily: 150,
-      },
-    },
-  ];
+  // Los datos de alojamientos ahora se cargan desde la API
 
-  const casas = [
-    {
-      id: "casa1",
-      name: "Casa Familiar",
-      category: "casas",
-      image: "/placeholder.svg",
-      description:
-        "Amplia casa con 3 habitaciones, ideal para familias grandes.",
-      features: [
-        { icon: Bed, text: "3 habitaciones" },
-        { icon: Bath, text: "2 baños completos" },
-        { icon: Utensils, text: "Cocina completa" },
-        { icon: Car, text: "Estacionamiento privado" },
-      ],
-      pricing: {
-        weekday: 200,
-        weekend: 350,
-        daily: 250,
-      },
-    },
-  ];
+  const getAccommodationsByLocationFromAPI = () => {
+    const locationAccommodations =
+      getAccommodationsByLocation(selectedLocation);
 
-  const suites = [
-    {
-      id: "suite1",
-      name: "Suite Ejecutiva",
-      category: "suites",
-      image: "/placeholder.svg",
-      description: "Elegante suite con jacuzzi y vista panorámica al océano.",
-      features: [
-        { icon: Crown, text: "Suite de lujo" },
-        { icon: Bath, text: "Jacuzzi privado" },
-        { icon: Tv, text: "TV premium" },
-        { icon: Wind, text: "Clima centralizado" },
-      ],
-      pricing: {
-        weekday: 300,
-        weekend: 450,
-        daily: 380,
-      },
-    },
-  ];
-
-  const getAccommodationsByLocation = () => {
     if (selectedLocation === "corinto") {
+      const casas = getAccommodationsByType(selectedLocation, "casa");
       return {
         location: "Corinto",
         types: [
@@ -185,45 +134,50 @@ const Accommodations = () => {
             id: "corinto-casas",
             title: "Casas en Corinto",
             description: "Amplias casas familiares junto al lago de Coatepeque",
-            accommodations: casas.map((casa) => ({
-              ...casa,
-              location: "corinto",
-            })),
+            accommodations: casas.map(mapAccommodationToDisplay),
           },
         ],
       };
     } else {
+      const casas = getAccommodationsByType(selectedLocation, "casa");
+      const apartamentos = getAccommodationsByType(
+        selectedLocation,
+        "apartamento",
+      );
+      const suites = getAccommodationsByType(selectedLocation, "suite");
+
+      const types = [];
+
+      if (casas.length > 0) {
+        types.push({
+          id: "sunzal-casas",
+          title: "Casas en El Sunzal",
+          description: "Casas frente a la playa con acceso directo al océano",
+          accommodations: casas.map(mapAccommodationToDisplay),
+        });
+      }
+
+      if (apartamentos.length > 0) {
+        types.push({
+          id: "sunzal-apartamentos",
+          title: "Apartamentos en El Sunzal",
+          description: "Modernos apartamentos con vista al mar",
+          accommodations: apartamentos.map(mapAccommodationToDisplay),
+        });
+      }
+
+      if (suites.length > 0) {
+        types.push({
+          id: "sunzal-suites",
+          title: "Suites en El Sunzal",
+          description: "Suites de lujo con servicios premium",
+          accommodations: suites.map(mapAccommodationToDisplay),
+        });
+      }
+
       return {
         location: "El Sunzal",
-        types: [
-          {
-            id: "sunzal-casas",
-            title: "Casas en El Sunzal",
-            description: "Casas frente a la playa con acceso directo al océano",
-            accommodations: casas.map((casa) => ({
-              ...casa,
-              location: "el-sunzal",
-            })),
-          },
-          {
-            id: "sunzal-apartamentos",
-            title: "Apartamentos en El Sunzal",
-            description: "Modernos apartamentos con vista al mar",
-            accommodations: apartmentDetails.map((apt) => ({
-              ...apt,
-              location: "el-sunzal",
-            })),
-          },
-          {
-            id: "sunzal-suites",
-            title: "Suites en El Sunzal",
-            description: "Suites de lujo con servicios premium",
-            accommodations: suites.map((suite) => ({
-              ...suite,
-              location: "el-sunzal",
-            })),
-          },
-        ],
+        types,
       };
     }
   };
@@ -257,246 +211,281 @@ const Accommodations = () => {
         </div>
       </section>
 
-      {/* Selección de Ubicaciones */}
-      <section className="py-16 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Elige tu Destino
-            </h2>
-            <p className="text-lg text-slate-600">
-              Selecciona la ubicación que prefieras para explorar nuestras
-              opciones de alojamiento
+      {/* Estados de carga y error */}
+      {loading && (
+        <section className="py-16">
+          <div className="container mx-auto px-4 text-center">
+            <div className="inline-block animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+            <p className="mt-4 text-lg text-slate-600">
+              Cargando alojamientos...
             </p>
           </div>
+        </section>
+      )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
-            {locations.map((location) => {
-              const IconComponent = location.icon;
-              return (
-                <Card
-                  key={location.id}
-                  className={`cursor-pointer transition-all duration-300 hover:shadow-xl ${
-                    selectedLocation === location.id
-                      ? `ring-2 ring-${location.color}-500 shadow-lg transform scale-105`
-                      : ""
-                  }`}
-                  onClick={() => setSelectedLocation(location.id)}
-                >
-                  <div className="relative h-64 overflow-hidden rounded-t-lg">
-                    <img
-                      src={location.image}
-                      alt={location.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div
-                      className={`absolute top-4 right-4 bg-${location.color}-600 text-white p-3 rounded-full`}
-                    >
-                      <IconComponent className="h-6 w-6" />
-                    </div>
-                    <div
-                      className={`absolute bottom-4 left-4 bg-${location.color}-600 text-white px-4 py-2 rounded`}
-                    >
-                      <span className="font-bold text-lg">
-                        {location.title}
-                      </span>
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                      {location.subtitle}
-                    </h3>
-                    <p className="text-slate-700 mb-4 leading-relaxed">
-                      {location.description}
-                    </p>
-                    <div className="mb-4">
-                      <p className="text-sm font-medium text-slate-600 mb-2">
-                        Tipos de alojamiento disponibles:
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {location.accommodationTypes.map((type, index) => (
-                          <Badge
-                            key={index}
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            {type}
-                          </Badge>
-                        ))}
+      {error && (
+        <section className="py-16">
+          <div className="container mx-auto px-4 text-center">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+              <p className="text-red-800">{error}</p>
+              <Button
+                onClick={() => window.location.reload()}
+                className="mt-4"
+                variant="outline"
+              >
+                Reintentar
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Selección de Ubicaciones */}
+      {!loading && !error && (
+        <section className="py-16 bg-slate-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                Elige tu Destino
+              </h2>
+              <p className="text-lg text-slate-600">
+                Selecciona la ubicación que prefieras para explorar nuestras
+                opciones de alojamiento
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
+              {locations.map((location) => {
+                const IconComponent = location.icon;
+                return (
+                  <Card
+                    key={location.id}
+                    className={`cursor-pointer transition-all duration-300 hover:shadow-xl ${
+                      selectedLocation === location.id
+                        ? `ring-2 ring-${location.color}-500 shadow-lg transform scale-105`
+                        : ""
+                    }`}
+                    onClick={() => setSelectedLocation(location.id)}
+                  >
+                    <div className="relative h-64 overflow-hidden rounded-t-lg">
+                      <img
+                        src={location.image}
+                        alt={location.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div
+                        className={`absolute top-4 right-4 bg-${location.color}-600 text-white p-3 rounded-full`}
+                      >
+                        <IconComponent className="h-6 w-6" />
+                      </div>
+                      <div
+                        className={`absolute bottom-4 left-4 bg-${location.color}-600 text-white px-4 py-2 rounded`}
+                      >
+                        <span className="font-bold text-lg">
+                          {location.title}
+                        </span>
                       </div>
                     </div>
-                    <Button
-                      className={`w-full bg-${location.color}-600 hover:bg-${location.color}-700`}
-                      size="sm"
-                    >
-                      Explorar {location.title}
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Submenús por Tipo de Alojamiento */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          {(() => {
-            const locationData = getAccommodationsByLocation();
-            return (
-              <div>
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                    Alojamientos en {locationData.location}
-                  </h2>
-                  <p className="text-lg text-slate-600">
-                    Explora nuestras opciones de hospedaje en esta ubicación
-                  </p>
-                </div>
-
-                {locationData.types.map((type) => (
-                  <div key={type.id} className="mb-16">
-                    <div className="flex items-center justify-between mb-8">
-                      <div>
-                        <h3 className="text-2xl font-bold text-slate-900 mb-2">
-                          {type.title}
-                        </h3>
-                        <p className="text-slate-600">{type.description}</p>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                        {location.subtitle}
+                      </h3>
+                      <p className="text-slate-700 mb-4 leading-relaxed">
+                        {location.description}
+                      </p>
+                      <div className="mb-4">
+                        <p className="text-sm font-medium text-slate-600 mb-2">
+                          Tipos de alojamiento disponibles:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {location.accommodationTypes.map((type, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              {type}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                       <Button
-                        variant="outline"
-                        onClick={() => {
-                          if (type.id.includes("casas")) {
-                            navigate(
-                              selectedLocation === "corinto"
-                                ? "/corinto/casas"
-                                : "/el-sunzal/casas",
-                            );
-                          } else if (type.id.includes("apartamentos")) {
-                            navigate("/el-sunzal/apartamentos");
-                          } else if (type.id.includes("suites")) {
-                            navigate("/el-sunzal/suites");
-                          }
-                        }}
+                        className={`w-full bg-${location.color}-600 hover:bg-${location.color}-700`}
+                        size="sm"
                       >
-                        Ver Todas
+                        Explorar {location.title}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
-                    </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
-                    <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-                      {type.accommodations.slice(0, 3).map((accommodation) => (
-                        <Card
-                          key={accommodation.id}
-                          className="group hover:shadow-xl transition-all duration-300"
+      {/* Submenús por Tipo de Alojamiento */}
+      {!loading && !error && (
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            {(() => {
+              const locationData = getAccommodationsByLocationFromAPI();
+              return (
+                <div>
+                  <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold text-slate-900 mb-4">
+                      Alojamientos en {locationData.location}
+                    </h2>
+                    <p className="text-lg text-slate-600">
+                      Explora nuestras opciones de hospedaje en esta ubicación
+                    </p>
+                  </div>
+
+                  {locationData.types.map((type) => (
+                    <div key={type.id} className="mb-16">
+                      <div className="flex items-center justify-between mb-8">
+                        <div>
+                          <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                            {type.title}
+                          </h3>
+                          <p className="text-slate-600">{type.description}</p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            if (type.id.includes("casas")) {
+                              navigate(
+                                selectedLocation === "corinto"
+                                  ? "/corinto/casas"
+                                  : "/el-sunzal/casas",
+                              );
+                            } else if (type.id.includes("apartamentos")) {
+                              navigate("/el-sunzal/apartamentos");
+                            } else if (type.id.includes("suites")) {
+                              navigate("/el-sunzal/suites");
+                            }
+                          }}
                         >
-                          <div className="relative h-64 overflow-hidden rounded-t-lg">
-                            <img
-                              src={accommodation.image}
-                              alt={accommodation.name}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute top-4 left-4 bg-blue-900 text-white px-3 py-1 rounded">
-                              <span className="font-semibold">
-                                {accommodation.name}
-                              </span>
-                            </div>
-                          </div>
+                          Ver Todas
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
 
-                          <CardContent className="p-6">
-                            <h3 className="text-xl font-bold text-slate-900 mb-2">
-                              {accommodation.name}
-                            </h3>
-                            <p className="text-slate-600 mb-4 text-sm">
-                              {accommodation.description}
-                            </p>
-
-                            {/* Features Grid */}
-                            <div className="grid grid-cols-2 gap-2 mb-6">
-                              {accommodation.features
-                                .slice(0, 6)
-                                .map((feature, index) => (
-                                  <div
-                                    key={index}
-                                    className="flex items-center gap-2 text-xs text-slate-600"
-                                  >
-                                    <feature.icon className="h-3 w-3" />
-                                    <span>{feature.text}</span>
-                                  </div>
-                                ))}
-                            </div>
-
-                            {/* Pricing */}
-                            <div className="border-t border-slate-200 pt-4 mb-4">
-                              <div className="grid grid-cols-3 gap-2 text-center">
-                                <div>
-                                  <div className="text-xs text-slate-500">
-                                    Día de Semana
-                                  </div>
-                                  <div className="text-sm font-semibold">
-                                    ${accommodation.pricing.weekday}
-                                  </div>
-                                </div>
-                                <div>
-                                  <div className="text-xs text-slate-500">
-                                    Fin de Semana
-                                  </div>
-                                  <div className="text-sm font-semibold">
-                                    ${accommodation.pricing.weekend}
-                                  </div>
-                                </div>
-                                <div>
-                                  <div className="text-xs text-slate-500">
-                                    Asueto (Día)
-                                  </div>
-                                  <div className="text-sm font-semibold">
-                                    ${accommodation.pricing.daily}
-                                  </div>
+                      <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                        {type.accommodations
+                          .slice(0, 3)
+                          .map((accommodation) => (
+                            <Card
+                              key={accommodation.id}
+                              className="group hover:shadow-xl transition-all duration-300"
+                            >
+                              <div className="relative h-64 overflow-hidden rounded-t-lg">
+                                <img
+                                  src={accommodation.image}
+                                  alt={accommodation.name}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                <div className="absolute top-4 left-4 bg-blue-900 text-white px-3 py-1 rounded">
+                                  <span className="font-semibold">
+                                    {accommodation.name}
+                                  </span>
                                 </div>
                               </div>
-                            </div>
 
-                            <div className="flex gap-2">
-                              <Button
-                                className="flex-1 bg-blue-900 hover:bg-blue-800"
-                                size="sm"
-                                onClick={() => {
-                                  if (accommodation.category === "casas") {
-                                    navigate(`/casa/${accommodation.id}`);
-                                  } else if (
-                                    accommodation.category === "suites"
-                                  ) {
-                                    navigate(`/suite/${accommodation.id}`);
-                                  } else {
-                                    navigate(
-                                      `/apartamento/${accommodation.id}`,
-                                    );
-                                  }
-                                }}
-                              >
-                                Ver Detalles
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => navigate("/reservas")}
-                              >
-                                Reservar
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                              <CardContent className="p-6">
+                                <h3 className="text-xl font-bold text-slate-900 mb-2">
+                                  {accommodation.name}
+                                </h3>
+                                <p className="text-slate-600 mb-4 text-sm">
+                                  {accommodation.description}
+                                </p>
+
+                                {/* Features Grid */}
+                                <div className="grid grid-cols-2 gap-2 mb-6">
+                                  {accommodation.features
+                                    .slice(0, 6)
+                                    .map((feature, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex items-center gap-2 text-xs text-slate-600"
+                                      >
+                                        <feature.icon className="h-3 w-3" />
+                                        <span>{feature.text}</span>
+                                      </div>
+                                    ))}
+                                </div>
+
+                                {/* Pricing */}
+                                <div className="border-t border-slate-200 pt-4 mb-4">
+                                  <div className="grid grid-cols-3 gap-2 text-center">
+                                    <div>
+                                      <div className="text-xs text-slate-500">
+                                        Día de Semana
+                                      </div>
+                                      <div className="text-sm font-semibold">
+                                        ${accommodation.pricing.weekday}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div className="text-xs text-slate-500">
+                                        Fin de Semana
+                                      </div>
+                                      <div className="text-sm font-semibold">
+                                        ${accommodation.pricing.weekend}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div className="text-xs text-slate-500">
+                                        Asueto (Día)
+                                      </div>
+                                      <div className="text-sm font-semibold">
+                                        ${accommodation.pricing.daily}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="flex gap-2">
+                                  <Button
+                                    className="flex-1 bg-blue-900 hover:bg-blue-800"
+                                    size="sm"
+                                    onClick={() => {
+                                      if (accommodation.category === "casas") {
+                                        navigate(`/casa/${accommodation.id}`);
+                                      } else if (
+                                        accommodation.category === "suites"
+                                      ) {
+                                        navigate(`/suite/${accommodation.id}`);
+                                      } else {
+                                        navigate(
+                                          `/apartamento/${accommodation.id}`,
+                                        );
+                                      }
+                                    }}
+                                  >
+                                    Ver Detalles
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => navigate("/reservas")}
+                                  >
+                                    Reservar
+                                  </Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            );
-          })()}
-        </div>
-      </section>
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
+        </section>
+      )}
 
       {/* Contact Section */}
       <section className="py-16 bg-slate-100">

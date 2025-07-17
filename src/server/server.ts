@@ -1,23 +1,23 @@
 import dotenv from "dotenv";
 import { app } from "./app";
 import initializeDemoData from "./scripts/init-database";
+import { config } from "../lib/config";
 
 // Cargar variables de entorno
 dotenv.config();
-
-const PORT = process.env.PORT || 3001;
 
 // Inicializar datos de demostración
 initializeDemoData();
 
 // Iniciar servidor
-app.listen(PORT, () => {
+app.listen(config.server.port, () => {
   console.log(
-    `🚀 Servidor Club Salvadoreño API ejecutándose en puerto ${PORT}`,
+    `🚀 Servidor Club Salvadoreño API ejecutándose en puerto ${config.server.port}`,
   );
-  console.log(`📋 Health check: http://localhost:${PORT}/health`);
-  console.log(`🔧 API Base URL: http://localhost:${PORT}/api`);
-  console.log(`🌍 Entorno: ${process.env.NODE_ENV || "development"}`);
+  console.log(`📋 Health check: http://localhost:${config.server.port}/health`);
+  console.log(`🔧 API Base URL: http://localhost:${config.server.port}/api`);
+  console.log(`🌍 Entorno: ${config.server.nodeEnv}`);
+  console.log(`🔗 Frontend URL: ${config.server.frontendUrl}`);
 });
 
 // Manejo de cierre graceful
