@@ -64,7 +64,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const menuItems = [
     {
       label: "Dashboard",
-      href: "/admin/dashboard",
+      href:
+        currentUser?.role === "porteria"
+          ? "/admin/porteria"
+          : "/admin/dashboard",
       icon: BarChart3,
       permission: "canViewDashboard",
     },
@@ -138,11 +141,18 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     },
   ];
 
-  const filteredMenuItems = menuItems.filter((item) =>
-    userPermissions
-      ? userPermissions[item.permission as keyof typeof userPermissions]
-      : false,
-  );
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (!userPermissions) return false;
+
+    // Special restriction for portería role - only show dashboard and activity log
+    if (currentUser?.role === "porteria") {
+      return (
+        item.href === "/admin/porteria" || item.href === "/admin/activity-log"
+      );
+    }
+
+    return userPermissions[item.permission as keyof typeof userPermissions];
+  });
 
   const Sidebar = ({ mobile = false }) => (
     <div className={`${mobile ? "p-4" : "p-6"} space-y-6`}>
