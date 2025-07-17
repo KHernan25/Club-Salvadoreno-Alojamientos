@@ -933,7 +933,7 @@ const AdminUsers = () => {
               <DialogTitle className="flex items-center space-x-2">
                 <Crown className="h-5 w-5 text-blue-600" />
                 <span>
-                  {currentUser && isSuperAdmin(currentUser)
+                  {currentUser && isSuperAdmin()
                     ? "Crear Nuevo Usuario"
                     : "Crear Nuevo Miembro"}
                 </span>
@@ -1009,7 +1009,7 @@ const AdminUsers = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="new-password">Contrase��a Temporal</Label>
+                <Label htmlFor="new-password">Contraseña Temporal</Label>
                 <Input
                   id="new-password"
                   type="password"
