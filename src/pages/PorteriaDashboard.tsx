@@ -205,7 +205,9 @@ const PorteriaDashboard = () => {
               <CardContent>
                 <div className="text-2xl font-bold">
                   {Object.entries(dailyStats.detectionMethods)
-                    .sort(([, a], [, b]) => b - a)[0]?.[0]
+                    .sort(
+                      ([, a], [, b]) => (Number(b) || 0) - (Number(a) || 0),
+                    )[0]?.[0]
                     ?.toUpperCase() || "N/A"}
                 </div>
                 <p className="text-xs text-muted-foreground">

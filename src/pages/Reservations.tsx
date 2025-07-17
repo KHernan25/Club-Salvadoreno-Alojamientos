@@ -165,7 +165,7 @@ const Reservations = () => {
       const info = [];
 
       // Mock user type (in real implementation, this would come from auth context)
-      const mockUserType = "miembro";
+      const mockUserType: "miembro" | "viuda" | "socio" = "miembro";
 
       // Check for weekend restrictions for certain user types
       const checkInDate = new Date(selectedDates.checkIn);

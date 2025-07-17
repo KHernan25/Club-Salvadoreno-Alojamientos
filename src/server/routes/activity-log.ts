@@ -66,100 +66,108 @@ let activityLogs: ActivityLogEntry[] = [
 ];
 
 // GET /api/activity-log - Obtener entradas de actividad
-router.get("/", authenticateToken, async (req: Request, res: Response) => {
-  try {
-    const { user } = req as any;
+router.get(
+  "/",
+  authenticateToken,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { user } = req as any;
 
-    // Filtrar según permisos:
-    // - SuperAdmin ve todas las entradas
-    // - Otros usuarios solo ven sus propias entradas
-    let filteredLogs = activityLogs;
+      // Filtrar según permisos:
+      // - SuperAdmin ve todas las entradas
+      // - Otros usuarios solo ven sus propias entradas
+      let filteredLogs = activityLogs;
 
-    if (user.role !== "super_admin") {
-      filteredLogs = activityLogs.filter((log) => log.usuarioId === user.id);
+      if (user.role !== "super_admin") {
+        filteredLogs = activityLogs.filter((log) => log.usuarioId === user.id);
+      }
+
+      // Ordenar por fecha descendente (más recientes primero)
+      const sortedLogs = filteredLogs.sort(
+        (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
+      );
+
+      res.json({
+        success: true,
+        data: sortedLogs,
+        total: sortedLogs.length,
+      });
+    } catch (error) {
+      console.error("Error getting activity logs:", error);
+      res.status(500).json({
+        success: false,
+        error: "Error obteniendo bitácora de actividades",
+      });
     }
-
-    // Ordenar por fecha descendente (más recientes primero)
-    const sortedLogs = filteredLogs.sort(
-      (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
-    );
-
-    res.json({
-      success: true,
-      data: sortedLogs,
-      total: sortedLogs.length,
-    });
-  } catch (error) {
-    console.error("Error getting activity logs:", error);
-    res.status(500).json({
-      success: false,
-      error: "Error obteniendo bitácora de actividades",
-    });
-  }
-});
+  },
+);
 
 // POST /api/activity-log - Crear nueva entrada de actividad
-router.post("/", authenticateToken, async (req: Request, res: Response) => {
-  try {
-    const { user } = req as any;
-    const { contenido } = req.body;
+router.post(
+  "/",
+  authenticateToken,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { user } = req as any;
+      const { contenido } = req.body;
 
-    // Validar contenido
-    if (
-      !contenido ||
-      typeof contenido !== "string" ||
-      contenido.trim().length === 0
-    ) {
-      return res.status(400).json({
+      // Validar contenido
+      if (
+        !contenido ||
+        typeof contenido !== "string" ||
+        contenido.trim().length === 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          error: "El contenido de la actividad es requerido",
+        });
+      }
+
+      if (contenido.length > 1000) {
+        return res.status(400).json({
+          success: false,
+          error: "El contenido no puede exceder 1000 caracteres",
+        });
+      }
+
+      // Crear nueva entrada
+      const newEntry: ActivityLogEntry = {
+        id: uuidv4(),
+        usuarioId: user.id,
+        fecha: new Date().toISOString(),
+        contenido: contenido.trim(),
+        createdAt: new Date().toISOString(),
+        usuario: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          role: user.role,
+        },
+      };
+
+      // Agregar al array
+      activityLogs.unshift(newEntry); // Agregar al inicio para mantener orden descendente
+
+      res.status(201).json({
+        success: true,
+        data: newEntry,
+        message: "Entrada de actividad creada exitosamente",
+      });
+    } catch (error) {
+      console.error("Error creating activity log:", error);
+      res.status(500).json({
         success: false,
-        error: "El contenido de la actividad es requerido",
+        error: "Error creando entrada de actividad",
       });
     }
-
-    if (contenido.length > 1000) {
-      return res.status(400).json({
-        success: false,
-        error: "El contenido no puede exceder 1000 caracteres",
-      });
-    }
-
-    // Crear nueva entrada
-    const newEntry: ActivityLogEntry = {
-      id: uuidv4(),
-      usuarioId: user.id,
-      fecha: new Date().toISOString(),
-      contenido: contenido.trim(),
-      createdAt: new Date().toISOString(),
-      usuario: {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role,
-      },
-    };
-
-    // Agregar al array
-    activityLogs.unshift(newEntry); // Agregar al inicio para mantener orden descendente
-
-    res.status(201).json({
-      success: true,
-      data: newEntry,
-      message: "Entrada de actividad creada exitosamente",
-    });
-  } catch (error) {
-    console.error("Error creating activity log:", error);
-    res.status(500).json({
-      success: false,
-      error: "Error creando entrada de actividad",
-    });
-  }
-});
+  },
+);
 
 // DELETE /api/activity-log/:id - Eliminar entrada (solo para SuperAdmin)
 router.delete(
   "/:id",
   authenticateToken,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const { user } = req as any;
       const { id } = req.params;
