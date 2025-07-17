@@ -37,17 +37,15 @@ const MemberDetection = ({
   onAccessRegistered,
   currentUser,
 }: MemberDetectionProps) => {
-  const [detectionMethod, setDetectionMethod] = useState<
-    "qr" | "card" | "camera" | "manual"
-  >("qr");
+  const [detectionMethod, setDetectionMethod] = useState<"card" | "manual">(
+    "card",
+  );
   const [loading, setLoading] = useState(false);
   const [detectedMember, setDetectedMember] = useState<any>(null);
   const [manualSearch, setManualSearch] = useState("");
 
   // Estados para simulación de hardware
-  const [qrInput, setQrInput] = useState("");
   const [cardInput, setCardInput] = useState("");
-  const [cameraActive, setCameraActive] = useState(false);
 
   const handleDetection = async () => {
     if (loading) return;
@@ -59,36 +57,17 @@ const MemberDetection = ({
       let result: MemberDetectionResult;
 
       switch (detectionMethod) {
-        case "qr":
-          if (!qrInput.trim()) {
-            toast({
-              title: "Error",
-              description: "Por favor escanea o ingresa un código QR",
-              variant: "destructive",
-            });
-            setLoading(false);
-            return;
-          }
-          result = await accessControlService.detectMemberByQR(qrInput);
-          break;
-
         case "card":
           if (!cardInput.trim()) {
             toast({
               title: "Error",
-              description: "Por favor presenta la tarjeta",
+              description: "Por favor presenta el carnet de miembro",
               variant: "destructive",
             });
             setLoading(false);
             return;
           }
           result = await accessControlService.detectMemberByCard(cardInput);
-          break;
-
-        case "camera":
-          setCameraActive(true);
-          result = await accessControlService.detectMemberByCamera();
-          setCameraActive(false);
           break;
 
         case "manual":
@@ -156,7 +135,6 @@ const MemberDetection = ({
 
       // Limpiar estado
       setDetectedMember(null);
-      setQrInput("");
       setCardInput("");
       setManualSearch("");
 
@@ -174,12 +152,8 @@ const MemberDetection = ({
 
   const getMethodIcon = (method: string) => {
     switch (method) {
-      case "qr":
-        return <QrCode className="w-5 h-5" />;
       case "card":
         return <CreditCard className="w-5 h-5" />;
-      case "camera":
-        return <Camera className="w-5 h-5" />;
       case "manual":
         return <Search className="w-5 h-5" />;
       default:
@@ -211,30 +185,14 @@ const MemberDetection = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button
-              variant={detectionMethod === "qr" ? "default" : "outline"}
-              onClick={() => setDetectionMethod("qr")}
-              className="h-20 flex-col space-y-2"
-            >
-              <QrCode className="w-6 h-6" />
-              <span>Código QR</span>
-            </Button>
+          <div className="grid grid-cols-2 gap-4">
             <Button
               variant={detectionMethod === "card" ? "default" : "outline"}
               onClick={() => setDetectionMethod("card")}
               className="h-20 flex-col space-y-2"
             >
               <CreditCard className="w-6 h-6" />
-              <span>Tarjeta</span>
-            </Button>
-            <Button
-              variant={detectionMethod === "camera" ? "default" : "outline"}
-              onClick={() => setDetectionMethod("camera")}
-              className="h-20 flex-col space-y-2"
-            >
-              <Camera className="w-6 h-6" />
-              <span>Cámara</span>
+              <span>Carnet de Miembro</span>
             </Button>
             <Button
               variant={detectionMethod === "manual" ? "default" : "outline"}
@@ -242,7 +200,7 @@ const MemberDetection = ({
               className="h-20 flex-col space-y-2"
             >
               <Search className="w-6 h-6" />
-              <span>Manual</span>
+              <span>Búsqueda Manual</span>
             </Button>
           </div>
         </CardContent>
@@ -254,55 +212,26 @@ const MemberDetection = ({
           <CardTitle className="flex items-center space-x-2">
             {getMethodIcon(detectionMethod)}
             <span>
-              {detectionMethod === "qr" && "Escaneo de Código QR"}
-              {detectionMethod === "card" && "Lectura de Tarjeta"}
-              {detectionMethod === "camera" && "Reconocimiento Facial"}
+              {detectionMethod === "card" && "Lectura de Carnet de Miembro"}
               {detectionMethod === "manual" && "Búsqueda Manual"}
             </span>
           </CardTitle>
           <CardDescription>
-            {detectionMethod === "qr" &&
-              "Escanea el código QR del miembro o ingresa manualmente"}
             {detectionMethod === "card" &&
-              "Presenta la tarjeta del miembro al lector"}
-            {detectionMethod === "camera" &&
-              "Posiciona al miembro frente a la cámara"}
+              "Presenta el carnet del miembro en la pluma de acceso"}
             {detectionMethod === "manual" &&
-              "Busca al miembro por código o nombre"}
+              "Busca al miembro por código de membresía"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* QR Input */}
-          {detectionMethod === "qr" && (
-            <div className="space-y-2">
-              <Label htmlFor="qr-input">Código QR</Label>
-              <div className="flex space-x-2">
-                <Input
-                  id="qr-input"
-                  placeholder="Escanea o ingresa el código QR..."
-                  value={qrInput}
-                  onChange={(e) => setQrInput(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleDetection()}
-                />
-                <Button onClick={handleDetection} disabled={loading}>
-                  {loading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <QrCode className="w-4 h-4" />
-                  )}
-                </Button>
-              </div>
-            </div>
-          )}
-
           {/* Card Input */}
           {detectionMethod === "card" && (
             <div className="space-y-2">
-              <Label htmlFor="card-input">Tarjeta de Miembro</Label>
+              <Label htmlFor="card-input">Carnet de Miembro</Label>
               <div className="flex space-x-2">
                 <Input
                   id="card-input"
-                  placeholder="Presenta la tarjeta al lector..."
+                  placeholder="Presenta el carnet en la pluma de acceso..."
                   value={cardInput}
                   onChange={(e) => setCardInput(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleDetection()}
@@ -315,51 +244,10 @@ const MemberDetection = ({
                   )}
                 </Button>
               </div>
-            </div>
-          )}
-
-          {/* Camera Interface */}
-          {detectionMethod === "camera" && (
-            <div className="space-y-4">
-              <div className="bg-gray-100 rounded-lg p-8 text-center">
-                {cameraActive ? (
-                  <div className="space-y-4">
-                    <Camera className="w-16 h-16 mx-auto text-blue-600 animate-pulse" />
-                    <p className="text-lg font-medium">Analizando rostro...</p>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full animate-pulse w-3/4"></div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <Camera className="w-16 h-16 mx-auto text-gray-400" />
-                    <p className="text-lg font-medium text-gray-600">
-                      Cámara lista para reconocimiento
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Haz clic en el botón para iniciar el reconocimiento facial
-                    </p>
-                  </div>
-                )}
-              </div>
-              <Button
-                onClick={handleDetection}
-                disabled={loading}
-                className="w-full"
-                size="lg"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Analizando...
-                  </>
-                ) : (
-                  <>
-                    <Camera className="w-4 h-4 mr-2" />
-                    Iniciar Reconocimiento
-                  </>
-                )}
-              </Button>
+              <p className="text-sm text-gray-600">
+                El sistema detectará automáticamente cuando el miembro presente
+                su carnet
+              </p>
             </div>
           )}
 
@@ -383,6 +271,10 @@ const MemberDetection = ({
                   )}
                 </Button>
               </div>
+              <p className="text-sm text-gray-600">
+                Buscar manualmente por código de membresía cuando el carnet no
+                funcione
+              </p>
             </div>
           )}
         </CardContent>
