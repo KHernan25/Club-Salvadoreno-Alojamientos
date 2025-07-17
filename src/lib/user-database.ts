@@ -225,6 +225,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: true,
         canDetectMembers: true,
         canRegisterCompanions: true,
+        canViewReports: false,
       };
     default:
       return {
