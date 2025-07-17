@@ -142,12 +142,8 @@ const AccessHistory = () => {
 
   const getMethodIcon = (method: string) => {
     switch (method) {
-      case "qr":
-        return <QrCode className="w-4 h-4" />;
       case "card":
         return <CreditCard className="w-4 h-4" />;
-      case "camera":
-        return <Camera className="w-4 h-4" />;
       case "manual":
         return <User className="w-4 h-4" />;
       default:
@@ -157,12 +153,8 @@ const AccessHistory = () => {
 
   const getMethodName = (method: string) => {
     switch (method) {
-      case "qr":
-        return "QR";
       case "card":
-        return "Tarjeta";
-      case "camera":
-        return "Cámara";
+        return "Carnet";
       case "manual":
         return "Manual";
       default:
@@ -237,9 +229,7 @@ const AccessHistory = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos los métodos</SelectItem>
-                  <SelectItem value="qr">Código QR</SelectItem>
-                  <SelectItem value="card">Tarjeta</SelectItem>
-                  <SelectItem value="camera">Cámara</SelectItem>
+                  <SelectItem value="card">Carnet de Miembro</SelectItem>
                   <SelectItem value="manual">Manual</SelectItem>
                 </SelectContent>
               </Select>
