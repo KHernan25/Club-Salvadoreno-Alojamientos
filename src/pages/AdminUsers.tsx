@@ -690,7 +690,7 @@ const AdminUsers = () => {
               className="bg-blue-600 hover:bg-blue-700"
             >
               <UserPlus className="mr-2 h-4 w-4" />
-              {currentUser && isSuperAdmin(currentUser)
+              {currentUser && isSuperAdmin()
                 ? "Nuevo Usuario"
                 : "Nuevo Miembro"}
             </Button>
