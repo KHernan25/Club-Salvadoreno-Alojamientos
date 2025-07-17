@@ -560,6 +560,7 @@ router.post(
   asyncHandler(async (req: AuthenticatedRequest, res) => {
     const { id } = req.params;
     const { newCheckIn, newCheckOut, isEmergency, emergencyProof } = req.body;
+    const user = req.user;
 
     const validationService = createValidationService(user);
 
