@@ -75,6 +75,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: true,
         canEditSiteContent: true,
         canManageImages: true,
+        canManageAccessControl: true,
+        canViewAccessHistory: true,
+        canDetectMembers: true,
+        canRegisterCompanions: true,
       };
     case "atencion_miembro":
       return {
@@ -93,6 +97,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: false,
+        canManageAccessControl: false,
+        canViewAccessHistory: true,
+        canDetectMembers: false,
+        canRegisterCompanions: false,
       };
     case "anfitrion":
       return {
@@ -129,6 +137,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: false,
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: false,
       };
     case "mercadeo":
       return {
@@ -147,6 +159,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: true, // Permiso específico para editar contenido del sitio
         canManageImages: true, // Permiso específico para gestionar imágenes
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: false,
       };
     case "recepcion":
       return {
@@ -165,6 +181,32 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: false,
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: true,
+      };
+    case "porteria":
+      return {
+        canViewDashboard: true,
+        canManageUsers: false,
+        canCreateUsers: false,
+        canUpdateUsers: false,
+        canDeleteUsers: false,
+        canManageAccommodations: false,
+        canManageReservations: false,
+        canManageCalendar: false,
+        canManagePricing: false,
+        canManageMessages: false,
+        canManageSettings: false,
+        canAccessAllLocations: false,
+        canCreateRoles: false,
+        canEditSiteContent: false,
+        canManageImages: false,
+        canManageAccessControl: true,
+        canViewAccessHistory: true,
+        canDetectMembers: true,
+        canRegisterCompanions: true,
       };
     default:
       return {
@@ -183,6 +225,10 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canCreateRoles: false,
         canEditSiteContent: false,
         canManageImages: false,
+        canManageAccessControl: false,
+        canViewAccessHistory: false,
+        canDetectMembers: false,
+        canRegisterCompanions: false,
       };
   }
 };
