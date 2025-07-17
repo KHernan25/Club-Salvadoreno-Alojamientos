@@ -673,9 +673,15 @@ const AdminUsers = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Gestión de Usuarios</h1>
+            <h1 className="text-2xl font-bold">
+              {currentUser && isSuperAdmin(currentUser)
+                ? "Gestión de Usuarios"
+                : "Gestión de Miembros"}
+            </h1>
             <p className="text-gray-600">
-              Administra usuarios y solicitudes de registro
+              {currentUser && isSuperAdmin(currentUser)
+                ? "Administra usuarios y solicitudes de registro"
+                : "Administra miembros del club y solicitudes de registro"}
             </p>
           </div>
           {hasPermission("canCreateUsers") && (
