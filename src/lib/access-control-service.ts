@@ -10,7 +10,7 @@ export interface AccessRecord {
   accessTime: Date;
   location: string;
   companionsCount: number;
-  detectionMethod: "qr" | "card" | "camera" | "manual";
+  detectionMethod: "card" | "manual";
   gateKeeperName: string;
   gateKeeperId: string;
   notes?: string;
@@ -96,11 +96,11 @@ class AccessControlService {
         memberCode: "AM003",
         memberPhoto:
           "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-        membershipType: "Premium",
+        membershipType: "Honorario",
         accessTime: new Date(Date.now() - 20 * 60 * 1000), // 20 minutos atrás
         location: "Entrada Principal",
         companionsCount: 1,
-        detectionMethod: "camera",
+        detectionMethod: "card",
         gateKeeperName: "Roberto Portillo",
         gateKeeperId: "11",
         status: "active",
@@ -154,7 +154,7 @@ class AccessControlService {
   public async detectMemberByCard(
     cardId: string,
   ): Promise<MemberDetectionResult> {
-    console.log("��� Detectando miembro por tarjeta:", cardId);
+    console.log("💳 Detectando miembro por tarjeta:", cardId);
 
     await new Promise((resolve) => setTimeout(resolve, 800));
 
