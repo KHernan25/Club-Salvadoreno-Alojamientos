@@ -206,13 +206,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
       {/* Navigation */}
       <nav className="space-y-1">
-        {filteredMenuItems.map((item) => {
+        {filteredMenuItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.href;
 
           return (
             <Link
-              key={item.href}
+              key={`${item.href}-${index}`}
               to={item.href}
               onClick={() => mobile && setIsSidebarOpen(false)}
               className={`
