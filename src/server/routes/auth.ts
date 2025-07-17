@@ -23,6 +23,7 @@ import {
 } from "../middleware/validators";
 import { authenticateToken, AuthenticatedRequest } from "../middleware/auth";
 import { asyncHandler, createError } from "../middleware/errorHandler";
+import { config } from "../../lib/config";
 
 const router = Router();
 
@@ -68,8 +69,8 @@ router.post(
     console.log("✅ Login successful for:", user.fullName);
 
     // Generar JWT token
-    const jwtSecret = process.env.JWT_SECRET || "your-secret-key";
-    const tokenExpiry = rememberMe ? "30d" : "24h";
+    const jwtSecret = config.auth.jwtSecret;
+    const tokenExpiry = rememberMe ? "30d" : config.auth.tokenExpiry;
 
     const token = jwt.sign(
       {
@@ -216,7 +217,7 @@ router.post(
     const user = req.user;
 
     // Generar nuevo token
-    const jwtSecret = process.env.JWT_SECRET || "your-secret-key";
+    const jwtSecret = config.auth.jwtSecret;
     const token = jwt.sign(
       {
         userId: user.id,
