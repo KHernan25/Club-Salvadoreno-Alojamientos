@@ -30,6 +30,7 @@ import {
   Globe,
   UserCheck,
   FileText,
+  FileBarChart,
 } from "lucide-react";
 import {
   getCurrentUser,
