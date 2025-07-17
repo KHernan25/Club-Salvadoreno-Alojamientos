@@ -347,7 +347,7 @@ class AccessControlService {
   }
 
   // Notificar al anfitrión
-  private notifyHost(record: AccessRecord): void {
+  private async notifyHost(record: AccessRecord): Promise<void> {
     console.log("📢 Notificando al anfitrión:", {
       member: record.memberName,
       companions: record.companionsCount,
@@ -355,8 +355,34 @@ class AccessControlService {
       location: record.location,
     });
 
-    // En una implementación real, aquí se enviaría la notificación al sistema del anfitrión
-    // para preparar el cobro de acompañantes
+    // Solo crear registro de facturación si hay acompañantes
+    if (record.companionsCount > 0) {
+      try {
+        const { companionBillingService } = await import(
+          "./companion-billing-service"
+        );
+
+        await companionBillingService.createBillingFromAccess(
+          record.id,
+          record.memberName,
+          record.memberCode,
+          record.membershipType,
+          record.location as "El Sunzal" | "Corinto",
+          record.companionsCount,
+          record.accessTime,
+          record.gateKeeperName,
+          `Registro automático desde portería: ${record.detectionMethod}`,
+        );
+
+        console.log("✅ Billing record sent to anfitrión:", {
+          recordId: record.id,
+          companions: record.companionsCount,
+          location: record.location,
+        });
+      } catch (error) {
+        console.error("❌ Error notifying anfitrión:", error);
+      }
+    }
   }
 
   // Generar ID único
