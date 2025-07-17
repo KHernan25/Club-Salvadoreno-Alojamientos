@@ -6,7 +6,7 @@ export interface User {
   firstName: string;
   lastName: string;
   username: string;
-  password: string; // En producción, esto debería estar hasheado
+  password: string; // En producción, esto deber��a estar hasheado
   email: string;
   phone: string;
   fullName: string;
@@ -111,6 +111,7 @@ export const getRolePermissions = (role: User["role"]): RolePermissions => {
         canViewAccessHistory: true,
         canDetectMembers: false,
         canRegisterCompanions: false,
+        canViewReports: true,
       };
     case "anfitrion":
       return {
