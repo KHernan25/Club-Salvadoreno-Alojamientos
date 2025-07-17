@@ -47,6 +47,7 @@ import AdminProfile from "./pages/AdminProfile";
 import AdminSiteContent from "./pages/AdminSiteContent";
 import AdminRegistrationRequests from "./pages/AdminRegistrationRequests";
 import AdminReviews from "./pages/AdminReviews";
+import PorteriaDashboard from "./pages/PorteriaDashboard";
 import AccommodationWithReviews from "./pages/AccommodationWithReviews";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import UserActivationDebug from "./pages/UserActivationDebug";
@@ -247,6 +248,14 @@ const App = () => (
                 element={
                   <AdminProtectedRoute requiredRole="anfitrion">
                     <AdminReviews />
+                  </AdminProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/porteria"
+                element={
+                  <AdminProtectedRoute requiredRole="porteria">
+                    <PorteriaDashboard />
                   </AdminProtectedRoute>
                 }
               />
