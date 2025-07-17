@@ -84,11 +84,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       permission: "canViewDashboard", // All roles can access activity log
     },
     {
-      label: currentUser && isSuperAdmin(currentUser) ? "Usuarios" : "Miembros",
-      href:
-        currentUser && isSuperAdmin(currentUser)
-          ? "/admin/users"
-          : "/admin/miembros",
+      label: isUserSuperAdmin ? "Usuarios" : "Miembros",
+      href: isUserSuperAdmin ? "/admin/users" : "/admin/miembros",
       icon: Users,
       permission: "canManageUsers",
     },
