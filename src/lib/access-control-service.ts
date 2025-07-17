@@ -10,7 +10,7 @@ export interface AccessRecord {
   accessTime: Date;
   location: string;
   companionsCount: number;
-  detectionMethod: "card" | "manual";
+  detectionMethod: "card" | "manual" | "qr";
   gateKeeperName: string;
   gateKeeperId: string;
   notes?: string;
