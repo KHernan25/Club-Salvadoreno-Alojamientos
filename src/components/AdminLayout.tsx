@@ -136,6 +136,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       icon: Settings,
       permission: "canManageSettings",
     },
+    {
+      label: "Reportes",
+      href: "/admin/reportes",
+      icon: FileBarChart,
+      permission: "canViewReports",
+    },
   ];
 
   const filteredMenuItems = menuItems.filter((item) => {
