@@ -399,7 +399,7 @@ router.put(
         );
 
         reservation.totalPrice = priceCalculation.totalPrice;
-        reservation.priceBreakdown = priceCalculation;
+        reservation.breakdown = priceCalculation;
       }
     }
 
