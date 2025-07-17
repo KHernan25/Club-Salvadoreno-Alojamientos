@@ -1,5 +1,5 @@
 // Script para inicializar datos de demostración en la base de datos
-import { database } from "../lib/database";
+import { database } from "../../lib/database";
 
 export const initializeDemoData = () => {
   console.log("🔄 Inicializando datos de demostración...");
