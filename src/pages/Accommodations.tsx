@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useTranslations } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
+import { apiGetAccommodations, type Accommodation } from "@/lib/api-service";
 import {
   Menu,
   Globe,
