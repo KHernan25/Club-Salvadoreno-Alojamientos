@@ -432,9 +432,11 @@ const Accommodations = () => {
             })}
           </div>
         </div>
-      </section>
+            </section>
+      )}
 
       {/* Submenús por Tipo de Alojamiento */}
+      {!loading && !error && (
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           {(() => {
