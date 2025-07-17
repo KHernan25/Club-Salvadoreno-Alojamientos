@@ -1,8 +1,5 @@
 import { Router } from "express";
-import {
-  accommodationRates,
-  getAccommodationRates,
-} from "../../lib/pricing-system";
+import { database } from "../../lib/database";
 import { optionalAuth, AuthenticatedRequest } from "../middleware/auth";
 import { validatePaginationQuery } from "../middleware/validators";
 import { asyncHandler, createError } from "../middleware/errorHandler";
@@ -369,45 +366,28 @@ router.get(
     const limit = parseInt(req.query.limit as string) || 20;
     const skip = (page - 1) * limit;
 
-    let allAccommodations: any[] = [];
-
-    // Recopilar todos los alojamientos
-    Object.entries(accommodationsData).forEach(([loc, types]) => {
-      Object.entries(types).forEach(([typ, accommodations]) => {
-        accommodations.forEach((acc: any) => {
-          const rates = getAccommodationRates(acc.id);
-          allAccommodations.push({
-            ...acc,
-            pricing: rates,
-            available: true, // En implementación real, verificar disponibilidad
-          });
-        });
-      });
-    });
+    // Obtener todos los alojamientos de la base de datos
+    let allAccommodations = database.getAllAccommodations();
 
     // Aplicar filtros
-    let filteredAccommodations = allAccommodations;
-
     if (location) {
-      filteredAccommodations = filteredAccommodations.filter(
+      allAccommodations = allAccommodations.filter(
         (acc) => acc.location === location,
       );
     }
 
     if (type) {
-      filteredAccommodations = filteredAccommodations.filter(
-        (acc) => acc.type === type,
-      );
+      allAccommodations = allAccommodations.filter((acc) => acc.type === type);
     }
 
     if (capacity) {
-      filteredAccommodations = filteredAccommodations.filter(
+      allAccommodations = allAccommodations.filter(
         (acc) => acc.capacity >= capacity,
       );
     }
 
-    const total = filteredAccommodations.length;
-    const accommodations = filteredAccommodations.slice(skip, skip + limit);
+    const total = allAccommodations.length;
+    const accommodations = allAccommodations.slice(skip, skip + limit);
 
     res.json({
       success: true,
@@ -436,34 +416,34 @@ router.get(
   asyncHandler(async (req: AuthenticatedRequest, res) => {
     const { id } = req.params;
 
-    // Buscar el alojamiento
-    let accommodation: any = null;
-
-    Object.entries(accommodationsData).forEach(([location, types]) => {
-      Object.entries(types).forEach(([type, accommodations]) => {
-        const found = accommodations.find((acc: any) => acc.id === id);
-        if (found) {
-          accommodation = found;
-        }
-      });
-    });
-
+    const accommodation = database.getAccommodationById(id);
     if (!accommodation) {
       throw createError("Alojamiento no encontrado", 404);
     }
 
-    // Obtener precios
-    const rates = getAccommodationRates(id);
+    // Obtener reseñas del alojamiento
+    const reviews = database.getReviewsByAccommodationId(id);
 
     res.json({
       success: true,
       data: {
         accommodation: {
           ...accommodation,
-          pricing: rates,
-          available: true, // En implementación real, verificar disponibilidad
-          images: [], // En implementación real, URLs de imágenes
-          reviews: [], // En implementación real, reseñas
+          reviews: reviews.map((review) => ({
+            id: review.id,
+            rating: review.rating,
+            title: review.title,
+            comment: review.comment,
+            categories: review.categories,
+            createdAt: review.createdAt,
+            helpfulCount: review.helpfulCount,
+            hostResponse: review.hostResponse,
+          })),
+          averageRating:
+            reviews.length > 0
+              ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+              : 0,
+          totalReviews: reviews.length,
         },
       },
     });
