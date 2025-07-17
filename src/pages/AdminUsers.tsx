@@ -827,7 +827,7 @@ const AdminUsers = () => {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              {currentUser && isSuperAdmin(currentUser)
+              {currentUser && isSuperAdmin()
                 ? "Gestión de Usuarios"
                 : "Gestión de Miembros"}
             </CardTitle>
@@ -1009,7 +1009,7 @@ const AdminUsers = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="new-password">Contraseña Temporal</Label>
+                <Label htmlFor="new-password">Contrase��a Temporal</Label>
                 <Input
                   id="new-password"
                   type="password"
