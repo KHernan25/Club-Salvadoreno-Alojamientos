@@ -35,7 +35,7 @@ function createValidationService(user: any) {
   ];
 
   // Transform database reservations to validation service format
-  const transformedReservations = database.reservations.map((r) => ({
+  const transformedReservations = database.getAllReservations().map((r) => ({
     ...r,
     userType: "miembro",
     accommodationType: "apartamentos" as const,
