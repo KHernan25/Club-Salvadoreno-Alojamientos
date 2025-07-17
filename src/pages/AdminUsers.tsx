@@ -239,7 +239,7 @@ const AdminUsers = () => {
       email: "pedro.martinez@email.com",
       username: "pedro_martinez",
       password: "pedro123",
-      fullName: "Pedro Mart��nez",
+      fullName: "Pedro Martínez",
       role: "miembro",
       isActive: true,
       phone: "+503 4567-8901",
@@ -674,7 +674,7 @@ const AdminUsers = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">
-              {currentUser && isSuperAdmin(currentUser)
+              {currentUser && isSuperAdmin()
                 ? "Gestión de Usuarios"
                 : "Gestión de Miembros"}
             </h1>
