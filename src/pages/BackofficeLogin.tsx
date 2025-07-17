@@ -38,7 +38,11 @@ const BackofficeLogin = () => {
         session.user.role === "recepcion" ||
         session.user.role === "porteria"
       ) {
-        navigate("/admin/dashboard", { replace: true });
+        if (session.user.role === "porteria") {
+          navigate("/admin/porteria", { replace: true });
+        } else {
+          navigate("/admin/dashboard", { replace: true });
+        }
       } else {
         navigate("/dashboard", { replace: true });
       }
