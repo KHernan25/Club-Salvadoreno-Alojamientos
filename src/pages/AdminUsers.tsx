@@ -826,7 +826,11 @@ const AdminUsers = () => {
         {/* Users Table with Tabs */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Gestión de Usuarios</CardTitle>
+            <CardTitle className="text-lg">
+              {currentUser && isSuperAdmin(currentUser)
+                ? "Gestión de Usuarios"
+                : "Gestión de Miembros"}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
