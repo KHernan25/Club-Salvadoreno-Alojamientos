@@ -21,6 +21,32 @@ import { findUserById } from "../../lib/user-database";
 
 const router = Router();
 
+// Helper function to create validation service with proper data transformation
+function createValidationService(user: any) {
+  const mockUsers = [
+    {
+      id: user.id,
+      type: user.role,
+      name: user.fullName || user.name,
+      email: user.email,
+      isActive: user.isActive,
+      familyMembers: [],
+    },
+  ];
+
+  // Transform database reservations to validation service format
+  const transformedReservations = database.reservations.map((r) => ({
+    ...r,
+    userType: "miembro",
+    accommodationType: "apartamentos" as const,
+    paymentStatus: "pending" as const,
+    createdAt: new Date(r.createdAt),
+    updatedAt: new Date(r.updatedAt),
+  }));
+
+  return new ReservationValidationService(transformedReservations, mockUsers);
+}
+
 // POST /api/reservations - Crear nueva reserva
 router.post(
   "/",
