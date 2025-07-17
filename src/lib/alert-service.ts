@@ -261,7 +261,6 @@ class AlertService {
         type: alert.type,
         message: `${alert.userName}: ${alert.message}`,
         timestamp: alert.timestamp,
-        priority: alert.severity,
         userData: {
           userId: alert.userId,
           email: alert.userEmail,
