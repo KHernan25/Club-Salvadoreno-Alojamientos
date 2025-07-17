@@ -67,7 +67,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       href:
         currentUser?.role === "porteria"
           ? "/admin/porteria"
-          : "/admin/dashboard",
+          : currentUser?.role === "anfitrion"
+            ? "/admin/anfitrion"
+            : "/admin/dashboard",
       icon: BarChart3,
       permission: "canViewDashboard",
     },
