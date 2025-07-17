@@ -653,7 +653,7 @@ interface ReviewDetailModalProps {
     status: Review["status"],
     reason?: string,
   ) => void;
-  onHostResponse: (reviewId: string, response: string) => void;
+  onHostResponse: (reviewId: string, response: string) => Promise<void>;
 }
 
 const ReviewDetailModal: React.FC<ReviewDetailModalProps> = ({
