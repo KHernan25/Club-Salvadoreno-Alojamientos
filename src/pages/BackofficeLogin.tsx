@@ -107,8 +107,13 @@ const BackofficeLogin = () => {
 
         // Forzar navegación con un pequeño delay para asegurar que el toast se muestre
         setTimeout(() => {
-          console.log("🔄 Navegando a /admin/dashboard");
-          navigate("/admin/dashboard", { replace: true });
+          if (result.user.role === "porteria") {
+            console.log("🔄 Navegando a /admin/porteria");
+            navigate("/admin/porteria", { replace: true });
+          } else {
+            console.log("🔄 Navegando a /admin/dashboard");
+            navigate("/admin/dashboard", { replace: true });
+          }
         }, 100);
       } else {
         console.log("❌ Login fallido:", result.error);
