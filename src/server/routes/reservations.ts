@@ -264,7 +264,7 @@ router.get(
     const status = req.query.status as string;
     const accommodationId = req.query.accommodationId as string;
 
-    let filteredReservations = [...database.reservations];
+    let filteredReservations = [...database.getAllReservations()];
 
     // Filtros
     if (status) {
