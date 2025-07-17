@@ -205,6 +205,81 @@ const AnfitrionDashboard = () => {
           </div>
         )}
 
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card
+            className="border-green-200 bg-green-50 hover:bg-green-100 transition-colors cursor-pointer"
+            onClick={() => navigate("/admin/check-in-out")}
+          >
+            <CardContent className="pt-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-green-600 rounded-lg">
+                  <CheckCircle className="h-8 w-8 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-green-800 text-lg">
+                    Check-in de Huéspedes
+                  </h3>
+                  <p className="text-green-700 text-sm">
+                    Buscar por código de reserva y registrar llegada
+                  </p>
+                </div>
+                <div className="text-green-600">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="border-orange-200 bg-orange-50 hover:bg-orange-100 transition-colors cursor-pointer"
+            onClick={() => navigate("/admin/check-in-out")}
+          >
+            <CardContent className="pt-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-orange-600 rounded-lg">
+                  <Clock className="h-8 w-8 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-orange-800 text-lg">
+                    Check-out de Huéspedes
+                  </h3>
+                  <p className="text-orange-700 text-sm">
+                    Procesar salidas y inspeccionar alojamientos
+                  </p>
+                </div>
+                <div className="text-orange-600">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Alert for Pending Billings */}
         {dashboardStats && dashboardStats.pendingCount > 0 && (
           <Card className="border-orange-200 bg-orange-50">
