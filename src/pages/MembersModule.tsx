@@ -252,11 +252,11 @@ const MembersModule = () => {
   // Contadores para las pestañas
   const tabCounts = {
     todos: members.length,
-    fundador: members.filter((m) => m.membershipType === "fundador").length,
-    contribuyente: members.filter((m) => m.membershipType === "contribuyente")
+    fundador: members.filter((m) => m.membershipType === "Fundador").length,
+    contribuyente: members.filter((m) => m.membershipType === "Contribuyente")
       .length,
-    honorario: members.filter((m) => m.membershipType === "honorario").length,
-    benefactor: members.filter((m) => m.membershipType === "benefactor").length,
+    honorario: members.filter((m) => m.membershipType === "Honorario").length,
+    benefactor: members.filter((m) => m.membershipType === "Honorario").length,
   };
 
   const handleViewDetails = (member: User) => {
