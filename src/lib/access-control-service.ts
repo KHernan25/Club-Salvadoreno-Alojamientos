@@ -64,7 +64,7 @@ class AccessControlService {
         memberCode: "MJ001",
         memberPhoto:
           "https://images.unsplash.com/photo-1494790108755-2616b612b4c0?w=150&h=150&fit=crop&crop=face",
-        membershipType: "Premium",
+        membershipType: "Contribuyente",
         accessTime: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 horas atrás
         location: "Entrada Principal",
         companionsCount: 2,
@@ -80,7 +80,7 @@ class AccessControlService {
         memberCode: "CR002",
         memberPhoto:
           "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-        membershipType: "Básica",
+        membershipType: "Fundador",
         accessTime: new Date(Date.now() - 45 * 60 * 1000), // 45 minutos atrás
         location: "Entrada Principal",
         companionsCount: 0,
