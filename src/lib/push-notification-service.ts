@@ -61,7 +61,7 @@ export class PushNotificationService {
         );
         console.log("✅ Service Worker registered successfully");
       } catch (error) {
-        console.error("❌ Service Worker registration failed:", error);
+        console.error("�� Service Worker registration failed:", error);
       }
     } else {
       console.warn("Push notifications are not supported in this browser");
@@ -158,14 +158,17 @@ export class PushNotificationService {
         body: data.body,
         icon: data.icon || "/icons/notification-icon.png",
         badge: data.badge || "/icons/notification-badge.png",
-
         data: data.data,
-        actions: data.actions,
         requireInteraction: data.requireInteraction || false,
         silent: data.silent || false,
         tag: data.tag,
         timestamp: data.timestamp || Date.now(),
       };
+
+      // Add actions for service worker notifications (they support it)
+      if (this.swRegistration && data.actions) {
+        (options as any).actions = data.actions;
+      }
 
       if (this.swRegistration) {
         await this.swRegistration.showNotification(data.title, options);
