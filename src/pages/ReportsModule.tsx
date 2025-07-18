@@ -791,7 +791,6 @@ const ReportsModule = () => {
                     <RadialBar
                       label={{ position: "insideStart", fill: "#fff" }}
                       background
-                      clockWise
                       dataKey="value"
                     />
                     <Legend
