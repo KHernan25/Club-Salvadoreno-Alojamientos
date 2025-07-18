@@ -10,7 +10,9 @@ interface AdminProtectedRouteProps {
     | "anfitrion"
     | "monitor"
     | "mercadeo"
-    | "porteria";
+    | "recepcion"
+    | "porteria"
+    | "miembro";
   allowedRoles?: string[]; // Para permitir múltiples roles
 }
 
@@ -51,7 +53,19 @@ const AdminProtectedRoute = ({
 
     if (allowedRoles && allowedRoles.length > 0) {
       // Si se especifican roles permitidos, verificar si el usuario tiene alguno de ellos
-      hasRequiredRole = allowedRoles.some((role) => hasRole(role));
+      hasRequiredRole = allowedRoles.some((role) =>
+        hasRole(
+          role as
+            | "super_admin"
+            | "atencion_miembro"
+            | "anfitrion"
+            | "monitor"
+            | "mercadeo"
+            | "recepcion"
+            | "porteria"
+            | "miembro",
+        ),
+      );
       console.log(
         "🛡️ AdminProtectedRoute: Verificando roles permitidos:",
         allowedRoles,
@@ -114,7 +128,19 @@ const AdminProtectedRoute = ({
   // Renderizar solo si está autenticado y tiene permisos
   const hasAccess =
     allowedRoles && allowedRoles.length > 0
-      ? allowedRoles.some((role) => hasRole(role))
+      ? allowedRoles.some((role) =>
+          hasRole(
+            role as
+              | "super_admin"
+              | "atencion_miembro"
+              | "anfitrion"
+              | "monitor"
+              | "mercadeo"
+              | "recepcion"
+              | "porteria"
+              | "miembro",
+          ),
+        )
       : hasRole(requiredRole);
 
   if (!requireAuth() || !hasAccess) {
