@@ -72,18 +72,20 @@ class DatabaseManager {
   async initialize(): Promise<void> {
     const db = await this.connect();
 
-    // Read and execute schema
+    // Read and execute schema - use MySQL schema for MySQL, SQLite for others
+    const schemaFile =
+      this.dbType === "mysql" ? "schema-mysql.sql" : "schema.sql";
     const schemaPath = path.join(
       process.cwd(),
       "src",
       "server",
       "database",
-      "schema.sql",
+      schemaFile,
     );
     if (fs.existsSync(schemaPath)) {
       const schema = fs.readFileSync(schemaPath, "utf8");
       await db.exec(schema);
-      console.log("✅ Database schema initialized");
+      console.log(`✅ Database schema initialized (${this.dbType})`);
     }
 
     // Read and execute seed data
