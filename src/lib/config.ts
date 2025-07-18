@@ -1,6 +1,22 @@
 // Configuración centralizada del sistema
 // Maneja todas las variables de entorno de forma segura
 
+import { fileURLToPath } from "url";
+import path from "path";
+import dotenv from "dotenv";
+
+// Convertir import.meta.url a ruta física
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Cargar archivo .env desde la raíz
+dotenv.config({
+  path: path.resolve(__dirname, "../../.env"),
+});
+
+console.log(`🚨 DATABASE_URL en config.ts: ${process.env.DATABASE_URL}`);
+console.log(`🚨 DB_TYPE en config.ts: ${process.env.DB_TYPE}`);
+
 interface Config {
   // Servidor
   server: {
@@ -89,6 +105,14 @@ interface Config {
   };
 }
 
+const getRequiredEnvVar = (key: string): string => {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`🚨 Missing required environment variable: ${key}`);
+  }
+  return value;
+};
+
 // Función helper para obtener variables de entorno con valores por defecto
 const getEnvVar = (key: string, defaultValue?: string): string => {
   const value = process.env[key];
@@ -125,14 +149,15 @@ export const config: Config = {
   },
 
   database: {
-    url: getEnvVar("DATABASE_URL", "memory://"),
-    type: getEnvVar("DB_TYPE", "memory") as "memory" | "postgres" | "mysql",
+    url: getRequiredEnvVar("DATABASE_URL"),
+    type: getRequiredEnvVar("DB_TYPE") as "memory" | "postgres" | "mysql",
     host: process.env.DB_HOST,
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : undefined,
     name: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
   },
+
 
   auth: {
     jwtSecret: getEnvVar(
@@ -230,6 +255,9 @@ if (config.server.nodeEnv === "development") {
   console.log(`💾 Cache: ${config.cache.redisUrl} (TTL: ${config.cache.ttl}s)`);
   console.log(`💾 Backup: ${config.backup.enabled ? "✅" : "❌"}`);
 }
+
+console.log("🚨 DATABASE_URL en runtime:", process.env.DATABASE_URL);
+console.log("🚨 Tipo de base de datos:", config.database.type);
 
 // Validaciones críticas para producción
 if (config.server.nodeEnv === "production") {

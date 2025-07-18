@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
+// Cargar variables de entorno
+dotenv.config();
+
 import { app } from "./app";
 import initializeDemoData from "./scripts/init-database";
 import { config } from "../lib/config";
-
-// Cargar variables de entorno
-dotenv.config();
 
 // Inicializar datos de demostración
 initializeDemoData();
