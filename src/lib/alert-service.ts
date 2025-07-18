@@ -326,7 +326,6 @@ class AlertService {
         type: `critical_alert_${alert.type}`,
         message: `ALERTA CRÍTICA: ${alert.title} - Usuario: ${alert.userName}`,
         timestamp: alert.timestamp,
-        priority: "high",
         userData: {
           alertId: alert.id,
           userId: alert.userId,
