@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { findUserById } from "../../lib/user-database";
+import { UserModel } from "../database/models";
 import { createError } from "./errorHandler";
 import { config } from "../../lib/config";
 
@@ -25,7 +25,7 @@ export const authenticateToken = async (
     const decoded = jwt.verify(token, jwtSecret) as any;
 
     // Verificar que el usuario aún existe y está activo
-    const user = findUserById(decoded.userId);
+    const user = await UserModel.findById(decoded.userId);
     if (!user) {
       throw createError("Usuario no encontrado", 401);
     }
@@ -95,7 +95,7 @@ export const optionalAuth = async (
     if (token) {
       const jwtSecret = config.auth.jwtSecret;
       const decoded = jwt.verify(token, jwtSecret) as any;
-      const user = findUserById(decoded.userId);
+      const user = await UserModel.findById(decoded.userId);
 
       if (user && user.isActive) {
         req.user = user;
