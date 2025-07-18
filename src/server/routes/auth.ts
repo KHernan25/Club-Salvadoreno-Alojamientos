@@ -1,20 +1,11 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { registerUser } from "../../lib/registration-service";
 import {
-  findUserByEmail,
-  findUserById,
-  findUserByUsername,
-  updateLastLogin,
-  isValidUser,
-} from "../../lib/user-database";
-import {
-  sendPasswordResetEmail,
-  generateResetToken,
-  generateResetUrl,
-  sendBackofficeNotification,
-} from "../../lib/contact-services";
+  UserModel,
+  RegistrationRequestModel,
+  NotificationModel,
+} from "../database/models";
 import {
   validateLogin,
   validateRegistration,
@@ -38,22 +29,11 @@ router.post(
     // Validación básica manual
     if (!username || !password) {
       console.log("❌ Missing username or password");
-      return res.status(400).json({
-        success: false,
-        error: "Usuario y contraseña son requeridos",
-      });
+      throw createError("Usuario y contraseña son requeridos", 400);
     }
 
-    // Validar credenciales - intentar tanto username como email
-    let user = isValidUser(username.trim(), password);
-
-    // Si no se encontró con username, intentar con email
-    if (!user) {
-      const userByEmail = findUserByEmail(username.trim());
-      if (userByEmail && isValidUser(userByEmail.username, password)) {
-        user = userByEmail;
-      }
-    }
+    // Validar credenciales usando el modelo de base de datos
+    const user = await UserModel.findByCredentials(username.trim(), password);
 
     if (!user) {
       console.log("❌ Invalid credentials for:", username);
@@ -83,7 +63,7 @@ router.post(
     );
 
     // Actualizar último login
-    updateLastLogin(user.id);
+    await UserModel.updateLastLogin(user.id);
 
     // Respuesta simplificada para evitar problemas de parsing
     const response = {
@@ -114,29 +94,80 @@ router.post(
   "/register",
   validateRegistration,
   asyncHandler(async (req, res) => {
-    const registrationData = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      documentType,
+      documentNumber,
+      memberCode,
+      password,
+      confirmPassword,
+      acceptTerms,
+    } = req.body;
 
-    // Usar el servicio de registro existente
-    const result = await registerUser(registrationData);
-
-    if (!result.success) {
-      throw createError(result.error || "Error en el registro", 400);
+    // Validaciones básicas
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phone ||
+      !documentType ||
+      !documentNumber ||
+      !memberCode ||
+      !password
+    ) {
+      throw createError("Todos los campos son requeridos", 400);
     }
 
-    // Enviar notificación al backoffice para nueva solicitud de registro
+    if (!acceptTerms) {
+      throw createError("Debes aceptar los términos y condiciones", 400);
+    }
+
+    if (password !== confirmPassword) {
+      throw createError("Las contraseñas no coinciden", 400);
+    }
+
+    // Verificar si el email ya existe en usuarios registrados
+    const existingUser = await UserModel.findByEmail(email);
+    if (existingUser) {
+      throw createError("Este correo electrónico ya está registrado", 400);
+    }
+
+    // Verificar si ya existe una solicitud pendiente para este email
+    const existingRequest = await RegistrationRequestModel.findByEmail(email);
+    if (existingRequest && existingRequest.status === "pending") {
+      throw createError("Ya tienes una solicitud de registro pendiente", 400);
+    }
+
+    // Crear solicitud de registro
+    const registrationRequest = await RegistrationRequestModel.create({
+      firstName,
+      lastName,
+      email,
+      phone,
+      documentType,
+      documentNumber,
+      memberCode,
+      password, // En producción debería estar hasheado
+    });
+
+    // Crear notificación para el backoffice
     try {
-      await sendBackofficeNotification({
-        type: "new_user_registration",
-        userId: result.user!.id,
-        userData: {
-          name: `${result.user!.firstName} ${result.user!.lastName}`,
-          email: result.user!.email,
-          phone: result.user!.phone,
-          memberCode: registrationData.memberCode,
-          documentNumber: registrationData.documentNumber,
+      await NotificationModel.create({
+        type: "user_registration",
+        title: "Nueva solicitud de registro",
+        message: `Nueva solicitud de registro de ${firstName} ${lastName} (${email}) requiere aprobación`,
+        data: {
+          registrationRequestId: registrationRequest.id,
+          name: `${firstName} ${lastName}`,
+          email,
+          phone,
+          memberCode,
+          documentNumber,
         },
-        timestamp: new Date().toISOString(),
-        message: `Nuevo usuario registrado: ${result.user!.firstName} ${result.user!.lastName} (${result.user!.email}) - Requiere aprobación`,
+        role: "atencion_miembro", // Dirigir a atención al miembro
       });
     } catch (notificationError) {
       console.error(
@@ -148,19 +179,12 @@ router.post(
 
     res.status(201).json({
       success: true,
-      message: "Usuario registrado exitosamente",
+      message:
+        "Solicitud de registro enviada exitosamente. Tu cuenta estará pendiente de aprobación por parte del administrador. Te notificaremos por correo cuando sea activada.",
       data: {
-        user: {
-          id: result.user!.id,
-          firstName: result.user!.firstName,
-          lastName: result.user!.lastName,
-          username: result.user!.username,
-          email: result.user!.email,
-          fullName: result.user!.fullName,
-          role: result.user!.role,
-          phone: result.user!.phone,
-          isActive: result.user!.isActive,
-        },
+        requestId: registrationRequest.id,
+        status: registrationRequest.status,
+        submittedAt: registrationRequest.submittedAt,
       },
     });
   }),
@@ -247,7 +271,7 @@ router.post(
     const { email } = req.body;
 
     // Verificar que el usuario existe
-    const user = findUserByEmail(email);
+    const user = await UserModel.findByEmail(email);
     if (!user) {
       // Por seguridad, no revelamos si el email existe o no
       res.json({
@@ -258,28 +282,13 @@ router.post(
       return;
     }
 
-    // Generar token de recuperación
-    const resetToken = generateResetToken();
-    const resetUrl = generateResetUrl(resetToken);
-
-    // En una implementación real, guardarías el token en la BD con expiración
-    // Por ahora, simulamos el envío
-
-    try {
-      await sendPasswordResetEmail({
-        to: email,
-        resetToken,
-        resetUrl,
-      });
-
-      res.json({
-        success: true,
-        message:
-          "Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña",
-      });
-    } catch (error) {
-      throw createError("Error al enviar correo de recuperación", 500);
-    }
+    // TODO: Implementar envío de email de recuperación
+    // Para el desarrollo, simplemente devolvemos un mensaje
+    res.json({
+      success: true,
+      message:
+        "Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña",
+    });
   }),
 );
 

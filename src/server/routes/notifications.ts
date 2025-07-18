@@ -1,10 +1,7 @@
 import { Router } from "express";
 import { authenticateToken, AuthenticatedRequest } from "../middleware/auth";
 import { asyncHandler, createError } from "../middleware/errorHandler";
-import {
-  getBackofficeNotifications,
-  markNotificationAsRead,
-} from "../../lib/contact-services";
+import { NotificationModel } from "../database/models";
 
 const router = Router();
 
@@ -13,18 +10,29 @@ router.get(
   "/",
   authenticateToken,
   asyncHandler(async (req: AuthenticatedRequest, res) => {
-    // Verificar que el usuario sea administrador
-    if (req.user.role !== "admin") {
+    // Verificar que el usuario tenga permisos para ver notificaciones
+    const allowedRoles = [
+      "super_admin",
+      "atencion_miembro",
+      "anfitrion",
+      "monitor",
+      "mercadeo",
+      "recepcion",
+      "porteria",
+    ];
+    if (!allowedRoles.includes(req.user.role)) {
       throw createError("Acceso denegado", 403);
     }
 
-    const notifications = getBackofficeNotifications();
+    // Obtener notificaciones por rol del usuario
+    const notifications = await NotificationModel.getByRole(req.user.role);
+    const unreadCount = await NotificationModel.getUnreadCount();
 
     res.json({
       success: true,
       data: {
         notifications,
-        unreadCount: notifications.filter((n) => !n.read).length,
+        unreadCount,
         total: notifications.length,
       },
     });
@@ -36,13 +44,26 @@ router.patch(
   "/:id/read",
   authenticateToken,
   asyncHandler(async (req: AuthenticatedRequest, res) => {
-    // Verificar que el usuario sea administrador
-    if (req.user.role !== "admin") {
+    // Verificar que el usuario tenga permisos para marcar notificaciones
+    const allowedRoles = [
+      "super_admin",
+      "atencion_miembro",
+      "anfitrion",
+      "monitor",
+      "mercadeo",
+      "recepcion",
+      "porteria",
+    ];
+    if (!allowedRoles.includes(req.user.role)) {
       throw createError("Acceso denegado", 403);
     }
 
     const { id } = req.params;
-    markNotificationAsRead(id);
+    const success = await NotificationModel.markAsRead(id);
+
+    if (!success) {
+      throw createError("Notificación no encontrada", 404);
+    }
 
     res.json({
       success: true,
@@ -56,17 +77,25 @@ router.post(
   "/mark-all-read",
   authenticateToken,
   asyncHandler(async (req: AuthenticatedRequest, res) => {
-    // Verificar que el usuario sea administrador
-    if (req.user.role !== "admin") {
+    // Verificar que el usuario tenga permisos para marcar notificaciones
+    const allowedRoles = [
+      "super_admin",
+      "atencion_miembro",
+      "anfitrion",
+      "monitor",
+      "mercadeo",
+      "recepcion",
+      "porteria",
+    ];
+    if (!allowedRoles.includes(req.user.role)) {
       throw createError("Acceso denegado", 403);
     }
 
-    const notifications = getBackofficeNotifications();
-    notifications.forEach((n) => (n.read = true));
+    const markedCount = await NotificationModel.markAllAsRead();
 
     res.json({
       success: true,
-      message: "Todas las notificaciones marcadas como leídas",
+      message: `${markedCount} notificaciones marcadas como leídas`,
     });
   }),
 );
