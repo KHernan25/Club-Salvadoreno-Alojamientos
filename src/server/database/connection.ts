@@ -1,5 +1,6 @@
 import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
+import mysql from "mysql2/promise";
 import path from "path";
 import fs from "fs";
 import { config } from "../../lib/config";
@@ -16,11 +17,13 @@ export interface DBConnection {
 }
 
 class DatabaseManager {
-  private db: Database | null = null;
+  private db: Database | mysql.Connection | null = null;
   private dbPath: string;
+  private dbType: string;
 
   constructor() {
-    // For development, use SQLite
+    this.dbType = config.database.type;
+    // For SQLite development
     this.dbPath = path.join(process.cwd(), "data", "club_salvadoreno.db");
     this.ensureDataDirectory();
   }
@@ -34,22 +37,32 @@ class DatabaseManager {
 
   async connect(): Promise<DBConnection> {
     if (this.db) {
-      return this.db;
+      return this.createDBConnection(this.db);
     }
 
     try {
-      // For SQLite (development)
-      this.db = await open({
-        filename: this.dbPath,
-        driver: sqlite3.Database,
-      });
+      if (this.dbType === "mysql") {
+        // For MySQL
+        this.db = await mysql.createConnection({
+          host: config.database.host || "localhost",
+          port: config.database.port || 3306,
+          user: config.database.user || "root",
+          password: config.database.password || "",
+          database: config.database.name || "club_salvadoreno_db",
+        });
+        console.log("✅ MySQL Database connected successfully");
+      } else {
+        // For SQLite (development)
+        this.db = await open({
+          filename: this.dbPath,
+          driver: sqlite3.Database,
+        });
+        console.log("✅ SQLite Database connected successfully:", this.dbPath);
+        // Enable foreign keys for SQLite
+        await (this.db as Database).exec("PRAGMA foreign_keys = ON");
+      }
 
-      console.log("✅ Database connected successfully:", this.dbPath);
-
-      // Enable foreign keys
-      await this.db.exec("PRAGMA foreign_keys = ON");
-
-      return this.db;
+      return this.createDBConnection(this.db);
     } catch (error) {
       console.error("❌ Database connection failed:", error);
       throw error;
@@ -88,15 +101,55 @@ class DatabaseManager {
     }
   }
 
+  private createDBConnection(db: Database | mysql.Connection): DBConnection {
+    if (this.dbType === "mysql") {
+      const mysqlDb = db as mysql.Connection;
+      return {
+        async all(sql: string, params?: any[]): Promise<any[]> {
+          const [rows] = await mysqlDb.execute(sql, params);
+          return rows as any[];
+        },
+        async get(sql: string, params?: any[]): Promise<any> {
+          const [rows] = await mysqlDb.execute(sql, params);
+          return (rows as any[])[0];
+        },
+        async run(
+          sql: string,
+          params?: any[],
+        ): Promise<{ changes: number; lastID: number }> {
+          const [result] = await mysqlDb.execute(sql, params);
+          const resultData = result as any;
+          return {
+            changes: resultData.affectedRows || 0,
+            lastID: resultData.insertId || 0,
+          };
+        },
+        async exec(sql: string): Promise<void> {
+          await mysqlDb.query(sql);
+        },
+        async close(): Promise<void> {
+          await mysqlDb.end();
+        },
+      };
+    } else {
+      // SQLite
+      return db as Database;
+    }
+  }
+
   async close(): Promise<void> {
     if (this.db) {
-      await this.db.close();
+      if (this.dbType === "mysql") {
+        await (this.db as mysql.Connection).end();
+      } else {
+        await (this.db as Database).close();
+      }
       this.db = null;
       console.log("✅ Database connection closed");
     }
   }
 
-  getDb(): Database {
+  getDb(): Database | mysql.Connection {
     if (!this.db) {
       throw new Error("Database not connected. Call connect() first.");
     }
