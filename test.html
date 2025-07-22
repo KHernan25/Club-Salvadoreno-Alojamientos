@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App Test</title>
+</head>
+<body>
+    <h1>Testing if the app is functional</h1>
+    <p>This is a simple test to verify the development server is working.</p>
+    <script>
+        console.log('Test page loaded successfully');
+        
+        // Test if we can access the main site
+        fetch('/')
+            .then(response => {
+                console.log('Main app accessible:', response.ok);
+                if (response.ok) {
+                    document.body.innerHTML += '<p style="color: green;">✅ Frontend is working!</p>';
+                } else {
+                    document.body.innerHTML += '<p style="color: orange;">⚠️ Frontend has issues</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error accessing main app:', error);
+                document.body.innerHTML += '<p style="color: red;">❌ Frontend not accessible</p>';
+            });
+            
+        // Test API health
+        fetch('/health')
+            .then(response => {
+                console.log('Backend API accessible:', response.ok);
+                if (response.ok) {
+                    document.body.innerHTML += '<p style="color: green;">✅ Backend API is working!</p>';
+                } else {
+                    document.body.innerHTML += '<p style="color: orange;">⚠️ Backend API has issues</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error accessing backend:', error);
+                document.body.innerHTML += '<p style="color: orange;">⚠️ Backend API not available (expected in frontend-only mode)</p>';
+            });
+    </script>
+</body>
+</html>
