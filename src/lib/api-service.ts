@@ -196,8 +196,14 @@ const API_CACHE_DURATION = 30000; // 30 seconds
 // Check if API is available
 export const isApiAvailable = async (): Promise<boolean> => {
   // Check cache first
-  if (apiAvailabilityCache && (Date.now() - apiAvailabilityCache.timestamp) < API_CACHE_DURATION) {
-    console.log("🔍 Using cached API availability:", apiAvailabilityCache.status);
+  if (
+    apiAvailabilityCache &&
+    Date.now() - apiAvailabilityCache.timestamp < API_CACHE_DURATION
+  ) {
+    console.log(
+      "🔍 Using cached API availability:",
+      apiAvailabilityCache.status,
+    );
     return apiAvailabilityCache.status;
   }
 
