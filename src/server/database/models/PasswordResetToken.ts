@@ -1,4 +1,4 @@
-import { db } from '../connection';
+import { getDatabase } from '../connection';
 import crypto from 'crypto';
 
 export interface PasswordResetToken {
@@ -117,7 +117,7 @@ export class PasswordResetTokenModel {
       );
 
       if (result.changes === 0) {
-        console.log('�� Token not found or already used:', { token: token.substring(0, 8) + '...' });
+        console.log('❌ Token not found or already used:', { token: token.substring(0, 8) + '...' });
         return false;
       }
 
