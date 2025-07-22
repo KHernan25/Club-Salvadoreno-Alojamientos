@@ -55,7 +55,7 @@ class DatabaseManager {
         // For SQLite (development)
         this.db = await open({
           filename: this.dbPath,
-          driver: SQLiteDatabase,
+          driver: sqlite3.Database,
         });
         console.log("✅ SQLite Database connected successfully:", this.dbPath);
         // Enable foreign keys for SQLite
