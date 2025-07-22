@@ -85,6 +85,27 @@ CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id ON password_reset_t
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_email ON password_reset_tokens(email);
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_expires_at ON password_reset_tokens(expires_at);
 
+-- Tabla de preferencias de notificaciones
+CREATE TABLE IF NOT EXISTS notification_preferences (
+    user_id VARCHAR(36) PRIMARY KEY,
+    email BOOLEAN DEFAULT TRUE,
+    sms BOOLEAN DEFAULT FALSE,
+    push BOOLEAN DEFAULT TRUE,
+    booking_confirmations BOOLEAN DEFAULT TRUE,
+    booking_reminders BOOLEAN DEFAULT TRUE,
+    payment_reminders BOOLEAN DEFAULT TRUE,
+    system_notifications BOOLEAN DEFAULT TRUE,
+    marketing_emails BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_notification_preferences_email ON notification_preferences(email);
+CREATE INDEX IF NOT EXISTS idx_notification_preferences_sms ON notification_preferences(sms);
+CREATE INDEX IF NOT EXISTS idx_notification_preferences_push ON notification_preferences(push);
+
 -- =====================================================
 -- 2. SISTEMA DE SOLICITUDES DE REGISTRO
 -- =====================================================
