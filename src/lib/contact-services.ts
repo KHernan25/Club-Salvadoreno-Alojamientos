@@ -39,17 +39,18 @@ export const sendPasswordResetEmail = async (
       return result.success;
     }
 
-    // In a real implementation, you would call your email service here
-    // For example: SendGrid, AWS SES, Mailgun, or your backend API
-    const response = await fetch("/api/send-reset-email", {
+    // Call the backend API for password reset email
+    const response = await fetch("/api/email-notifications/send-password-reset", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: params.to,
+        userEmail: params.to,
+        userName: "Usuario", // In a real implementation, you'd pass the actual name
         resetToken: params.resetToken,
         resetUrl: params.resetUrl,
+        expiresIn: "1 hora",
       }),
     });
 
