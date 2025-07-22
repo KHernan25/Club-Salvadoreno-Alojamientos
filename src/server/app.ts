@@ -11,6 +11,7 @@ import { reviewRoutes } from "./routes/reviews";
 import { pricingRoutes } from "./routes/pricing";
 import { contactRoutes } from "./routes/contact";
 import { notificationRoutes } from "./routes/notifications";
+import { emailNotificationRoutes } from "./routes/email-notifications";
 import registrationRequestsRouter from "./routes/registration-requests";
 import activityLogRouter from "./routes/activity-log";
 import { errorHandler } from "./middleware/errorHandler";
