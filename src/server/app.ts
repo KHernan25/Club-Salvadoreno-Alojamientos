@@ -159,6 +159,20 @@ app.get("/api", (req: Request, res: Response) => {
           "POST /api/notifications/mark-all-read - Marcar todas como leídas",
         ],
       },
+      emailNotifications: {
+        path: "/api/email-notifications",
+        methods: ["POST", "GET"],
+        description: "Envío de emails y SMS",
+        endpoints: [
+          "POST /api/email-notifications/send-notification-email - Enviar email de notificación",
+          "POST /api/email-notifications/send-password-reset - Enviar email de recuperación",
+          "POST /api/email-notifications/send-welcome-email - Enviar email de bienvenida",
+          "POST /api/email-notifications/send-account-approved - Enviar email de aprobación",
+          "POST /api/email-notifications/send-sms - Enviar SMS",
+          "POST /api/email-notifications/send-sms-reset - Enviar SMS de recuperación",
+          "GET /api/email-notifications/test-config - Verificar configuración",
+        ],
+      },
       registrationRequests: {
         path: "/api/registration-requests",
         methods: ["GET", "POST"],
