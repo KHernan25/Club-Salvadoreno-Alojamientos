@@ -67,12 +67,12 @@ export class EmailService {
         },
       };
 
-      console.log('🔍 Email Config Debug:', {
+      console.log("🔍 Email Config Debug:", {
         host: emailConfig.host,
         port: emailConfig.port,
         user: emailConfig.auth.user,
         passLength: emailConfig.auth.pass?.length || 0,
-        passStartsWith: emailConfig.auth.pass?.substring(0, 3) || 'N/A'
+        passStartsWith: emailConfig.auth.pass?.substring(0, 3) || "N/A",
       });
 
       // Verificar que tenemos la configuración mínima necesaria
@@ -80,12 +80,14 @@ export class EmailService {
         !emailConfig.host ||
         !emailConfig.auth.user ||
         !emailConfig.auth.pass ||
-        emailConfig.auth.pass === 'your-email-password-here'
+        emailConfig.auth.pass === "your-email-password-here"
       ) {
         console.warn(
           "⚠️ Email configuration incomplete. Some features may not work.",
         );
-        console.warn(`Host: ${emailConfig.host}, User: ${emailConfig.auth.user}, Pass: ${emailConfig.auth.pass ? '[SET]' : '[EMPTY]'}`);
+        console.warn(
+          `Host: ${emailConfig.host}, User: ${emailConfig.auth.user}, Pass: ${emailConfig.auth.pass ? "[SET]" : "[EMPTY]"}`,
+        );
         this.isConfigured = false;
         return;
       }
@@ -360,7 +362,9 @@ Gracias por tu interés en el Club Salvadoreño.`,
       console.log("📧 Email que se habría enviado:", {
         to: options.to,
         subject: options.subject,
-        from: process.env.EMAIL_FROM || '"Club Salvadoreño" <no-reply@clubsalvadoreno.com>'
+        from:
+          process.env.EMAIL_FROM ||
+          '"Club Salvadoreño" <no-reply@clubsalvadoreno.com>',
       });
       return true; // Simular éxito para testing
     }
