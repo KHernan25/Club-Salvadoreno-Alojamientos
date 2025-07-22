@@ -37,6 +37,7 @@ export class PasswordResetTokenModel {
     };
 
     try {
+      const db = await getDatabase();
       await db.run(
         `INSERT INTO password_reset_tokens (id, user_id, token, email, expires_at, used, created_at)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
