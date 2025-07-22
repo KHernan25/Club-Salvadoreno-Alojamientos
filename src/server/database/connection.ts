@@ -166,3 +166,33 @@ export const dbManager = new DatabaseManager();
 export async function getDatabase(): Promise<DBConnection> {
   return await dbManager.connect();
 }
+
+// Create a lazy database connection for models
+let dbConnection: DBConnection | null = null;
+
+export const db = {
+  async get(): Promise<DBConnection> {
+    if (!dbConnection) {
+      dbConnection = await dbManager.connect();
+    }
+    return dbConnection;
+  },
+
+  async all(sql: string, params?: any[]): Promise<any[]> {
+    const conn = await this.get();
+    return conn.all(sql, params);
+  },
+
+  async run(
+    sql: string,
+    params?: any[],
+  ): Promise<{ changes: number; lastID: number }> {
+    const conn = await this.get();
+    return conn.run(sql, params);
+  },
+
+  async exec(sql: string): Promise<void> {
+    const conn = await this.get();
+    return conn.exec(sql);
+  },
+};

@@ -89,6 +89,45 @@ CREATE TABLE IF NOT EXISTS registration_requests (
 CREATE INDEX IF NOT EXISTS idx_registration_requests_status ON registration_requests(status);
 CREATE INDEX IF NOT EXISTS idx_registration_requests_submitted_at ON registration_requests(submitted_at);
 
+-- Tabla de tokens de reseteo de contraseña
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    token TEXT UNIQUE NOT NULL,
+    email TEXT NOT NULL,
+    expires_at DATETIME NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token);
+CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id ON password_reset_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_email ON password_reset_tokens(email);
+CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_expires_at ON password_reset_tokens(expires_at);
+
+-- Tabla de preferencias de notificaciones
+CREATE TABLE IF NOT EXISTS notification_preferences (
+    user_id TEXT PRIMARY KEY,
+    email BOOLEAN DEFAULT TRUE,
+    sms BOOLEAN DEFAULT FALSE,
+    push BOOLEAN DEFAULT TRUE,
+    booking_confirmations BOOLEAN DEFAULT TRUE,
+    booking_reminders BOOLEAN DEFAULT TRUE,
+    payment_reminders BOOLEAN DEFAULT TRUE,
+    system_notifications BOOLEAN DEFAULT TRUE,
+    marketing_emails BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_notification_preferences_email ON notification_preferences(email);
+CREATE INDEX IF NOT EXISTS idx_notification_preferences_sms ON notification_preferences(sms);
+CREATE INDEX IF NOT EXISTS idx_notification_preferences_push ON notification_preferences(push);
+
 -- =====================================================
 -- 2. SISTEMA DE ALOJAMIENTOS
 -- =====================================================

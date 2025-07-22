@@ -117,6 +117,17 @@ export class UserModel {
     );
   }
 
+  static async updatePassword(
+    id: string,
+    hashedPassword: string,
+  ): Promise<void> {
+    const db = await getDatabase();
+    await db.run(
+      "UPDATE users SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+      [hashedPassword, id],
+    );
+  }
+
   static async update(
     id: string,
     updates: Partial<User>,
