@@ -39,19 +39,23 @@ export const sendPasswordResetEmail = async (
       return result.success;
     }
 
-    // In a real implementation, you would call your email service here
-    // For example: SendGrid, AWS SES, Mailgun, or your backend API
-    const response = await fetch("/api/send-reset-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    // Call the backend API for password reset email
+    const response = await fetch(
+      "/api/email-notifications/send-password-reset",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userEmail: params.to,
+          userName: "Usuario", // In a real implementation, you'd pass the actual name
+          resetToken: params.resetToken,
+          resetUrl: params.resetUrl,
+          expiresIn: "1 hora",
+        }),
       },
-      body: JSON.stringify({
-        email: params.to,
-        resetToken: params.resetToken,
-        resetUrl: params.resetUrl,
-      }),
-    });
+    );
 
     if (!response.ok) {
       throw new Error("Failed to send email");
@@ -79,16 +83,17 @@ export const sendPasswordResetSMS = async (
       return result.success;
     }
 
-    // In a real implementation, you would call your SMS service here
-    // For example: Twilio, AWS SNS, or your backend API
-    const response = await fetch("/api/send-reset-sms", {
+    // Call the backend API for password reset SMS
+    const response = await fetch("/api/email-notifications/send-sms-reset", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         phone: params.phone,
-        code: params.code,
+        userName: "Usuario", // In a real implementation, you'd pass the actual name
+        resetCode: params.code,
+        expiresIn: "30 minutos",
       }),
     });
 
