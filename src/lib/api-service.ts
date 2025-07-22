@@ -189,12 +189,22 @@ const apiRequest = async <T>(
   }
 };
 
+// Cache API availability status to avoid repeated health checks
+let apiAvailabilityCache: { status: boolean; timestamp: number } | null = null;
+const API_CACHE_DURATION = 30000; // 30 seconds
+
 // Check if API is available
 export const isApiAvailable = async (): Promise<boolean> => {
+  // Check cache first
+  if (apiAvailabilityCache && (Date.now() - apiAvailabilityCache.timestamp) < API_CACHE_DURATION) {
+    console.log("🔍 Using cached API availability:", apiAvailabilityCache.status);
+    return apiAvailabilityCache.status;
+  }
+
   try {
     console.log("🔍 Checking API health at /health...");
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // Reduced to 2 second timeout
 
     const response = await fetch("/health", {
       method: "GET",
@@ -204,16 +214,21 @@ export const isApiAvailable = async (): Promise<boolean> => {
     clearTimeout(timeoutId);
     console.log("🔍 Health check response:", response.status, response.ok);
 
-    if (response.ok) {
+    const isAvailable = response.ok;
+    if (isAvailable) {
       const healthData = await response.json();
       console.log("✅ API is available:", healthData);
-      return true;
     } else {
       console.log("❌ API health check failed:", response.status);
-      return false;
     }
+
+    // Cache the result
+    apiAvailabilityCache = { status: isAvailable, timestamp: Date.now() };
+    return isAvailable;
   } catch (error) {
     console.log("❌ API not available:", error);
+    // Cache the failure
+    apiAvailabilityCache = { status: false, timestamp: Date.now() };
     return false;
   }
 };
