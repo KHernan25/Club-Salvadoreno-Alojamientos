@@ -1,4 +1,4 @@
-import { Database as SQLiteDatabase } from "sqlite3";
+import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 import mysql from "mysql2/promise";
 import path from "path";
