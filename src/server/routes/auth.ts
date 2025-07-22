@@ -269,7 +269,6 @@ router.post(
 // POST /api/auth/forgot-password
 router.post(
   "/forgot-password",
-  validatePasswordReset,
   asyncHandler(async (req, res) => {
     const { email, phone, method } = req.body;
 
