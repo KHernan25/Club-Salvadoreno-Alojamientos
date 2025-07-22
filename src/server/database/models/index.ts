@@ -5,3 +5,7 @@ export {
   type RegistrationRequest,
 } from "./RegistrationRequest";
 export { NotificationModel, type Notification } from "./Notification";
+export {
+  PasswordResetTokenModel,
+  type PasswordResetToken,
+} from "./PasswordResetToken";
