@@ -218,6 +218,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/email-notifications", emailNotificationRoutes);
 app.use("/api/registration-requests", registrationRequestsRouter);
 app.use("/api/activity-log", activityLogRouter);
 
