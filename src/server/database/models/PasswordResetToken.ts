@@ -55,6 +55,7 @@ export class PasswordResetTokenModel {
   // Buscar token por el valor del token
   static async findByToken(token: string): Promise<PasswordResetToken | null> {
     try {
+      const db = await getDatabase();
       const row = await db.get(
         `SELECT id, user_id as userId, token, email, expires_at as expiresAt, 
                 used, created_at as createdAt
@@ -110,6 +111,7 @@ export class PasswordResetTokenModel {
   // Marcar token como usado
   static async markAsUsed(token: string): Promise<boolean> {
     try {
+      const db = await getDatabase();
       const result = await db.run(
         `UPDATE password_reset_tokens 
          SET used = 1 
@@ -133,6 +135,7 @@ export class PasswordResetTokenModel {
   // Invalidar todos los tokens de un usuario
   static async invalidateUserTokens(userId: string): Promise<boolean> {
     try {
+      const db = await getDatabase();
       await db.run(
         `UPDATE password_reset_tokens 
          SET used = 1 
@@ -151,6 +154,7 @@ export class PasswordResetTokenModel {
   // Invalidar todos los tokens de un email
   static async invalidateEmailTokens(email: string): Promise<boolean> {
     try {
+      const db = await getDatabase();
       await db.run(
         `UPDATE password_reset_tokens 
          SET used = 1 
@@ -169,6 +173,7 @@ export class PasswordResetTokenModel {
   // Limpiar tokens expirados (para tareas de mantenimiento)
   static async cleanupExpiredTokens(): Promise<number> {
     try {
+      const db = await getDatabase();
       const result = await db.run(
         `DELETE FROM password_reset_tokens 
          WHERE expires_at < datetime('now')`
@@ -189,6 +194,7 @@ export class PasswordResetTokenModel {
   // Obtener tokens de un usuario (para debugging/admin)
   static async getUserTokens(userId: string): Promise<PasswordResetToken[]> {
     try {
+      const db = await getDatabase();
       const rows = await db.all(
         `SELECT id, user_id as userId, token, email, expires_at as expiresAt, 
                 used, created_at as createdAt
