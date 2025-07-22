@@ -1,4 +1,3 @@
-import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 import mysql from "mysql2/promise";
 import path from "path";
@@ -51,8 +50,9 @@ class DatabaseManager {
           database: config.database.name || "club_salvadoreno_db",
         });
         console.log("✅ MySQL Database connected successfully");
-      } else {
+      } else if (this.dbType === "sqlite") {
         // For SQLite (development)
+        const sqlite3 = (await import("sqlite3")).default;
         this.db = await open({
           filename: this.dbPath,
           driver: sqlite3.Database,
@@ -60,6 +60,18 @@ class DatabaseManager {
         console.log("✅ SQLite Database connected successfully:", this.dbPath);
         // Enable foreign keys for SQLite
         await (this.db as Database).exec("PRAGMA foreign_keys = ON");
+      } else if (this.dbType === "memory") {
+        // For in-memory SQLite (development/testing)
+        const sqlite3 = (await import("sqlite3")).default;
+        this.db = await open({
+          filename: ":memory:",
+          driver: sqlite3.Database,
+        });
+        console.log("✅ In-memory SQLite Database connected successfully");
+        // Enable foreign keys for SQLite
+        await (this.db as Database).exec("PRAGMA foreign_keys = ON");
+      } else {
+        throw new Error(`Unsupported database type: ${this.dbType}`);
       }
 
       return this.createDBConnection(this.db);
