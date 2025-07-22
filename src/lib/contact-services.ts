@@ -40,19 +40,22 @@ export const sendPasswordResetEmail = async (
     }
 
     // Call the backend API for password reset email
-    const response = await fetch("/api/email-notifications/send-password-reset", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "/api/email-notifications/send-password-reset",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userEmail: params.to,
+          userName: "Usuario", // In a real implementation, you'd pass the actual name
+          resetToken: params.resetToken,
+          resetUrl: params.resetUrl,
+          expiresIn: "1 hora",
+        }),
       },
-      body: JSON.stringify({
-        userEmail: params.to,
-        userName: "Usuario", // In a real implementation, you'd pass the actual name
-        resetToken: params.resetToken,
-        resetUrl: params.resetUrl,
-        expiresIn: "1 hora",
-      }),
-    });
+    );
 
     if (!response.ok) {
       throw new Error("Failed to send email");

@@ -1,4 +1,4 @@
-import { getDatabase } from '../server/database/connection';
+import { getDatabase } from "../server/database/connection";
 
 export interface NotificationPreferences {
   userId: string;
@@ -30,7 +30,8 @@ export class NotificationPreferencesService {
 
   public static getInstance(): NotificationPreferencesService {
     if (!NotificationPreferencesService.instance) {
-      NotificationPreferencesService.instance = new NotificationPreferencesService();
+      NotificationPreferencesService.instance =
+        new NotificationPreferencesService();
     }
     return NotificationPreferencesService.instance;
   }
@@ -38,7 +39,9 @@ export class NotificationPreferencesService {
   private constructor() {}
 
   // Get user notification preferences
-  public async getUserPreferences(userId: string): Promise<NotificationPreferences | null> {
+  public async getUserPreferences(
+    userId: string,
+  ): Promise<NotificationPreferences | null> {
     try {
       const db = await getDatabase();
       const preferences = await db.get(
@@ -48,7 +51,7 @@ export class NotificationPreferencesService {
                 created_at as createdAt, updated_at as updatedAt
          FROM notification_preferences 
          WHERE user_id = ?`,
-        [userId]
+        [userId],
       );
 
       if (!preferences) {
@@ -70,13 +73,15 @@ export class NotificationPreferencesService {
         updatedAt: preferences.updatedAt,
       };
     } catch (error) {
-      console.error('❌ Error getting user preferences:', error);
+      console.error("❌ Error getting user preferences:", error);
       return null;
     }
   }
 
   // Create default preferences for a new user
-  public async createDefaultPreferences(userId: string): Promise<NotificationPreferences> {
+  public async createDefaultPreferences(
+    userId: string,
+  ): Promise<NotificationPreferences> {
     const defaultPreferences: NotificationPreferences = {
       userId,
       email: true,
@@ -110,13 +115,16 @@ export class NotificationPreferencesService {
           defaultPreferences.marketingEmails ? 1 : 0,
           defaultPreferences.createdAt,
           defaultPreferences.updatedAt,
-        ]
+        ],
       );
 
-      console.log('✅ Default notification preferences created for user:', userId);
+      console.log(
+        "✅ Default notification preferences created for user:",
+        userId,
+      );
       return defaultPreferences;
     } catch (error) {
-      console.error('❌ Error creating default preferences:', error);
+      console.error("❌ Error creating default preferences:", error);
       throw error;
     }
   }
@@ -124,11 +132,11 @@ export class NotificationPreferencesService {
   // Update user notification preferences
   public async updateUserPreferences(
     userId: string,
-    updates: UpdateNotificationPreferencesData
+    updates: UpdateNotificationPreferencesData,
   ): Promise<NotificationPreferences | null> {
     try {
       const db = await getDatabase();
-      
+
       // Build dynamic update query
       const setClause = [];
       const values = [];
@@ -150,15 +158,15 @@ export class NotificationPreferencesService {
 
       await db.run(
         `UPDATE notification_preferences 
-         SET ${setClause.join(', ')}, updated_at = ?
+         SET ${setClause.join(", ")}, updated_at = ?
          WHERE user_id = ?`,
-        values
+        values,
       );
 
-      console.log('✅ Notification preferences updated for user:', userId);
+      console.log("✅ Notification preferences updated for user:", userId);
       return this.getUserPreferences(userId);
     } catch (error) {
-      console.error('❌ Error updating preferences:', error);
+      console.error("❌ Error updating preferences:", error);
       return null;
     }
   }
@@ -166,8 +174,13 @@ export class NotificationPreferencesService {
   // Check if user wants specific notification type
   public async shouldReceiveNotification(
     userId: string,
-    notificationType: 'email' | 'sms' | 'push',
-    category?: 'booking_confirmations' | 'booking_reminders' | 'payment_reminders' | 'system_notifications' | 'marketing_emails'
+    notificationType: "email" | "sms" | "push",
+    category?:
+      | "booking_confirmations"
+      | "booking_reminders"
+      | "payment_reminders"
+      | "system_notifications"
+      | "marketing_emails",
   ): Promise<boolean> {
     try {
       const preferences = await this.getUserPreferences(userId);
@@ -187,19 +200,19 @@ export class NotificationPreferencesService {
 
       return true;
     } catch (error) {
-      console.error('❌ Error checking notification preferences:', error);
+      console.error("❌ Error checking notification preferences:", error);
       return false;
     }
   }
 
   // Get users who want to receive a specific type of notification
   public async getUsersForNotification(
-    notificationType: 'email' | 'sms' | 'push',
-    category?: string
+    notificationType: "email" | "sms" | "push",
+    category?: string,
   ): Promise<string[]> {
     try {
       const db = await getDatabase();
-      
+
       let query = `SELECT user_id FROM notification_preferences WHERE ${notificationType} = 1`;
       const params = [];
 
@@ -209,9 +222,9 @@ export class NotificationPreferencesService {
       }
 
       const rows = await db.all(query, params);
-      return rows.map(row => row.user_id);
+      return rows.map((row) => row.user_id);
     } catch (error) {
-      console.error('❌ Error getting users for notification:', error);
+      console.error("❌ Error getting users for notification:", error);
       return [];
     }
   }
@@ -226,7 +239,7 @@ export class NotificationPreferencesService {
   }> {
     try {
       const db = await getDatabase();
-      
+
       const stats = await db.get(`
         SELECT 
           COUNT(*) as totalUsers,
@@ -255,7 +268,7 @@ export class NotificationPreferencesService {
         },
       };
     } catch (error) {
-      console.error('❌ Error getting notification stats:', error);
+      console.error("❌ Error getting notification stats:", error);
       return {
         totalUsers: 0,
         emailEnabled: 0,
@@ -269,7 +282,7 @@ export class NotificationPreferencesService {
   // Bulk update preferences for multiple users
   public async bulkUpdatePreferences(
     userIds: string[],
-    updates: UpdateNotificationPreferencesData
+    updates: UpdateNotificationPreferencesData,
   ): Promise<number> {
     try {
       const db = await getDatabase();
@@ -285,16 +298,17 @@ export class NotificationPreferencesService {
       console.log(`✅ Bulk updated preferences for ${updatedCount} users`);
       return updatedCount;
     } catch (error) {
-      console.error('❌ Error in bulk update:', error);
+      console.error("❌ Error in bulk update:", error);
       return 0;
     }
   }
 
   // Utility method to convert camelCase to snake_case
   private camelToSnake(str: string): string {
-    return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+    return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
   }
 }
 
 // Export singleton instance
-export const notificationPreferencesService = NotificationPreferencesService.getInstance();
+export const notificationPreferencesService =
+  NotificationPreferencesService.getInstance();

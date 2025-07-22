@@ -272,23 +272,29 @@ router.post(
   asyncHandler(async (req, res) => {
     const { email, phone, method } = req.body;
 
-    console.log('🔐 Password reset request:', { email, phone, method });
+    console.log("🔐 Password reset request:", { email, phone, method });
 
     // Validate method
-    if (!method || !['email', 'sms'].includes(method)) {
-      throw createError('Método de recuperación inválido', 400);
+    if (!method || !["email", "sms"].includes(method)) {
+      throw createError("Método de recuperación inválido", 400);
     }
 
     // Find user by email or phone
     let user;
-    if (method === 'email') {
+    if (method === "email") {
       if (!email) {
-        throw createError('Email es requerido para recuperación por correo', 400);
+        throw createError(
+          "Email es requerido para recuperación por correo",
+          400,
+        );
       }
       user = await UserModel.findByEmail(email);
     } else {
       if (!phone) {
-        throw createError('Teléfono es requerido para recuperación por SMS', 400);
+        throw createError(
+          "Teléfono es requerido para recuperación por SMS",
+          400,
+        );
       }
       // Find user by phone - you might need to add this method to UserModel
       user = await UserModel.findByEmail(email); // Temporarily using email lookup
@@ -298,9 +304,10 @@ router.post(
       // Por seguridad, no revelamos si el email/teléfono existe o no
       res.json({
         success: true,
-        message: method === 'email'
-          ? "Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña"
-          : "Si el teléfono está registrado, recibirás un código de verificación",
+        message:
+          method === "email"
+            ? "Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña"
+            : "Si el teléfono está registrado, recibirás un código de verificación",
       });
       return;
     }
@@ -309,7 +316,7 @@ router.post(
       // Invalidate any existing tokens for this user
       await PasswordResetTokenModel.invalidateUserTokens(user.id);
 
-      if (method === 'email') {
+      if (method === "email") {
         // Create password reset token
         const resetToken = await PasswordResetTokenModel.create({
           userId: user.id,
@@ -318,7 +325,7 @@ router.post(
         });
 
         // Generate reset URL
-        const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:8080'}/reset-password?token=${resetToken.token}`;
+        const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:8080"}/reset-password?token=${resetToken.token}`;
 
         // Send email
         const emailSent = await emailService.sendPasswordResetEmail({
@@ -326,15 +333,15 @@ router.post(
           userName: user.fullName,
           resetToken: resetToken.token,
           resetUrl,
-          expiresIn: '1 hora',
+          expiresIn: "1 hora",
         });
 
         if (!emailSent) {
-          console.error('❌ Failed to send password reset email');
+          console.error("❌ Failed to send password reset email");
           // Don't reveal the failure to the user for security
         }
 
-        console.log('✅ Password reset email sent to:', user.email);
+        console.log("✅ Password reset email sent to:", user.email);
       } else {
         // SMS method
         const resetCode = smsService.generateVerificationCode();
@@ -354,31 +361,32 @@ router.post(
           phone: phone,
           userName: user.fullName,
           resetCode,
-          expiresIn: '30 minutos',
+          expiresIn: "30 minutos",
         });
 
         if (!smsSent) {
-          console.error('❌ Failed to send password reset SMS');
+          console.error("❌ Failed to send password reset SMS");
           // Don't reveal the failure to the user for security
         }
 
-        console.log('✅ Password reset SMS sent to:', phone);
+        console.log("✅ Password reset SMS sent to:", phone);
       }
 
       res.json({
         success: true,
-        message: method === 'email'
-          ? "Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña"
-          : "Si el teléfono está registrado, recibirás un código de verificación",
+        message:
+          method === "email"
+            ? "Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña"
+            : "Si el teléfono está registrado, recibirás un código de verificación",
       });
-
     } catch (error) {
-      console.error('❌ Error in password reset process:', error);
+      console.error("❌ Error in password reset process:", error);
       res.json({
         success: true,
-        message: method === 'email'
-          ? "Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña"
-          : "Si el teléfono está registrado, recibirás un código de verificación",
+        message:
+          method === "email"
+            ? "Si el correo está registrado, recibirás instrucciones para restablecer tu contraseña"
+            : "Si el teléfono está registrado, recibirás un código de verificación",
       });
     }
   }),
@@ -391,10 +399,16 @@ router.post(
   asyncHandler(async (req, res) => {
     const { token, password, code } = req.body;
 
-    console.log('🔐 Password reset confirmation:', { hasToken: !!token, hasCode: !!code });
+    console.log("🔐 Password reset confirmation:", {
+      hasToken: !!token,
+      hasCode: !!code,
+    });
 
     if (!password || password.length < 6) {
-      throw createError('La nueva contraseña debe tener al menos 6 caracteres', 400);
+      throw createError(
+        "La nueva contraseña debe tener al menos 6 caracteres",
+        400,
+      );
     }
 
     let resetToken;
@@ -402,32 +416,35 @@ router.post(
     if (token) {
       // Email-based reset with token
       if (!token || token.length < 10) {
-        throw createError('Token de recuperación inválido o expirado', 400);
+        throw createError("Token de recuperación inválido o expirado", 400);
       }
 
       // Validate token
       const isValid = await PasswordResetTokenModel.isValidToken(token);
       if (!isValid) {
-        throw createError('Token de recuperación inválido o expirado', 400);
+        throw createError("Token de recuperación inválido o expirado", 400);
       }
 
       resetToken = await PasswordResetTokenModel.findByToken(token);
       if (!resetToken) {
-        throw createError('Token de recuperación inválido', 400);
+        throw createError("Token de recuperación inválido", 400);
       }
     } else if (code) {
       // SMS-based reset with code
       // In a full implementation, you'd verify the code differently
-      throw createError('Verificación por código SMS no implementada completamente', 400);
+      throw createError(
+        "Verificación por código SMS no implementada completamente",
+        400,
+      );
     } else {
-      throw createError('Token o código de verificación requerido', 400);
+      throw createError("Token o código de verificación requerido", 400);
     }
 
     try {
       // Find user
       const user = await UserModel.findByEmail(resetToken.email);
       if (!user) {
-        throw createError('Usuario no encontrado', 400);
+        throw createError("Usuario no encontrado", 400);
       }
 
       // Hash new password
@@ -442,16 +459,15 @@ router.post(
       // Invalidate all other tokens for this user
       await PasswordResetTokenModel.invalidateUserTokens(user.id);
 
-      console.log('✅ Password reset successful for user:', user.email);
+      console.log("✅ Password reset successful for user:", user.email);
 
       res.json({
         success: true,
-        message: 'Contraseña restablecida exitosamente',
+        message: "Contraseña restablecida exitosamente",
       });
-
     } catch (error) {
-      console.error('❌ Error resetting password:', error);
-      throw createError('Error al restablecer la contraseña', 500);
+      console.error("❌ Error resetting password:", error);
+      throw createError("Error al restablecer la contraseña", 500);
     }
   }),
 );

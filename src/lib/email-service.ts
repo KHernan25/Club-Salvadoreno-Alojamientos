@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 export interface EmailOptions {
   to: string | string[];
@@ -25,7 +25,14 @@ export interface PasswordResetEmailData {
 export interface NotificationEmailData {
   userEmail: string;
   userName: string;
-  type: 'booking_confirmation' | 'booking_reminder' | 'payment_reminder' | 'booking_cancelled' | 'welcome' | 'account_approved' | 'account_rejected';
+  type:
+    | "booking_confirmation"
+    | "booking_reminder"
+    | "payment_reminder"
+    | "booking_cancelled"
+    | "welcome"
+    | "account_approved"
+    | "account_rejected";
   data?: any;
 }
 
@@ -49,7 +56,7 @@ export class EmailService {
     try {
       const emailConfig = {
         host: process.env.EMAIL_HOST,
-        port: parseInt(process.env.EMAIL_PORT || '465'),
+        port: parseInt(process.env.EMAIL_PORT || "465"),
         secure: true, // true for 465, false for other ports
         auth: {
           user: process.env.EMAIL_USER,
@@ -61,8 +68,14 @@ export class EmailService {
       };
 
       // Verificar que tenemos la configuración mínima necesaria
-      if (!emailConfig.host || !emailConfig.auth.user || !emailConfig.auth.pass) {
-        console.warn('⚠️ Email configuration incomplete. Some features may not work.');
+      if (
+        !emailConfig.host ||
+        !emailConfig.auth.user ||
+        !emailConfig.auth.pass
+      ) {
+        console.warn(
+          "⚠️ Email configuration incomplete. Some features may not work.",
+        );
         this.isConfigured = false;
         return;
       }
@@ -70,20 +83,19 @@ export class EmailService {
       this.transporter = nodemailer.createTransporter(emailConfig);
       this.isConfigured = true;
 
-      console.log('✅ Email service configured successfully');
-      
+      console.log("✅ Email service configured successfully");
+
       // Verificar la conexión
       this.transporter.verify((error, success) => {
         if (error) {
-          console.error('❌ Email service verification failed:', error);
+          console.error("❌ Email service verification failed:", error);
           this.isConfigured = false;
         } else {
-          console.log('✅ Email server is ready to take messages');
+          console.log("✅ Email server is ready to take messages");
         }
       });
-
     } catch (error) {
-      console.error('❌ Error initializing email service:', error);
+      console.error("❌ Error initializing email service:", error);
       this.isConfigured = false;
     }
   }
@@ -92,11 +104,15 @@ export class EmailService {
     return this.isConfigured && this.transporter !== null;
   }
 
-  private getPasswordResetTemplate(data: PasswordResetEmailData): { subject: string; html: string; text: string } {
-    const expiresIn = data.expiresIn || '1 hora';
-    
+  private getPasswordResetTemplate(data: PasswordResetEmailData): {
+    subject: string;
+    html: string;
+    text: string;
+  } {
+    const expiresIn = data.expiresIn || "1 hora";
+
     return {
-      subject: '🔐 Recuperación de Contraseña - Club Salvadoreño',
+      subject: "🔐 Recuperación de Contraseña - Club Salvadoreño",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb;">
           <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 30px; text-align: center;">
@@ -172,14 +188,18 @@ Si no realizaste esta solicitud, puedes ignorar este correo.
 ---
 Club Salvadoreño
 © 2024 Todos los derechos reservados.
-      `
+      `,
     };
   }
 
-  private getNotificationTemplate(data: NotificationEmailData): { subject: string; html: string; text: string } {
+  private getNotificationTemplate(data: NotificationEmailData): {
+    subject: string;
+    html: string;
+    text: string;
+  } {
     const templates = {
       welcome: {
-        subject: '🎉 ¡Bienvenido al Club Salvadoreño!',
+        subject: "🎉 ¡Bienvenido al Club Salvadoreño!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 30px; text-align: center;">
@@ -206,7 +226,7 @@ Club Salvadoreño
               </div>
               
               <div style="text-align: center; margin: 30px 0;">
-                <a href="${process.env.FRONTEND_URL || 'http://localhost:8080'}" 
+                <a href="${process.env.FRONTEND_URL || "http://localhost:8080"}" 
                    style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; 
                           border-radius: 8px; font-weight: bold; font-size: 16px;">
                   Ir a Mi Cuenta
@@ -225,13 +245,13 @@ Tu cuenta ha sido creada exitosamente. Ya puedes:
 - Gestionar tu perfil
 - Acceder a ofertas exclusivas
 
-Visita: ${process.env.FRONTEND_URL || 'http://localhost:8080'}
+Visita: ${process.env.FRONTEND_URL || "http://localhost:8080"}
 
-¡Gracias por ser parte del Club Salvadoreño!`
+¡Gracias por ser parte del Club Salvadoreño!`,
       },
-      
+
       account_approved: {
-        subject: '✅ Cuenta Aprobada - Club Salvadoreño',
+        subject: "✅ Cuenta Aprobada - Club Salvadoreño",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 30px; text-align: center;">
@@ -248,7 +268,7 @@ Visita: ${process.env.FRONTEND_URL || 'http://localhost:8080'}
               </p>
               
               <div style="text-align: center; margin: 30px 0;">
-                <a href="${process.env.FRONTEND_URL || 'http://localhost:8080'}" 
+                <a href="${process.env.FRONTEND_URL || "http://localhost:8080"}" 
                    style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; 
                           border-radius: 8px; font-weight: bold; font-size: 16px;">
                   Iniciar Sesión
@@ -263,13 +283,13 @@ Visita: ${process.env.FRONTEND_URL || 'http://localhost:8080'}
 
 Tu solicitud de registro ha sido aprobada. Tu cuenta está activa.
 
-Inicia sesión en: ${process.env.FRONTEND_URL || 'http://localhost:8080'}
+Inicia sesión en: ${process.env.FRONTEND_URL || "http://localhost:8080"}
 
-¡Bienvenido al Club Salvadoreño!`
+¡Bienvenido al Club Salvadoreño!`,
       },
 
       account_rejected: {
-        subject: '❌ Solicitud de Registro - Club Salvadoreño',
+        subject: "❌ Solicitud de Registro - Club Salvadoreño",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; padding: 30px; text-align: center;">
@@ -312,8 +332,8 @@ Tu solicitud de registro no pudo ser procesada.
 Para más información, contacta a nuestro equipo:
 Email: info@clubsalvadoreno.com
 
-Gracias por tu interés en el Club Salvadoreño.`
-      }
+Gracias por tu interés en el Club Salvadoreño.`,
+      },
     };
 
     return templates[data.type] || templates.welcome;
@@ -321,16 +341,28 @@ Gracias por tu interés en el Club Salvadoreño.`
 
   public async sendEmail(options: EmailOptions): Promise<boolean> {
     if (!this.isReady()) {
-      console.error('❌ Email service not configured. Check environment variables.');
+      console.error(
+        "❌ Email service not configured. Check environment variables.",
+      );
       return false;
     }
 
     try {
       const mailOptions = {
-        from: process.env.EMAIL_FROM || '"Club Salvadoreño" <no-reply@clubsalvadoreno.com>',
-        to: Array.isArray(options.to) ? options.to.join(', ') : options.to,
-        cc: options.cc ? (Array.isArray(options.cc) ? options.cc.join(', ') : options.cc) : undefined,
-        bcc: options.bcc ? (Array.isArray(options.bcc) ? options.bcc.join(', ') : options.bcc) : undefined,
+        from:
+          process.env.EMAIL_FROM ||
+          '"Club Salvadoreño" <no-reply@clubsalvadoreno.com>',
+        to: Array.isArray(options.to) ? options.to.join(", ") : options.to,
+        cc: options.cc
+          ? Array.isArray(options.cc)
+            ? options.cc.join(", ")
+            : options.cc
+          : undefined,
+        bcc: options.bcc
+          ? Array.isArray(options.bcc)
+            ? options.bcc.join(", ")
+            : options.bcc
+          : undefined,
         subject: options.subject,
         html: options.html,
         text: options.text,
@@ -338,8 +370,8 @@ Gracias por tu interés en el Club Salvadoreño.`
       };
 
       const info = await this.transporter!.sendMail(mailOptions);
-      
-      console.log('✅ Email sent successfully:', {
+
+      console.log("✅ Email sent successfully:", {
         messageId: info.messageId,
         to: mailOptions.to,
         subject: mailOptions.subject,
@@ -347,14 +379,16 @@ Gracias por tu interés en el Club Salvadoreño.`
 
       return true;
     } catch (error) {
-      console.error('❌ Error sending email:', error);
+      console.error("❌ Error sending email:", error);
       return false;
     }
   }
 
-  public async sendPasswordResetEmail(data: PasswordResetEmailData): Promise<boolean> {
+  public async sendPasswordResetEmail(
+    data: PasswordResetEmailData,
+  ): Promise<boolean> {
     const template = this.getPasswordResetTemplate(data);
-    
+
     return this.sendEmail({
       to: data.userEmail,
       subject: template.subject,
@@ -363,9 +397,11 @@ Gracias por tu interés en el Club Salvadoreño.`
     });
   }
 
-  public async sendNotificationEmail(data: NotificationEmailData): Promise<boolean> {
+  public async sendNotificationEmail(
+    data: NotificationEmailData,
+  ): Promise<boolean> {
     const template = this.getNotificationTemplate(data);
-    
+
     return this.sendEmail({
       to: data.userEmail,
       subject: template.subject,
@@ -374,27 +410,36 @@ Gracias por tu interés en el Club Salvadoreño.`
     });
   }
 
-  public async sendWelcomeEmail(userEmail: string, userName: string): Promise<boolean> {
+  public async sendWelcomeEmail(
+    userEmail: string,
+    userName: string,
+  ): Promise<boolean> {
     return this.sendNotificationEmail({
       userEmail,
       userName,
-      type: 'welcome',
+      type: "welcome",
     });
   }
 
-  public async sendAccountApprovedEmail(userEmail: string, userName: string): Promise<boolean> {
+  public async sendAccountApprovedEmail(
+    userEmail: string,
+    userName: string,
+  ): Promise<boolean> {
     return this.sendNotificationEmail({
       userEmail,
       userName,
-      type: 'account_approved',
+      type: "account_approved",
     });
   }
 
-  public async sendAccountRejectedEmail(userEmail: string, userName: string): Promise<boolean> {
+  public async sendAccountRejectedEmail(
+    userEmail: string,
+    userName: string,
+  ): Promise<boolean> {
     return this.sendNotificationEmail({
       userEmail,
       userName,
-      type: 'account_rejected',
+      type: "account_rejected",
     });
   }
 }

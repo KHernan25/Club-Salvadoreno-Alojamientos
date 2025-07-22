@@ -183,7 +183,10 @@ export const db = {
     return conn.all(sql, params);
   },
 
-  async run(sql: string, params?: any[]): Promise<{ changes: number; lastID: number }> {
+  async run(
+    sql: string,
+    params?: any[],
+  ): Promise<{ changes: number; lastID: number }> {
     const conn = await this.get();
     return conn.run(sql, params);
   },
@@ -191,5 +194,5 @@ export const db = {
   async exec(sql: string): Promise<void> {
     const conn = await this.get();
     return conn.exec(sql);
-  }
+  },
 };

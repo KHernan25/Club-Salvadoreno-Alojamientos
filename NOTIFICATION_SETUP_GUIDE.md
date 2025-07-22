@@ -154,64 +154,68 @@ En modo desarrollo, Twilio requiere verificar números de destino. Para producci
 ### 1. Envío de Notificaciones
 
 ```typescript
-import { notificationManager } from '@/lib/notification-manager';
+import { notificationManager } from "@/lib/notification-manager";
 
 // Enviar notificación de bienvenida
 await notificationManager.sendWelcomeNotifications({
-  userId: 'user-123',
-  userEmail: 'usuario@email.com',
-  userPhone: '+50312345678',
-  userName: 'Juan Pérez',
+  userId: "user-123",
+  userEmail: "usuario@email.com",
+  userPhone: "+50312345678",
+  userName: "Juan Pérez",
   preferences: {
     email: true,
     sms: true,
-    push: false
-  }
+    push: false,
+  },
 });
 
 // Enviar confirmación de reserva
 await notificationManager.sendBookingConfirmationNotifications({
-  userId: 'user-123',
-  userEmail: 'usuario@email.com',
-  userName: 'Juan Pérez',
-  bookingId: 'booking-456',
-  accommodationName: 'Casa El Sunzal',
-  accommodationLocation: 'El Sunzal',
-  checkIn: '2024-12-25',
-  checkOut: '2024-12-30',
-  totalAmount: 150.00
+  userId: "user-123",
+  userEmail: "usuario@email.com",
+  userName: "Juan Pérez",
+  bookingId: "booking-456",
+  accommodationName: "Casa El Sunzal",
+  accommodationLocation: "El Sunzal",
+  checkIn: "2024-12-25",
+  checkOut: "2024-12-30",
+  totalAmount: 150.0,
 });
 ```
 
 ### 2. Gestión de Preferencias
 
 ```typescript
-import { notificationPreferencesService } from '@/lib/notification-preferences-service';
+import { notificationPreferencesService } from "@/lib/notification-preferences-service";
 
 // Obtener preferencias del usuario
-const preferences = await notificationPreferencesService.getUserPreferences('user-123');
+const preferences =
+  await notificationPreferencesService.getUserPreferences("user-123");
 
 // Actualizar preferencias
-await notificationPreferencesService.updateUserPreferences('user-123', {
+await notificationPreferencesService.updateUserPreferences("user-123", {
   email: true,
   sms: false,
   bookingReminders: true,
-  marketingEmails: false
+  marketingEmails: false,
 });
 ```
 
 ### 3. API Endpoints
 
 #### Envío de Emails:
+
 - `POST /api/email-notifications/send-password-reset`
 - `POST /api/email-notifications/send-welcome-email`
 - `POST /api/email-notifications/send-account-approved`
 
 #### Envío de SMS:
+
 - `POST /api/email-notifications/send-sms`
 - `POST /api/email-notifications/send-sms-reset`
 
 #### Configuración:
+
 - `GET /api/email-notifications/test-config`
 
 ## 🔧 Personalización
@@ -328,7 +332,7 @@ Todos los envíos se registran en los logs:
 
 ```typescript
 const stats = await notificationPreferencesService.getNotificationStats();
-console.log('Users with email enabled:', stats.emailEnabled);
+console.log("Users with email enabled:", stats.emailEnabled);
 ```
 
 ## 🚀 Próximos Pasos
