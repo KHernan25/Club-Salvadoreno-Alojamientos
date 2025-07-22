@@ -166,3 +166,6 @@ export const dbManager = new DatabaseManager();
 export async function getDatabase(): Promise<DBConnection> {
   return await dbManager.connect();
 }
+
+// Export singleton database connection for models
+export const db = await dbManager.connect();
