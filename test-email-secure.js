@@ -36,7 +36,7 @@ console.log("\n🔧 Probando conexión SMTP...");
 try {
   const nodemailer = await import("nodemailer");
 
-  const transporter = nodemailer.default.createTransporter({
+  const transporter = nodemailer.default.createTransport({
     host: process.env.EMAIL_HOST,
     port: Number(process.env.EMAIL_PORT),
     secure: Number(process.env.EMAIL_PORT) === 465,
