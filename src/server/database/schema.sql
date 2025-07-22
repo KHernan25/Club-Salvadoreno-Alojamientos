@@ -90,7 +90,7 @@ CREATE INDEX IF NOT EXISTS idx_registration_requests_status ON registration_requ
 CREATE INDEX IF NOT EXISTS idx_registration_requests_submitted_at ON registration_requests(submitted_at);
 
 -- Tabla de tokens de reseteo de contraseña
-CRETE TABLE IF NOT EXISTS password_reset_tokens (
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
     token TEXT UNIQUE NOT NULL,
