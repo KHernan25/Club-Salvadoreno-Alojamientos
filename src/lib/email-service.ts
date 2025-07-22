@@ -71,11 +71,13 @@ export class EmailService {
       if (
         !emailConfig.host ||
         !emailConfig.auth.user ||
-        !emailConfig.auth.pass
+        !emailConfig.auth.pass ||
+        emailConfig.auth.pass === 'your-email-password-here'
       ) {
         console.warn(
           "⚠️ Email configuration incomplete. Some features may not work.",
         );
+        console.warn(`Host: ${emailConfig.host}, User: ${emailConfig.auth.user}, Pass: ${emailConfig.auth.pass ? '[SET]' : '[EMPTY]'}`);
         this.isConfigured = false;
         return;
       }
