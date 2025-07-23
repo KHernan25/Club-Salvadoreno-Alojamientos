@@ -1,8 +1,16 @@
-import { open, Database } from "sqlite";
 import mysql from "mysql2/promise";
 import path from "path";
 import fs from "fs";
 import { config } from "../../lib/config";
+
+// Dynamic imports for sqlite
+interface Database {
+  all(sql: string, params?: any[]): Promise<any[]>;
+  get(sql: string, params?: any[]): Promise<any>;
+  run(sql: string, params?: any[]): Promise<{ changes: number; lastID: number }>;
+  exec(sql: string): Promise<void>;
+  close(): Promise<void>;
+}
 
 export interface DBConnection {
   all(sql: string, params?: any[]): Promise<any[]>;
