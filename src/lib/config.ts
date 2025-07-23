@@ -28,7 +28,7 @@ interface Config {
   // Base de datos
   database: {
     url: string;
-    type: "memory" | "postgres" | "mysql";
+    type: "memory" | "postgres" | "mysql" | "sqlite";
     host?: string;
     port?: number;
     name?: string;
