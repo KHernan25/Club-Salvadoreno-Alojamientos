@@ -3,8 +3,8 @@ import path from "path";
 import fs from "fs";
 import { config } from "../../lib/config";
 
-// Dynamic imports for sqlite
-interface Database {
+// Type definition for SQLite Database (for when using sqlite)
+interface SQLiteDatabase {
   all(sql: string, params?: any[]): Promise<any[]>;
   get(sql: string, params?: any[]): Promise<any>;
   run(sql: string, params?: any[]): Promise<{ changes: number; lastID: number }>;
