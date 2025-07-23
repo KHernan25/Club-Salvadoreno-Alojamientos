@@ -79,7 +79,7 @@ class DatabaseManager {
         });
         console.log("✅ In-memory SQLite Database connected successfully");
         // Enable foreign keys for SQLite
-        await (this.db as Database).exec("PRAGMA foreign_keys = ON");
+        await (this.db as SQLiteDatabase).exec("PRAGMA foreign_keys = ON");
       } else {
         throw new Error(`Unsupported database type: ${this.dbType}`);
       }
