@@ -24,7 +24,7 @@ export interface DBConnection {
 }
 
 class DatabaseManager {
-  private db: Database | mysql.Connection | null = null;
+  private db: SQLiteDatabase | mysql.Connection | null = null;
   private dbPath: string;
   private dbType: string;
 
