@@ -68,7 +68,7 @@ class DatabaseManager {
         });
         console.log("✅ SQLite Database connected successfully:", this.dbPath);
         // Enable foreign keys for SQLite
-        await (this.db as Database).exec("PRAGMA foreign_keys = ON");
+        await (this.db as SQLiteDatabase).exec("PRAGMA foreign_keys = ON");
       } else if (this.dbType === "memory") {
         // For in-memory SQLite (development/testing)
         const sqlite3 = (await import("sqlite3")).default;
