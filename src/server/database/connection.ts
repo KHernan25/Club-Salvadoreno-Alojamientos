@@ -1,8 +1,16 @@
-import { open, Database } from "sqlite";
 import mysql from "mysql2/promise";
 import path from "path";
 import fs from "fs";
 import { config } from "../../lib/config";
+
+// Type definition for SQLite Database (for when using sqlite)
+interface SQLiteDatabase {
+  all(sql: string, params?: any[]): Promise<any[]>;
+  get(sql: string, params?: any[]): Promise<any>;
+  run(sql: string, params?: any[]): Promise<{ changes: number; lastID: number }>;
+  exec(sql: string): Promise<void>;
+  close(): Promise<void>;
+}
 
 export interface DBConnection {
   all(sql: string, params?: any[]): Promise<any[]>;
@@ -16,7 +24,7 @@ export interface DBConnection {
 }
 
 class DatabaseManager {
-  private db: Database | mysql.Connection | null = null;
+  private db: SQLiteDatabase | mysql.Connection | null = null;
   private dbPath: string;
   private dbType: string;
 
@@ -53,23 +61,25 @@ class DatabaseManager {
       } else if (this.dbType === "sqlite") {
         // For SQLite (development)
         const sqlite3 = (await import("sqlite3")).default;
+        const { open } = await import("sqlite");
         this.db = await open({
           filename: this.dbPath,
           driver: sqlite3.Database,
         });
         console.log("✅ SQLite Database connected successfully:", this.dbPath);
         // Enable foreign keys for SQLite
-        await (this.db as Database).exec("PRAGMA foreign_keys = ON");
+        await (this.db as SQLiteDatabase).exec("PRAGMA foreign_keys = ON");
       } else if (this.dbType === "memory") {
         // For in-memory SQLite (development/testing)
         const sqlite3 = (await import("sqlite3")).default;
+        const { open } = await import("sqlite");
         this.db = await open({
           filename: ":memory:",
           driver: sqlite3.Database,
         });
         console.log("✅ In-memory SQLite Database connected successfully");
         // Enable foreign keys for SQLite
-        await (this.db as Database).exec("PRAGMA foreign_keys = ON");
+        await (this.db as SQLiteDatabase).exec("PRAGMA foreign_keys = ON");
       } else {
         throw new Error(`Unsupported database type: ${this.dbType}`);
       }
@@ -115,7 +125,7 @@ class DatabaseManager {
     }
   }
 
-  private createDBConnection(db: Database | mysql.Connection): DBConnection {
+  private createDBConnection(db: SQLiteDatabase | mysql.Connection): DBConnection {
     if (this.dbType === "mysql") {
       const mysqlDb = db as mysql.Connection;
       return {
@@ -147,7 +157,7 @@ class DatabaseManager {
       };
     } else {
       // SQLite
-      return db as Database;
+      return db as SQLiteDatabase;
     }
   }
 
@@ -156,14 +166,14 @@ class DatabaseManager {
       if (this.dbType === "mysql") {
         await (this.db as mysql.Connection).end();
       } else {
-        await (this.db as Database).close();
+        await (this.db as SQLiteDatabase).close();
       }
       this.db = null;
       console.log("✅ Database connection closed");
     }
   }
 
-  getDb(): Database | mysql.Connection {
+  getDb(): SQLiteDatabase | mysql.Connection {
     if (!this.db) {
       throw new Error("Database not connected. Call connect() first.");
     }
