@@ -125,7 +125,7 @@ class DatabaseManager {
     }
   }
 
-  private createDBConnection(db: Database | mysql.Connection): DBConnection {
+  private createDBConnection(db: SQLiteDatabase | mysql.Connection): DBConnection {
     if (this.dbType === "mysql") {
       const mysqlDb = db as mysql.Connection;
       return {
