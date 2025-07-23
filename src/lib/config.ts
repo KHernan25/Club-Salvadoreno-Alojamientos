@@ -150,7 +150,7 @@ export const config: Config = {
 
   database: {
     url: getRequiredEnvVar("DATABASE_URL"),
-    type: getRequiredEnvVar("DB_TYPE") as "memory" | "postgres" | "mysql",
+    type: getRequiredEnvVar("DB_TYPE") as "memory" | "postgres" | "mysql" | "sqlite",
     host: process.env.DB_HOST,
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : undefined,
     name: process.env.DB_NAME,
