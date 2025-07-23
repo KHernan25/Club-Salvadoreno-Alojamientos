@@ -157,7 +157,7 @@ class DatabaseManager {
       };
     } else {
       // SQLite
-      return db as Database;
+      return db as SQLiteDatabase;
     }
   }
 
