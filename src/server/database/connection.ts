@@ -61,6 +61,7 @@ class DatabaseManager {
       } else if (this.dbType === "sqlite") {
         // For SQLite (development)
         const sqlite3 = (await import("sqlite3")).default;
+        const { open } = await import("sqlite");
         this.db = await open({
           filename: this.dbPath,
           driver: sqlite3.Database,
@@ -71,6 +72,7 @@ class DatabaseManager {
       } else if (this.dbType === "memory") {
         // For in-memory SQLite (development/testing)
         const sqlite3 = (await import("sqlite3")).default;
+        const { open } = await import("sqlite");
         this.db = await open({
           filename: ":memory:",
           driver: sqlite3.Database,
