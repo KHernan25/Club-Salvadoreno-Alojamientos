@@ -166,14 +166,14 @@ class DatabaseManager {
       if (this.dbType === "mysql") {
         await (this.db as mysql.Connection).end();
       } else {
-        await (this.db as Database).close();
+        await (this.db as SQLiteDatabase).close();
       }
       this.db = null;
       console.log("✅ Database connection closed");
     }
   }
 
-  getDb(): Database | mysql.Connection {
+  getDb(): SQLiteDatabase | mysql.Connection {
     if (!this.db) {
       throw new Error("Database not connected. Call connect() first.");
     }
