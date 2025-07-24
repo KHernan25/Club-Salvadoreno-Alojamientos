@@ -98,18 +98,23 @@ export const mockSendResetSMS = async (
 export const shouldUseMockAPI = (): boolean => {
   try {
     // Check if FORCE_REAL_API environment variable is set
-    if (typeof process !== "undefined" && process.env?.FORCE_REAL_API === "true") {
+    if (
+      typeof process !== "undefined" &&
+      process.env?.FORCE_REAL_API === "true"
+    ) {
       console.log("🔄 Using REAL API (FORCE_REAL_API=true)");
       return false;
     }
 
     // Check if MySQL is configured and available
     if (typeof process !== "undefined" && process.env) {
-      const hasMySQL = process.env.DB_TYPE === "mysql" && process.env.DATABASE_URL;
-      const hasRealEmail = process.env.EMAIL_PASSWORD &&
-                          process.env.EMAIL_PASSWORD !== "REEMPLAZAR_CON_CONTRASEÑA_REAL" &&
-                          process.env.EMAIL_PASSWORD !== "development-password" &&
-                          process.env.EMAIL_PASSWORD !== "your-real-email-password-here";
+      const hasMySQL =
+        process.env.DB_TYPE === "mysql" && process.env.DATABASE_URL;
+      const hasRealEmail =
+        process.env.EMAIL_PASSWORD &&
+        process.env.EMAIL_PASSWORD !== "REEMPLAZAR_CON_CONTRASEÑA_REAL" &&
+        process.env.EMAIL_PASSWORD !== "development-password" &&
+        process.env.EMAIL_PASSWORD !== "your-real-email-password-here";
 
       if (hasMySQL && hasRealEmail) {
         console.log("🔄 Using REAL API (MySQL + Email configured)");
@@ -117,7 +122,9 @@ export const shouldUseMockAPI = (): boolean => {
       }
 
       if (hasMySQL) {
-        console.log("🔄 Using REAL API for database, MOCK for email (MySQL configured, email not configured)");
+        console.log(
+          "🔄 Using REAL API for database, MOCK for email (MySQL configured, email not configured)",
+        );
         return false; // We can still use real database operations
       }
     }

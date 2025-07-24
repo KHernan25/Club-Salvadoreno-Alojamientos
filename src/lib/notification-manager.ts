@@ -2,14 +2,14 @@
 let emailService: any = null;
 let smsService: any = null;
 
-if (typeof window === 'undefined') {
+if (typeof window === "undefined") {
   try {
-    const emailServiceModule = require('./email-service');
+    const emailServiceModule = require("./email-service");
     emailService = emailServiceModule.emailService;
-    const smsServiceModule = require('./sms-service');
+    const smsServiceModule = require("./sms-service");
     smsService = smsServiceModule.smsService;
   } catch (error) {
-    console.warn('Email/SMS services not available');
+    console.warn("Email/SMS services not available");
   }
 }
 
@@ -86,12 +86,17 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendWelcomeEmail(data.userEmail, data.userName);
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
+      if (
+        preferences.sms &&
+        data.userPhone &&
+        smsService &&
+        typeof window === "undefined"
+      ) {
         await smsService.sendWelcomeSMS(data.userPhone, data.userName);
       }
 
@@ -110,7 +115,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendAccountApprovedEmail(
           data.userEmail,
           data.userName,
@@ -118,7 +123,12 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
+      if (
+        preferences.sms &&
+        data.userPhone &&
+        smsService &&
+        typeof window === "undefined"
+      ) {
         await smsService.sendAccountApprovedSMS(data.userPhone, data.userName);
       }
 
@@ -137,7 +147,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendAccountRejectedEmail(
           data.userEmail,
           data.userName,
@@ -167,7 +177,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendNotificationEmail({
           userEmail: data.userEmail,
           userName: data.userName,
@@ -185,7 +195,12 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
+      if (
+        preferences.sms &&
+        data.userPhone &&
+        smsService &&
+        typeof window === "undefined"
+      ) {
         await smsService.sendBookingConfirmationSMS(
           data.userPhone,
           data.userName,
@@ -215,7 +230,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendNotificationEmail({
           userEmail: data.userEmail,
           userName: data.userName,
@@ -228,7 +243,12 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
+      if (
+        preferences.sms &&
+        data.userPhone &&
+        smsService &&
+        typeof window === "undefined"
+      ) {
         await smsService.sendBookingReminderSMS(data.userPhone, data.userName, {
           accommodationName: data.accommodationName,
           checkIn: data.checkIn,
@@ -253,7 +273,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendNotificationEmail({
           userEmail: data.userEmail,
           userName: data.userName,
@@ -268,7 +288,12 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
+      if (
+        preferences.sms &&
+        data.userPhone &&
+        smsService &&
+        typeof window === "undefined"
+      ) {
         await smsService.sendNotificationSMS({
           phone: data.userPhone,
           userName: data.userName,
@@ -300,7 +325,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `🔄 Modificación de Reserva - ${data.accommodationName}`,
@@ -338,7 +363,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendNotificationEmail({
           userEmail: data.userEmail,
           userName: data.userName,
@@ -353,7 +378,12 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
+      if (
+        preferences.sms &&
+        data.userPhone &&
+        smsService &&
+        typeof window === "undefined"
+      ) {
         await smsService.sendPaymentReminderSMS(data.userPhone, data.userName, {
           amount: data.amount,
           dueDate: data.dueDate,
@@ -378,7 +408,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `✅ Pago Confirmado - ${data.accommodationName}`,
@@ -394,7 +424,12 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
+      if (
+        preferences.sms &&
+        data.userPhone &&
+        smsService &&
+        typeof window === "undefined"
+      ) {
         await smsService.sendSMS({
           to: data.userPhone,
           message: `✅ Club Salvadoreño\n\nPago confirmado: $${data.amount.toFixed(2)} USD\nReserva: ${data.accommodationName}\n\n¡Tu reserva está confirmada!`,
@@ -419,7 +454,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `❌ Problema con el Pago - ${data.accommodationName}`,
@@ -454,7 +489,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `🔔 ${data.title} - Club Salvadoreño`,
@@ -498,7 +533,7 @@ export class NotificationManager {
     console.log("📧 Sending maintenance notifications to:", data.userName);
 
     try {
-      if (preferences.email && emailService && typeof window === 'undefined') {
+      if (preferences.email && emailService && typeof window === "undefined") {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `🔧 Mantenimiento Programado - Club Salvadoreño`,
@@ -536,7 +571,7 @@ export class NotificationManager {
       // Emergency notifications are sent via all channels regardless of preferences
 
       // Email
-      if (emailService && typeof window === 'undefined') {
+      if (emailService && typeof window === "undefined") {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `🚨 EMERGENCIA - ${data.emergencyType}`,
@@ -555,7 +590,7 @@ export class NotificationManager {
       }
 
       // SMS
-      if (data.userPhone && smsService && typeof window === 'undefined') {
+      if (data.userPhone && smsService && typeof window === "undefined") {
         await smsService.sendSMS({
           to: data.userPhone,
           message: `🚨 EMERGENCIA Club Salvadoreño\n\n${data.emergencyType}\n\n${data.instructions}\n\nContacto: ${data.contactInfo}`,

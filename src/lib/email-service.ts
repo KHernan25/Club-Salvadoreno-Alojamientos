@@ -1,11 +1,11 @@
 // Conditional import for server-side only
 let nodemailer: any = null;
-if (typeof window === 'undefined') {
+if (typeof window === "undefined") {
   // Only import on server-side
   try {
-    nodemailer = require('nodemailer');
+    nodemailer = require("nodemailer");
   } catch (error) {
-    console.warn('nodemailer not available, email service will be disabled');
+    console.warn("nodemailer not available, email service will be disabled");
   }
 }
 
@@ -63,8 +63,10 @@ export class EmailService {
 
   private initializeTransporter() {
     // Only initialize if we're on the server side and nodemailer is available
-    if (typeof window !== 'undefined' || !nodemailer) {
-      console.log('📧 Email service disabled (client-side or nodemailer not available)');
+    if (typeof window !== "undefined" || !nodemailer) {
+      console.log(
+        "📧 Email service disabled (client-side or nodemailer not available)",
+      );
       this.isConfigured = false;
       return;
     }

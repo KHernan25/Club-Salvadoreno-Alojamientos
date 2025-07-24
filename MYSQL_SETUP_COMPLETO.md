@@ -71,16 +71,17 @@ npm run dev:full
 
 ### 👥 Usuarios de Prueba
 
-| Usuario | Email | Contraseña | Rol |
-|---------|--------|------------|-----|
-| admin | admin@clubsalvadoreno.com | admin123 | super_admin |
-| ghernandez | ghernandez@clubsalvadoreno.com | admin123 | atencion_miembro |
-| mgarcia | mgarcia@clubsalvadoreno.com | admin123 | anfitrion |
-| crodriguez | crodriguez@clubsalvadoreno.com | admin123 | miembro |
+| Usuario    | Email                          | Contraseña | Rol              |
+| ---------- | ------------------------------ | ---------- | ---------------- |
+| admin      | admin@clubsalvadoreno.com      | admin123   | super_admin      |
+| ghernandez | ghernandez@clubsalvadoreno.com | admin123   | atencion_miembro |
+| mgarcia    | mgarcia@clubsalvadoreno.com    | admin123   | anfitrion        |
+| crodriguez | crodriguez@clubsalvadoreno.com | admin123   | miembro          |
 
 ### 🏠 Alojamientos Reales (34 propiedades)
 
 **CORINTO (6 Casas):**
+
 - Casa Corinto Marina - $180/noche (8 personas)
 - Casa Corinto Pacífico - $220/noche (10 personas)
 - Casa Corinto Familiar - $150/noche (6 personas)
@@ -89,6 +90,7 @@ npm run dev:full
 - Casa Corinto Sunset - $160/noche (6 personas)
 
 **EL SUNZAL (28 propiedades):**
+
 - 16 Suites: $160-$280/noche (2-6 personas)
 - 6 Casas: $320-$500/noche (8-16 personas)
 - 6 Apartamentos: $100-$220/noche (2-6 personas)
@@ -113,6 +115,7 @@ npm run dev:full
 ### Índices Optimizados
 
 Cada tabla incluye índices optimizados para:
+
 - Búsquedas por email/username
 - Filtros por fecha
 - Consultas por estado/tipo
@@ -143,11 +146,13 @@ El sistema detecta automáticamente si tienes credenciales de email reales confi
 ## 🛠️ Scripts de Mantenimiento
 
 ### Verificar Conexión
+
 ```bash
 node test-mysql-connection.js
 ```
 
 ### Resetear Base de Datos
+
 ```bash
 # Eliminar y recrear la base de datos
 mysql -u root -p -e "DROP DATABASE IF EXISTS club_salvadoreno_db;"
@@ -155,11 +160,13 @@ node setup-database.js
 ```
 
 ### Backup de Base de Datos
+
 ```bash
 mysqldump -u root -p club_salvadoreno_db > backup_$(date +%Y%m%d_%H%M%S).sql
 ```
 
 ### Restaurar Backup
+
 ```bash
 mysql -u root -p club_salvadoreno_db < backup_file.sql
 ```
@@ -167,26 +174,31 @@ mysql -u root -p club_salvadoreno_db < backup_file.sql
 ## 🔍 Verificación de Funcionamiento
 
 ### 1. Verificar Conexión a BD
+
 ```bash
 node test-mysql-connection.js
 ```
 
 ### 2. Probar Login
+
 - Ir a `/login`
 - Usuario: `admin`
 - Contraseña: `admin123`
 
 ### 3. Verificar Datos
+
 - Ir a `/admin/users` para ver usuarios
 - Ir a `/admin/accommodations` para ver alojamientos
 
 ### 4. Probar Reservas
+
 - Hacer una reserva como usuario normal
 - Verificar que se guarde en la base de datos
 
 ## 🚨 Solución de Problemas
 
 ### Error: "Error al inicializar el servidor"
+
 ```bash
 # Verificar que MySQL esté ejecutándose
 sudo service mysql start
@@ -196,6 +208,7 @@ sudo service mysql start
 ```
 
 ### Error: "Can't connect to MySQL server"
+
 ```bash
 # Verificar puerto y host
 netstat -tlnp | grep :3306
@@ -205,6 +218,7 @@ mysql -u root -p
 ```
 
 ### Tablas no se crean
+
 ```bash
 # Ejecutar manualmente el script SQL
 mysql -u root -p < setup-mysql-database.sql
@@ -213,6 +227,7 @@ mysql -u root -p < setup-mysql-database.sql
 ## 📈 Monitoreo
 
 ### Ver Logs de Aplicación
+
 ```bash
 # Logs del servidor backend
 npm run server:dev
@@ -222,6 +237,7 @@ tail -f logs/app.log
 ```
 
 ### Consultas Útiles de MySQL
+
 ```sql
 -- Ver todas las tablas
 SHOW TABLES;

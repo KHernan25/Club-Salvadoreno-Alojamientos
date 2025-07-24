@@ -7,7 +7,10 @@ import { config } from "../../lib/config";
 interface SQLiteDatabase {
   all(sql: string, params?: any[]): Promise<any[]>;
   get(sql: string, params?: any[]): Promise<any>;
-  run(sql: string, params?: any[]): Promise<{ changes: number; lastID: number }>;
+  run(
+    sql: string,
+    params?: any[],
+  ): Promise<{ changes: number; lastID: number }>;
   exec(sql: string): Promise<void>;
   close(): Promise<void>;
 }
@@ -125,7 +128,9 @@ class DatabaseManager {
     }
   }
 
-  private createDBConnection(db: SQLiteDatabase | mysql.Connection): DBConnection {
+  private createDBConnection(
+    db: SQLiteDatabase | mysql.Connection,
+  ): DBConnection {
     if (this.dbType === "mysql") {
       const mysqlDb = db as mysql.Connection;
       return {
@@ -151,9 +156,9 @@ class DatabaseManager {
         async exec(sql: string): Promise<void> {
           // Split SQL into individual statements and execute them one by one
           const statements = sql
-            .split(';')
-            .map(stmt => stmt.trim())
-            .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'));
+            .split(";")
+            .map((stmt) => stmt.trim())
+            .filter((stmt) => stmt.length > 0 && !stmt.startsWith("--"));
 
           for (const statement of statements) {
             if (statement.trim()) {
@@ -161,8 +166,13 @@ class DatabaseManager {
                 await mysqlDb.query(statement);
               } catch (error: any) {
                 // Ignore "Duplicate key name" errors for indexes that already exist
-                if (error.code === 'ER_DUP_KEYNAME' && statement.includes('CREATE INDEX')) {
-                  console.log(`⚠️  Index already exists, skipping: ${statement.split(' ')[2]}`);
+                if (
+                  error.code === "ER_DUP_KEYNAME" &&
+                  statement.includes("CREATE INDEX")
+                ) {
+                  console.log(
+                    `⚠️  Index already exists, skipping: ${statement.split(" ")[2]}`,
+                  );
                   continue;
                 }
                 // Re-throw other errors
