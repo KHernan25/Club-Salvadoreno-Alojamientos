@@ -96,29 +96,43 @@ export const mockSendResetSMS = async (
 
 // Utility to check if we should use mock APIs
 export const shouldUseMockAPI = (): boolean => {
-  // In browser environment, always use mock API for development
-  // In production, this would be configured differently
   try {
-    // Check if we're in a browser environment
-    if (typeof window !== "undefined") {
-      // Use mock API in development mode
-      return (
-        import.meta.env?.MODE === "development" ||
-        import.meta.env?.DEV === true ||
-        window.location.hostname === "localhost"
-      );
+    // Check if FORCE_REAL_API environment variable is set
+    if (typeof process !== "undefined" && process.env?.FORCE_REAL_API === "true") {
+      console.log("🔄 Using REAL API (FORCE_REAL_API=true)");
+      return false;
     }
 
-    // Server-side check (when process is available)
+    // Check if MySQL is configured and available
     if (typeof process !== "undefined" && process.env) {
-      return (
-        !process.env.EMAIL_PASSWORD ||
-        process.env.EMAIL_PASSWORD === "REEMPLAZAR_CON_CONTRASEÑA_REAL" ||
-        process.env.EMAIL_PASSWORD === "development-password"
-      );
+      const hasMySQL = process.env.DB_TYPE === "mysql" && process.env.DATABASE_URL;
+      const hasRealEmail = process.env.EMAIL_PASSWORD &&
+                          process.env.EMAIL_PASSWORD !== "REEMPLAZAR_CON_CONTRASEÑA_REAL" &&
+                          process.env.EMAIL_PASSWORD !== "development-password" &&
+                          process.env.EMAIL_PASSWORD !== "your-real-email-password-here";
+
+      if (hasMySQL && hasRealEmail) {
+        console.log("🔄 Using REAL API (MySQL + Email configured)");
+        return false;
+      }
+
+      if (hasMySQL) {
+        console.log("🔄 Using REAL API for database, MOCK for email (MySQL configured, email not configured)");
+        return false; // We can still use real database operations
+      }
     }
 
-    // Fallback to mock API if we can't determine environment
+    // Client-side fallback
+    if (typeof window !== "undefined") {
+      // In production build, try to use real API
+      if (import.meta.env?.PROD === true) {
+        console.log("🔄 Using REAL API (production build)");
+        return false;
+      }
+    }
+
+    // Fallback to mock API if database not configured
+    console.log("🔄 Using MOCK API (no database/email configured)");
     return true;
   } catch (error) {
     // If any error occurs, default to mock API for safety
