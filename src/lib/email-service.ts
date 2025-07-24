@@ -41,6 +41,7 @@ export class EmailService {
   private static instance: EmailService;
   private transporter: any | null = null;
   private isConfigured = false;
+  private isTestAccount = false;
 
   public static getInstance(): EmailService {
     if (!EmailService.instance) {
