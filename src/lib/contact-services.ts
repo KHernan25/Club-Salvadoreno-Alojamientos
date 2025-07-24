@@ -4,6 +4,7 @@ import {
   mockSendResetSMS,
   shouldUseMockAPI,
 } from "./mock-api";
+import { emailService } from "./email-service";
 
 interface EmailParams {
   to: string;
