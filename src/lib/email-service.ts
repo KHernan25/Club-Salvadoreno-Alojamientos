@@ -72,18 +72,42 @@ export class EmailService {
     }
 
     try {
-      const emailConfig = {
-        host: process.env.EMAIL_HOST,
-        port: parseInt(process.env.EMAIL_PORT || "465"),
-        secure: true, // true for 465, false for other ports
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-        tls: {
-          rejectUnauthorized: false, // Para desarrollo con certificados locales
-        },
-      };
+      // Create test account for development if email config is incomplete
+      let emailConfig: any;
+
+      if (
+        !process.env.EMAIL_HOST ||
+        !process.env.EMAIL_USER ||
+        !process.env.EMAIL_PASSWORD ||
+        process.env.EMAIL_PASSWORD === "your-real-email-password-here" ||
+        process.env.EMAIL_PASSWORD === "development-password"
+      ) {
+        console.log("📧 Creating Ethereal test account for development...");
+        const testAccount = await nodemailer.createTestAccount();
+        emailConfig = {
+          host: testAccount.smtp.host,
+          port: testAccount.smtp.port,
+          secure: testAccount.smtp.secure,
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass,
+          },
+        };
+        console.log("📧 Test account created:", testAccount.user);
+      } else {
+        emailConfig = {
+          host: process.env.EMAIL_HOST,
+          port: parseInt(process.env.EMAIL_PORT || "465"),
+          secure: process.env.EMAIL_PORT === "465", // true for 465, false for other ports
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
+          },
+          tls: {
+            rejectUnauthorized: false, // Para desarrollo con certificados locales
+          },
+        };
+      }
 
       console.log("🔍 Email Config Debug:", {
         host: emailConfig.host,
