@@ -1,5 +1,6 @@
 import { getDatabase } from "../connection";
 import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcryptjs";
 
 export interface User {
   id: string;
