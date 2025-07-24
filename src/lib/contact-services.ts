@@ -8,7 +8,7 @@ import {
 let emailService: any = null;
 if (typeof window === "undefined") {
   try {
-    const emailServiceModule = require("./email-service");
+    const emailServiceModule = await import("./email-service");
     emailService = emailServiceModule.emailService;
   } catch (error) {
     console.warn("Email service not available");
