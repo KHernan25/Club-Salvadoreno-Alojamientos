@@ -1,46 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
     <title>Test Email Service</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Testing Email Service Configuration</h1>
     <button onclick="testEmailConfig()">Test Email Configuration</button>
     <button onclick="testPasswordReset()">Test Password Reset</button>
     <div id="result"></div>
 
     <script>
-        async function testEmailConfig() {
-            try {
-                const response = await fetch('http://localhost:3001/api/email-notifications/test-config');
-                const data = await response.json();
-                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-            } catch (error) {
-                document.getElementById('result').innerHTML = 'Error: ' + error.message;
-            }
+      async function testEmailConfig() {
+        try {
+          const response = await fetch(
+            "http://localhost:3001/api/email-notifications/test-config",
+          );
+          const data = await response.json();
+          document.getElementById("result").innerHTML =
+            "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+        } catch (error) {
+          document.getElementById("result").innerHTML =
+            "Error: " + error.message;
         }
+      }
 
-        async function testPasswordReset() {
-            try {
-                const response = await fetch('http://localhost:3001/api/email-notifications/send-password-reset', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        userEmail: 'ghernandez@clubsalvadoreno.com',
-                        userName: 'Test User',
-                        resetToken: 'test123',
-                        resetUrl: 'http://localhost:8080/reset-password?token=test123',
-                        expiresIn: '1 hour'
-                    })
-                });
-                const data = await response.json();
-                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-            } catch (error) {
-                document.getElementById('result').innerHTML = 'Error: ' + error.message;
-            }
+      async function testPasswordReset() {
+        try {
+          const response = await fetch(
+            "http://localhost:3001/api/email-notifications/send-password-reset",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userEmail: "ghernandez@clubsalvadoreno.com",
+                userName: "Test User",
+                resetToken: "test123",
+                resetUrl: "http://localhost:8080/reset-password?token=test123",
+                expiresIn: "1 hour",
+              }),
+            },
+          );
+          const data = await response.json();
+          document.getElementById("result").innerHTML =
+            "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+        } catch (error) {
+          document.getElementById("result").innerHTML =
+            "Error: " + error.message;
         }
+      }
     </script>
-</body>
+  </body>
 </html>
