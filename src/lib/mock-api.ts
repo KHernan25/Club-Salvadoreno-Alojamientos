@@ -96,9 +96,10 @@ export const mockSendResetSMS = async (
 
 // Utility to check if we should use mock APIs
 export const shouldUseMockAPI = (): boolean => {
-  // Use mock API in development when backend is not available
-  return true;
-  // return (
-  //   process.env.NODE_ENV === "development" || !process.env.REACT_APP_API_URL
-  // );
+  // Use mock API only when email is not properly configured
+  return (
+    !process.env.EMAIL_PASSWORD ||
+    process.env.EMAIL_PASSWORD === "REEMPLAZAR_CON_CONTRASEÑA_REAL" ||
+    process.env.EMAIL_PASSWORD === "development-password"
+  );
 };
