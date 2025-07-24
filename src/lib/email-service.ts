@@ -62,6 +62,13 @@ export class EmailService {
   }
 
   private initializeTransporter() {
+    // Only initialize if we're on the server side and nodemailer is available
+    if (typeof window !== 'undefined' || !nodemailer) {
+      console.log('📧 Email service disabled (client-side or nodemailer not available)');
+      this.isConfigured = false;
+      return;
+    }
+
     try {
       const emailConfig = {
         host: process.env.EMAIL_HOST,
