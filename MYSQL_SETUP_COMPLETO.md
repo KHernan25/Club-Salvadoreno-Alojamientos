@@ -78,11 +78,20 @@ npm run dev:full
 | mgarcia | mgarcia@clubsalvadoreno.com | admin123 | anfitrion |
 | crodriguez | crodriguez@clubsalvadoreno.com | admin123 | miembro |
 
-### 🏠 Alojamientos de Ejemplo
+### 🏠 Alojamientos Reales (34 propiedades)
 
-1. **Suite Presidencial El Sunzal** - $150/noche (4 personas)
-2. **Apartamento Familiar Corinto** - $120/noche (6 personas)  
-3. **Casa Country Club** - $200/noche (8 personas)
+**CORINTO (6 Casas):**
+- Casa Corinto Marina - $180/noche (8 personas)
+- Casa Corinto Pacífico - $220/noche (10 personas)
+- Casa Corinto Familiar - $150/noche (6 personas)
+- Casa Corinto Deluxe - $300/noche (12 personas)
+- Casa Corinto Brisa - $120/noche (4 personas)
+- Casa Corinto Sunset - $160/noche (6 personas)
+
+**EL SUNZAL (28 propiedades):**
+- 16 Suites: $160-$280/noche (2-6 personas)
+- 6 Casas: $320-$500/noche (8-16 personas)
+- 6 Apartamentos: $100-$220/noche (2-6 personas)
 
 ## 🗃️ Estructura de Base de Datos
 
