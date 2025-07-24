@@ -101,7 +101,7 @@ async function verifyEmailConfig() {
       return false;
     }
     
-    const transporter = nodemailer.createTransporter(config);
+    const transporter = nodemailer.createTransport(config);
     
     // Verificar conexión
     const verified = await transporter.verify();
