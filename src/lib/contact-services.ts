@@ -10,6 +10,8 @@ interface EmailParams {
   to: string;
   resetToken: string;
   resetUrl: string;
+  userName?: string;
+  expiresIn?: string;
 }
 
 interface SMSParams {
