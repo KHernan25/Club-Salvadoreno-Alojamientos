@@ -1,13 +1,5 @@
 // Conditional import for server-side only
 let nodemailer: any = null;
-if (typeof window === "undefined") {
-  // Only import on server-side
-  try {
-    nodemailer = await import("nodemailer");
-  } catch (error) {
-    console.warn("nodemailer not available, email service will be disabled");
-  }
-}
 
 export interface EmailOptions {
   to: string | string[];
