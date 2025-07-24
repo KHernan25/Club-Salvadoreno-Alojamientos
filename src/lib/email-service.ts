@@ -94,6 +94,7 @@ export class EmailService {
             pass: testAccount.pass,
           },
         };
+        this.isTestAccount = true;
         console.log("📧 Test account created:", testAccount.user);
       } else {
         emailConfig = {
