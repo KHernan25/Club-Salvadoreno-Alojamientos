@@ -440,6 +440,14 @@ Gracias por tu interés en el Club Salvadoreño.`,
         subject: mailOptions.subject,
       });
 
+      // If using test account, show preview URL
+      if (info.messageId && (emailConfig.host?.includes('ethereal') || mailOptions.from?.includes('ethereal'))) {
+        const previewUrl = nodemailer.getTestMessageUrl(info);
+        if (previewUrl) {
+          console.log("📧 Preview email at:", previewUrl);
+        }
+      }
+
       return true;
     } catch (error) {
       console.error("❌ Error sending email:", error);
