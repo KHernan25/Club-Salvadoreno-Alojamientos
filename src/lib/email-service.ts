@@ -80,7 +80,9 @@ export class EmailService {
         !emailConfig.host ||
         !emailConfig.auth.user ||
         !emailConfig.auth.pass ||
-        emailConfig.auth.pass === "your-email-password-here"
+        emailConfig.auth.pass === "your-email-password-here" ||
+        emailConfig.auth.pass === "REEMPLAZAR_CON_CONTRASEÑA_REAL" ||
+        emailConfig.auth.pass === "development-password"
       ) {
         console.warn(
           "⚠️ Email configuration incomplete. Some features may not work.",
@@ -263,7 +265,7 @@ Visita: ${process.env.FRONTEND_URL || "http://localhost:8080"}
       },
 
       account_approved: {
-        subject: "✅ Cuenta Aprobada - Club Salvadoreño",
+        subject: "✅ Cuenta Aprobada - Club Salvadore��o",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 30px; text-align: center;">
@@ -356,17 +358,14 @@ Gracias por tu interés en el Club Salvadoreño.`,
       console.error(
         "❌ Email service not configured. Check environment variables.",
       );
-
-      // Para testing: simular envío exitoso
-      console.log("🧪 MODO TESTING: Simulando envío de email exitoso");
-      console.log("📧 Email que se habría enviado:", {
+      console.error("📧 Cannot send email - service not ready:", {
         to: options.to,
         subject: options.subject,
         from:
           process.env.EMAIL_FROM ||
           '"Club Salvadoreño" <no-reply@clubsalvadoreno.com>',
       });
-      return true; // Simular éxito para testing
+      return false; // Return false when email service is not configured
     }
 
     try {
