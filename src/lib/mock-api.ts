@@ -100,15 +100,17 @@ export const shouldUseMockAPI = (): boolean => {
   // In production, this would be configured differently
   try {
     // Check if we're in a browser environment
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Use mock API in development mode
-      return import.meta.env?.MODE === 'development' ||
-             import.meta.env?.DEV === true ||
-             window.location.hostname === 'localhost';
+      return (
+        import.meta.env?.MODE === "development" ||
+        import.meta.env?.DEV === true ||
+        window.location.hostname === "localhost"
+      );
     }
 
     // Server-side check (when process is available)
-    if (typeof process !== 'undefined' && process.env) {
+    if (typeof process !== "undefined" && process.env) {
       return (
         !process.env.EMAIL_PASSWORD ||
         process.env.EMAIL_PASSWORD === "REEMPLAZAR_CON_CONTRASEÑA_REAL" ||
@@ -120,7 +122,7 @@ export const shouldUseMockAPI = (): boolean => {
     return true;
   } catch (error) {
     // If any error occurs, default to mock API for safety
-    console.warn('Error determining API mode, defaulting to mock:', error);
+    console.warn("Error determining API mode, defaulting to mock:", error);
     return true;
   }
 };
