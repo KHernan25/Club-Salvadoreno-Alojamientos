@@ -53,12 +53,19 @@ export class EmailService {
     this.initializeTransporter();
   }
 
-  private initializeTransporter() {
-    // Only initialize if we're on the server side and nodemailer is available
-    if (typeof window !== "undefined" || !nodemailer) {
-      console.log(
-        "📧 Email service disabled (client-side or nodemailer not available)",
-      );
+  private async initializeTransporter() {
+    // Only initialize if we're on the server side
+    if (typeof window !== "undefined") {
+      console.log("📧 Email service disabled (client-side)");
+      this.isConfigured = false;
+      return;
+    }
+
+    // Try to load nodemailer
+    try {
+      nodemailer = await import("nodemailer");
+    } catch (error) {
+      console.warn("nodemailer not available, email service will be disabled");
       this.isConfigured = false;
       return;
     }
