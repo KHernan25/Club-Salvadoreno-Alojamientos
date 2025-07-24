@@ -30,14 +30,18 @@ node test-mysql-connection.js
 
 ### 2. Configurar la Base de Datos
 
-Ejecuta el script de configuración automática:
+Ejecuta el script de configuración completa que incluye todos los datos reales:
 
 ```bash
 # Instalar dependencias si no están instaladas
-npm install mysql2
+npm install mysql2 bcryptjs
 
-# Ejecutar configuración automática
+# Ejecutar configuración COMPLETA con datos reales
+node setup-complete-database.js
+
+# O ejecutar paso a paso (alternativo)
 node setup-database.js
+mysql -u root -p club_salvadoreno_db < real-accommodations-data.sql
 ```
 
 ### 3. Variables de Entorno
