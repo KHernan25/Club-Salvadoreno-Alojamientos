@@ -1,5 +1,17 @@
-import { emailService } from "./email-service";
-import { smsService } from "./sms-service";
+// Conditional imports for server-side only
+let emailService: any = null;
+let smsService: any = null;
+
+if (typeof window === 'undefined') {
+  try {
+    const emailServiceModule = require('./email-service');
+    emailService = emailServiceModule.emailService;
+    const smsServiceModule = require('./sms-service');
+    smsService = smsServiceModule.smsService;
+  } catch (error) {
+    console.warn('Email/SMS services not available');
+  }
+}
 
 export interface NotificationPreferences {
   email: boolean;
