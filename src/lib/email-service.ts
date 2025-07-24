@@ -356,17 +356,14 @@ Gracias por tu interés en el Club Salvadoreño.`,
       console.error(
         "❌ Email service not configured. Check environment variables.",
       );
-
-      // Para testing: simular envío exitoso
-      console.log("🧪 MODO TESTING: Simulando envío de email exitoso");
-      console.log("📧 Email que se habría enviado:", {
+      console.error("📧 Cannot send email - service not ready:", {
         to: options.to,
         subject: options.subject,
         from:
           process.env.EMAIL_FROM ||
           '"Club Salvadoreño" <no-reply@clubsalvadoreno.com>',
       });
-      return true; // Simular éxito para testing
+      return false; // Return false when email service is not configured
     }
 
     try {
