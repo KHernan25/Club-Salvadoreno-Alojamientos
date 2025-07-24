@@ -86,7 +86,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendWelcomeEmail(data.userEmail, data.userName);
       }
 
