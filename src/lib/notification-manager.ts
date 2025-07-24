@@ -91,7 +91,7 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone) {
+      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
         await smsService.sendWelcomeSMS(data.userPhone, data.userName);
       }
 
@@ -118,7 +118,7 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone) {
+      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
         await smsService.sendAccountApprovedSMS(data.userPhone, data.userName);
       }
 
@@ -185,7 +185,7 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone) {
+      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
         await smsService.sendBookingConfirmationSMS(
           data.userPhone,
           data.userName,
@@ -228,7 +228,7 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone) {
+      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
         await smsService.sendBookingReminderSMS(data.userPhone, data.userName, {
           accommodationName: data.accommodationName,
           checkIn: data.checkIn,
@@ -268,7 +268,7 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone) {
+      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
         await smsService.sendNotificationSMS({
           phone: data.userPhone,
           userName: data.userName,
@@ -353,7 +353,7 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone) {
+      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
         await smsService.sendPaymentReminderSMS(data.userPhone, data.userName, {
           amount: data.amount,
           dueDate: data.dueDate,
@@ -394,7 +394,7 @@ export class NotificationManager {
       }
 
       // SMS notification
-      if (preferences.sms && data.userPhone) {
+      if (preferences.sms && data.userPhone && smsService && typeof window === 'undefined') {
         await smsService.sendSMS({
           to: data.userPhone,
           message: `✅ Club Salvadoreño\n\nPago confirmado: $${data.amount.toFixed(2)} USD\nReserva: ${data.accommodationName}\n\n¡Tu reserva está confirmada!`,
