@@ -439,55 +439,8 @@ INSERT IGNORE INTO users (
     'Visitador Juvenil'
 );
 
--- Alojamientos de ejemplo
-INSERT IGNORE INTO accommodations (
-    id,
-    name,
-    description,
-    type,
-    capacity,
-    price_per_night,
-    images,
-    amenities,
-    availability_status,
-    is_active
-) VALUES 
-(
-    'acc-001',
-    'Suite Presidencial El Sunzal',
-    'Lujosa suite con vista al mar en El Sunzal, perfecta para una experiencia inolvidable.',
-    'suite',
-    4,
-    150.00,
-    '["sunzal1.jpg", "sunzal2.jpg"]',
-    '["wifi", "aire_acondicionado", "tv", "vista_mar", "balcon"]',
-    'available',
-    TRUE
-),
-(
-    'acc-002',
-    'Apartamento Familiar Corinto',
-    'Espacioso apartamento en Corinto, ideal para familias.',
-    'apartamento',
-    6,
-    120.00,
-    '["corinto1.jpg", "corinto2.jpg"]',
-    '["wifi", "cocina", "aire_acondicionado", "tv", "estacionamiento"]',
-    'available',
-    TRUE
-),
-(
-    'acc-003',
-    'Casa Country Club',
-    'Elegante casa en el Country Club con todas las comodidades.',
-    'casa',
-    8,
-    200.00,
-    '["country1.jpg", "country2.jpg"]',
-    '["wifi", "piscina", "bbq", "aire_acondicionado", "tv", "estacionamiento"]',
-    'available',
-    TRUE
-);
+-- Los datos reales de alojamientos se insertan en un script separado (real-accommodations-data.sql)
+-- Para cargar los datos reales, ejecutar: mysql -u root -p club_salvadoreno_db < real-accommodations-data.sql
 
 -- Configuración inicial del sistema
 INSERT IGNORE INTO system_config (
