@@ -50,7 +50,7 @@ export class EmailService {
   }
 
   private constructor() {
-    this.initializeTransporter();
+    // Deferred initialization - will be called when first needed
   }
 
   private async initializeTransporter() {
@@ -131,7 +131,10 @@ export class EmailService {
     }
   }
 
-  public isReady(): boolean {
+  public async isReady(): Promise<boolean> {
+    if (!this.isConfigured && !this.transporter) {
+      await this.initializeTransporter();
+    }
     return this.isConfigured && this.transporter !== null;
   }
 
@@ -371,7 +374,7 @@ Gracias por tu interés en el Club Salvadoreño.`,
   }
 
   public async sendEmail(options: EmailOptions): Promise<boolean> {
-    if (!this.isReady()) {
+    if (!(await this.isReady())) {
       console.error(
         "❌ Email service not configured. Check environment variables.",
       );
