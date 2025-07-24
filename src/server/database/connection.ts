@@ -157,7 +157,17 @@ class DatabaseManager {
 
           for (const statement of statements) {
             if (statement.trim()) {
-              await mysqlDb.query(statement);
+              try {
+                await mysqlDb.query(statement);
+              } catch (error: any) {
+                // Ignore "Duplicate key name" errors for indexes that already exist
+                if (error.code === 'ER_DUP_KEYNAME' && statement.includes('CREATE INDEX')) {
+                  console.log(`⚠️  Index already exists, skipping: ${statement.split(' ')[2]}`);
+                  continue;
+                }
+                // Re-throw other errors
+                throw error;
+              }
             }
           }
         },
