@@ -3,45 +3,27 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:3001",
-        changeOrigin: true,
-        secure: false,
-        ws: true,
-        configure: (proxy, options) => {
-          proxy.on("error", (err, req, res) => {
-            console.log("🔴 Proxy error:", err);
-          });
-          proxy.on("proxyReq", (proxyReq, req, res) => {
-            console.log(
-              "📤 Proxying request:",
-              req.method,
-              req.url,
-              "→",
-              (options.target || "") + (req.url || ""),
-            );
-          });
-          proxy.on("proxyRes", (proxyRes, req, res) => {
-            console.log("📥 Proxy response:", proxyRes.statusCode, req.url);
-          });
-        },
-      },
-      "/health": {
-        target: "http://127.0.0.1:3001",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
+export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 8080,
+    host: true,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-}));
+  define: {
+    // Define server-side only flag for conditional imports
+    __SERVER_SIDE__: 'typeof window === "undefined"',
+  },
+  optimizeDeps: {
+    exclude: ["nodemailer"], // Exclude nodemailer from client-side bundling
+  },
+  build: {
+    rollupOptions: {
+      external: ["nodemailer"], // External dependency, don't bundle
+    },
+  },
+});

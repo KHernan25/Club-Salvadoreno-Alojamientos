@@ -4,11 +4,23 @@ import {
   mockSendResetSMS,
   shouldUseMockAPI,
 } from "./mock-api";
+// Conditional import for email service
+let emailService: any = null;
+if (typeof window === "undefined") {
+  try {
+    const emailServiceModule = require("./email-service");
+    emailService = emailServiceModule.emailService;
+  } catch (error) {
+    console.warn("Email service not available");
+  }
+}
 
 interface EmailParams {
   to: string;
   resetToken: string;
   resetUrl: string;
+  userName?: string;
+  expiresIn?: string;
 }
 
 interface SMSParams {
@@ -29,8 +41,32 @@ export const sendPasswordResetEmail = async (
   params: EmailParams,
 ): Promise<boolean> => {
   try {
-    // Use mock API in development or when real API is not configured
+    // Always try real email service first if available
+    if (emailService && typeof window === "undefined") {
+      try {
+        const realEmailSent = await emailService.sendPasswordResetEmail({
+          userEmail: params.to,
+          userName: params.userName || "Usuario",
+          resetToken: params.resetToken,
+          resetUrl: params.resetUrl,
+          expiresIn: params.expiresIn || "1 hora",
+        });
+
+        if (realEmailSent) {
+          console.log("✅ Email real enviado exitosamente a:", params.to);
+          return true;
+        }
+      } catch (emailError) {
+        console.warn(
+          "⚠️ Error con email real, intentando fallback:",
+          emailError,
+        );
+      }
+    }
+
+    // Use mock API only as fallback
     if (shouldUseMockAPI()) {
+      console.log("�� Usando email mock como fallback");
       const result = await mockSendResetEmail({
         email: params.to,
         resetToken: params.resetToken,

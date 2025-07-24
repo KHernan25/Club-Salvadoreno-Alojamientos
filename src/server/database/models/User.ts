@@ -1,5 +1,6 @@
 import { getDatabase } from "../connection";
 import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcryptjs";
 
 export interface User {
   id: string;
@@ -63,10 +64,21 @@ export class UserModel {
   ): Promise<User | null> {
     const db = await getDatabase();
     const user = await db.get(
-      "SELECT * FROM users WHERE (username = ? OR email = ?) AND password = ? AND is_active = 1",
-      [usernameOrEmail, usernameOrEmail, password],
+      "SELECT * FROM users WHERE (username = ? OR email = ?) AND is_active = 1",
+      [usernameOrEmail, usernameOrEmail],
     );
-    return user ? this.mapDbToUser(user) : null;
+
+    if (!user) {
+      return null;
+    }
+
+    // Verificar contraseña con bcrypt
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return null;
+    }
+
+    return this.mapDbToUser(user);
   }
 
   static async create(

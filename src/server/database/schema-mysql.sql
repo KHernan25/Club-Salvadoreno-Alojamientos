@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- Índices para users
-CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_role ON users(role);
 
 -- Tabla de tokens de autenticación
 CREATE TABLE IF NOT EXISTS auth_tokens (
@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
 );
 
 -- Índices para auth_tokens
-CREATE INDEX IF NOT EXISTS idx_auth_tokens_token ON auth_tokens(token);
-CREATE INDEX IF NOT EXISTS idx_auth_tokens_user_id ON auth_tokens(user_id);
-CREATE INDEX IF NOT EXISTS idx_auth_tokens_expires_at ON auth_tokens(expires_at);
+CREATE INDEX idx_auth_tokens_token ON auth_tokens(token);
+CREATE INDEX idx_auth_tokens_user_id ON auth_tokens(user_id);
+CREATE INDEX idx_auth_tokens_expires_at ON auth_tokens(expires_at);
 
 -- Tabla de tokens de reseteo de contraseña
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
@@ -80,10 +80,10 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
 );
 
 -- Índices para password_reset_tokens
-CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token);
-CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user_id ON password_reset_tokens(user_id);
-CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_email ON password_reset_tokens(email);
-CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_expires_at ON password_reset_tokens(expires_at);
+CREATE INDEX idx_password_reset_tokens_token ON password_reset_tokens(token);
+CREATE INDEX idx_password_reset_tokens_user_id ON password_reset_tokens(user_id);
+CREATE INDEX idx_password_reset_tokens_email ON password_reset_tokens(email);
+CREATE INDEX idx_password_reset_tokens_expires_at ON password_reset_tokens(expires_at);
 
 -- Tabla de preferencias de notificaciones
 CREATE TABLE IF NOT EXISTS notification_preferences (
@@ -102,9 +102,9 @@ CREATE TABLE IF NOT EXISTS notification_preferences (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS idx_notification_preferences_email ON notification_preferences(email);
-CREATE INDEX IF NOT EXISTS idx_notification_preferences_sms ON notification_preferences(sms);
-CREATE INDEX IF NOT EXISTS idx_notification_preferences_push ON notification_preferences(push);
+CREATE INDEX idx_notification_preferences_email ON notification_preferences(email);
+CREATE INDEX idx_notification_preferences_sms ON notification_preferences(sms);
+CREATE INDEX idx_notification_preferences_push ON notification_preferences(push);
 
 -- =====================================================
 -- 2. SISTEMA DE SOLICITUDES DE REGISTRO
@@ -138,9 +138,9 @@ CREATE TABLE IF NOT EXISTS registration_requests (
 );
 
 -- Índices para registration_requests
-CREATE INDEX IF NOT EXISTS idx_registration_requests_status ON registration_requests(status);
-CREATE INDEX IF NOT EXISTS idx_registration_requests_email ON registration_requests(email);
-CREATE INDEX IF NOT EXISTS idx_registration_requests_username ON registration_requests(username);
+CREATE INDEX idx_registration_requests_status ON registration_requests(status);
+CREATE INDEX idx_registration_requests_email ON registration_requests(email);
+CREATE INDEX idx_registration_requests_username ON registration_requests(username);
 
 -- =====================================================
 -- 3. SISTEMA DE ALOJAMIENTOS
@@ -163,9 +163,9 @@ CREATE TABLE IF NOT EXISTS accommodations (
 );
 
 -- Índices para accommodations
-CREATE INDEX IF NOT EXISTS idx_accommodations_type ON accommodations(type);
-CREATE INDEX IF NOT EXISTS idx_accommodations_availability ON accommodations(availability_status);
-CREATE INDEX IF NOT EXISTS idx_accommodations_active ON accommodations(is_active);
+CREATE INDEX idx_accommodations_type ON accommodations(type);
+CREATE INDEX idx_accommodations_availability ON accommodations(availability_status);
+CREATE INDEX idx_accommodations_active ON accommodations(is_active);
 
 -- =====================================================
 -- 4. SISTEMA DE RESERVAS
@@ -190,11 +190,11 @@ CREATE TABLE IF NOT EXISTS reservations (
 );
 
 -- Índices para reservations
-CREATE INDEX IF NOT EXISTS idx_reservations_user_id ON reservations(user_id);
-CREATE INDEX IF NOT EXISTS idx_reservations_accommodation_id ON reservations(accommodation_id);
-CREATE INDEX IF NOT EXISTS idx_reservations_check_in ON reservations(check_in_date);
-CREATE INDEX IF NOT EXISTS idx_reservations_check_out ON reservations(check_out_date);
-CREATE INDEX IF NOT EXISTS idx_reservations_status ON reservations(status);
+CREATE INDEX idx_reservations_user_id ON reservations(user_id);
+CREATE INDEX idx_reservations_accommodation_id ON reservations(accommodation_id);
+CREATE INDEX idx_reservations_check_in ON reservations(check_in_date);
+CREATE INDEX idx_reservations_check_out ON reservations(check_out_date);
+CREATE INDEX idx_reservations_status ON reservations(status);
 
 -- =====================================================
 -- 5. SISTEMA DE NOTIFICACIONES
@@ -215,9 +215,9 @@ CREATE TABLE IF NOT EXISTS notifications (
 );
 
 -- Índices para notifications
-CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
-CREATE INDEX IF NOT EXISTS idx_notifications_is_read ON notifications(is_read);
-CREATE INDEX IF NOT EXISTS idx_notifications_type ON notifications(type);
+CREATE INDEX idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX idx_notifications_is_read ON notifications(is_read);
+CREATE INDEX idx_notifications_type ON notifications(type);
 
 -- =====================================================
 -- 6. SISTEMA DE ACTIVIDAD Y LOGS
@@ -238,10 +238,10 @@ CREATE TABLE IF NOT EXISTS activity_logs (
 );
 
 -- Índices para activity_logs
-CREATE INDEX IF NOT EXISTS idx_activity_logs_user_id ON activity_logs(user_id);
-CREATE INDEX IF NOT EXISTS idx_activity_logs_action ON activity_logs(action);
-CREATE INDEX IF NOT EXISTS idx_activity_logs_entity ON activity_logs(entity_type, entity_id);
-CREATE INDEX IF NOT EXISTS idx_activity_logs_created_at ON activity_logs(created_at);
+CREATE INDEX idx_activity_logs_user_id ON activity_logs(user_id);
+CREATE INDEX idx_activity_logs_action ON activity_logs(action);
+CREATE INDEX idx_activity_logs_entity ON activity_logs(entity_type, entity_id);
+CREATE INDEX idx_activity_logs_created_at ON activity_logs(created_at);
 
 -- =====================================================
 -- 7. SISTEMA DE CONFIGURACIÓN
@@ -259,5 +259,5 @@ CREATE TABLE IF NOT EXISTS system_config (
 );
 
 -- Índices para system_config
-CREATE INDEX IF NOT EXISTS idx_system_config_key ON system_config(config_key);
-CREATE INDEX IF NOT EXISTS idx_system_config_public ON system_config(is_public);
+CREATE INDEX idx_system_config_key ON system_config(config_key);
+CREATE INDEX idx_system_config_public ON system_config(is_public);
