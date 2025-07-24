@@ -106,24 +106,25 @@ export const shouldUseMockAPI = (): boolean => {
       return false;
     }
 
-    // Check if MySQL is configured and available
+    // Check if database is configured and available
     if (typeof process !== "undefined" && process.env) {
-      const hasMySQL =
-        process.env.DB_TYPE === "mysql" && process.env.DATABASE_URL;
+      const hasDatabase =
+        (process.env.DB_TYPE === "mysql" || process.env.DB_TYPE === "sqlite") &&
+        process.env.DATABASE_URL;
       const hasRealEmail =
         process.env.EMAIL_PASSWORD &&
         process.env.EMAIL_PASSWORD !== "REEMPLAZAR_CON_CONTRASEÑA_REAL" &&
         process.env.EMAIL_PASSWORD !== "development-password" &&
         process.env.EMAIL_PASSWORD !== "your-real-email-password-here";
 
-      if (hasMySQL && hasRealEmail) {
-        console.log("🔄 Using REAL API (MySQL + Email configured)");
+      if (hasDatabase && hasRealEmail) {
+        console.log(`🔄 Using REAL API (${process.env.DB_TYPE} + Email configured)`);
         return false;
       }
 
-      if (hasMySQL) {
+      if (hasDatabase) {
         console.log(
-          "🔄 Using REAL API for database, MOCK for email (MySQL configured, email not configured)",
+          `🔄 Using REAL API for database, MOCK for email (${process.env.DB_TYPE} configured, email not configured)`,
         );
         return false; // We can still use real database operations
       }
