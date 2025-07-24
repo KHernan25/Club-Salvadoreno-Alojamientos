@@ -5,6 +5,7 @@
 El sistema está preparado para usar MySQL como base de datos principal. Para configurarlo:
 
 ### 1. Instalar MySQL
+
 ```bash
 # En Ubuntu/Debian
 sudo apt-get update
@@ -18,6 +19,7 @@ brew install mysql
 ```
 
 ### 2. Configurar MySQL
+
 ```bash
 # Iniciar el servicio
 sudo systemctl start mysql
@@ -28,6 +30,7 @@ sudo mysql_secure_installation
 ```
 
 ### 3. Crear la base de datos
+
 ```sql
 -- Conectarse a MySQL como root
 mysql -u root -p
@@ -45,6 +48,7 @@ exit;
 ```
 
 ### 4. Configurar Variables de Entorno
+
 En tu archivo `.env` o usando el DevServerControl:
 
 ```bash
@@ -59,6 +63,7 @@ DB_PASSWORD=tu_password_mysql
 ```
 
 ### 5. Verificar la Conexión
+
 ```bash
 # Probar conexión
 mysql -u root -p -h localhost -P 3306 club_salvadoreno_db
@@ -69,6 +74,7 @@ mysql -u root -p -h localhost -P 3306 club_salvadoreno_db
 Para enviar correos reales en lugar de mocks:
 
 ### 1. Configurar Variables de Email
+
 ```bash
 EMAIL_HOST=smtp.gmail.com  # o tu servidor SMTP
 EMAIL_PORT=587             # 465 para SSL, 587 para TLS
@@ -78,6 +84,7 @@ EMAIL_FROM=Club Salvadoreño <tu_email@dominio.com>
 ```
 
 ### 2. Gmail (recomendado para pruebas)
+
 Si usas Gmail:
 
 1. Ve a [Google Account Security](https://myaccount.google.com/security)
@@ -88,6 +95,7 @@ Si usas Gmail:
 ### 3. Otros Proveedores SMTP
 
 #### SendGrid
+
 ```bash
 EMAIL_HOST=smtp.sendgrid.net
 EMAIL_PORT=587
@@ -96,6 +104,7 @@ EMAIL_PASSWORD=tu_sendgrid_api_key
 ```
 
 #### Mailgun
+
 ```bash
 EMAIL_HOST=smtp.mailgun.org
 EMAIL_PORT=587
@@ -104,6 +113,7 @@ EMAIL_PASSWORD=tu_password_mailgun
 ```
 
 #### Office 365
+
 ```bash
 EMAIL_HOST=smtp.office365.com
 EMAIL_PORT=587
@@ -112,6 +122,7 @@ EMAIL_PASSWORD=tu_password
 ```
 
 ### 4. Verificar Configuración
+
 El sistema verificará automáticamente la configuración al iniciar. Busca en los logs:
 
 ```
@@ -126,7 +137,10 @@ Para configurar variables de entorno de forma segura:
 ```javascript
 // Configurar MySQL
 DevServerControl.set_env_variable(["DB_TYPE", "mysql"]);
-DevServerControl.set_env_variable(["DATABASE_URL", "mysql://user:password@localhost:3306/club_salvadoreno_db"]);
+DevServerControl.set_env_variable([
+  "DATABASE_URL",
+  "mysql://user:password@localhost:3306/club_salvadoreno_db",
+]);
 
 // Configurar Email
 DevServerControl.set_env_variable(["EMAIL_PASSWORD", "tu_password_real"]);
@@ -151,21 +165,27 @@ Una vez configurado correctamente:
 ## 🔍 Troubleshooting
 
 ### Error de Conexión MySQL
+
 ```
 Error: connect ECONNREFUSED 127.0.0.1:3306
 ```
+
 **Solución**: Verificar que MySQL esté corriendo: `sudo systemctl status mysql`
 
 ### Error de Autenticación Email
+
 ```
 ❌ Email service verification failed
 ```
+
 **Solución**: Verificar credenciales y configuración del proveedor SMTP
 
 ### Error de Schema
+
 ```
 ❌ Database schema initialization failed
 ```
+
 **Solución**: Verificar que el usuario tenga permisos para crear tablas
 
 ## 📝 Scripts de Utilidad
