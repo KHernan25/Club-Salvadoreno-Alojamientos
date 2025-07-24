@@ -144,6 +144,10 @@ router.post(
       throw createError("Ya tienes una solicitud de registro pendiente", 400);
     }
 
+    // Encriptar contraseña antes de guardar
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     // Crear solicitud de registro
     const registrationRequest = await RegistrationRequestModel.create({
       firstName,
@@ -153,7 +157,7 @@ router.post(
       documentType,
       documentNumber,
       memberCode,
-      password, // En producción debería estar hasheado
+      password: hashedPassword, // Contraseña encriptada
     });
 
     // Crear notificación para el backoffice
