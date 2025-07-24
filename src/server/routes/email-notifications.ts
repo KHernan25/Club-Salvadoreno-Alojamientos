@@ -252,7 +252,7 @@ router.get(
       success: true,
       data: {
         emailService: {
-          configured: emailService.isReady(),
+          configured: await emailService.isReady(),
           provider: "Nodemailer",
         },
         smsService: {
