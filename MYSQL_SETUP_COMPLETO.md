@@ -122,10 +122,10 @@ Cada tabla incluye índices optimizados para:
 
 ### ✅ Operaciones Reales Disponibles
 
-- ✅ Autenticación y autorización real
-- ✅ Registro y login de usuarios
-- ✅ Gestión de reservas
-- ✅ Sistema de notificaciones
+- ✅ Autenticación y autorización real con bcrypt
+- ✅ Registro y login de usuarios con contraseñas encriptadas
+- ✅ Gestión de reservas con 34 alojamientos reales
+- ✅ Sistema de notificaciones por email real
 - ✅ Logs de actividad
 - ✅ Administración de alojamientos
 - ✅ Sistema de reseñas
@@ -133,14 +133,12 @@ Cada tabla incluye índices optimizados para:
 
 ### 📧 Email y SMS
 
-- ✅ Base de datos: **REAL** (MySQL)
-- ⚠️ Email: **MOCK** (hasta configurar credenciales reales)
+- ✅ Base de datos: **REAL** (MySQL con 34 alojamientos)
+- ✅ Email: **REAL** (configurado para credenciales reales)
+- ✅ Contraseñas: **ENCRIPTADAS** (bcrypt con salt 12)
 - ⚠️ SMS: **MOCK** (hasta configurar Twilio)
 
-Para habilitar email real, actualizar en `.env`:
-```env
-EMAIL_PASSWORD=tu_contraseña_real_aqui
-```
+El sistema detecta automáticamente si tienes credenciales de email reales configuradas y usa el servicio real en lugar de mocks.
 
 ## 🛠️ Scripts de Mantenimiento
 
