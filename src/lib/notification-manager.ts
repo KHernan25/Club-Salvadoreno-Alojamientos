@@ -536,24 +536,26 @@ export class NotificationManager {
       // Emergency notifications are sent via all channels regardless of preferences
 
       // Email
-      await emailService.sendEmail({
-        to: data.userEmail,
-        subject: `🚨 EMERGENCIA - ${data.emergencyType}`,
-        html: `
-          <div style="border: 3px solid #dc2626; padding: 20px; background: #fef2f2;">
-            <h2 style="color: #dc2626;">🚨 NOTIFICACIÓN DE EMERGENCIA</h2>
-            <h3>${data.emergencyType}</h3>
-            <p><strong>Estimado/a ${data.userName},</strong></p>
-            <p>${data.instructions}</p>
-            <p><strong>Contacto de emergencia:</strong> ${data.contactInfo}</p>
-            <p>Club Salvadoreño</p>
-          </div>
-        `,
-        text: `🚨 EMERGENCIA - ${data.emergencyType}. ${data.instructions} Contacto: ${data.contactInfo}`,
-      });
+      if (emailService && typeof window === 'undefined') {
+        await emailService.sendEmail({
+          to: data.userEmail,
+          subject: `🚨 EMERGENCIA - ${data.emergencyType}`,
+          html: `
+            <div style="border: 3px solid #dc2626; padding: 20px; background: #fef2f2;">
+              <h2 style="color: #dc2626;">🚨 NOTIFICACIÓN DE EMERGENCIA</h2>
+              <h3>${data.emergencyType}</h3>
+              <p><strong>Estimado/a ${data.userName},</strong></p>
+              <p>${data.instructions}</p>
+              <p><strong>Contacto de emergencia:</strong> ${data.contactInfo}</p>
+              <p>Club Salvadoreño</p>
+            </div>
+          `,
+          text: `🚨 EMERGENCIA - ${data.emergencyType}. ${data.instructions} Contacto: ${data.contactInfo}`,
+        });
+      }
 
       // SMS
-      if (data.userPhone) {
+      if (data.userPhone && smsService && typeof window === 'undefined') {
         await smsService.sendSMS({
           to: data.userPhone,
           message: `🚨 EMERGENCIA Club Salvadoreño\n\n${data.emergencyType}\n\n${data.instructions}\n\nContacto: ${data.contactInfo}`,
