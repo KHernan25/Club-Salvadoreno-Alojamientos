@@ -47,7 +47,7 @@ export interface NotificationEmailData {
 
 export class EmailService {
   private static instance: EmailService;
-  private transporter: nodemailer.Transporter | null = null;
+  private transporter: any | null = null;
   private isConfigured = false;
 
   public static getInstance(): EmailService {
@@ -270,7 +270,7 @@ Tu cuenta ha sido creada exitosamente. Ya puedes:
 
 Visita: ${process.env.FRONTEND_URL || "http://localhost:8080"}
 
-¡Gracias por ser parte del Club Salvadore��o!`,
+¡Gracias por ser parte del Club Salvadoreño!`,
       },
 
       account_approved: {
