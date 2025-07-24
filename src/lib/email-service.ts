@@ -1,4 +1,13 @@
-import nodemailer from "nodemailer";
+// Conditional import for server-side only
+let nodemailer: any = null;
+if (typeof window === 'undefined') {
+  // Only import on server-side
+  try {
+    nodemailer = require('nodemailer');
+  } catch (error) {
+    console.warn('nodemailer not available, email service will be disabled');
+  }
+}
 
 export interface EmailOptions {
   to: string | string[];
@@ -261,7 +270,7 @@ Tu cuenta ha sido creada exitosamente. Ya puedes:
 
 Visita: ${process.env.FRONTEND_URL || "http://localhost:8080"}
 
-¡Gracias por ser parte del Club Salvadoreño!`,
+¡Gracias por ser parte del Club Salvadore��o!`,
       },
 
       account_approved: {
