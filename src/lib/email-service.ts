@@ -257,7 +257,7 @@ Club Salvadoreño
   } {
     const templates = {
       welcome: {
-        subject: "🎉 ¡Bienvenido al Club Salvadoreño!",
+        subject: "�� ¡Bienvenido al Club Salvadoreño!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 30px; text-align: center;">
@@ -443,7 +443,7 @@ Gracias por tu interés en el Club Salvadoreño.`,
       });
 
       // If using test account, show preview URL
-      if (info.messageId && (emailConfig.host?.includes('ethereal') || mailOptions.from?.includes('ethereal'))) {
+      if (this.isTestAccount && info.messageId) {
         const previewUrl = nodemailer.getTestMessageUrl(info);
         if (previewUrl) {
           console.log("📧 Preview email at:", previewUrl);
