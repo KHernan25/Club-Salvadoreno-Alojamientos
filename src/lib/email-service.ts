@@ -112,9 +112,9 @@ export class EmailService {
       console.log("🔍 Email Config Debug:", {
         host: emailConfig.host,
         port: emailConfig.port,
+        secure: emailConfig.secure,
         user: emailConfig.auth.user,
         passLength: emailConfig.auth.pass?.length || 0,
-        passStartsWith: emailConfig.auth.pass?.substring(0, 3) || "N/A",
       });
 
       // Verificar que tenemos la configuración mínima necesaria
