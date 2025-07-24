@@ -149,7 +149,17 @@ class DatabaseManager {
           };
         },
         async exec(sql: string): Promise<void> {
-          await mysqlDb.query(sql);
+          // Split SQL into individual statements and execute them one by one
+          const statements = sql
+            .split(';')
+            .map(stmt => stmt.trim())
+            .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'));
+
+          for (const statement of statements) {
+            if (statement.trim()) {
+              await mysqlDb.query(statement);
+            }
+          }
         },
         async close(): Promise<void> {
           await mysqlDb.end();
