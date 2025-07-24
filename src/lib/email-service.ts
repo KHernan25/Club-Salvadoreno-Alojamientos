@@ -121,10 +121,7 @@ export class EmailService {
       if (
         !emailConfig.host ||
         !emailConfig.auth.user ||
-        !emailConfig.auth.pass ||
-        emailConfig.auth.pass === "your-email-password-here" ||
-        emailConfig.auth.pass === "REEMPLAZAR_CON_CONTRASEÑA_REAL" ||
-        emailConfig.auth.pass === "development-password"
+        !emailConfig.auth.pass
       ) {
         console.warn(
           "⚠️ Email configuration incomplete. Some features may not work.",
