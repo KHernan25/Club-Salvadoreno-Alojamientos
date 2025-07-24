@@ -110,7 +110,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendAccountApprovedEmail(
           data.userEmail,
           data.userName,
@@ -137,7 +137,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendAccountRejectedEmail(
           data.userEmail,
           data.userName,
@@ -167,7 +167,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendNotificationEmail({
           userEmail: data.userEmail,
           userName: data.userName,
@@ -215,7 +215,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendNotificationEmail({
           userEmail: data.userEmail,
           userName: data.userName,
@@ -253,7 +253,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendNotificationEmail({
           userEmail: data.userEmail,
           userName: data.userName,
@@ -300,7 +300,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `🔄 Modificación de Reserva - ${data.accommodationName}`,
@@ -338,7 +338,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendNotificationEmail({
           userEmail: data.userEmail,
           userName: data.userName,
@@ -378,7 +378,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `✅ Pago Confirmado - ${data.accommodationName}`,
@@ -419,7 +419,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `❌ Problema con el Pago - ${data.accommodationName}`,
@@ -454,7 +454,7 @@ export class NotificationManager {
 
     try {
       // Email notification
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `🔔 ${data.title} - Club Salvadoreño`,
@@ -498,7 +498,7 @@ export class NotificationManager {
     console.log("📧 Sending maintenance notifications to:", data.userName);
 
     try {
-      if (preferences.email) {
+      if (preferences.email && emailService && typeof window === 'undefined') {
         await emailService.sendEmail({
           to: data.userEmail,
           subject: `🔧 Mantenimiento Programado - Club Salvadoreño`,
