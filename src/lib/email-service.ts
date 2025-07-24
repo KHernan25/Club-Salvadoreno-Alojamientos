@@ -63,7 +63,8 @@ export class EmailService {
 
     // Try to load nodemailer
     try {
-      nodemailer = await import("nodemailer");
+      const nodemailerModule = await import("nodemailer");
+      nodemailer = nodemailerModule.default || nodemailerModule;
     } catch (error) {
       console.warn("nodemailer not available, email service will be disabled");
       this.isConfigured = false;
