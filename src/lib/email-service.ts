@@ -1,13 +1,5 @@
 // Conditional import for server-side only
 let nodemailer: any = null;
-if (typeof window === "undefined") {
-  // Only import on server-side
-  try {
-    nodemailer = require("nodemailer");
-  } catch (error) {
-    console.warn("nodemailer not available, email service will be disabled");
-  }
-}
 
 export interface EmailOptions {
   to: string | string[];
@@ -49,6 +41,7 @@ export class EmailService {
   private static instance: EmailService;
   private transporter: any | null = null;
   private isConfigured = false;
+  private isTestAccount = false;
 
   public static getInstance(): EmailService {
     if (!EmailService.instance) {
@@ -58,49 +51,79 @@ export class EmailService {
   }
 
   private constructor() {
-    this.initializeTransporter();
+    // Deferred initialization - will be called when first needed
   }
 
-  private initializeTransporter() {
-    // Only initialize if we're on the server side and nodemailer is available
-    if (typeof window !== "undefined" || !nodemailer) {
-      console.log(
-        "📧 Email service disabled (client-side or nodemailer not available)",
-      );
+  private async initializeTransporter() {
+    // Only initialize if we're on the server side
+    if (typeof window !== "undefined") {
+      console.log("📧 Email service disabled (client-side)");
+      this.isConfigured = false;
+      return;
+    }
+
+    // Try to load nodemailer
+    try {
+      const nodemailerModule = await import("nodemailer");
+      nodemailer = nodemailerModule.default || nodemailerModule;
+    } catch (error) {
+      console.warn("nodemailer not available, email service will be disabled");
       this.isConfigured = false;
       return;
     }
 
     try {
-      const emailConfig = {
-        host: process.env.EMAIL_HOST,
-        port: parseInt(process.env.EMAIL_PORT || "465"),
-        secure: true, // true for 465, false for other ports
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-        tls: {
-          rejectUnauthorized: false, // Para desarrollo con certificados locales
-        },
-      };
+      // Create test account for development if email config is incomplete
+      let emailConfig: any;
+
+      if (
+        !process.env.EMAIL_HOST ||
+        !process.env.EMAIL_USER ||
+        !process.env.EMAIL_PASSWORD ||
+        process.env.EMAIL_PASSWORD === "your-real-email-password-here" ||
+        process.env.EMAIL_PASSWORD === "development-password"
+      ) {
+        console.log("📧 Creating Ethereal test account for development...");
+        const testAccount = await nodemailer.createTestAccount();
+        emailConfig = {
+          host: testAccount.smtp.host,
+          port: testAccount.smtp.port,
+          secure: testAccount.smtp.secure,
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass,
+          },
+        };
+        this.isTestAccount = true;
+        console.log("📧 Test account created:", testAccount.user);
+      } else {
+        emailConfig = {
+          host: process.env.EMAIL_HOST,
+          port: parseInt(process.env.EMAIL_PORT || "465"),
+          secure: process.env.EMAIL_PORT === "465", // true for 465, false for other ports
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
+          },
+          tls: {
+            rejectUnauthorized: false, // Para desarrollo con certificados locales
+          },
+        };
+      }
 
       console.log("🔍 Email Config Debug:", {
         host: emailConfig.host,
         port: emailConfig.port,
+        secure: emailConfig.secure,
         user: emailConfig.auth.user,
         passLength: emailConfig.auth.pass?.length || 0,
-        passStartsWith: emailConfig.auth.pass?.substring(0, 3) || "N/A",
       });
 
       // Verificar que tenemos la configuración mínima necesaria
       if (
         !emailConfig.host ||
         !emailConfig.auth.user ||
-        !emailConfig.auth.pass ||
-        emailConfig.auth.pass === "your-email-password-here" ||
-        emailConfig.auth.pass === "REEMPLAZAR_CON_CONTRASEÑA_REAL" ||
-        emailConfig.auth.pass === "development-password"
+        !emailConfig.auth.pass
       ) {
         console.warn(
           "⚠️ Email configuration incomplete. Some features may not work.",
@@ -132,7 +155,10 @@ export class EmailService {
     }
   }
 
-  public isReady(): boolean {
+  public async isReady(): Promise<boolean> {
+    if (!this.isConfigured && !this.transporter) {
+      await this.initializeTransporter();
+    }
     return this.isConfigured && this.transporter !== null;
   }
 
@@ -231,7 +257,7 @@ Club Salvadoreño
   } {
     const templates = {
       welcome: {
-        subject: "🎉 ¡Bienvenido al Club Salvadoreño!",
+        subject: "�� ¡Bienvenido al Club Salvadoreño!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 30px; text-align: center;">
@@ -372,7 +398,7 @@ Gracias por tu interés en el Club Salvadoreño.`,
   }
 
   public async sendEmail(options: EmailOptions): Promise<boolean> {
-    if (!this.isReady()) {
+    if (!(await this.isReady())) {
       console.error(
         "❌ Email service not configured. Check environment variables.",
       );
@@ -415,6 +441,14 @@ Gracias por tu interés en el Club Salvadoreño.`,
         to: mailOptions.to,
         subject: mailOptions.subject,
       });
+
+      // If using test account, show preview URL
+      if (this.isTestAccount && info.messageId) {
+        const previewUrl = nodemailer.getTestMessageUrl(info);
+        if (previewUrl) {
+          console.log("📧 Preview email at:", previewUrl);
+        }
+      }
 
       return true;
     } catch (error) {
