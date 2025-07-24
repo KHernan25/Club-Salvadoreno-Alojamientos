@@ -42,26 +42,28 @@ export const sendPasswordResetEmail = async (
 ): Promise<boolean> => {
   try {
     // Always try real email service first if available
-    try {
-      const realEmailSent = await emailService.sendPasswordResetEmail({
-        userEmail: params.to,
-        userName: params.userName || 'Usuario',
-        resetToken: params.resetToken,
-        resetUrl: params.resetUrl,
-        expiresIn: params.expiresIn || '1 hora'
-      });
+    if (emailService && typeof window === 'undefined') {
+      try {
+        const realEmailSent = await emailService.sendPasswordResetEmail({
+          userEmail: params.to,
+          userName: params.userName || 'Usuario',
+          resetToken: params.resetToken,
+          resetUrl: params.resetUrl,
+          expiresIn: params.expiresIn || '1 hora'
+        });
 
-      if (realEmailSent) {
-        console.log('✅ Email real enviado exitosamente a:', params.to);
-        return true;
+        if (realEmailSent) {
+          console.log('✅ Email real enviado exitosamente a:', params.to);
+          return true;
+        }
+      } catch (emailError) {
+        console.warn('⚠️ Error con email real, intentando fallback:', emailError);
       }
-    } catch (emailError) {
-      console.warn('⚠️ Error con email real, intentando fallback:', emailError);
     }
 
     // Use mock API only as fallback
     if (shouldUseMockAPI()) {
-      console.log('📧 Usando email mock como fallback');
+      console.log('�� Usando email mock como fallback');
       const result = await mockSendResetEmail({
         email: params.to,
         resetToken: params.resetToken,
