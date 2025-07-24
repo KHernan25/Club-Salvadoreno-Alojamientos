@@ -3,7 +3,7 @@ let nodemailer: any = null;
 if (typeof window === "undefined") {
   // Only import on server-side
   try {
-    nodemailer = require("nodemailer");
+    nodemailer = await import("nodemailer");
   } catch (error) {
     console.warn("nodemailer not available, email service will be disabled");
   }
