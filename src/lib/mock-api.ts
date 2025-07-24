@@ -118,7 +118,9 @@ export const shouldUseMockAPI = (): boolean => {
         process.env.EMAIL_PASSWORD !== "your-real-email-password-here";
 
       if (hasDatabase && hasRealEmail) {
-        console.log(`🔄 Using REAL API (${process.env.DB_TYPE} + Email configured)`);
+        console.log(
+          `🔄 Using REAL API (${process.env.DB_TYPE} + Email configured)`,
+        );
         return false;
       }
 
