@@ -4,16 +4,9 @@ import {
   mockSendResetSMS,
   shouldUseMockAPI,
 } from "./mock-api";
-// Conditional import for email service
-let emailService: any = null;
-if (typeof window === "undefined") {
-  try {
-    const emailServiceModule = await import("./email-service");
-    emailService = emailServiceModule.emailService;
-  } catch (error) {
-    console.warn("Email service not available");
-  }
-}
+
+// Import email service directly
+import { emailService } from "./email-service";
 
 interface EmailParams {
   to: string;
