@@ -2,6 +2,8 @@
   "name": "fusion-starter",
   "private": true,
   "type": "module",
+  "version": "2.0.0",
+  "description": "Club Salvadoreño - Sistema completo de alojamientos con precios por temporada",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,7 +14,13 @@
     "server:build": "tsc --project tsconfig.server.json",
     "server:start": "node dist/server/server.js",
     "dev:full": "concurrently \"npm run server:dev\" \"npm run dev\"",
-    "start": "npm run server:start"
+    "start": "npm run server:start",
+    "setup": "node setup-development.js",
+    "db:init": "tsx src/server/scripts/init-database-complete.ts",
+    "db:seed": "tsx src/server/scripts/init-database-complete.ts",
+    "db:schema": "tsx src/server/database/connection.ts",
+    "db:status": "curl -s http://localhost:3001/api/system/database-status | json_pp",
+    "postinstall": "npm run setup"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -112,5 +120,32 @@
     "vite": "^6.2.2",
     "vitest": "^3.1.4"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "keywords": [
+    "club-salvadoreno",
+    "sistema-alojamientos",
+    "reservas",
+    "hoteles",
+    "el-salvador",
+    "temporadas",
+    "precios",
+    "typescript",
+    "react",
+    "express",
+    "mysql"
+  ],
+  "author": "Club Salvadoreño",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/club-salvadoreno/sistema-alojamientos"
+  },
+  "bugs": {
+    "url": "https://github.com/club-salvadoreno/sistema-alojamientos/issues"
+  },
+  "homepage": "https://clubsalvadoreno.com"
 }
