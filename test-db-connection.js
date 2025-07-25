@@ -1,5 +1,5 @@
 // Quick test to verify database connection works
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
 async function testConnection() {
   console.log('Testing database connection...');
@@ -10,7 +10,7 @@ async function testConnection() {
       host: 'localhost',
       port: 3306,
       user: 'root',
-      password: '',
+      password: 'Club$$2025.',
       database: 'club_salvadoreno_db'
     });
     

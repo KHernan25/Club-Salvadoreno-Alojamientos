@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: process.env.EMAIL_FROM,
-  to: 'jgarcia@clubsalvadoreno.com',
+  to: 'ghernandez@clubsalvadoreno.com',
   subject: 'Correo de prueba - Club Salvadoreño',
   text: '¡Hola! Este es un correo de prueba.',
 };
